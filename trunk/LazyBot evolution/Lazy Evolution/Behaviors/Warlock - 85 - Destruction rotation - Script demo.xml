@@ -1,0 +1,196 @@
+<?xml version="1.0"?>
+<Behavior>
+  <CombatDistance>30</CombatDistance>
+  <PullDistance>25</PullDistance>
+  <PrePullDistance>30</PrePullDistance>
+  <UseAutoAttack>True</UseAutoAttack>
+  <SendPet>True</SendPet>
+  <GlobalCooldown>1100</GlobalCooldown>
+  <PrePullController>
+  </PrePullController>
+  <PullController>
+  </PullController>
+  <CombatController>
+    <Rule>
+      <Name>Life Tap</Name>
+      <Script><![CDATA[private const string LifeTap = "Life Tap";
+public static bool ShouldRun()
+{
+     return (Player.Health > 85) && (Player.Mana < 50);
+}
+
+public static void Run()
+{
+     CastSpell(LifeTap);
+     CastSpell(LifeTap);
+     CastSpell(LifeTap);
+}
+]]></Script>
+      <MatchAll>True</MatchAll>
+      <ShouldTarget>Unchanged</ShouldTarget>
+      <Priority>0</Priority>
+    </Rule>
+    <Rule>
+      <Name>Immolate</Name>
+      <Script><![CDATA[private const string Immolate = "Immolate";
+public static bool ShouldRun()
+{
+     return IsSpellReadyByName(Immolate) &&  !Player.Target.HasWellKnownBuff(Immolate);
+}
+
+public static void Run()
+{
+     CastSpell(Immolate);
+     Thread.Sleep(500);
+}
+]]></Script>
+      <MatchAll>True</MatchAll>
+      <ShouldTarget>Unchanged</ShouldTarget>
+      <Priority>1</Priority>
+    </Rule>
+    <Rule>
+      <Name>Corruption</Name>
+      <Script><![CDATA[]]></Script>
+      <MatchAll>True</MatchAll>
+      <ShouldTarget>Unchanged</ShouldTarget>
+      <Priority>2</Priority>
+      <Action>
+        <Type>ActionSpell</Type>
+        <Name>Corruption</Name>
+      </Action>
+      <BuffCondition>
+        <ConditionTarget>Target</ConditionTarget>
+        <Condition>DoesNotHave</Condition>
+        <ValueType>Name</ValueType>
+        <Value>Corruption</Value>
+      </BuffCondition>
+    </Rule>
+    <Rule>
+      <Name>Bane of Doom</Name>
+      <Script><![CDATA[]]></Script>
+      <MatchAll>True</MatchAll>
+      <ShouldTarget>Unchanged</ShouldTarget>
+      <Priority>3</Priority>
+      <Action>
+        <Type>ActionSpell</Type>
+        <Name>Bane of Doom</Name>
+      </Action>
+      <BuffCondition>
+        <ConditionTarget>Target</ConditionTarget>
+        <Condition>DoesNotHave</Condition>
+        <ValueType>Name</ValueType>
+        <Value>Bane of Doom</Value>
+      </BuffCondition>
+    </Rule>
+    <Rule>
+      <Name>Soul Fire</Name>
+      <Script><![CDATA[]]></Script>
+      <MatchAll>True</MatchAll>
+      <ShouldTarget>Unchanged</ShouldTarget>
+      <Priority>4</Priority>
+      <Action>
+        <Type>ActionSpell</Type>
+        <Name>Soul Fire</Name>
+      </Action>
+      <HealthPowerCondition>
+        <ConditionTarget>Target</ConditionTarget>
+        <ConditionType>Health</ConditionType>
+        <Condition>MoreThan</Condition>
+        <Value>0</Value>
+      </HealthPowerCondition>
+      <TickerCondition>
+        <Condition>Is</Condition>
+        <Value>12000</Value>
+      </TickerCondition>
+    </Rule>
+    <Rule>
+      <Name>Conflagrate</Name>
+      <Script><![CDATA[]]></Script>
+      <MatchAll>True</MatchAll>
+      <ShouldTarget>Unchanged</ShouldTarget>
+      <Priority>5</Priority>
+      <Action>
+        <Type>ActionSpell</Type>
+        <Name>Conflagrate</Name>
+      </Action>
+      <BuffCondition>
+        <ConditionTarget>Target</ConditionTarget>
+        <Condition>HasBuff</Condition>
+        <ValueType>Name</ValueType>
+        <Value>Immolate</Value>
+      </BuffCondition>
+    </Rule>
+    <Rule>
+      <Name>Demon Soul</Name>
+      <Script><![CDATA[]]></Script>
+      <MatchAll>True</MatchAll>
+      <ShouldTarget>Unchanged</ShouldTarget>
+      <Priority>6</Priority>
+      <Action>
+        <Type>ActionSpell</Type>
+        <Name>Demon Soul</Name>
+      </Action>
+      <HealthPowerCondition>
+        <ConditionTarget>Target</ConditionTarget>
+        <ConditionType>Health</ConditionType>
+        <Condition>MoreThan</Condition>
+        <Value>0</Value>
+      </HealthPowerCondition>
+    </Rule>
+    <Rule>
+      <Name>Shadowflame</Name>
+      <Script><![CDATA[]]></Script>
+      <MatchAll>True</MatchAll>
+      <ShouldTarget>Unchanged</ShouldTarget>
+      <Priority>7</Priority>
+      <Action>
+        <Type>ActionSpell</Type>
+        <Name>Shadowflame</Name>
+      </Action>
+      <HealthPowerCondition>
+        <ConditionTarget>Target</ConditionTarget>
+        <ConditionType>Health</ConditionType>
+        <Condition>MoreThan</Condition>
+        <Value>0</Value>
+      </HealthPowerCondition>
+    </Rule>
+    <Rule>
+      <Name>Chaos Bolt</Name>
+      <Script><![CDATA[]]></Script>
+      <MatchAll>True</MatchAll>
+      <ShouldTarget>Unchanged</ShouldTarget>
+      <Priority>8</Priority>
+      <Action>
+        <Type>ActionSpell</Type>
+        <Name>Chaos Bolt</Name>
+      </Action>
+      <HealthPowerCondition>
+        <ConditionTarget>Target</ConditionTarget>
+        <ConditionType>Health</ConditionType>
+        <Condition>MoreThan</Condition>
+        <Value>0</Value>
+      </HealthPowerCondition>
+    </Rule>
+    <Rule>
+      <Name>Shadow Bolt</Name>
+      <Script><![CDATA[]]></Script>
+      <MatchAll>True</MatchAll>
+      <ShouldTarget>Unchanged</ShouldTarget>
+      <Priority>9</Priority>
+      <Action>
+        <Type>ActionSpell</Type>
+        <Name>Shadow Bolt</Name>
+      </Action>
+      <HealthPowerCondition>
+        <ConditionTarget>Target</ConditionTarget>
+        <ConditionType>Health</ConditionType>
+        <Condition>MoreThan</Condition>
+        <Value>0</Value>
+      </HealthPowerCondition>
+    </Rule>
+  </CombatController>
+  <BuffController>
+  </BuffController>
+  <RestController>
+  </RestController>
+</Behavior>
