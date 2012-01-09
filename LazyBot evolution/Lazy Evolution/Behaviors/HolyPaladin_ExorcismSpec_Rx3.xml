@@ -1,0 +1,336 @@
+<?xml version="1.0"?>
+<Behavior>
+  <CombatDistance>20</CombatDistance>
+  <PullDistance>30</PullDistance>
+  <PrePullDistance>30</PrePullDistance>
+  <UseAutoAttack>True</UseAutoAttack>
+  <SendPet>True</SendPet>
+  <GlobalCooldown>2000</GlobalCooldown>
+  <PrePullController>
+  </PrePullController>
+  <PullController>
+  </PullController>
+  <CombatController>
+    <Rule>
+      <Name>Exorcism</Name>
+      <Script><![CDATA[]]></Script>
+      <MatchAll>True</MatchAll>
+      <ShouldTarget>Enemy</ShouldTarget>
+      <Priority>0</Priority>
+      <Action>
+        <Type>ActionSpell</Type>
+        <Name>Exorcism</Name>
+      </Action>
+      <TickerCondition>
+        <Condition>Is</Condition>
+        <Value>6000</Value>
+      </TickerCondition>
+    </Rule>
+    <Rule>
+      <Name>Holy Shock</Name>
+      <Script><![CDATA[]]></Script>
+      <MatchAll>True</MatchAll>
+      <ShouldTarget>Enemy</ShouldTarget>
+      <Priority>1</Priority>
+      <Action>
+        <Type>ActionSpell</Type>
+        <Name>Holy Shock</Name>
+      </Action>
+      <TickerCondition>
+        <Condition>Is</Condition>
+        <Value>6000</Value>
+      </TickerCondition>
+    </Rule>
+    <Rule>
+      <Name>Judgement</Name>
+      <Script><![CDATA[]]></Script>
+      <MatchAll>True</MatchAll>
+      <ShouldTarget>Enemy</ShouldTarget>
+      <Priority>2</Priority>
+      <Action>
+        <Type>ActionSpell</Type>
+        <Name>Judgement</Name>
+      </Action>
+      <TickerCondition>
+        <Condition>Is</Condition>
+        <Value>6000</Value>
+      </TickerCondition>
+    </Rule>
+    <Rule>
+      <Name>Inquisition</Name>
+      <Script><![CDATA[]]></Script>
+      <MatchAll>True</MatchAll>
+      <ShouldTarget>Self</ShouldTarget>
+      <Priority>3</Priority>
+      <Action>
+        <Type>ActionSpell</Type>
+        <Name>Inquisition</Name>
+      </Action>
+      <TickerCondition>
+        <Condition>Is</Condition>
+        <Value>140000</Value>
+      </TickerCondition>
+    </Rule>
+    <Rule>
+      <Name>Divine Protection</Name>
+      <Script><![CDATA[]]></Script>
+      <MatchAll>True</MatchAll>
+      <ShouldTarget>Self</ShouldTarget>
+      <Priority>4</Priority>
+      <Action>
+        <Type>ActionSpell</Type>
+        <Name>Divine Protection</Name>
+      </Action>
+      <CombatCountCondition>
+        <Condition>MoreThan</Condition>
+        <Value>1</Value>
+      </CombatCountCondition>
+    </Rule>
+    <Rule>
+      <Name>Flash of Light</Name>
+      <Script><![CDATA[]]></Script>
+      <MatchAll>True</MatchAll>
+      <ShouldTarget>Self</ShouldTarget>
+      <Priority>5</Priority>
+      <Action>
+        <Type>ActionSpell</Type>
+        <Name>Flash of Light</Name>
+      </Action>
+      <HealthPowerCondition>
+        <ConditionTarget>Player</ConditionTarget>
+        <ConditionType>Health</ConditionType>
+        <Condition>LessThan</Condition>
+        <Value>60</Value>
+      </HealthPowerCondition>
+    </Rule>
+    <Rule>
+      <Name>Consecration</Name>
+      <Script><![CDATA[]]></Script>
+      <MatchAll>True</MatchAll>
+      <ShouldTarget>None</ShouldTarget>
+      <Priority>6</Priority>
+      <Action>
+        <Type>ActionSpell</Type>
+        <Name>Consecration</Name>
+      </Action>
+      <CombatCountCondition>
+        <Condition>MoreThan</Condition>
+        <Value>1</Value>
+      </CombatCountCondition>
+    </Rule>
+    <Rule>
+      <Name>Divine Plea</Name>
+      <Script><![CDATA[]]></Script>
+      <MatchAll>True</MatchAll>
+      <ShouldTarget>Self</ShouldTarget>
+      <Priority>7</Priority>
+      <Action>
+        <Type>ActionSpell</Type>
+        <Name>Divine Plea</Name>
+      </Action>
+      <HealthPowerCondition>
+        <ConditionTarget>Player</ConditionTarget>
+        <ConditionType>Mana</ConditionType>
+        <Condition>LessThan</Condition>
+        <Value>30</Value>
+      </HealthPowerCondition>
+    </Rule>
+    <Rule>
+      <Name>Avenging Wrath</Name>
+      <Script><![CDATA[]]></Script>
+      <MatchAll>True</MatchAll>
+      <ShouldTarget>Self</ShouldTarget>
+      <Priority>8</Priority>
+      <Action>
+        <Type>ActionSpell</Type>
+        <Name>Avenging Wrath</Name>
+      </Action>
+      <CombatCountCondition>
+        <Condition>LessThan</Condition>
+        <Value>3</Value>
+      </CombatCountCondition>
+    </Rule>
+    <Rule>
+      <Name>Divine Shield</Name>
+      <Script><![CDATA[]]></Script>
+      <MatchAll>True</MatchAll>
+      <ShouldTarget>None</ShouldTarget>
+      <Priority>9</Priority>
+      <Action>
+        <Type>ActionSpell</Type>
+        <Name>Divine Shield</Name>
+      </Action>
+      <HealthPowerCondition>
+        <ConditionTarget>Player</ConditionTarget>
+        <ConditionType>Health</ConditionType>
+        <Condition>LessThan</Condition>
+        <Value>20</Value>
+      </HealthPowerCondition>
+    </Rule>
+    <Rule>
+      <Name>Holy Wrath</Name>
+      <Script><![CDATA[]]></Script>
+      <MatchAll>True</MatchAll>
+      <ShouldTarget>Enemy</ShouldTarget>
+      <Priority>10</Priority>
+      <Action>
+        <Type>ActionSpell</Type>
+        <Name>Holy Wrath</Name>
+      </Action>
+      <CombatCountCondition>
+        <Condition>MoreThan</Condition>
+        <Value>1</Value>
+      </CombatCountCondition>
+    </Rule>
+    <Rule>
+      <Name>Word of Glory</Name>
+      <Script><![CDATA[]]></Script>
+      <MatchAll>True</MatchAll>
+      <ShouldTarget>Self</ShouldTarget>
+      <Priority>11</Priority>
+      <Action>
+        <Type>ActionSpell</Type>
+        <Name>Word of Glory</Name>
+      </Action>
+      <HealthPowerCondition>
+        <ConditionTarget>Player</ConditionTarget>
+        <ConditionType>HolyPower</ConditionType>
+        <Condition>MoreThan</Condition>
+        <Value>50</Value>
+      </HealthPowerCondition>
+    </Rule>
+    <Rule>
+      <Name>Guardian of Ancient Kings</Name>
+      <Script><![CDATA[]]></Script>
+      <MatchAll>True</MatchAll>
+      <ShouldTarget>Self</ShouldTarget>
+      <Priority>12</Priority>
+      <Action>
+        <Type>ActionSpell</Type>
+        <Name>Guardian of Ancient Kings</Name>
+      </Action>
+      <CombatCountCondition>
+        <Condition>MoreThan</Condition>
+        <Value>3</Value>
+      </CombatCountCondition>
+    </Rule>
+    <Rule>
+      <Name>Hammer of Wrath</Name>
+      <Script><![CDATA[]]></Script>
+      <MatchAll>True</MatchAll>
+      <ShouldTarget>Enemy</ShouldTarget>
+      <Priority>13</Priority>
+      <Action>
+        <Type>ActionSpell</Type>
+        <Name>Hammer of Wrath</Name>
+      </Action>
+      <HealthPowerCondition>
+        <ConditionTarget>Target</ConditionTarget>
+        <ConditionType>Health</ConditionType>
+        <Condition>LessThan</Condition>
+        <Value>20</Value>
+      </HealthPowerCondition>
+    </Rule>
+    <Rule>
+      <Name>Divine Favor</Name>
+      <Script><![CDATA[]]></Script>
+      <MatchAll>True</MatchAll>
+      <ShouldTarget>Self</ShouldTarget>
+      <Priority>14</Priority>
+      <Action>
+        <Type>ActionSpell</Type>
+        <Name>Divine Favor</Name>
+      </Action>
+      <CombatCountCondition>
+        <Condition>LessThan</Condition>
+        <Value>3</Value>
+      </CombatCountCondition>
+    </Rule>
+    <Rule>
+      <Name>Rebuke</Name>
+      <Script><![CDATA[]]></Script>
+      <MatchAll>True</MatchAll>
+      <ShouldTarget>Enemy</ShouldTarget>
+      <Priority>15</Priority>
+      <Action>
+        <Type>ActionKey</Type>
+        <Name>Rebuke</Name>
+        <Bar>6</Bar>
+        <Key>2</Key>
+        <Special>None</Special>
+        <Times>1</Times>
+      </Action>
+      <FunctionCondition>
+        <Condition>Is</Condition>
+        <ConditionTarget>Target</ConditionTarget>
+        <ConditionFunction>Casting</ConditionFunction>
+      </FunctionCondition>
+    </Rule>
+    <Rule>
+      <Name>Lay on Hands</Name>
+      <Script><![CDATA[]]></Script>
+      <MatchAll>True</MatchAll>
+      <ShouldTarget>None</ShouldTarget>
+      <Priority>16</Priority>
+      <Action>
+        <Type>ActionSpell</Type>
+        <Name>Lay on Hands</Name>
+      </Action>
+      <HealthPowerCondition>
+        <ConditionTarget>Player</ConditionTarget>
+        <ConditionType>Health</ConditionType>
+        <Condition>LessThan</Condition>
+        <Value>10</Value>
+      </HealthPowerCondition>
+    </Rule>
+  </CombatController>
+  <BuffController>
+    <Rule>
+      <Name>Blessing of Kings</Name>
+      <Script><![CDATA[]]></Script>
+      <MatchAll>True</MatchAll>
+      <ShouldTarget>None</ShouldTarget>
+      <Priority>0</Priority>
+      <Action>
+        <Type>ActionSpell</Type>
+        <Name>Blessing of Kings</Name>
+      </Action>
+      <TickerCondition>
+        <Condition>Is</Condition>
+        <Value>3600000</Value>
+      </TickerCondition>
+    </Rule>
+    <Rule>
+      <Name>Seal of Righteousness</Name>
+      <Script><![CDATA[]]></Script>
+      <MatchAll>True</MatchAll>
+      <ShouldTarget>Self</ShouldTarget>
+      <Priority>1</Priority>
+      <Action>
+        <Type>ActionSpell</Type>
+        <Name>Seal of Righteousness</Name>
+      </Action>
+      <TickerCondition>
+        <Condition>Is</Condition>
+        <Value>1800000</Value>
+      </TickerCondition>
+    </Rule>
+    <Rule>
+      <Name>Beacon of Light</Name>
+      <Script><![CDATA[]]></Script>
+      <MatchAll>True</MatchAll>
+      <ShouldTarget>Self</ShouldTarget>
+      <Priority>2</Priority>
+      <Action>
+        <Type>ActionSpell</Type>
+        <Name>Beacon of Light</Name>
+      </Action>
+      <TickerCondition>
+        <Condition>Is</Condition>
+        <Value>240000</Value>
+      </TickerCondition>
+    </Rule>
+  </BuffController>
+  <RestController>
+  </RestController>
+</Behavior>
