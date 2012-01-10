@@ -1,4 +1,4 @@
-create schema if not exists wow;
+ create schema if not exists wow;
 use wow;
 
 -- -----------------------------------------------------
