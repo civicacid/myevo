@@ -25,7 +25,9 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Xml;
+using System.Windows.Forms;
 using LazyLib.Wow;
+using LazyEvo.Plugins;
 
 #endregion
 
@@ -230,6 +232,34 @@ namespace LazyLib.Helpers
                 }
             }
         }
+        public static void SendLuaOverChat(String text)
+        {
+            if (String.IsNullOrWhiteSpace(text)) return;
+            if (IsChatboxOpened)
+            {
+                KeyLowHelper.PressKey(MicrosoftVirtualKeys.VK_LCONTROL);
+                KeyLowHelper.PressKey(MicrosoftVirtualKeys.A);
+                KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.A);
+                KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.VK_LCONTROL);
+                KeyLowHelper.PressKey(MicrosoftVirtualKeys.Delete);
+                KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.Delete);
+                Thread.Sleep(50);  // 修改成50，从200，想快点
+            }
+            else
+            {
+                KeyLowHelper.SendEnter();
+                Open.Reset();
+                while (!IsChatboxOpened && !Open.IsReady)
+                {
+                    Thread.Sleep(2);
+                }
+            }
+            Clipboard.SetText(text);
+            KeyLowHelper.SendCtrlV();
+            Thread.Sleep(100);
+            KeyLowHelper.SendEnter();
+            Thread.Sleep(100);  // 修改成100，从1000，想快点
+        }
 
         public static void ChatboxSendText(String text)
         {
@@ -241,7 +271,7 @@ namespace LazyLib.Helpers
                 KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.VK_LCONTROL);
                 KeyLowHelper.PressKey(MicrosoftVirtualKeys.Delete);
                 KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.Delete);
-                Thread.Sleep(200);
+                Thread.Sleep(50);  // 修改成50，从200，想快点
             }
             else
             {
@@ -253,7 +283,7 @@ namespace LazyLib.Helpers
                 }
             }
             SendTextNow(text);
-            Thread.Sleep(1000);
+            Thread.Sleep(100);  // 修改成100，从1000，想快点
             KeyLowHelper.SendEnter();
         }
 
@@ -264,7 +294,9 @@ namespace LazyLib.Helpers
 
         public static void SendTextNow(String text)
         {
+            //byte[] dd = Encoding.UTF8.GetBytes(text);
             foreach (char c in text)
+            //foreach (byte c in dd)
             {
                 KeyLowHelper.SendMessage(Memory.WindowHandle, KeyLowHelper.WmChar, (IntPtr)c, (IntPtr)0);
             }

@@ -21,7 +21,7 @@ using System.Threading;
 
 namespace LazyLib.Helpers.Mail
 {
-    internal class MailFrame
+    public class MailFrame
     {
         public static Boolean Open
         {
