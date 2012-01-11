@@ -1,0 +1,75 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/">
+<Script file="hello_world.lua"/>
+
+<!-- Frame to handle all core events -->
+<Frame name="hello_world_core">
+<Scripts>
+<OnLoad>
+hello_world_core:RegisterEvent("VARIABLES_LOADED");
+hello_world_core:RegisterEvent("AUCTION_HOUSE_SHOW");
+hello_world_core:RegisterEvent("AUCTION_HOUSE_CLOSED");
+hello_world_core:RegisterEvent("AUCTION_ITEM_LIST_UPDATE");
+hello_world_core:RegisterEvent("MAIL_SEND_SUCCESS");
+hello_world_core:RegisterEvent("BAG_UPDATE");
+hello_world_core:RegisterEvent("AUCTION_OWNED_LIST_UPDATE");
+hello_world_core:RegisterEvent("MAIL_CLOSED");
+hello_world_core:RegisterEvent("MAIL_SHOW");
+
+hello_world_core:RegisterEvent("AUCTION_MULTISELL_START");
+hello_world_core:RegisterEvent("AUCTION_MULTISELL_UPDATE");
+
+</OnLoad>
+<OnEvent>
+if (event == "VARIABLES_LOADED") then
+	hello_world_initialize();
+end
+if (event == "PLAYER_LEAVING_WORLD") then
+	event_quit();
+end
+
+if (event == "MAIL_SEND_SUCCESS") then
+	event_send_success();
+end
+
+if (event == "AUCTION_HOUSE_SHOW") then
+	ahopen();
+end
+if (event == "AUCTION_HOUSE_CLOSED") then
+	ahclose();
+end
+
+if (event == "AUCTION_ITEM_LIST_UPDATE") then
+	queryend();
+end
+
+if (event == "BAG_UPDATE") then
+	event_bag_update();
+end
+
+if (event == "AUCTION_OWNED_LIST_UPDATE") then
+	event_AH_LIST_UPDATE();
+	--print("AUCTION_OWNED_LIST_UPDATE");
+end
+
+if (event == "MAIL_CLOSED") then
+	event_mail_close();
+	--print("MAIL_CLOSED");
+end
+
+if (event == "MAIL_SHOW") then
+	event_mail_show();
+	--print("MAIL_SHOW");
+end
+
+if (event == "AUCTION_MULTISELL_START") then
+	event_ah_first();
+end
+if (event == "AUCTION_MULTISELL_UPDATE") then
+	event_ah_next();
+end
+
+
+</OnEvent>
+</Scripts>
+</Frame>
+</Ui>
