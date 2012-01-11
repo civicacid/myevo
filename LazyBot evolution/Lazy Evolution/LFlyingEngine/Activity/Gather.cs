@@ -112,7 +112,7 @@ namespace LazyEvo.LFlyingEngine.Activity
             }
             if (ApprochNode(harvest))
             {
-                Logging.Write("We approached the node");
+                Logging.Write("靠近[矿/草]点");
                 HitTheNode(harvest);
                 if (!CheckMobs(harvest))
                 {
@@ -125,7 +125,7 @@ namespace LazyEvo.LFlyingEngine.Activity
                 }
                 if (MoveHelper.NegativeValue(ObjectManager.MyPlayer.Location.Z - FindNode.GetLocation(harvest).Z) > 1)
                 {
-                    Logging.Write("Descending");
+                    Logging.Write("下降中......");
                     DescentToNode(harvest);
                 }
                 if (FlyingBlackList.IsBlacklisted(harvest))
@@ -148,7 +148,7 @@ namespace LazyEvo.LFlyingEngine.Activity
                 }
                 return true;
             }
-            ToldAboutNode.TellAbout("we never approached the node", harvest);
+            ToldAboutNode.TellAbout("过不去啊！！！", harvest);
             return false;
         }
 
