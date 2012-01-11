@@ -17,6 +17,7 @@ This file is part of LazyBot - Copyright (C) 2011 Arutha
 */
 using System;
 using System.Runtime.InteropServices;
+using System.Threading;
 
 namespace LazyLib.Helpers
 {
@@ -34,6 +35,9 @@ namespace LazyLib.Helpers
 
         [DllImport("user32.dll", CharSet = CharSet.Unicode)]
         public static extern int SendMessage(IntPtr hWnd, UInt32 Msg, IntPtr wParam, IntPtr lParam);
+
+        [DllImport("user32.dll")]
+        private static extern int SetForegroundWindow(IntPtr Hwnd);
 
         /// <summary>
         ///   Send
@@ -58,6 +62,23 @@ namespace LazyLib.Helpers
         {
             PostMessage(Memory.WindowHandle, PressKeyCode, (IntPtr)0x56, (IntPtr)0);
             PostMessage(Memory.WindowHandle, ReleaseKeyCode, (IntPtr)0x56, (IntPtr)0);
+        }
+    
+        public static void SendCtrlV()
+        {
+            SetForegroundWindow(Memory.WindowHandle);
+            Thread.Sleep(500);
+            PressKey(MicrosoftVirtualKeys.VK_LCONTROL);
+            PressKey(MicrosoftVirtualKeys.V);
+            ReleaseKey(MicrosoftVirtualKeys.V);
+            ReleaseKey(MicrosoftVirtualKeys.VK_LCONTROL);
+            Thread.Sleep(500);
+            PressKey(MicrosoftVirtualKeys.Back);
+            ReleaseKey(MicrosoftVirtualKeys.Back);
+            PressKey(MicrosoftVirtualKeys.Back);
+            ReleaseKey(MicrosoftVirtualKeys.Back);
+            //PressKey(MicrosoftVirtualKeys.Delete);
+            //ReleaseKey(MicrosoftVirtualKeys.Delete);
         }
     }
 }
