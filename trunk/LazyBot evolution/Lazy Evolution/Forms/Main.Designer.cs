@@ -373,7 +373,7 @@
             this.superTabControl5.ReorderTabsEnabled = true;
             this.superTabControl5.SelectedTabFont = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.superTabControl5.SelectedTabIndex = 0;
-            this.superTabControl5.Size = new System.Drawing.Size(435, 471);
+            this.superTabControl5.Size = new System.Drawing.Size(640, 471);
             this.superTabControl5.TabAlignment = DevComponents.DotNetBar.eTabStripAlignment.Bottom;
             this.superTabControl5.TabFont = new System.Drawing.Font("Segoe UI", 9F);
             this.superTabControl5.TabIndex = 72;
@@ -397,7 +397,7 @@
             this.superTabControlPanel5.Location = new System.Drawing.Point(0, 0);
             this.superTabControlPanel5.Margin = new System.Windows.Forms.Padding(4);
             this.superTabControlPanel5.Name = "superTabControlPanel5";
-            this.superTabControlPanel5.Size = new System.Drawing.Size(435, 443);
+            this.superTabControlPanel5.Size = new System.Drawing.Size(640, 443);
             this.superTabControlPanel5.TabIndex = 1;
             this.superTabControlPanel5.TabItem = this.superTabItem5;
             // 
@@ -423,7 +423,7 @@
             // 
             this.CBDebug.BackgroundStyle.Class = "";
             this.CBDebug.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.CBDebug.Font = new System.Drawing.Font("新宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.CBDebug.Font = new System.Drawing.Font("NSimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.CBDebug.Location = new System.Drawing.Point(348, 399);
             this.CBDebug.Margin = new System.Windows.Forms.Padding(4);
             this.CBDebug.Name = "CBDebug";
@@ -478,7 +478,7 @@
             // 
             this.CBTopMost.BackgroundStyle.Class = "";
             this.CBTopMost.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.CBTopMost.Font = new System.Drawing.Font("新宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.CBTopMost.Font = new System.Drawing.Font("NSimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.CBTopMost.Location = new System.Drawing.Point(348, 420);
             this.CBTopMost.Margin = new System.Windows.Forms.Padding(4);
             this.CBTopMost.Name = "CBTopMost";
@@ -582,7 +582,6 @@
             this.buttonX1.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.buttonX1.TabIndex = 76;
             this.buttonX1.Text = "buttonX1";
-            this.buttonX1.Visible = false;
             this.buttonX1.Click += new System.EventHandler(this.buttonX1_Click);
             // 
             // MainLBPlayerPower
@@ -797,7 +796,7 @@
             this.LogWin.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(223)))), ((int)(((byte)(234)))), ((int)(((byte)(246)))));
             this.LogWin.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.LogWin.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.LogWin.Font = new System.Drawing.Font("新宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.LogWin.Font = new System.Drawing.Font("NSimSun", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.LogWin.Location = new System.Drawing.Point(0, 0);
             this.LogWin.Margin = new System.Windows.Forms.Padding(4);
             this.LogWin.Name = "LogWin";
@@ -821,7 +820,7 @@
             this.superTabControlPanel31.Location = new System.Drawing.Point(0, 0);
             this.superTabControlPanel31.Margin = new System.Windows.Forms.Padding(4);
             this.superTabControlPanel31.Name = "superTabControlPanel31";
-            this.superTabControlPanel31.Size = new System.Drawing.Size(435, 443);
+            this.superTabControlPanel31.Size = new System.Drawing.Size(640, 443);
             this.superTabControlPanel31.TabIndex = 2;
             this.superTabControlPanel31.TabItem = this.superTabItem31;
             // 
@@ -1056,7 +1055,7 @@
             this.superTabControlPanel30.Location = new System.Drawing.Point(0, 0);
             this.superTabControlPanel30.Margin = new System.Windows.Forms.Padding(4);
             this.superTabControlPanel30.Name = "superTabControlPanel30";
-            this.superTabControlPanel30.Size = new System.Drawing.Size(435, 443);
+            this.superTabControlPanel30.Size = new System.Drawing.Size(640, 443);
             this.superTabControlPanel30.TabIndex = 0;
             this.superTabControlPanel30.TabItem = this.superTabItem30;
             // 
@@ -1180,7 +1179,7 @@
             // 
             this.labelX24.BackgroundStyle.Class = "";
             this.labelX24.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX24.Font = new System.Drawing.Font("新宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.labelX24.Font = new System.Drawing.Font("NSimSun", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.labelX24.Location = new System.Drawing.Point(4, 404);
             this.labelX24.Margin = new System.Windows.Forms.Padding(4);
             this.labelX24.Name = "labelX24";
@@ -1264,7 +1263,7 @@
             this.statusStrip1.Location = new System.Drawing.Point(186, 475);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 19, 0);
-            this.statusStrip1.Size = new System.Drawing.Size(435, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(640, 22);
             this.statusStrip1.TabIndex = 73;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -1278,14 +1277,13 @@
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(223)))), ((int)(((byte)(234)))), ((int)(((byte)(246)))));
-            this.ClientSize = new System.Drawing.Size(621, 497);
+            this.ClientSize = new System.Drawing.Size(826, 497);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.superTabControl5);
             this.Controls.Add(this.expandableSplitter1);
             this.Controls.Add(this.ControlSettings);
-            this.DoubleBuffered = true;
             this.EnableGlass = false;
-            this.Font = new System.Drawing.Font("新宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Font = new System.Drawing.Font("NSimSun", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;

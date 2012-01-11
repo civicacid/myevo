@@ -43,6 +43,7 @@ using LazyLib.LazyRadar.Drawer;
 using LazyLib.Wow;
 
 
+
 namespace LazyEvo.Forms
 {
     public partial class Main : Office2007Form
@@ -1123,13 +1124,38 @@ namespace LazyEvo.Forms
         private void buttonX1_Click(object sender, EventArgs e)
         {
             //Logging.Write(SpyFrame.GetInfoFromFrame());
-            SpyFrame.GetBagInfo();
+            //SpyFrame.GetBagInfo();
+            //OraData.OraConnect();
+            for (int iloop=1;iloop<100000;iloop++)
+            {
+                Logging.Write(string.Format("正在处理{0}........", Convert.ToString(iloop)));
+                Dictionary<string, string> hhh = WowHeadData.GetWowHeadItem(iloop);
+                if (hhh != null)
+                {
+                        string name = hhh["name"];
+                        string quality = hhh["quality"];
+                        if (!string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(quality))
+                        {
+                            string sql = string.Format("begin add_item('{0}','{1}','{2}'); end;",Convert.ToString(iloop),name,quality);
+                            Logging.Write(sql);
+                            if (!OraData.execSQLCmd(sql))
+                            {
+                                Logging.Write(string.Format("处理{0}时，出现错误",Convert.ToString(iloop)));
+                            }
+                        }
+                }
+            }
         }
 
         private void buttonX2_Click(object sender, EventArgs e)
         {
-            var form = new SpyForm();
-            form.ShowDialog();
+            
+            testForm myform;
+            myform = new testForm();
+            myform.ShowDialog();
+            myform = null;
+            //Dictionary<string,int> hhh = SpyFrame.lua_GetBagInfo();
+            //Logging.Write("fff");
         }
 
         SpyWOW nn = new SpyWOW();

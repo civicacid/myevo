@@ -283,7 +283,10 @@ namespace LazyEvo.Forms
             LazySettings.StartMin = txtStartMin.Text;
             LazySettings.StopHour = txtEndHour.Text;
             LazySettings.StopMin = txtEndMin.Text;
-            LazySettings.FightFile = txtFight.SelectedItem.ToString();
+            if (txtFight.SelectedItem == null)
+            { LazySettings.FightFile = ""; }
+            else
+            { LazySettings.FightFile = txtFight.SelectedItem.ToString(); }
             LazySettings.MapFile = txtMap.Text;
 
             //Save Setting
