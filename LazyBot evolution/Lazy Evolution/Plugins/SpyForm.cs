@@ -20,13 +20,7 @@ namespace LazyEvo.Plugins
 
         private void SpyForm_Load(object sender, EventArgs e)
         {
-            WOWAll.Open();
-            reload_data();
-        }
-
-        private void SpyForm_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            WOWAll.Close();
+            //reload_data();
         }
 
         private void reload_data()
@@ -360,6 +354,11 @@ namespace LazyEvo.Plugins
         private void comboChaIdx_SelectedIndexChanged(object sender, EventArgs e)
         {
             comboChaIdx.BackColor = System.Drawing.Color.DarkSeaGreen;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            //SpyFrame.lua_GetBagInfo
         }
 
     }

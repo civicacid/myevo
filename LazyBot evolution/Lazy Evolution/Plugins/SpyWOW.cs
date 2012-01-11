@@ -8,6 +8,7 @@ using System.Threading;
 using System.Windows.Forms;
 using System.Data.SQLite;
 using System.Data;
+using System.Runtime.InteropServices;
 
 using LazyLib;
 using LazyLib.Helpers;
@@ -18,6 +19,7 @@ using LazyEvo.PVEBehavior.Behavior;
 using LazyEvo.LFlyingEngine.Helpers;
 using LazyEvo.Public;
 using LazyEvo.Forms;
+using LazyLib.Helpers.Mail;
 
 namespace LazyEvo.Plugins
 {
@@ -132,20 +134,19 @@ namespace LazyEvo.Plugins
                         ps = ProcStatus.Start;
                     }
 
-                    // 时间到了，Kill Processwanjia
+                    // 时间到了，Kill Process
                     if (iHour == StopHour && iMin == StopMin && ps == ProcStatus.Working)
                     {
-                        Logging.Write("时间到，设置关闭标记");
+                        Logging.Write("时间到，设置关闭标志");
                         shutdown = true;
                     }
 
                     if (shutdown)
                     {
-                        Logging.Write("关闭WOW。。。 【" + LazyEvo.Forms.Helpers.LazyForms.MainForm.Text.ToLower()+"】");
                         if (LazyEvo.Forms.Helpers.LazyForms.MainForm.Text.ToLower().Equals("navigating"))
                         {
-                            Logging.Write("检测到关闭标志，关闭WOW");
                             LazyHelpers.StopAll("时间到了，Kill Process");
+                            Thread.Sleep(1000);
                             if (WOWProc != null)
                             {
                                 try
@@ -158,6 +159,7 @@ namespace LazyEvo.Plugins
                             shutdown = false;
                         }
                     }
+
                 }
             }
         }
@@ -332,113 +334,62 @@ namespace LazyEvo.Plugins
                 Process process = new Process();
                 process.StartInfo.FileName = exeFilePath;
                 process.Start();
+                process.WaitForInputIdle();
                 return true;
             }
         }
 
         public void QuitWOW()
         {
-            KeyHelper.ChatboxSendText("/exit");
+            KeyHelper.SendLuaOverChat("/exit");
         }
     }
 
+    // WOW 数据相关
     public static class WOWAll
     {
+        //public static DataTable 
+        [DllImport("user32.dll")]
+        private static extern int SetForegroundWindow(IntPtr Hwnd);
+
+        public static void SetForGround()
+        {
+            IntPtr hwnd = Memory.WindowHandle;
+            if (hwnd.ToInt32() > 0)
+            {
+                SetForegroundWindow(hwnd);
+            }
+        }
+        
         public static List<WoWAccount> WoWAccountList;
-        public static bool DBError = false;
-
-        private static readonly SQLiteConnection Db = new SQLiteConnection("Data Source=d:\\account.db3");
-        public static bool IsOpen { get; private set; }
-
-        public static void Open()
-        {
-            IsOpen = true;
-            Db.Open();
-            CreateTable();
-        }
-
-        public static void Close()
-        {
-            IsOpen = false;
-            Db.Close();
-        }
 
         private static void Query(string sql)
         {
-            SQLiteCommand query = Db.CreateCommand();
-            query.CommandText = sql;
-            query.ExecuteNonQuery();
-        }
-
-        private static void CreateTable()
-        {
-            Query("CREATE TABLE IF NOT EXISTS wowpath (path VARCHAR(255) UNIQUE);");
-            Query("CREATE TABLE IF NOT EXISTS wowaccount (acc_name VARCHAR(255) UNIQUE, acc_pass VARCHAR(255), acc_list VARCHAR(255));");
-            Query("CREATE TABLE IF NOT EXISTS wowchar (acc_name VARCHAR(255), char_name varchar(200) unique, server varchar(200), char_idx integer, fight varchar(200), mappath varchar(200));");
-        }
-
-        private static DataRow QueryFetchRow(string sql)
-        {
-            SQLiteCommand query = Db.CreateCommand();
-            query.CommandText = sql;
-
-            SQLiteDataAdapter da = new SQLiteDataAdapter(query);
-            DataTable dt = new DataTable();
             try
             {
-                dt.BeginLoadData();
-                da.Fill(dt);
-                dt.EndLoadData();
+                OraData.execSQLCmd(sql);
             }
-            catch (Exception ex) { Logging.Write("Exception in QueryFetchRow: " + ex); }
-            finally { da.Dispose(); }
-            return dt.Rows.Cast<DataRow>().FirstOrDefault();
-
-            /*
-             * example usage:
-            DataRow data = new DataRow();
-            row = QueryFetchRow("SELECT * FROM items WHERE id = 1");
-            Logging.Write("row: " + row["item_id"].ToString() + " " + row["item_name"].ToString() + "\n");
-            */
+            catch (Exception ex)
+            {
+                Logging.Write(string.Format("执行SQL【{0}】时发生错误：",sql) + ex.ToString());
+            }
         }
 
         private static DataTable GetTableData(string Table)
         {
-            SQLiteCommand query = Db.CreateCommand();
-            query.CommandText = "select * from " + Table;
-
-            SQLiteDataAdapter da = new SQLiteDataAdapter(query);
             DataTable dt = new DataTable();
-            try
-            {
-                dt.BeginLoadData();
-                da.Fill(dt);
-                dt.EndLoadData();
+            try{
+                dt = OraData.execSQL("select * from " + Table);
+                return dt;
+            }catch(Exception ex){
+                Logging.Write("获取表数据时发生错误：" + ex.ToString());
+                return dt;
             }
-            catch (Exception ex) { Logging.Write("Exception in GetTableData: " + ex); }
-            finally { da.Dispose(); }
-
-            return dt;
         }
 
-        public static string WOWPath;
         public static List<WoWAccount> AllWOWAccount;
         public static void LoadData()
         {
-            // 读取WOW Path
-            try
-            {
-                DataTable PathData = GetTableData("wowpath");
-                foreach (DataRow PathRow in PathData.Rows){
-                    WOWPath = PathRow["path"].ToString();
-                }
-                
-            }
-            catch
-            {
-                WOWPath = null;
-            }
-            
             // 读取Account
             try
             {
@@ -462,10 +413,8 @@ namespace LazyEvo.Plugins
                         SingleWOWChar.CharName = DRWOWChar["char_name"].ToString();
                         SingleWOWChar.Server = DRWOWChar["server"].ToString();
                         SingleWOWChar.CharIndex = Convert.ToInt32(DRWOWChar["char_idx"].ToString());
-                        SingleWOWChar.Fight = DRWOWChar["fight"].ToString();
-                        SingleWOWChar.MapPath = DRWOWChar["mappath"].ToString();
 
-                        ListWoWC.Add(SingleWOWChar);
+                        //ListWoWC.Add(SingleWOWChar);
                     }
                     SingleWOWAccount.Char = ListWoWC;
                     ListWoWA.Add(SingleWOWAccount);
@@ -476,11 +425,6 @@ namespace LazyEvo.Plugins
             catch
             { AllWOWAccount = null; }
 
-        }
-
-        public static void UpdateWOWPath(string WPath)
-        {
-            Query(String.Format("update wowpath set path = '{0}'", WPath));
         }
 
         public static void UpdateWOWAccount(String ChangeAccName, String ChangeAccPass, String ChangeAccList)
@@ -547,52 +491,546 @@ namespace LazyEvo.Plugins
 
     public class SpyFrame
     {
+        private const string LUA_EXECTING_STRING = "Begin";
+        private const string LUA_SUCCESS_STRING = "Success";
+        private const char SPLIT_CHAR = '$';
+
         // 获取消息框文字
         public static string GetInfoFromFrame()
         {
-            Frame InfoFrame = InterfaceHelper.GetFrameByName("frmTest");
-            string info = InfoFrame.GetChildObject("frmTestText").GetText;
-            return info;
-        }
-
-        // 获知背包物品内容
-        public static bool GetBagInfo()
-        {
-            // 调用lua，收集背包物品信息
-            KeyHelper.ChatboxSendText("/script ScanBag()");
-            while (GetInfoFromFrame() == "正在执行")
+            while (InterfaceHelper.GetFrames.Count == 0)
             {
                 Thread.Sleep(100);
             }
+            Frame InfoFrame = InterfaceHelper.GetFrameByName("frmTest");
+            if (InfoFrame == null)
+            {
+                Logging.Write("没有启动插件？？？");
+                return null;
+            }
+            string info = InfoFrame.GetChildObject("frmTestText").GetInfoText;
+            return info;
+        }
 
-            // 调用lua，发送数据
-            Dictionary<string, int> BagInfo = new Dictionary<string, int>();
-            int iCount = 1;
+        // 获取返回值内容
+        public static string GetFrameRtv()
+        {
+            const string TAG_NEXT_PAGE = "【MORE】";
+
+            string rtv, resultString;
+            int count;
+
+            
+            // 发送取结果的命令
+            KeyHelper.SendLuaOverChat("/script SendResult(1)");
+            while (GetInfoFromFrame() == LUA_EXECTING_STRING)
+            {
+                Thread.Sleep(10);
+            }
+
+            // 取得返回值（注意排错）
+            resultString = GetInfoFromFrame();
+            if (resultString == null) return null;
+            if (resultString.IndexOf("错误") > 0)
+            {
+                Logging.Write("获取信息错误: " + resultString);
+                return null;
+            }
+
+            // 检查其中是否有下一页的标记，没有就直接返回
+            if (resultString.IndexOf(TAG_NEXT_PAGE) == -1)
+            {
+                rtv = resultString;
+                return rtv;
+            }
+
+            // 有，就循环读，直到没有下一页标记，然后拼结果
+            rtv = resultString;
+            count = 2;
             while (true)
             {
-                KeyHelper.ChatboxSendText("/script ScanBagShow(" + Convert.ToString(iCount) + ")");
-                while (GetInfoFromFrame() == "正在执行")
+                KeyHelper.SendLuaOverChat("/script SendResult(" + Convert.ToString(count) + ")");
+                while (GetInfoFromFrame() == LUA_EXECTING_STRING)
                 {
-                    Thread.Sleep(100);
+                    Thread.Sleep(10);
+                } 
+                resultString = GetInfoFromFrame();
+                if (resultString.IndexOf("错误") > 0)
+                {
+                    Logging.Write("获取信息错误: " + resultString);
+                    return null;
                 }
+                if (resultString.IndexOf(TAG_NEXT_PAGE) > 0)
+                {
+                    break;
+                }
+
+                rtv = rtv + resultString;
+                count++;
+            }
+            rtv = rtv + resultString.Substring(TAG_NEXT_PAGE.Length + 1);
+            return rtv;
+        }
+
+        // 获知背包物品内容
+        public static Dictionary<string, int> lua_GetBagInfo()
+        {
+            Dictionary<string, int> bag;
+            int MaxReTryCount = 5;
+            int ReTryCount = 0;
+
+            // 调用lua，收集背包物品信息
+            KeyHelper.SendLuaOverChat("/script ScanBag()");
+            ReTryCount = 0;
+            bag = null;
+            while (GetInfoFromFrame() == LUA_EXECTING_STRING)
+            {
+                Thread.Sleep(100);
+                ReTryCount++;
+                if (ReTryCount > MaxReTryCount)
+                {
+                    Logging.Write("[GetBagInfo]超过Retry次数");
+                    return bag;
+                }
+            }
+            if (GetInfoFromFrame() != null)
+            {
                 if (GetInfoFromFrame().IndexOf("错误") > 0)
                 {
                     Logging.Write("获取信息错误");
-                    return false;
-                }
-
-                string info = GetInfoFromFrame();
-                string[] split = info.Split('#');
-                BagInfo.Add(split[1], Convert.ToInt16(split[2]));
-                Logging.Write(split[1] + split[2]);
-                iCount++;
-                if (Convert.ToInt16(split[0]) == Convert.ToInt16(split[3]))
-                {
-                    return true;
+                    return bag;
                 }
             }
-            
 
+            string rtv = GetFrameRtv();
+            if (rtv != null)
+            {
+                bag = new Dictionary<string, int>();
+                string[] split = rtv.Split(SPLIT_CHAR);
+                for (int iLoop = 0; iLoop < split.Length - 1; iLoop++)
+                {
+                    if (iLoop % 2 == 0)
+                    {
+                        bag.Add(split[iLoop], Convert.ToInt16(split[iLoop+1]));
+                    }
+                }
+            }
+            return bag;
+        }
+
+        // 获知邮箱物品内容
+        public static Dictionary<string, int> lua_GetInboxInfo()
+        {
+            Dictionary<string, int> inbox;
+            int MaxReTryCount = 5;
+            int ReTryCount = 0;
+
+            // 调用lua，收集背包物品信息
+            KeyHelper.SendLuaOverChat("/script ScanInbox()");
+            ReTryCount = 0;
+            inbox = null;
+            while (GetInfoFromFrame() == LUA_EXECTING_STRING)
+            {
+                Thread.Sleep(100);
+                ReTryCount++;
+                if (ReTryCount > MaxReTryCount)
+                {
+                    Logging.Write("[GetBagInfo]超过Retry次数");
+                    return inbox;
+                }
+            }
+            if (GetInfoFromFrame() != null)
+            {
+                if (GetInfoFromFrame().IndexOf("错误") > 0)
+                {
+                    Logging.Write("获取信息错误");
+                    return inbox;
+                }
+            }
+
+            string rtv = GetFrameRtv();
+            if (rtv != null)
+            {
+                inbox = new Dictionary<string, int>();
+                string[] split = rtv.Split(SPLIT_CHAR);
+                for (int iLoop = 0; iLoop < split.Length - 1; iLoop++)
+                {
+                    if (iLoop % 2 == 0)
+                    {
+                        inbox.Add(split[iLoop], Convert.ToInt16(split[iLoop + 1]));
+                    }
+                }
+            }
+            return inbox;
+        }
+
+        // 给人发邮件
+        public static bool lua_SendItemByName(string receiver , string itemname)
+        {
+            if (!MailFrame.Open)
+            {
+                Logging.Write("邮箱没开！！！");
+                return false;
+            }
+            MailFrame.ClickInboxTab();
+            Thread.Sleep(500);
+            MailFrame.ClickSendMailTab();
+            Thread.Sleep(500); 
+            while (true)
+            {
+                if (MailFrame.CurrentTabIsSendMail) break;
+                MailFrame.ClickSendMailTab();
+                Thread.Sleep(500); 
+            }
+            Thread.Sleep(500);
+            KeyLowHelper.PressKey(MicrosoftVirtualKeys.Escape);
+            KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.Escape);
+            Thread.Sleep(500);
+            return ExecSimpleLua(string.Format("/script SendItemByName(\"{0}\",\"{1}\")", receiver, itemname));
+        }
+        
+        // 获取邮件
+        public static bool lua_GetMAILAsItem(string itemname)
+        {
+            if (!MailFrame.Open)
+            {
+                Logging.Write("邮箱没开！！！");
+                return false;
+            }
+            MailFrame.ClickInboxTab();
+            Thread.Sleep(500);
+            while (true)
+            {
+                if (MailFrame.CurrentTabIsInbox) break;
+                MailFrame.ClickInboxTab();
+                Thread.Sleep(500);
+            } 
+            return ExecSimpleLua(string.Format("/script GetMAILAsItem(\"{0}\")", itemname));
+        }
+
+        // 重新整理背包-整合背包，需要插件辅助
+        public static void lua_RepackBag()
+        {
+            KeyHelper.SendLuaOverChat("/script ArkInventory.Restack()");
+        }
+
+        // 搜索AH
+        public static Dictionary<string, int> lua_AHSearchDoor(string itemname)
+        {
+            Dictionary<string, int> result;
+            int MaxReTryCount = 20;
+            int ReTryCount = 0;
+
+            // 调用lua，收集背包物品信息
+            KeyHelper.SendLuaOverChat(string.Format("/script AHSearchDoor(\"{0}\",0)",itemname));
+            ReTryCount = 0;
+            result = null;
+            while (GetInfoFromFrame() == LUA_EXECTING_STRING)
+            {
+                Thread.Sleep(100);
+                ReTryCount++;
+                if (ReTryCount > MaxReTryCount)
+                {
+                    Logging.Write("[GetBagInfo]超过Retry次数");
+                    return result;
+                }
+            }
+            if (GetInfoFromFrame().IndexOf("错误") > 0)
+            {
+                Logging.Write("获取信息错误");
+                return result;
+            }
+
+            string rtv = GetFrameRtv();
+            if (rtv != null)
+            {
+                result = new Dictionary<string, int>();
+                string[] split = rtv.Split('#');
+                result.Add(split[0], Convert.ToInt16(split[1]));
+            }
+            return result;
+        }
+
+        // 运行没有返回值的LUA命令
+        public static bool ExecSimpleLua(string LuaCmd)
+        {
+            // 发送取结果的命令
+            KeyHelper.SendLuaOverChat(LuaCmd);
+            while (GetInfoFromFrame() == LUA_EXECTING_STRING)
+            {
+                Thread.Sleep(10);
+            }
+
+            // 取得返回值（注意排错）
+            string resultString = GetInfoFromFrame();
+            if (GetInfoFromFrame().IndexOf("错误") > 0)
+            {
+                Logging.Write("获取信息错误: " + resultString);
+                return false;
+            }
+
+            return true;
+        }
+
+        // 获取frmData显示值，分解后得到指定物品在背包和邮箱中的数量
+        public static bool lua_SetDispCountItemName(string ItemName)
+        {
+            return ExecSimpleLua(string.Format("/script SetDisplayItemName({0})", ItemName));
+        }
+        public static Dictionary<string, int> GetDispCountItemCount()
+        {
+            Dictionary<string, int> ItemCount = new Dictionary<string, int>();
+            ItemCount.Add("BAG",0);
+            ItemCount.Add("MAIL", 0);
+            while (InterfaceHelper.GetFrames.Count == 0)
+            {
+                Thread.Sleep(100);
+            }
+            Frame InfoFrame = InterfaceHelper.GetFrameByName("frmData");
+            if (InfoFrame == null) return ItemCount;
+            string info = InfoFrame.GetChildObject("frmDataText").GetInfoText;
+            if (string.IsNullOrWhiteSpace(info)) return ItemCount;
+            string[] split = info.Split(SPLIT_CHAR);
+            ItemCount["BAG"] = Convert.ToInt16(split[0]);        //背包
+            ItemCount["MAIL"] = Convert.ToInt16(split[1]);        //邮件
+            return ItemCount;
+        }
+    }
+
+    public static class SpyTradeSkill
+    {
+        //是不是正在分解
+        public static bool IsProspecting()
+        {
+            return (ObjectManager.MyPlayer.CastingId == 31252);
+        }
+
+        public static bool SendMain(Dictionary<string, string> MailList, DBLogger logger)
+        {
+            if (MailList.Count == 0)
+            {
+                logger.Add("邮件列表为空");
+                return true;
+            }
+            Dictionary<string, int> bag = SpyFrame.lua_GetBagInfo();
+            if (bag.Count == 0)
+            {
+                logger.Add("背包内容为空");
+                return true;
+            }
+
+            logger.Add("整理背包");
+            SpyFrame.lua_RepackBag();
+            Thread.Sleep(5000);
+
+            logger.Add("开始发送邮件");
+            foreach (KeyValuePair<string, string> mail in MailList)
+            {
+                logger.Add(string.Format("开始发送{0}到{1}",mail.Key,mail.Value));
+                if (bag.ContainsKey(mail.Key))
+                {
+                    if (!SpyFrame.lua_SendItemByName(mail.Value, mail.Key))
+                    {
+                        logger.Add(string.Format("发{0}给{1}，失败了", mail.Value, mail.Key));
+                        return false;
+                    }
+                }
+                else
+                {
+                    logger.Add(string.Format("背包中没有{0}", mail.Key));
+                }
+            }
+            return true;
+        }
+    }
+
+    public class DBLogger
+    {
+        private List<string> logger;
+        private string toAppend;
+        public DBLogger(string AppendMessage)
+        {
+            logger = new List<string>();
+            toAppend = AppendMessage;
+        }
+
+        public void Add(string msg)
+        {
+            logger.Add("[" + DateTime.Now.ToString("YYYY-MM-DD HH:mm:ss") + "]<" + toAppend + ">" + msg);
+        }
+
+        public void output()
+        {
+            foreach (string msg in logger)
+            {
+                Logging.Write(msg);
+            }
+        }
+
+        public void clear()
+        {
+            logger.Clear();
+        }
+
+        public void UpdateDB()
+        {
+            // 启动一个线程，更新数据库的日志信息
+            clear();
+        }
+    }
+
+    // 分解矿+邮寄
+    public static class SpyMineAndMail
+    {
+        public static List<string> Mines;                                 //待分解清单
+        public static Dictionary<string, string> MailList;                //发货列表
+        public static DBLogger logger = new DBLogger("拿取邮件+分矿+邮寄");
+
+        public static void GoGo()
+        {
+            DoAction();
+            logger.output();
+        }
+
+        public static void DoAction()
+        {
+            int CountJump = 0;
+            foreach (string DoingMine in Mines)
+            {
+                if (!SpyFrame.lua_SetDispCountItemName(DoingMine))
+                {
+                    logger.Add("在执行SetDispCountItemName时出错，矿：" + DoingMine);
+                    return;
+                }
+                Dictionary<string, int> MineCount = SpyFrame.GetDispCountItemCount();
+                /** 检查背包里面有没有矿，有就炸，没有再查邮箱，从邮箱拿，直到没有矿 **/
+                if (MineCount["BAG"] == 0 && MineCount["MAIL"] == 0)
+                {
+                    logger.Add("包里面没有(或者是都炸完了)  " + DoingMine);
+                    continue;
+                }
+                while (MineCount["BAG"] > 0 || MineCount["MAIL"] > 0)
+                {
+                    // 邮箱里面有矿，取矿出来
+                    if (MineCount["MAIL"] > 0)
+                    {
+                        logger.Add("从邮箱里面拿  " + DoingMine);
+                        if (!SpyFrame.lua_GetMAILAsItem(DoingMine))
+                        {
+                            logger.Add("从邮箱里面拿  " + DoingMine + " 失败");
+                            return;
+                        }
+                    }
+
+                    MineCount = SpyFrame.GetDispCountItemCount();
+
+                    // 分解矿，直到包空间小于1和背包里面没有矿
+                    while (MineCount["BAG"] > 0 && Inventory.FreeBagSlots <= 1)
+                    {
+                        CountJump++;
+                        if (CountJump == 10)
+                        {
+                            // jump一下，防止AFK
+                            CountJump = 0;
+                            logger.Add("jump一下，防止AFK");
+                            MoveHelper.Jump();
+                            Thread.Sleep(5000);
+                        }
+                        // 分解石头 , 分解宏要放在4这个上面
+                        logger.Add("炸矿");
+                        KeyLowHelper.PressKey(MicrosoftVirtualKeys.key4);
+                        KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.key4);
+                        Thread.Sleep(500);
+                        while (ObjectManager.MyPlayer.IsCasting)
+                        {
+                            Thread.Sleep(100);
+                        }
+                        // 等待2秒，取分解的东西到背包
+                        Thread.Sleep(2000);
+                        MineCount = SpyFrame.GetDispCountItemCount();
+                    }
+
+                    // 当包里面还有矿的时候，可能是背包满了，这时候启动邮寄
+                    if (Inventory.FreeBagSlots <= 1)
+                    {
+                        // 发邮件
+                        logger.Add("发邮件");
+                        if (!SpyTradeSkill.SendMain(MailList, logger)) return;
+                    }
+                    MineCount = SpyFrame.GetDispCountItemCount();
+
+                    // 邮寄完，背包还是满，就退出
+                    if (Inventory.FreeBagSlots <= 1)
+                    {
+                        logger.Add("邮寄完，背包还是满");
+                        return;
+                    }
+                }
+            }
+            return;
+        }
+    }
+
+    public static class SpyAH
+    {
+        public static DBLogger logger = new DBLogger("拿取邮件+找到拍卖师+AH上货");
+        public static DataTable Items = new DataTable();
+
+        public static Location LocMailbox = new Location(1, 1, 1);
+        public static Location LocAHer = new Location(1, 1, 1);
+
+        public SpyAH()
+        {
+            //Items.PrimaryKey
+            Items.Columns.Add("item_id", System.Type.GetType("System.String"));
+            Items.Columns.Add("item_name", System.Type.GetType("System.String"));
+            Items.Columns.Add("item_minprice", System.Type.GetType("System.Int32"));
+            Items.Columns.Add("item_maxprice", System.Type.GetType("System.Int32"));
+            Items.Columns.Add("item_count", System.Type.GetType("System.Int16"));
+            Items.Columns.Add("item_stacksize", System.Type.GetType("System.Int16"));
+            DataColumn[] pk = new DataColumn[1];
+            pk[0] = Items.Columns["item_id"];
+            Items.PrimaryKey = pk;
+            //DataRow dr = dt.NewRow();
+            //dr["column0"] = "AX";
+            //dr["column1"] = true;
+        }
+
+        public static void gogo()
+        {
+            DoAction();
+            logger.output();
+        }
+
+        public static void DoAction()
+        {
+            // 跑到邮箱点
+            logger.Add("跑到邮箱点");
+            if (!MoveHelper.MoveToLoc(LocMailbox, 5))
+            {
+                logger.Add("跑到邮箱点出错");
+                return;
+            }
+
+            // 打开邮箱
+            logger.Add("打开邮箱");
+            if (!MailManager.TargetMailBox())
+            {
+                logger.Add("打开邮箱出错");
+                return;
+            }
+            // 拿邮件
+
+            // 跑到拍卖师身边
+            // 找到拍卖师，打开拍卖界面
+            // 上货
+        }
+
+        public static void AHSell()
+        {
+            // 扫描最低价格
+            // 计算拍卖列表
+            // 上货
         }
     }
 }
