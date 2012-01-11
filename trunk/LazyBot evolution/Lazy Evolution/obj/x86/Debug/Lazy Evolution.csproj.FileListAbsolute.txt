@@ -1,1 +1,0 @@
-C:\Develop\SVN\myevo\LazyBot evolution\Lazy Evolution\bin\Debug\Lazy Evolution.exe.config
