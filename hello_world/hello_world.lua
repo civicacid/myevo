@@ -47,7 +47,7 @@ function hello_world_initialize()
     frmTest:SetBackdropBorderColor(0, 0, 0, 1)  -- 边框材质颜色 (Red, Green, Black, Alpha) 各参数的范围都是 0-1
     frmTest:SetPoint("TOPLEFT", WorldFrame, "TOPLEFT", 0, 0)
     frmTest.Text = frmTest:CreateFontString("frmTestText", "OVERLAY") -- 为Frame创建一个新的文字层
-    frmTest.Text:SetFont("fonts\\zyhei.ttf", 50, "OUTLINE")
+    frmTest.Text:SetFont("fonts\\zyhei.ttf", 1, "OUTLINE")
     frmTest.Text:SetPoint("CENTER", frmTest, "CENTER", 0, 0)
     frmTest:Hide()
 
@@ -57,10 +57,10 @@ function hello_world_initialize()
     frmData:SetHeight(64) -- 设置高度
     frmData:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 0, 0)
     frmDataText = frmData:CreateFontString("frmDataText", "OVERLAY") -- 为Frame创建一个新的文字层
-    frmDataText:SetFont("fonts\\zyhei.ttf", 64, "OUTLINE")
+    frmDataText:SetFont("fonts\\zyhei.ttf", 1, "OUTLINE")
     frmDataText:SetPoint("TOP", frmData, "BOTTOM", 0, 0)
     --frmDataText:SetText("Hell World")
-    frmData:Hide()
+    --frmData:Hide()
     frmData:SetScript("OnUpdate", DispItemCount)
 
 end
@@ -917,7 +917,7 @@ function ScanBag()
                 if (iFound == 0) then
                     iCount = iCount + 1
                     gItemName[iCount] = (select(1,GetItemInfo(oItem)))
-                    gItemCount[iCount] = getXXcount(gItemName[iCount])
+                    gItemCount[iCount] = getXXcountInBag(gItemName[iCount])
                 end
             end
         end
@@ -1097,7 +1097,7 @@ function getXXcountInMail(asItemName)
         for liLoop = 1, liInboxCount do
             for iLoopNext=1, 12 do
                 lstrItemName = select(1, GetInboxItem(liLoop, iLoopNext))
-                if (lstrItemName) then
+                if (lstrItemName) and lstrItemName == asItemName then
                     liMailCount = liMailCount + (select(3, GetInboxItem(liLoop, iLoopNext)))
                 end
             end
