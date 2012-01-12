@@ -491,7 +491,7 @@ namespace LazyEvo.Plugins
 
     public class SpyFrame
     {
-        private const string LUA_EXECTING_STRING = "Begin";
+        private const string LUA_RUNNING_STRING = "Begin";
         private const string LUA_SUCCESS_STRING = "Success";
         private const char SPLIT_CHAR = '$';
 
@@ -523,7 +523,7 @@ namespace LazyEvo.Plugins
             
             // 发送取结果的命令
             KeyHelper.SendLuaOverChat("/script SendResult(1)");
-            while (GetInfoFromFrame() == LUA_EXECTING_STRING)
+            while (GetInfoFromFrame() == LUA_RUNNING_STRING)
             {
                 Thread.Sleep(10);
             }
@@ -550,7 +550,7 @@ namespace LazyEvo.Plugins
             while (true)
             {
                 KeyHelper.SendLuaOverChat("/script SendResult(" + Convert.ToString(count) + ")");
-                while (GetInfoFromFrame() == LUA_EXECTING_STRING)
+                while (GetInfoFromFrame() == LUA_RUNNING_STRING)
                 {
                     Thread.Sleep(10);
                 } 
@@ -583,7 +583,7 @@ namespace LazyEvo.Plugins
             KeyHelper.SendLuaOverChat("/script ScanBag()");
             ReTryCount = 0;
             bag = null;
-            while (GetInfoFromFrame() == LUA_EXECTING_STRING)
+            while (GetInfoFromFrame() == LUA_RUNNING_STRING)
             {
                 Thread.Sleep(100);
                 ReTryCount++;
@@ -629,7 +629,7 @@ namespace LazyEvo.Plugins
             KeyHelper.SendLuaOverChat("/script ScanInbox()");
             ReTryCount = 0;
             inbox = null;
-            while (GetInfoFromFrame() == LUA_EXECTING_STRING)
+            while (GetInfoFromFrame() == LUA_RUNNING_STRING)
             {
                 Thread.Sleep(100);
                 ReTryCount++;
@@ -690,7 +690,7 @@ namespace LazyEvo.Plugins
         }
         
         // 获取邮件
-        public static bool lua_GetMAILAsItem(string itemname)
+        public static bool lua_GetMAILAsItem(string ItemName, int ItemCount)
         {
             if (!MailFrame.Open)
             {
@@ -704,8 +704,8 @@ namespace LazyEvo.Plugins
                 if (MailFrame.CurrentTabIsInbox) break;
                 MailFrame.ClickInboxTab();
                 Thread.Sleep(500);
-            } 
-            return ExecSimpleLua(string.Format("/script GetMAILAsItem(\"{0}\")", itemname));
+            }
+            return ExecSimpleLua(string.Format("/script GetMAILAsItem(\"{0}\",{1})", ItemName, ItemCount));
         }
 
         // 重新整理背包-整合背包，需要插件辅助
@@ -715,17 +715,17 @@ namespace LazyEvo.Plugins
         }
 
         // 搜索AH
-        public static Dictionary<string, int> lua_AHSearchDoor(string itemname)
+        public static Dictionary<string, string> lua_AHSearchDoor(string itemname)
         {
-            Dictionary<string, int> result;
+            Dictionary<string, string> result;
             int MaxReTryCount = 20;
             int ReTryCount = 0;
 
             // 调用lua，收集背包物品信息
-            KeyHelper.SendLuaOverChat(string.Format("/script AHSearchDoor(\"{0}\",0)",itemname));
+            KeyHelper.SendLuaOverChat(string.Format("/script AHSearchDoor(\"{0}\")",itemname));
             ReTryCount = 0;
             result = null;
-            while (GetInfoFromFrame() == LUA_EXECTING_STRING)
+            while (GetInfoFromFrame() == LUA_RUNNING_STRING)
             {
                 Thread.Sleep(100);
                 ReTryCount++;
@@ -744,11 +744,39 @@ namespace LazyEvo.Plugins
             string rtv = GetFrameRtv();
             if (rtv != null)
             {
-                result = new Dictionary<string, int>();
+                result = new Dictionary<string, string>();
                 string[] split = rtv.Split('#');
-                result.Add(split[0], Convert.ToInt16(split[1]));
+                result.Add("SELLER", split[0]);
+                result.Add("PRIZE", split[1]);
             }
             return result;
+        }
+
+        // 取消所有的低于指定价格的拍卖
+        public static bool lua_CancelAll(string ItemName, int SinglePrize)
+        {
+            while (true)
+            {
+                KeyHelper.SendLuaOverChat(string.Format("/script CancelAH(\"{0}\",{1})", ItemName, Convert.ToString(SinglePrize)));
+                while (GetInfoFromFrame() == LUA_RUNNING_STRING)
+                {
+                    Thread.Sleep(10);
+                }
+                string resultString = GetInfoFromFrame();
+                if (resultString.IndexOf("错误") > 0)
+                {
+                    Logging.Write("获取信息错误: " + resultString);
+                    return false;
+                }
+                if (resultString.Contains("NO")) break;
+            }
+            return true;
+        }
+
+        // 拍卖物品
+        public static bool lua_StartAuction(string ItemName, int SinglePrize, int StackSize, int NumStack)
+        {
+            return ExecSimpleLua(string.Format("/script AHPostItemDoor(\"{0}\",{1},{2},{3})", ItemName, SinglePrize, StackSize, NumStack));
         }
 
         // 运行没有返回值的LUA命令
@@ -756,14 +784,14 @@ namespace LazyEvo.Plugins
         {
             // 发送取结果的命令
             KeyHelper.SendLuaOverChat(LuaCmd);
-            while (GetInfoFromFrame() == LUA_EXECTING_STRING)
+            while (GetInfoFromFrame() == LUA_RUNNING_STRING)
             {
                 Thread.Sleep(10);
             }
 
             // 取得返回值（注意排错）
             string resultString = GetInfoFromFrame();
-            if (GetInfoFromFrame().IndexOf("错误") > 0)
+            if (resultString.Contains("错误"))
             {
                 Logging.Write("获取信息错误: " + resultString);
                 return false;
@@ -915,7 +943,7 @@ namespace LazyEvo.Plugins
                     if (MineCount["MAIL"] > 0)
                     {
                         logger.Add("从邮箱里面拿  " + DoingMine);
-                        if (!SpyFrame.lua_GetMAILAsItem(DoingMine))
+                        if (!SpyFrame.lua_GetMAILAsItem(DoingMine, 100000))
                         {
                             logger.Add("从邮箱里面拿  " + DoingMine + " 失败");
                             return;
@@ -976,18 +1004,21 @@ namespace LazyEvo.Plugins
         public static DBLogger logger = new DBLogger("拿取邮件+找到拍卖师+AH上货");
         public static DataTable Items = new DataTable();
 
+        /********              需要设置的内容                 ******************/
+        // 邮箱点
         public static Location LocMailbox = new Location(1, 1, 1);
+        // AH拍卖师点
         public static Location LocAHer = new Location(1, 1, 1);
+        public static string AHerName = "";
 
-        public SpyAH()
+        public static void init()
         {
             //Items.PrimaryKey
-            Items.Columns.Add("item_id", System.Type.GetType("System.String"));
             Items.Columns.Add("item_name", System.Type.GetType("System.String"));
             Items.Columns.Add("item_minprice", System.Type.GetType("System.Int32"));
             Items.Columns.Add("item_maxprice", System.Type.GetType("System.Int32"));
-            Items.Columns.Add("item_count", System.Type.GetType("System.Int16"));
-            Items.Columns.Add("item_stacksize", System.Type.GetType("System.Int16"));
+            Items.Columns.Add("item_count", System.Type.GetType("System.Int32"));
+            Items.Columns.Add("item_stacksize", System.Type.GetType("System.Int32"));
             DataColumn[] pk = new DataColumn[1];
             pk[0] = Items.Columns["item_id"];
             Items.PrimaryKey = pk;
@@ -1002,14 +1033,14 @@ namespace LazyEvo.Plugins
             logger.output();
         }
 
-        public static void DoAction()
+        public static bool DoAction()
         {
             // 跑到邮箱点
             logger.Add("跑到邮箱点");
             if (!MoveHelper.MoveToLoc(LocMailbox, 5))
             {
                 logger.Add("跑到邮箱点出错");
-                return;
+                return false;
             }
 
             // 打开邮箱
@@ -1017,20 +1048,138 @@ namespace LazyEvo.Plugins
             if (!MailManager.TargetMailBox())
             {
                 logger.Add("打开邮箱出错");
-                return;
+                return false;
             }
-            // 拿邮件
+
+            // 遍历物品，保证背包中有足够的拍卖品。这里要注意背包空间
+            logger.Add("遍历 待拍卖物品列表 ");
+            foreach (DataRow dr in Items.Rows)
+            {
+                logger.Add("检查背包剩余空间");
+                if (Inventory.FreeBagSlots <= 1){
+                    logger.Add("检查背包剩余空间为1，不能继续");
+                    return false;
+                }
+                string mine = dr["item_name"].ToString();
+                logger.Add("处理拍卖对象 " + mine);
+                if (!SpyFrame.lua_SetDispCountItemName(mine))
+                {
+                    logger.Add("在执行SetDispCountItemName时出错，矿：" + mine);
+                    return false;
+                }
+                Thread.Sleep(500);
+                logger.Add("通过lua获知物品在背包和邮箱中的数量");
+                if (!SpyFrame.lua_SetDispCountItemName(mine))
+                {
+                    logger.Add("在执行SetDispCountItemName时出错，矿：" + mine);
+                    return false;
+                }
+                Thread.Sleep(500);
+                Dictionary<string, int> MineCount = SpyFrame.GetDispCountItemCount();
+                logger.Add(string.Format("物品{0}在背包中的数量为{1}，在邮箱中的数量为：{2}", mine, MineCount["BAG"], MineCount["MAIL"]));
+                int WantCount = (int)dr["item_name"] * (int)dr["item_stacksize"] > MineCount["BAG"]
+                                ? (int)dr["item_name"] * (int)dr["item_stacksize"] - MineCount["BAG"]
+                                : 0
+                                ;
+                // 拿邮件(LUA)
+                logger.Add(string.Format("从邮箱中拿{0}个{1}",WantCount,mine));
+                if (!SpyFrame.lua_GetMAILAsItem(mine, WantCount))
+                {
+                    logger.Add("从邮箱里面拿  " + mine + " 失败");
+                    return false;
+                }
+                Thread.Sleep(1000);
+            }
 
             // 跑到拍卖师身边
+            logger.Add("跑到拍卖师身边");
+            if (!MoveHelper.MoveToLoc(LocAHer, 5))
+            {
+                logger.Add("跑到拍卖师身边出错");
+                return false;
+            }
             // 找到拍卖师，打开拍卖界面
-            // 上货
-        }
+            logger.Add(string.Format("定位拍卖师：{0}", AHerName));
+            bool found = false;
+            foreach (PUnit unit in ObjectManager.GetUnits)
+            {
+                if (unit.Name.Equals(AHerName) && unit.Location.DistanceToSelf2D < 5)
+                {
+                    unit.Location.Face();
+                    unit.Interact();
+                    found = true;
+                }
+            }
+            if (!found)
+            {
+                logger.Add(string.Format("没找到名字是{0}的拍卖师", AHerName));
+                return false;
+            }
+            Thread.Sleep(2000);
+            
+            // 上货。 遍历待拍卖物品，扫描物品最低价格，最低价格不低于起拍价格，就上架
+            logger.Add(string.Format("开始上货"));
+            foreach (DataRow dr in Items.Rows)
+            {
+                // 扫描最低价格
+                string ahitem = dr["item_name"].ToString();
+                logger.Add(string.Format("扫描物品{0]的最低价格", ahitem));
+                Dictionary<string, string> scanresult = SpyFrame.lua_AHSearchDoor(ahitem);
+                if (scanresult == null)
+                {
+                    logger.Add(string.Format("获取物品{0]的最低价格出现错误，返回值为NULL", ahitem));
+                    return false;
+                }
+                logger.Add(string.Format("物品{0}的最低价格是{1]，由{2}出价", ahitem, scanresult["PRIZE"], scanresult["SELLER"]));
 
-        public static void AHSell()
-        {
-            // 扫描最低价格
-            // 计算拍卖列表
-            // 上货
+                // 计算最低价格，准备上货
+                if (scanresult["SELLER"].Equals(ObjectManager.MyPlayer.Name))
+                {
+                    logger.Add(string.Format("价格最低的就是我自己，所以不用上货"));
+                    continue;
+                }
+
+                int prize, minprize, maxprize;
+                maxprize = (int)(dr["item_maxprice"]);
+                minprize = (int)(dr["item_minprice"]);
+
+                // 如果目前出价低于心里价位，不出货
+                if (Convert.ToInt32(scanresult["PRIZE"]) < minprize)
+                {
+                    logger.Add(string.Format("{0}出价低过心里价位{1}，暂时不出货"));
+                    continue;
+                }
+
+                if (scanresult["SELLER"].Equals("NOBODY"))
+                {
+
+                    logger.Add(string.Format("拍卖场没有人卖{0}，将按照数据库中记录的最高价格{1}上货", ahitem, maxprize));
+                    prize = maxprize;
+                }
+                else
+                {
+                    prize = Convert.ToInt32(scanresult["PRIZE"]) - 1;
+                    logger.Add(string.Format("进过计算，物品{0}将按照单价{1}上架", ahitem, prize));
+                    // 取消拍卖物品
+                    logger.Add(string.Format("取消AH中单价低于{0}的{1}", prize, ahitem));
+                    if (!SpyFrame.lua_CancelAll(ahitem, prize))
+                    {
+                        logger.Add(string.Format("取消AH出错"));
+                        return false;
+                    }
+                }
+                // 上货
+                int StackSize = (int)(dr["item_stacksize"]);
+                int StackCount = (int)(dr["item_count"]);
+                logger.Add(string.Format("开始拍卖单价为{0}的“{1}”{2}堆，每堆{3}个", prize, ahitem, StackSize, StackCount));
+                if (!SpyFrame.lua_StartAuction(ahitem, prize, StackSize, StackCount))
+                {
+                    logger.Add(string.Format("拍卖失败"));
+                    return false;
+                }
+            }
+            // 
+            return true;
         }
     }
 }

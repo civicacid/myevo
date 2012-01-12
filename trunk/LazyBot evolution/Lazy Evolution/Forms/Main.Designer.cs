@@ -388,6 +388,7 @@
             // 
             this.superTabControlPanel5.Controls.Add(this.buttonX3);
             this.superTabControlPanel5.Controls.Add(this.CBDebug);
+            this.superTabControlPanel5.Controls.Add(this.buttonX1);
             this.superTabControlPanel5.Controls.Add(this.buttonX2);
             this.superTabControlPanel5.Controls.Add(this.CBTopMost);
             this.superTabControlPanel5.Controls.Add(this.MainGPPlayer);
@@ -495,7 +496,6 @@
             this.MainGPPlayer.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
             this.MainGPPlayer.Controls.Add(this.labelX1);
             this.MainGPPlayer.Controls.Add(this.MainPBPlayerHP);
-            this.MainGPPlayer.Controls.Add(this.buttonX1);
             this.MainGPPlayer.Controls.Add(this.MainLBPlayerPower);
             this.MainGPPlayer.Controls.Add(this.LBVersion);
             this.MainGPPlayer.Controls.Add(this.MainPBPlayerPower);
@@ -575,13 +575,13 @@
             // 
             this.buttonX1.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.buttonX1.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.buttonX1.Location = new System.Drawing.Point(309, 33);
+            this.buttonX1.Location = new System.Drawing.Point(218, 401);
             this.buttonX1.Margin = new System.Windows.Forms.Padding(4);
             this.buttonX1.Name = "buttonX1";
-            this.buttonX1.Size = new System.Drawing.Size(100, 28);
+            this.buttonX1.Size = new System.Drawing.Size(106, 28);
             this.buttonX1.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.buttonX1.TabIndex = 76;
-            this.buttonX1.Text = "buttonX1";
+            this.buttonX1.Text = "抓取Item数据";
             this.buttonX1.Click += new System.EventHandler(this.buttonX1_Click);
             // 
             // MainLBPlayerPower
