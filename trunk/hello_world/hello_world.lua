@@ -1,26 +1,28 @@
--- 发送指定名称物品                            function SendItemByName(astrReceiver, astrName)     无返回（获取到SendSuccData内容表示成功）
--- 拿取邮箱中指定名称的物品                    function GetMAILAsItem(astrItemName)                无返回（获取到SendSuccData内容表示成功）
--- 拍卖场查询功能                              function AHSearchDoor(astrItemName, aidebugprint)   返回最小价格和seller
--- 取消AH中小于指定价格的已经上架的物品        function CancelAH(astrItemName, aiPrice)            返回值中Yes表示已经取消一个，NO表示没有需要取消的了
--- 获得背包物品名称和数量                      function ScanBag()                                  无返回（获取到SendSuccData内容表示成功）
--- 获得邮箱中所包含物品名称和数量              function ScanInbox()                                无返回（获取到SendSuccData内容表示成功）
--- 获取执行结果                                function SendResult(iNext)                          返回值中包含TAG_NEXT_PAGE时，需要读取下一页，否则不需要
+-- 发送指定名称物品                             function SendItemByName(astrReceiver, astrName)     无返回（获取到SendSuccData内容表示成功）
+-- 拿取邮箱中指定名称的物品                     function GetMAILAsItem(astrItemName, aiCount)       无返回（获取到SendSuccData内容表示成功）
+-- 拍卖场查询功能                               function AHSearchDoor(astrItemName)                 返回最小价格和seller
+-- 取消AH中小于指定价格的已经上架的物品         function CancelAH(astrItemName, aiPrice)            返回值中Yes表示已经取消一个，NO表示没有需要取消的了
+-- 获得背包物品名称和数量                       function ScanBag()                                  无返回（获取到SendSuccData内容表示成功）
+-- 获得邮箱中所有物品名称以及数量               function ScanInbox()                                无返回（获取到SendSuccData内容表示成功）
+-- 获取执行结果                                 function SendResult(iNext)                          返回值中包含TAG_NEXT_PAGE时，需要读取下一页，否则不需要
 
--- 在frame上实时显示物品在邮箱和背包中的数量   function DispItemCount(astrItemName)
--- 获得指定物品的数量                          function getXXcount(asItemName)
--- 取信程序                                    function MailBoxGetItemDoorNew()
--- 获得物品名称                                function getItemNameByID(astrItemID)
--- 获得背包剩余空间                            function getFreeSlotX()
+-- 在frame上实时显示物品在邮箱和背包中的数量    function DispItemCount(astrItemName)
+-- 获得背包中指定物品的数量                     function getXXcountInBag(asItemName)
+-- 获得邮箱中指定物品的数量                     function getXXcountInMail(asItemName)
+-- 取信程序                                     function MailBoxGetItemDoorNew()
+-- 获得物品名称                                 function getItemNameByID(astrItemID)
+-- 获得背包剩余空间                             function getFreeSlotX()
 
 -- 保存并处理执行结果(SaveResult)，将结果中超过MAX_TEXT_LENGTH的字符串分割保存在全局变量outStrings中，通过SendResult将结果发给前台
 
 -- 常量定义区
 local MAX_TEXT_LENGTH = 8100            -- 每个汉字长度为3,strsub不能正确处理汉字
 local TAG_NEXT_PAGE = "【MORE】"        -- 放在结果的最前面
+local BAG_MIN_FREE_LOT = 2
 
 -- 全局变量
 HWstatus = {}
-DisplayItemName = "oo"
+DisplayItemName = ""
 local outStrings = {}
 
 --------------------------------------------------------------------------------------------------------------------------
@@ -99,7 +101,8 @@ AHSearch.SearchResult.Waiting = 0               -- 等待状态
 AHSearch.SearchResult.LastFire = 0              -- 最后一次时间触发的时间
 AHSearch.SearchResult.RetryCount = 0            -- 不出名字，重新刷新的次数
 
-function AHSearchDoor(astrItemName, aidebugprint)
+function AHSearchDoor(astrItemName)
+    aidebugprint = 0
     SendBeginData()
 
     if astrItemName == nil then
@@ -181,7 +184,11 @@ function AHSearchItem:Stop()
     end
 
     -- 显示查询结果，只显示最低价格和上货人
-    SendData(AHSearch.SearchResult.MinPriceSeller .. "#" .. AHSearch.SearchResult.MinEachPrice .. "#")
+    if AHSearch.SearchResult.MinEachPrice == 0 then
+        SendData("NOBODY#0#")
+    else
+        SendData(AHSearch.SearchResult.MinPriceSeller .. "#" .. AHSearch.SearchResult.MinEachPrice .. "#")
+    end
     --AHSearch.Handle = wipe(AHSearch.Handle)
 end
 
@@ -326,10 +333,9 @@ function AHSearchItem:RecordItem(aiPageCount)
     local liLoop
     for liLoop = 1, aiPageCount do
         lstrItemName = (select(1, GetAuctionItemInfo("list", liLoop)))
-    liItemCount = (select(3, GetAuctionItemInfo("list", liLoop)))
-    liBuyoutPrice = (select(10, GetAuctionItemInfo("list", liLoop)))
-    lstrSellerName = (select(13, GetAuctionItemInfo("list", liLoop)))
-    -- , _, liItemCount, _, _, _, _, _, liBuyoutPrice, _, _, lstrSellerName = GetAuctionItemInfo("list", liLoop)
+        liItemCount = (select(3, GetAuctionItemInfo("list", liLoop)))
+        liBuyoutPrice = (select(10, GetAuctionItemInfo("list", liLoop)))
+        lstrSellerName = (select(13, GetAuctionItemInfo("list", liLoop)))
         if AHSearch.SearchItem == lstrItemName then
             AHSearch.SearchResult.count = AHSearch.SearchResult.count + 1
             AHSearch.SearchResult.ItemName[AHSearch.SearchResult.count] = lstrItemName
@@ -393,15 +399,16 @@ function CancelAH(astrItemName, aiPrice)
         return
     end
 
-    local liTotalItemCount, liLoop, lstrItemName, liFlagSold, liBuyoutPrize
+    local liTotalItemCount, liLoop, lstrItemName, liFlagSold, liBuyoutPrize, liCount
 
     _, liTotalItemCount = GetNumAuctionItems("owner")
     if liTotalItemCount then
         for liLoop = 1, liTotalItemCount do
-            lstrItemName = (select(1, GetAuctionItemInfo("owner", liLoop)))             --物品名称
-            liFlagSold = (select(14, GetAuctionItemInfo("owner", liLoop)))              --是否售出
-            liBuyoutPrize = (select(10, GetAuctionItemInfo("owner", liLoop)))           --是否售出
-            if lstrItemName == astrItemName and liFlagSold == 0 and aiPrice - liBuyoutPrize < 0 then
+            lstrItemName = (select(1, GetAuctionItemInfo("owner", liLoop)))             -- 物品名称
+            liFlagSold = (select(14, GetAuctionItemInfo("owner", liLoop)))              -- 是否售出
+            liBuyoutPrize = (select(10, GetAuctionItemInfo("owner", liLoop)))           -- 一口价
+            liCount = (select(3, GetAuctionItemInfo("owner", liLoop)))                  -- 物品一堆的数量
+            if lstrItemName == astrItemName and liFlagSold == 0 and aiPrice - math.ceil(liBuyoutPrize/liCount) < 0 then
                 CancelAuction(liLoop)
                 SendData("YES需要被取消")
                 return
@@ -409,6 +416,38 @@ function CancelAH(astrItemName, aiPrice)
         end
         SendData("NO不需要被取消")
         return
+    end
+end
+
+--------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------    拍卖场挂货功能(4.0)      ---------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------
+local AHPostItem4 = {}
+AHPostItem4.ItemLeftStack = 0                            -- 剩余多少堆要挂出去
+
+function AHPostItemDoor(astrItemName, aiSingleItemPrice, aiItemStackSize, aiItemNumStack)
+
+    local liBag, liSlot
+
+    SendBeginData()
+
+    -- 找到指定物品所在包、槽
+    liBag, liSlot = SearchItem(astrItemName, 0)
+
+
+    -- 做准备工作，把物品从包里面拉出来，放到拍卖框上去
+    PickupContainerItem(liBag, liSlot)
+    ClickAuctionSellItemButton()
+    ClearCursor()
+    AHPostItem4.ItemLeftStack = aiItemNumStack
+    StartAuction(aiSingleItemPrice * aiItemStackSize - 1 , aiSingleItemPrice * aiItemStackSize - 1, 1, aiItemStackSize, aiItemNumStack)
+
+end
+
+function AHPostItem4NextPost()
+    AHPostItem4.ItemLeftStack = AHPostItem4.ItemLeftStack - 1
+    if AHPostItem4.ItemLeftStack == 0 then
+        SendSuccData()
     end
 end
 
@@ -502,7 +541,7 @@ end
 
 function MailBoxGetItemMachineNew:Waiting()
     if HWstatus.MailBoxGetItemNew == 30 then
-        if MailBoxGetItemNew.LoopCount == 1 or getFreeSlotX() <= 4 then
+        if MailBoxGetItemNew.LoopCount == 1 or (getFreeSlotX() - BAG_MIN_FREE_LOT <= 0) then
             NormalPrint("********** 信封取货完成 **********")
             MailBoxGetItemMachineNew:Stop()
             SendSuccData()
@@ -526,8 +565,8 @@ end
 --------------------------------------------------------------------------------------------------------------------------
 --------------------------------      拿取邮箱中指定名称的物品      ------------------------------------------
 --------------------------------------------------------------------------------------------------------------------------
-function GetMAILAsItem(astrItemName)
-    local liInboxCount, liLoop, iLoopNext, lstrItemName, liMaxCount
+function GetMAILAsItem(astrItemName, aiCount)
+    local liInboxCount, liLoop, iLoopNext, lstrItemName, liCount
 
     SendBeginData()
     if not astrItemName or astrItemName == "" then
@@ -536,8 +575,8 @@ function GetMAILAsItem(astrItemName)
         return
     end
 
-    if getFreeSlotX() <= 4 then
-        print("背包空间少于4个，不拿东西")
+    if getFreeSlotX() <= BAG_MIN_FREE_LOT then
+        print("背包空间少于"..BAG_MIN_FREE_LOT.."个，不拿东西")
         SendSuccData()
         return
     end
@@ -547,13 +586,18 @@ function GetMAILAsItem(astrItemName)
     MailBoxGetItemNew.TblAttachID = wipe(MailBoxGetItemNew.TblAttachID)
 
     -- 在邮箱中找是否有满足条件的物品
+    liCount = 0
     liInboxCount,_ = GetInboxNumItems()
     for liLoop = 1, liInboxCount do
         for iLoopNext=1, 12 do
-            lstrItemName = select(1, GetInboxItem(liLoop, iLoopNext))
+            lstrItemName = (select(1, GetInboxItem(liLoop, iLoopNext)))
             if (lstrItemName) and lstrItemName == astrItemName then
                 table.insert(MailBoxGetItemNew.TblMailID, liLoop)
                 table.insert(MailBoxGetItemNew.TblAttachID, iLoopNext)
+                liCount = liCount + (select(3, GetInboxItem(liLoop, iLoopNext)))
+                if liCount>= aiCount then
+                    break
+                end
             end
         end
     end
@@ -1021,9 +1065,9 @@ function SendSuccData()
 end
 
 --------------------------------------------------------------------------------------------------------------------------
-------------------------------------------------     获得指定物品的数量     ----------------------------------------------
+------------------------------------------------     获得背包中指定物品的数量     ----------------------------------------------
 --------------------------------------------------------------------------------------------------------------------------
-function getXXcount(asItemName)
+function getXXcountInBag(asItemName)
     local iBag, iSlot, oItem
     local iCount
 
@@ -1039,6 +1083,27 @@ function getXXcount(asItemName)
         end
     end
     return iCount
+end
+
+--------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------     获得邮箱中指定物品的数量     ----------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------
+function getXXcountInMail(asItemName)
+    local liMailCount, liBagCount, liInboxCount, liLoop, iLoopNext, lstrItemName 
+
+    liMailCount = 0
+    if (HWstatus.MailBox == 1) then
+        liInboxCount,_ = GetInboxNumItems()
+        for liLoop = 1, liInboxCount do
+            for iLoopNext=1, 12 do
+                lstrItemName = select(1, GetInboxItem(liLoop, iLoopNext))
+                if (lstrItemName) then
+                    liMailCount = liMailCount + (select(3, GetInboxItem(liLoop, iLoopNext)))
+                end
+            end
+        end
+    end
+    return liMailCount
 end
 
 --------------------------------------------------------------------------------------------------------------------------
@@ -1124,22 +1189,8 @@ function DispItemCount()
         return
     end
     
-    local liMailCount, liBagCount, liInboxCount, liLoop, iLoopNext, lstrItemName 
-
-    liMailCount = 0
-    if IsMailBoxOpen() ~= 0 then
-        liInboxCount,_ = GetInboxNumItems()
-        for liLoop = 1, liInboxCount do
-            for iLoopNext=1, 12 do
-                lstrItemName = select(1, GetInboxItem(liLoop, iLoopNext))
-                if (lstrItemName) then
-                    liMailCount = liMailCount + (select(3, GetInboxItem(liLoop, iLoopNext)))
-                end
-            end
-        end
-    end
-
-    liBagCount = getXXcount(astrItemName)
+    liMailCount = getXXcountInMail(DisplayItemName)
+    liBagCount = getXXcountInBag(DisplayItemName)
     frmDataText:SetText(liBagCount .. "$" .. liMailCount)
 end
 
@@ -1191,4 +1242,27 @@ function table_copy(t)
         t2[k] = v
     end
     return t2
+end
+
+-- 搜索指定物品，返回bag和slot
+function SearchItem(astrItemName, aiStackSize)
+    -- aiStackSize = 0 表示不限定查询的数量
+    local bag, slot, item
+    for bag = 0,4 do
+        for slot = 1,GetContainerNumSlots(bag) do
+            item = select(7,GetContainerItemInfo(bag,slot))
+            if (item) then
+                if (select(1,GetItemInfo(item)) == astrItemName) then
+                    if aiStackSize == 0 then
+                        return bag, slot
+                    else
+                        if select(2,GetContainerItemInfo(bag,slot)) - aiStackSize == 0 then
+                            return bag, slot
+                        end
+                    end
+                end
+            end
+        end
+    end
+    return -1, -1
 end
