@@ -34,6 +34,8 @@ namespace LazyLib.Wow
     [Obfuscation(Feature = "renaming", ApplyToMembers = true)]
     public class PPlayerSelf : PPlayer
     {
+        public string Account;
+        
         private readonly uint[] _healthStone = new uint[]
                                                    {
                                                        36892, 36894, 36893, 36889, 36891, 36890, 22105, 22103, 22104,
