@@ -235,6 +235,7 @@ namespace LazyLib.Helpers
         public static void SendLuaOverChat(String text)
         {
             if (String.IsNullOrWhiteSpace(text)) return;
+            if (Mail.MailFrame.CurrentTabIsSendMail) Mail.MailFrame.ClickInboxTab();
             if (IsChatboxOpened)
             {
                 KeyLowHelper.PressKey(MicrosoftVirtualKeys.VK_LCONTROL);
