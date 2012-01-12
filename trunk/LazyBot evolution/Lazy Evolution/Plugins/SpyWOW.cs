@@ -33,8 +33,6 @@ namespace LazyEvo.Plugins
 
         public bool Success;
         private Process WOWProc;
-        public string WOWAccName;
-        public string WOWCharName;
 
         enum ProcStatus { 
             Start,
@@ -198,44 +196,6 @@ namespace LazyEvo.Plugins
             string CharIdx = LazySettings.WOWCharIdx;
             string AccountList = LazySettings.WOWCharList;
 
-            //读取数据库中记录，提取登录角色需要的数据
-            //if (!WOWAll.IsOpen)
-            //{
-            //    WOWAll.Open();
-            //}
-            //if (!WOWAll.IsOpen)
-            //{
-            //    Logging.Write("数据库不能正常打开" + "\r\n" + RunWOW.errMsg);
-            //    StopAuto();
-            //    return;
-            //}
-            //WOWAll.LoadData();
-            //if (WOWAll.AllWOWAccount.Exists(delegate(WOWAll.WoWAccount wa) { return (wa.AccountName == WOWAccName); }))
-            //{
-            //    WOWAll.WoWAccount SelectedWa = WOWAll.AllWOWAccount.Find(delegate(WOWAll.WoWAccount wa) { return (wa.AccountName == WOWAccName); });
-            //    AccountName = SelectedWa.AccountName;
-            //    AccountPass = SelectedWa.AccountPass;
-            //    AccountList = SelectedWa.CharList;
-            //    if (SelectedWa.Char.Exists(delegate(WOWAll.WoWChar wc) { return (wc.CharName == WOWCharName); }))
-            //    {
-            //        WOWAll.WoWChar SelectWc = SelectedWa.Char.Find(delegate(WOWAll.WoWChar wc) { return (wc.CharName == WOWCharName); });
-            //        RealmName = SelectWc.Server;
-            //        CharIdx = Convert.ToString(SelectWc.CharIndex);
-            //    }
-            //    else
-            //    {
-            //        Logging.Write(string.Format("角色【{0}】找不到", WOWCharName) + "\r\n" + RunWOW.errMsg);
-            //        StopAuto();
-            //        return;
-            //    }
-            //}
-            //else
-            //{
-            //    Logging.Write(string.Format("账户【{0}】找不到", WOWAccName) + "\r\n" + RunWOW.errMsg);
-            //    StopAuto();
-            //    return;
-            //}
-
             int RetryCount = 0;
             const int MAX_RETRY_COUNT = 5;
 
@@ -314,6 +274,7 @@ namespace LazyEvo.Plugins
             Success = true;
             ps = ProcStatus.Login_OK;
             Logging.Write("Login OK!!");
+            ObjectManager.MyPlayer.Account = AccountName;
             StopAuto();
             return;
         }
