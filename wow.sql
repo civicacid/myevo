@@ -121,17 +121,50 @@ comment on table ahplan is '角色挂货计划';
 -- table autologin 自动登录计划
 -- -----------------------------------------------------
 create table autologin (
-   autologin_id              number(8)          not null ,
-   starttime                 date               not null,
-   endtime                   date               not null,
+   autologin_id              number(8)          not null,
+   worktime                  date               not null,
    char_id                   number(8)          not null,
-   char_name                 varchar(98)        not null ,
-   profile                   varchar(200)       not null,
-   behavior                  varchar(200)       not null,
+   char_name                 varchar(98)        not null,
+   dowhat                    varchar(200)       not null,      -- worktype#work_id$worktype#work_id$
    primary key (autologin_id),
    constraint fk_autologin_char_id foreign key (char_id) references wowchar (char_id)
 );
 comment on table autologin is '自动登录计划';
+
+-- -----------------------------------------------------
+-- table autowork_diag_mine  自动挖矿
+-- -----------------------------------------------------
+create table autologin (
+   work_id                    number(8)          not null,
+   work_desc                  varchar(200)       not null,
+   profile                    varchar(200)       not null,
+   behavior                   varchar(200)       not null,
+   primary key (work_id)
+);
+comment on table autologin is '自动挖矿';
+
+-- -----------------------------------------------------
+-- table autowork_maillist  邮件列表
+-- -----------------------------------------------------
+create table autowork_maillist (
+   work_id                    number(8)          not null,
+   work_desc                  varchar(200)       not null,
+   item_id                    varchar(200)       not null,
+   char_id                    number(8)          not null,
+   primary key (work_id)
+);
+comment on table autowork_maillist is '邮件列表';
+
+-- -----------------------------------------------------
+-- table autowork_mine  分矿列表
+-- -----------------------------------------------------
+create table autowork_mine (
+   work_id                    number(8)          not null,
+   work_desc                  varchar(200)       not null,
+   item_id                    varchar(200)       not null,
+   primary key (work_id)
+);
+comment on table autowork_mine is '分矿列表';
 
 -- -----------------------------------------------------
 -- Sequence 公用序列
