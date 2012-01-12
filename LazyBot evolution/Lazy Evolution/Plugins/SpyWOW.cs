@@ -647,7 +647,9 @@ namespace LazyEvo.Plugins
             KeyLowHelper.PressKey(MicrosoftVirtualKeys.Escape);
             KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.Escape);
             Thread.Sleep(500);
-            return ExecSimpleLua(string.Format("/script SendItemByName(\"{0}\",\"{1}\")", receiver, itemname));
+            if (!ExecSimpleLua(string.Format("/script SendItemByName(\"{0}\",\"{1}\")", receiver, itemname))) return false;
+            MailFrame.ClickInboxTab();
+            return true;
         }
         
         // 获取邮件
@@ -743,6 +745,7 @@ namespace LazyEvo.Plugins
         // 运行没有返回值的LUA命令
         public static bool ExecSimpleLua(string LuaCmd)
         {
+            if (MailFrame.CurrentTabIsSendMail) MailFrame.ClickInboxTab();
             // 发送取结果的命令
             KeyHelper.SendLuaOverChat(LuaCmd);
             while (GetInfoFromFrame() == LUA_RUNNING_STRING)
@@ -764,7 +767,7 @@ namespace LazyEvo.Plugins
         // 获取frmData显示值，分解后得到指定物品在背包和邮箱中的数量
         public static bool lua_SetDispCountItemName(string ItemName)
         {
-            return ExecSimpleLua(string.Format("/script SetDisplayItemName({0})", ItemName));
+            return ExecSimpleLua(string.Format("/script SetDisplayItemName(\"{0}\")", ItemName));
         }
         public static Dictionary<string, int> GetDispCountItemCount()
         {
@@ -845,7 +848,7 @@ namespace LazyEvo.Plugins
 
         public void Add(string msg)
         {
-            logger.Add("[" + DateTime.Now.ToString("YYYY-MM-DD HH:mm:ss") + "]<" + toAppend + ">" + msg);
+            logger.Add("[" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "]<" + toAppend + ">" + msg);
         }
 
         public void output()
@@ -891,6 +894,7 @@ namespace LazyEvo.Plugins
                     logger.Add("在执行SetDispCountItemName时出错，矿：" + DoingMine);
                     return;
                 }
+                Thread.Sleep(1000);
                 Dictionary<string, int> MineCount = SpyFrame.GetDispCountItemCount();
                 /** 检查背包里面有没有矿，有就炸，没有再查邮箱，从邮箱拿，直到没有矿 **/
                 if (MineCount["BAG"] == 0 && MineCount["MAIL"] == 0)
@@ -911,10 +915,11 @@ namespace LazyEvo.Plugins
                         }
                     }
 
+                    Thread.Sleep(1000);
                     MineCount = SpyFrame.GetDispCountItemCount();
 
                     // 分解矿，直到包空间小于1和背包里面没有矿
-                    while (MineCount["BAG"] > 0 && Inventory.FreeBagSlots <= 1)
+                    while (MineCount["BAG"] > 0 && Inventory.FreeBagSlots > 1)
                     {
                         CountJump++;
                         if (CountJump == 10)
@@ -922,7 +927,8 @@ namespace LazyEvo.Plugins
                             // jump一下，防止AFK
                             CountJump = 0;
                             logger.Add("jump一下，防止AFK");
-                            MoveHelper.Jump();
+                            KeyLowHelper.PressKey(MicrosoftVirtualKeys.Space);
+                            KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.Space);
                             Thread.Sleep(5000);
                         }
                         // 分解石头 , 分解宏要放在4这个上面
@@ -946,6 +952,7 @@ namespace LazyEvo.Plugins
                         logger.Add("发邮件");
                         if (!SpyTradeSkill.SendMain(MailList, logger)) return;
                     }
+                    Thread.Sleep(1000);
                     MineCount = SpyFrame.GetDispCountItemCount();
 
                     // 邮寄完，背包还是满，就退出
@@ -956,6 +963,8 @@ namespace LazyEvo.Plugins
                     }
                 }
             }
+            logger.Add("矿都处理完了，发邮件");
+            if (!SpyTradeSkill.SendMain(MailList, logger)) return;
             return;
         }
     }
