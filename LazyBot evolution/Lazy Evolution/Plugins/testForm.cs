@@ -29,18 +29,6 @@ namespace LazyEvo.Plugins
             dataGridView1.Refresh();
         }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            string mine = "源质矿石";
-            SpyFrame.lua_GetMAILAsItem(mine);
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            //KeyHelper.SendLuaOverChat(textBox1.Text);
-            textBox1.Text = Convert.ToString(ObjectManager.MyPlayer.CastingId);
-        }
-
         private void button4_Click(object sender, EventArgs e)
         {
             List<string> Mines;                                 //待分解清单
@@ -69,11 +57,10 @@ namespace LazyEvo.Plugins
             SpyMineAndMail.GoGo();
         }
 
-        private void button5_Click(object sender, EventArgs e)
+        private void button2_Click(object sender, EventArgs e)
         {
-            Frame InfoFrame = InterfaceHelper.GetFrameByName("frmData");
-            string info = InfoFrame.GetChildObject("frmDataText").GetInfoText;
-            button5.Text = info;
+            SpyAH.init();
+            
         }
     }
 }

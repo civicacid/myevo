@@ -1136,6 +1136,7 @@ namespace LazyEvo.Forms
                         string quality = hhh["quality"];
                         if (!string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(quality))
                         {
+                            name = name.Replace("'", "''");
                             string sql = string.Format("begin add_item('{0}','{1}','{2}'); end;",Convert.ToString(iloop),name,quality);
                             Logging.Write(sql);
                             if (!OraData.execSQLCmd(sql))
