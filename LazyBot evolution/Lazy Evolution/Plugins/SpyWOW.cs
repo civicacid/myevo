@@ -886,6 +886,13 @@ namespace LazyEvo.Plugins
 
         public static void DoAction()
         {
+            // 打开邮箱
+            if (!MailManager.TargetMailBox())
+            {
+                logger.Add("任务附近没有邮箱，失败啊。。。");
+                return;
+            }
+            
             int CountJump = 0;
             foreach (string DoingMine in Mines)
             {
@@ -1151,5 +1158,156 @@ namespace LazyEvo.Plugins
             // 
             return true;
         }
+    }
+
+    public static class SpyFB
+    {
+        public static PPlayer leader;
+        public static PPlayerSelf me = ObjectManager.MyPlayer;
+        public static Location FBEntry;
+
+        public static Dictionary<int, Location> LeaderInFB;         // Step，坐标
+        public static Dictionary<int, Location> memInFB;            // 路径编号，坐标
+        public static Dictionary<int, int> MapOverLeaderAndMem;     // 小号路径编号，大号step
+
+        public static string FBName;
+        public static int Scope = 10;
+        private static int LastLeaderStep;
+
+        enum DBStatus
+        {
+            In_EntryChecking,
+            In_Running,
+            In_Waiting_Next_Move,
+            InOut_Switching,
+            Out_Checking,
+            Out_follow
+        }
+
+        public static bool SetLeader(string LeaderName)
+        {
+            foreach (PPlayer unit in ObjectManager.GetPlayers)
+            {
+                if (unit.Name.Equals(LeaderName))
+                {
+                    leader = unit;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public static bool IsLeaderInFB()
+        {
+            // 怎么判断人在副本里面了 ？？
+            if (leader.X == 0 && leader.Y == 0)
+            {
+                // 找不到人了，然后判断我在哪里
+                if (me.ZoneText == FBName)
+                    return false; 
+                else
+                    return true;
+            }
+            return false;
+        }
+
+        // 是否能开始
+        public static bool CanStart()
+        {
+            // 要求2个人都在副本区域内才能开始
+            if (me.ZoneText == FBName && leader.X != 0 && leader.Y != 0)
+                return true;
+            else
+                return false;
+        }
+
+        public static int GetLeaderStep()
+        {
+            double MinDistince = 100000000;
+            int Step = 0;
+            double dd = mm.Value.DistanceFromXY(LeaderInFB[LastLeaderStep+1].Location);
+            if (dd < MinDistince)
+            {
+                MinDistince = dd;
+                Step = mm.Key;
+            }
+            if (MinDistince < Scope) 
+                return Step;
+            else
+                return 0;
+        }
+
+        // 获取路点地图
+        public static Dictionary<int, Location> GetMemPath(int Step)
+        {
+            Dictionary<int, Location> path = new Dictionary<int, Location>();
+            
+            foreach (KeyValuePair<int, int> mm in MapOverLeaderAndMem)
+            //foreach (KeyValuePair<int, Location> mm in memInFB)
+            {
+                if (mm.Value == Step)
+                {
+                    path.Add(mm.Key, memInFB[mm.Key]);
+                }
+            }
+            var path1 = from pair in path orderby pair.Key select pair;
+            return (Dictionary<int, Location>)path1;
+        }
+
+        // 根据路点跑
+        public static bool MemGoGo(Dictionary<int, Location> path)
+        {
+            Ticker StuckTimer = new Ticker(300000); //5 min
+            Ticker _stuckTimer = new Ticker(3000);
+            foreach (KeyValuePair<int, Location> dest in path)
+            {
+                Location _destination = dest.Value;
+                double _stopDistance = 1;
+                
+                int stuck = 0;
+                double destinationDistance = _destination.DistanceToSelf2D;
+                while (destinationDistance > _stopDistance)
+                {
+                    if (LazyEvo.LGrindEngine.Helpers.Stuck.IsStuck && _stuckTimer.IsReady)
+                    {
+                        LazyEvo.LGrindEngine.Helpers.Unstuck.TryUnstuck();
+                        _stuckTimer.Reset();
+                        stuck++;
+                    }
+                    if (StuckTimer.IsReady)
+                    {
+                        stuck = 0;
+                    }
+                    if (stuck > 6)
+                    {
+                        // Stuck more than 6 times in 5 min 卡壳在5分钟之内，超过6次
+                        MoveHelper.ReleaseKeys();
+                        return false;
+                    }
+                    if (destinationDistance > _stopDistance)
+                    {
+                        if (!_destination.IsFacing(0.2f))
+                        {
+                            _destination.Face();
+                        }
+                        KeyHelper.PressKey("Up");
+                    }
+                    else
+                    {
+                        MoveHelper.ReleaseKeys();
+                    }
+                    Thread.Sleep(10);
+                } 
+            }
+            return true;
+        }
+
+        /******************************************
+         * 根据 Location 对，来执行跟踪模式。
+         * 副本内，一种，副本外一种
+         * 切换副本，通过查找对方的坐标是否小时来确定是否切换，结合player的区域名称
+         * 
+         * ****************************************/
+
     }
 }
