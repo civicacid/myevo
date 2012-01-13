@@ -121,11 +121,12 @@ comment on table ahplan is '角色挂货计划';
 -- table autologin 自动登录计划
 -- -----------------------------------------------------
 create table autologin (
-   autologin_id              number(8)          not null,
-   worktime                  date               not null,
-   char_id                   number(8)          not null,
-   char_name                 varchar(98)        not null,
-   dowhat                    varchar(200)       not null,      -- worktype#work_id$worktype#work_id$
+   autologin_id               number(8)          not null,
+   worktime                   date               not null,     -- 启动时间
+   downtime                   date               not null,     -- 结束时间
+   char_id                    number(8)          not null,
+   char_name                  varchar(98)        not null,
+   dowhat                     varchar(200)       not null,     -- worktype#work_id$worktype#work_id$
    primary key (autologin_id),
    constraint fk_autologin_char_id foreign key (char_id) references wowchar (char_id)
 );
