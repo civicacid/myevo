@@ -1164,7 +1164,8 @@ namespace LazyEvo.Plugins
     {
         public static PPlayer leader;
         public static PPlayerSelf me = ObjectManager.MyPlayer;
-        public static Location FBEntry;
+        public static Location FBEntry;                             // 副本入口
+        public static Location FBExit;                              // 副本出口
 
         public static Dictionary<int, Location> LeaderInFB;         // Step，坐标
         public static Dictionary<int, Location> memInFB;            // 路径编号，坐标
@@ -1174,14 +1175,87 @@ namespace LazyEvo.Plugins
         public static int Scope = 10;
         private static int LastLeaderStep;
 
+        private static Thread _Thread;
+        private static DBStatus FBStatus;
+
         enum DBStatus
         {
-            In_EntryChecking,
-            In_Running,
-            In_Waiting_Next_Move,
-            InOut_Switching,
-            Out_Checking,
-            Out_follow
+            In_EntryChecking,           //入口检查，确定是否可以开始
+            In_LeaderInScopeCheck,      //检查Leader有没有到达预定地点
+            In_Running,                 //小号进行本阶段的跑路
+            In_CheckLeaderOut,          //
+            InOut_GoOut,
+            Out_Exiting,                //正在退出副本，读条状态
+            Out_ExitDone,               //读条结束
+            Out_following,              //正在跟随大号
+            In_Entering,                //正在进入副本，读条状态
+            In_AlreadyEnter             //进入副本
+        }
+
+        public static void StartFB()
+        {
+
+        }
+
+        public static void StopFB()
+        {
+
+        }
+
+        public static void gogo()
+        {
+            Dictionary<int, Location> nowpath= new Dictionary<int, Location>();
+            while (true)
+            {
+                switch (FBStatus)
+                {
+                    case DBStatus.In_EntryChecking:
+                        if (CanStart())
+                        {
+                            LastLeaderStep = 0;
+                            FBStatus = DBStatus.In_LeaderInScopeCheck;
+                        }
+                        break;
+
+                    case DBStatus.In_LeaderInScopeCheck:
+                        if (IsLeaderInScope())
+                        {
+                            nowpath = GetMemPath();
+                            FBStatus = DBStatus.In_Running;
+                        }
+                        break;
+
+                    case DBStatus.In_Running:
+                        if (MeGoGo(nowpath))
+                        {
+                            if (LastLeaderStep == LeaderInFB.Keys.Max())
+                            {
+                                FBStatus = DBStatus.In_CheckLeaderOut;
+                            }
+                            else
+                            {
+                                FBStatus = DBStatus.In_LeaderInScopeCheck;
+                            }
+                            LastLeaderStep++;
+                        }
+                        break;
+                    case DBStatus.In_CheckLeaderOut:
+                        break;
+                    case DBStatus.InOut_GoOut:
+                        break;
+                    case DBStatus.Out_Exiting:
+                        break;
+                    case DBStatus.Out_ExitDone:
+                        break;
+                    case DBStatus.Out_following:
+                        break;
+                    case DBStatus.In_Entering:
+                        break;
+                    case DBStatus.In_AlreadyEnter:
+                        break;
+                }
+                Thread.Sleep(100);
+            }
         }
 
         public static bool SetLeader(string LeaderName)
@@ -1221,31 +1295,26 @@ namespace LazyEvo.Plugins
                 return false;
         }
 
-        public static int GetLeaderStep()
+        public static bool IsLeaderInScope()
         {
-            double MinDistince = 100000000;
-            int Step = 0;
-            double dd = mm.Value.DistanceFromXY(LeaderInFB[LastLeaderStep+1].Location);
-            if (dd < MinDistince)
+            if (!LeaderInFB.ContainsKey(LastLeaderStep + 1)) return false;
+            double dd = me.Location.DistanceFromXY(LeaderInFB[LastLeaderStep + 1]);
+            if (dd < Scope)
             {
-                MinDistince = dd;
-                Step = mm.Key;
+                return true;
             }
-            if (MinDistince < Scope) 
-                return Step;
-            else
-                return 0;
+            return false;
         }
 
         // 获取路点地图
-        public static Dictionary<int, Location> GetMemPath(int Step)
+        public static Dictionary<int, Location> GetMemPath()
         {
             Dictionary<int, Location> path = new Dictionary<int, Location>();
             
             foreach (KeyValuePair<int, int> mm in MapOverLeaderAndMem)
             //foreach (KeyValuePair<int, Location> mm in memInFB)
             {
-                if (mm.Value == Step)
+                if (mm.Value == LastLeaderStep)
                 {
                     path.Add(mm.Key, memInFB[mm.Key]);
                 }
@@ -1255,7 +1324,7 @@ namespace LazyEvo.Plugins
         }
 
         // 根据路点跑
-        public static bool MemGoGo(Dictionary<int, Location> path)
+        public static bool MeGoGo(Dictionary<int, Location> path)
         {
             Ticker StuckTimer = new Ticker(300000); //5 min
             Ticker _stuckTimer = new Ticker(3000);
