@@ -20,6 +20,7 @@ using LazyEvo.LFlyingEngine.Helpers;
 using LazyEvo.Public;
 using LazyEvo.Forms;
 using LazyLib.Helpers.Mail;
+using LazyLib.ActionBar;
 
 namespace LazyEvo.Plugins
 {
@@ -655,6 +656,10 @@ namespace LazyEvo.Plugins
         // 获取邮件
         public static bool lua_GetMAILAsItem(string ItemName, int ItemCount)
         {
+            return lua_GetMAILAsItem(ItemName, ItemCount, 0);
+        }
+        public static bool lua_GetMAILAsItem(string ItemName, int ItemCount, int StackSize)
+        {
             if (!MailFrame.Open)
             {
                 Logging.Write("邮箱没开！！！");
@@ -668,7 +673,10 @@ namespace LazyEvo.Plugins
                 MailFrame.ClickInboxTab();
                 Thread.Sleep(500);
             }
-            return ExecSimpleLua(string.Format("/script GetMAILAsItem(\"{0}\",{1})", ItemName, ItemCount));
+            if (StackSize == 0)
+                return ExecSimpleLua(string.Format("/script GetMAILAsItem(\"{0}\",{1})", ItemName, ItemCount));
+            else
+                return ExecSimpleLua(string.Format("/script GetMAILAsItemFull(\"{0}\",{1},{2})", ItemName, ItemCount, StackSize));
         }
 
         // 重新整理背包-整合背包，需要插件辅助
@@ -915,7 +923,7 @@ namespace LazyEvo.Plugins
                     if (MineCount["MAIL"] > 0)
                     {
                         logger.Add("从邮箱里面拿  " + DoingMine);
-                        if (!SpyFrame.lua_GetMAILAsItem(DoingMine, 100000))
+                        if (!SpyFrame.lua_GetMAILAsItem(DoingMine, 100000, 20))
                         {
                             logger.Add("从邮箱里面拿  " + DoingMine + " 失败");
                             return;
@@ -1163,7 +1171,7 @@ namespace LazyEvo.Plugins
     public static class SpyFB
     {
         public static PPlayer leader;
-        public static PPlayerSelf me = ObjectManager.MyPlayer;
+        private static PPlayerSelf me = ObjectManager.MyPlayer;
         public static Location FBEntry;                             // 副本入口
         public static Location FBExit;                              // 副本出口
 
@@ -1172,7 +1180,7 @@ namespace LazyEvo.Plugins
         public static Dictionary<int, int> MapOverLeaderAndMem;     // 小号路径编号，大号step
 
         public static string FBName;
-        public static int Scope = 10;
+        private static int Scope = 10;
         private static int LastLeaderStep;
 
         private static Thread _Thread;
@@ -1192,14 +1200,35 @@ namespace LazyEvo.Plugins
             In_AlreadyEnter             //进入副本
         }
 
+        public static bool Init(string _fbname,string _leadername,Location _fbin,Location _fbout, Dictionary<int, Location> _lloc, Dictionary<int, Location> _path,Dictionary<int, int> _map)
+        {
+            LastLeaderStep = 0;
+            FBStatus = DBStatus.In_EntryChecking;
+            if (!SetLeader(_leadername)) return false;
+            FBName = _fbname;
+            FBEntry = _fbin;
+            FBExit = _fbout;
+            LeaderInFB = _lloc;
+            memInFB = _path;
+            MapOverLeaderAndMem = _map;
+            return true;
+        }
+
         public static void StartFB()
         {
-
+            if (!_Thread.IsAlive)
+            {
+                _Thread = new Thread(gogo);
+                _Thread.Name = "FB";
+                _Thread.IsBackground = true;
+                _Thread.Start();
+            }
         }
 
         public static void StopFB()
         {
-
+            _Thread.Abort();
+            _Thread = null;
         }
 
         public static void gogo()
@@ -1240,14 +1269,37 @@ namespace LazyEvo.Plugins
                         }
                         break;
                     case DBStatus.In_CheckLeaderOut:
+                        if (!IsLeaderInFB())
+                        {
+                            FBExit.Face();
+                            KeyHelper.PressKey("Up");
+                            while (ObjectManager.InGame) Thread.Sleep(100);
+                            KeyHelper.ReleaseKey("Up");
+                            Thread.Sleep(2000);
+                            while (!ObjectManager.InGame) Thread.Sleep(100);
+                            FBStatus = DBStatus.Out_ExitDone;
+                        }
                         break;
                     case DBStatus.InOut_GoOut:
                         break;
                     case DBStatus.Out_Exiting:
                         break;
                     case DBStatus.Out_ExitDone:
+                        KeyHelper.SendLuaOverChat("/follow "+leader.Name);
+                        KeyHelper.SendLuaOverChat(string.Format("/whisper {0} {1}",leader.Name,me.Name+"已经跟随"));
+                        FBStatus = DBStatus.Out_following;
                         break;
                     case DBStatus.Out_following:
+                        if (!leader.IsValid)
+                        {
+                            FBEntry.Face();
+                            KeyHelper.PressKey("Up");
+                            while (ObjectManager.InGame) Thread.Sleep(100);
+                            KeyHelper.ReleaseKey("Up");
+                            Thread.Sleep(2000);
+                            while (!ObjectManager.InGame) Thread.Sleep(100);
+                            FBStatus = DBStatus.In_EntryChecking;
+                        }
                         break;
                     case DBStatus.In_Entering:
                         break;
@@ -1369,13 +1421,17 @@ namespace LazyEvo.Plugins
                 } 
             }
             return true;
+
         }
 
+
         /******************************************
-         * 根据 Location 对，来执行跟踪模式。
-         * 副本内，一种，副本外一种
-         * 切换副本，通过查找对方的坐标是否小时来确定是否切换，结合player的区域名称
-         * 
+         * 根据法术名字获得动作条
+         *  BarSpell gg = BarMapper.GetSpellByName("");
+         *  gg.CastSpell();
+         *  
+         *  BarMapper.MapBars();
+         *  KeyHelper.LoadKeys();
          * ****************************************/
 
     }
