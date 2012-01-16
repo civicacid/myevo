@@ -7,6 +7,7 @@
 -- 获得背包物品名称和数量                       function ScanBag()                                              无返回（获取到SendSuccData内容表示成功）
 -- 获得邮箱中所有物品名称以及数量               function ScanInbox()                                            无返回（获取到SendSuccData内容表示成功）
 -- 获取执行结果                                 function SendResult(iNext)                                      返回值中包含TAG_NEXT_PAGE时，需要读取下一页，否则不需要
+-- 商业技能中做物品                             function TradeSkillDO(astrName, aiCount)                        无返回（获取到SendSuccData内容表示成功）
 
 -- 在frame上实时显示物品在邮箱和背包中的数量    function DispItemCount(astrItemName)
 -- 获得背包中指定物品的数量                     function getXXcountInBag(asItemName)
@@ -1246,6 +1247,35 @@ function DispItemCount()
     liMailCount = getXXcountInMail(DisplayItemName)
     liBagCount = getXXcountInBag(DisplayItemName)
     frmDataText:SetText(liBagCount .. "$" .. liMailCount)
+end
+
+
+--------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------     商业技能中做物品     ----------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------
+function TradeSkillDO(astrName, aiCount)
+    SendBeginData()
+
+    local iLoop, numSkills, skillName, liFound
+    liFound = 0
+    numSkills = GetNumTradeSkills()
+    for iLoop = 1, numSkills do
+        skillName = ((select(1,GetTradeSkillInfo(iLoop))))
+        if skillName == astrName then
+            liFound = 1
+            if aiCount > 1 then
+                DoTradeSkill(iLoop)
+            else
+                DoTradeSkill(iLoop, aiCount)
+            end
+            break
+        end
+    end
+    if (liFound == 0)
+        SendErrData("没找到这个物品")
+    else
+        SendSuccData()
+    end
 end
 
 --------------------------------------------------------------------------------------------------------------------------
