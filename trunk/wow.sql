@@ -145,7 +145,7 @@ comment on table autologin is '自动登录计划';
 -- -----------------------------------------------------
 -- table autowork_diag_mine  自动挖矿
 -- -----------------------------------------------------
-create table autologin (
+create table autowork_diag_mine (
    work_id                    number(8)          not null,
    work_desc                  varchar(200)       not null,
    profile                    varchar(200)       not null,
@@ -223,8 +223,8 @@ BEGIN
        WHERE item_id = p_item_id;
    END IF;
    commit;
-END add_item;
-
+END;
+/
 -- 添加魔法
 CREATE OR REPLACE PROCEDURE add_spell
 (
@@ -251,7 +251,7 @@ BEGIN
    END IF;
    COMMIT;
 END add_spell;
-
+/
 -- 添加背包
 CREATE OR REPLACE PROCEDURE add_bag
 (
@@ -284,4 +284,4 @@ BEGIN
        p_item_count);
    COMMIT;
 END;
-
+/
