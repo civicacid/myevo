@@ -195,6 +195,8 @@ namespace LazyEvo.Forms
             txtFight.SelectedIndex = txtFight.FindStringExact(LazySettings.FightFile);
             //txtFight.SelectedText= LazySettings.FightFile;
             txtMap.Text = LazySettings.MapFile;
+            txtDBIP.Text = LazySettings.DBIP;
+            txtDBSid.Text = LazySettings.DBSid;
 
         }
 
@@ -288,6 +290,8 @@ namespace LazyEvo.Forms
             else
             { LazySettings.FightFile = txtFight.SelectedItem.ToString(); }
             LazySettings.MapFile = txtMap.Text;
+            LazySettings.DBIP = txtDBIP.Text;
+            LazySettings.DBSid = txtDBSid.Text;
 
             //Save Setting
             LazySettings.SaveSettings();

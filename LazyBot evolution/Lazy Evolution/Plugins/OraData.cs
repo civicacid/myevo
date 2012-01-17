@@ -15,10 +15,16 @@ namespace LazyEvo.Plugins
         private static bool isConnected;
         private static string connString = "Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=192.168.26.170)(PORT=1521))(CONNECT_DATA=(SID=elmp)));User Id=wow;Password=wow123;";
 
+        public static void SetIP(string ipaddr,string sid)
+        {
+            connString = string.Format("Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST={0})(PORT=1521))(CONNECT_DATA=(SID={1})));User Id=wow;Password=wow123;", ipaddr, sid);
+        }
+
         private static void OraConnect()
         {
             
             isConnected = false;
+            SetIP(LazySettings.DBIP, LazySettings.DBSid);
             try
             {
                 conn = new OracleConnection(connString);
