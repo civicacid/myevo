@@ -1123,29 +1123,7 @@ namespace LazyEvo.Forms
 
         private void buttonX1_Click(object sender, EventArgs e)
         {
-            //Logging.Write(SpyFrame.GetInfoFromFrame());
-            //SpyFrame.GetBagInfo();
-            //OraData.OraConnect();
-            for (int iloop=1;iloop<100000;iloop++)
-            {
-                Logging.Write(string.Format("正在处理{0}........", Convert.ToString(iloop)));
-                Dictionary<string, string> hhh = WowHeadData.GetWowHeadItem(iloop);
-                if (hhh != null)
-                {
-                        string name = hhh["name"];
-                        string quality = hhh["quality"];
-                        if (!string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(quality))
-                        {
-                            name = name.Replace("'", "''");
-                            string sql = string.Format("begin add_item('{0}','{1}','{2}'); end;",Convert.ToString(iloop),name,quality);
-                            Logging.Write(sql);
-                            if (!OraData.execSQLCmd(sql))
-                            {
-                                Logging.Write(string.Format("处理{0}时，出现错误",Convert.ToString(iloop)));
-                            }
-                        }
-                }
-            }
+            SpyData.GetAllSpell();
         }
 
         private void buttonX2_Click(object sender, EventArgs e)

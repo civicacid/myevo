@@ -35,7 +35,8 @@ namespace LazyEvo.Plugins
         public bool Success;
         private Process WOWProc;
 
-        enum ProcStatus { 
+        enum ProcStatus
+        {
             Start,
             Logining,
             Login_OK,
@@ -72,56 +73,86 @@ namespace LazyEvo.Plugins
         public void ProcCheck()
         {
             int iHour;
-            int iMin ;
+            int iMin;
             bool shutdown = false;
 
-            Ticker ff = new Ticker(10000);
+            //Ticker ff = new Ticker(10000);
 
             while (true)
-            { 
-                if (ff.IsReady){
-                    ff.Reset();
-                    iHour = System.DateTime.Now.Hour;
-                    iMin = System.DateTime.Now.Minute;
+            {
+                //if (ff.IsReady)
+                //{
+                //    ff.Reset();
+                if (LazyLib.FSM.Engine.Running) ps = ProcStatus.Working;
 
-                    if (iHour == StartHour && iMin == StartMin && ps == ProcStatus.Start)
+                Thread.Sleep(10000);
+
+                iHour = System.DateTime.Now.Hour;
+                iMin = System.DateTime.Now.Minute;
+
+                if (iHour == StartHour && iMin == StartMin && ps == ProcStatus.Start)
+                {
+                    Logging.Write("开始登录");
+                    ps = ProcStatus.Logining;
+                    WOWProc = null;
+                    StartAuto();
+                }
+                // 检查登录情况
+                if (iHour == StartHour && iMin == StartMin + 10 && ps == ProcStatus.Logining)
+                {
+                    Logging.Write("自动登录没有完成，需要强行关闭客户端");
+                    StopAuto();
+
+                    LazyHelpers.StopAll("自动登录没有完成，需要强行关闭客户端");
+                    Thread.Sleep(1000);
+                    try
                     {
-                        Logging.Write("开始登录");
-                        ps = ProcStatus.Logining;
-                        WOWProc = null;
-                        StartAuto();
+                        WOWProc.Kill();
                     }
-                    // 检查登录情况
-                    if (iHour == StartHour && iMin == StartMin+10 && ps == ProcStatus.Logining)
-                    {
-                        Logging.Write("自动登录没有完成，需要强行关闭客户端");
-                        StopAuto();
+                    catch { };
+                    // 自动登录失败，就不继续角色了
+                    ps = ProcStatus.Login_Fail;
+                    StopProc();
 
-                        LazyHelpers.StopAll("自动登录没有完成，需要强行关闭客户端");
-                        Thread.Sleep(1000);
+                }
+
+                // 登录完成，读取地图和角色文件也完成，启动Bot
+                if (ps == ProcStatus.Login_OK)
+                {
+                    Thread.Sleep(1000);
+                    LazyHelpers.StartBotting();
+                    ps = ProcStatus.Working;
+                }
+
+                // 自动停止发生后，关闭WOW
+                if (ps == ProcStatus.Working && !LazyLib.FSM.Engine.Running)
+                {
+                    Logging.Write("自动停止发生后，关闭WOW");
+                    if (WOWProc != null)
+                    {
                         try
                         {
                             WOWProc.Kill();
                         }
                         catch { };
-                        // 自动登录失败，就不继续角色了
-                        ps = ProcStatus.Login_Fail;
-                        StopProc();
-
                     }
+                    ps = ProcStatus.Start;
+                }
 
-                    // 登录完成，读取地图和角色文件也完成，启动Bot
-                    if (ps == ProcStatus.Login_OK)
+                // 时间到了，Kill Process
+                if (iHour == StopHour && iMin == StopMin && ps == ProcStatus.Working)
+                {
+                    Logging.Write("时间到，设置关闭标志");
+                    shutdown = true;
+                }
+
+                if (shutdown)
+                {
+                    if (LazyEvo.Forms.Helpers.LazyForms.MainForm.Text.ToLower().Equals("navigating"))
                     {
+                        LazyHelpers.StopAll("时间到了，Kill Process");
+                        SpyDB.SaveInfo_Bag(SpyFrame.lua_GetBagInfo());
                         Thread.Sleep(1000);
-                        LazyHelpers.StartBotting();
-                        ps = ProcStatus.Working;
-                    }
-
-                    // 自动停止发生后，关闭WOW
-                    if (ps == ProcStatus.Working && !LazyLib.FSM.Engine.Running)
-                    {
-                        Logging.Write("自动停止发生后，关闭WOW");
                         if (WOWProc != null)
                         {
                             try
@@ -131,35 +162,11 @@ namespace LazyEvo.Plugins
                             catch { };
                         }
                         ps = ProcStatus.Start;
+                        shutdown = false;
                     }
-
-                    // 时间到了，Kill Process
-                    if (iHour == StopHour && iMin == StopMin && ps == ProcStatus.Working)
-                    {
-                        Logging.Write("时间到，设置关闭标志");
-                        shutdown = true;
-                    }
-
-                    if (shutdown)
-                    {
-                        if (LazyEvo.Forms.Helpers.LazyForms.MainForm.Text.ToLower().Equals("navigating"))
-                        {
-                            LazyHelpers.StopAll("时间到了，Kill Process");
-                            Thread.Sleep(1000);
-                            if (WOWProc != null)
-                            {
-                                try
-                                {
-                                    WOWProc.Kill();
-                                }
-                                catch { };
-                            }
-                            ps = ProcStatus.Start;
-                            shutdown = false;
-                        }
-                    }
-
                 }
+
+                //}
             }
         }
 
@@ -322,7 +329,7 @@ namespace LazyEvo.Plugins
                 SetForegroundWindow(hwnd);
             }
         }
-        
+
         public static List<WoWAccount> WoWAccountList;
 
         private static void Query(string sql)
@@ -333,17 +340,20 @@ namespace LazyEvo.Plugins
             }
             catch (Exception ex)
             {
-                Logging.Write(string.Format("执行SQL【{0}】时发生错误：",sql) + ex.ToString());
+                Logging.Write(string.Format("执行SQL【{0}】时发生错误：", sql) + ex.ToString());
             }
         }
 
         private static DataTable GetTableData(string Table)
         {
             DataTable dt = new DataTable();
-            try{
+            try
+            {
                 dt = OraData.execSQL("select * from " + Table);
                 return dt;
-            }catch(Exception ex){
+            }
+            catch (Exception ex)
+            {
                 Logging.Write("获取表数据时发生错误：" + ex.ToString());
                 return dt;
             }
@@ -361,16 +371,16 @@ namespace LazyEvo.Plugins
                 WoWAccount SingleWOWAccount;
                 WoWChar SingleWOWChar;
                 List<WoWAccount> ListWoWA = new List<WoWAccount>();
-                
+
                 foreach (DataRow DRWOWAccount in DTWOWAccount.Rows)
                 {
-                    
+
                     SingleWOWAccount.AccountName = DRWOWAccount["acc_name"].ToString();
                     SingleWOWAccount.AccountPass = DRWOWAccount["acc_pass"].ToString();
                     SingleWOWAccount.CharList = DRWOWAccount["acc_list"].ToString();
 
                     List<WoWChar> ListWoWC = new List<WoWChar>();
-                    foreach (DataRow DRWOWChar in DTWOWChar.Select("acc_name='" + SingleWOWAccount.AccountName+"'"))
+                    foreach (DataRow DRWOWChar in DTWOWChar.Select("acc_name='" + SingleWOWAccount.AccountName + "'"))
                     {
                         SingleWOWChar.CharName = DRWOWChar["char_name"].ToString();
                         SingleWOWChar.Server = DRWOWChar["server"].ToString();
@@ -392,7 +402,7 @@ namespace LazyEvo.Plugins
         public static void UpdateWOWAccount(String ChangeAccName, String ChangeAccPass, String ChangeAccList)
         {
             string sql;
-            sql = string.Format("update wowaccount set acc_pass='{0}', acc_list='{1}' where acc_name='{2}'", 
+            sql = string.Format("update wowaccount set acc_pass='{0}', acc_list='{1}' where acc_name='{2}'",
                                 ChangeAccPass, ChangeAccList, ChangeAccName);
             Query(sql);
         }
@@ -400,11 +410,11 @@ namespace LazyEvo.Plugins
         public static void UpdateWOWChar(String AccName, String CharName, String Server, int CharIdx)
         {
             string sql;
-            sql = string.Format("update wowchar set server='{0}', char_idx={1} where acc_name='{2}' and char_name='{3}'", 
+            sql = string.Format("update wowchar set server='{0}', char_idx={1} where acc_name='{2}' and char_name='{3}'",
                                 Server, Convert.ToString(CharIdx), AccName, CharName);
             Query(sql);
         }
-        
+
         public static void NewWOWAccount(String ChangeAccName, String ChangeAccPass, String ChangeAccList)
         {
             string sql;
@@ -482,7 +492,7 @@ namespace LazyEvo.Plugins
             string rtv, resultString;
             int count;
 
-            
+
             // 发送取结果的命令
             KeyHelper.SendLuaOverChat("/script SendResult(1)");
             while (GetInfoFromFrame() == LUA_RUNNING_STRING)
@@ -515,7 +525,7 @@ namespace LazyEvo.Plugins
                 while (GetInfoFromFrame() == LUA_RUNNING_STRING)
                 {
                     Thread.Sleep(10);
-                } 
+                }
                 resultString = GetInfoFromFrame();
                 if (resultString.IndexOf("错误") > 0)
                 {
@@ -573,7 +583,7 @@ namespace LazyEvo.Plugins
                 {
                     if (iLoop % 2 == 0)
                     {
-                        bag.Add(split[iLoop], Convert.ToInt16(split[iLoop+1]));
+                        bag.Add(split[iLoop], Convert.ToInt16(split[iLoop + 1]));
                     }
                 }
             }
@@ -627,7 +637,7 @@ namespace LazyEvo.Plugins
         }
 
         // 给人发邮件
-        public static bool lua_SendItemByName(string receiver , string itemname)
+        public static bool lua_SendItemByName(string receiver, string itemname)
         {
             if (!MailFrame.Open)
             {
@@ -637,12 +647,12 @@ namespace LazyEvo.Plugins
             MailFrame.ClickInboxTab();
             Thread.Sleep(500);
             MailFrame.ClickSendMailTab();
-            Thread.Sleep(500); 
+            Thread.Sleep(500);
             while (true)
             {
                 if (MailFrame.CurrentTabIsSendMail) break;
                 MailFrame.ClickSendMailTab();
-                Thread.Sleep(500); 
+                Thread.Sleep(500);
             }
             Thread.Sleep(500);
             KeyLowHelper.PressKey(MicrosoftVirtualKeys.Escape);
@@ -652,7 +662,7 @@ namespace LazyEvo.Plugins
             MailFrame.ClickInboxTab();
             return true;
         }
-        
+
         // 获取邮件
         public static bool lua_GetMAILAsItem(string ItemName, int ItemCount)
         {
@@ -693,7 +703,7 @@ namespace LazyEvo.Plugins
             int ReTryCount = 0;
 
             // 调用lua，收集背包物品信息
-            KeyHelper.SendLuaOverChat(string.Format("/script AHSearchDoor(\"{0}\")",itemname));
+            KeyHelper.SendLuaOverChat(string.Format("/script AHSearchDoor(\"{0}\")", itemname));
             ReTryCount = 0;
             result = null;
             while (GetInfoFromFrame() == LUA_RUNNING_STRING)
@@ -777,10 +787,31 @@ namespace LazyEvo.Plugins
         {
             return ExecSimpleLua(string.Format("/script SetDisplayItemName(\"{0}\")", ItemName));
         }
+
+        public static bool lua_TradeSkillDO(string ItemName, int count)
+        {
+            return ExecSimpleLua(string.Format("/script TradeSkillDO(\"{0}\",{1})", ItemName, count));
+        }
+
+        public static bool OpenProfession(string pName)
+        {
+            while (InterfaceHelper.GetFrames.Count == 0)
+            {
+                Thread.Sleep(100);
+            }
+            Frame InfoFrame = InterfaceHelper.GetFrameByName("SpellbookMicroButton");
+            InfoFrame.LeftClick();
+            Thread.Sleep(500);
+            InfoFrame = InterfaceHelper.GetFrameByName("SpellBookFrameTabButton2");
+            InfoFrame.LeftClick();
+            Thread.Sleep(500);
+            return true;
+        }
+
         public static Dictionary<string, int> GetDispCountItemCount()
         {
             Dictionary<string, int> ItemCount = new Dictionary<string, int>();
-            ItemCount.Add("BAG",0);
+            ItemCount.Add("BAG", 0);
             ItemCount.Add("MAIL", 0);
             while (InterfaceHelper.GetFrames.Count == 0)
             {
@@ -826,7 +857,7 @@ namespace LazyEvo.Plugins
             logger.Add("开始发送邮件");
             foreach (KeyValuePair<string, string> mail in MailList)
             {
-                logger.Add(string.Format("开始发送{0}到{1}",mail.Key,mail.Value));
+                logger.Add(string.Format("开始发送{0}到{1}", mail.Key, mail.Value));
                 if (bag.ContainsKey(mail.Key))
                 {
                     if (!SpyFrame.lua_SendItemByName(mail.Value, mail.Key))
@@ -841,6 +872,11 @@ namespace LazyEvo.Plugins
                 }
             }
             return true;
+        }
+
+        public static bool DoItems(string item, int count)
+        {
+            return SpyFrame.lua_TradeSkillDO(item, count);
         }
     }
 
@@ -879,6 +915,116 @@ namespace LazyEvo.Plugins
         }
     }
 
+    //珠宝加工
+    public static class SpyZBJG
+    {
+        public static Dictionary<string, int> CreationList;                     //制作列表(产品：数量)
+        public static Dictionary<string, string> CreationMap;               //对照关系(产品：原料)
+        public static Dictionary<string, string> MailList;                  //发货列表
+        public static DBLogger logger = new DBLogger("珠宝加工+邮寄");
+
+        public static void GoGo()
+        {
+            DoAction();
+            logger.output();
+        }
+
+        public static void DoAction()
+        {
+            // 打开邮箱
+            if (!MailManager.TargetMailBox())
+            {
+                logger.Add("任务附近没有邮箱，失败啊。。。");
+                return;
+            }
+
+            int CountJump = 0;
+            foreach (KeyValuePair<string, int> Creation in CreationList)
+            {
+                string ToDoWhat = Creation.Key;
+                int ToDoCount = Creation.Value;
+                if (!SpyFrame.lua_SetDispCountItemName(CreationMap[ToDoWhat]))
+                {
+                    logger.Add(string.Format("在执行SetDispCountItemName时出错，需要制作{0}的原料{1}", ToDoWhat, CreationMap[ToDoWhat]));
+                    return;
+                }
+                Thread.Sleep(1000);
+                Dictionary<string, int> ItemCount = SpyFrame.GetDispCountItemCount();
+                if (ItemCount["BAG"] == 0 && ItemCount["MAIL"] == 0)
+                {
+                    logger.Add(string.Format("在邮箱和背包中都没有找到{0}的原料{1}，跳过这个", ToDoWhat, CreationMap[ToDoWhat]));
+                    continue;
+                }
+                int GetItemFromMail = 0;
+                if (ItemCount["BAG"] + ItemCount["MAIL"] > ToDoCount)           //原料足够
+                {
+                    if (ItemCount["BAG"] > ToDoCount)
+                        GetItemFromMail = 0;
+                    else
+                        GetItemFromMail = ToDoCount - ItemCount["BAG"];
+                }
+                else                                                            //原料不够
+                {
+                    GetItemFromMail = ItemCount["MAIL"];
+                }
+
+                if (Inventory.FreeBagSlots < 3)
+                {
+                    logger.Add(string.Format("背包空间应该大于3，否则无法进行"));
+                    return;
+                }
+
+                int HasDone = 0;
+                while (HasDone < ToDoCount)
+                {
+                    // 包剩余空间少于2，就开始邮寄
+                    if (Inventory.FreeBagSlots <= 2)
+                    {
+                        // 发邮件
+                        logger.Add("发邮件");
+                        if (!SpyTradeSkill.SendMain(MailList, logger)) return;
+                    }
+                    ItemCount = SpyFrame.GetDispCountItemCount();
+                    // 当前包有没有原料，有就做，没有就拿，拿的时候判断包空间，如果空间足够，就一次拿完
+                    if (ItemCount["BAG"] > 0)
+                    {
+                        // 打开界面
+                        // 做东西
+                        if (!SpyTradeSkill.DoItems(ToDoWhat, ItemCount["BAG"]))
+                        {
+                            logger.Add(string.Format("做{0}时出现错误", ToDoWhat));
+                            return;
+                        }
+                        HasDone += ItemCount["BAG"];
+                        CountJump++;
+                        if (CountJump == 10)
+                        {
+                            // jump一下，防止AFK
+                            CountJump = 0;
+                            logger.Add("jump一下，防止AFK");
+                            KeyLowHelper.PressKey(MicrosoftVirtualKeys.Space);
+                            KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.Space);
+                            Thread.Sleep(5000);
+                        }
+                    }
+                    else
+                    {
+                        logger.Add(string.Format("从邮箱里面拿{0}的原料{1}",ToDoWhat, CreationMap[ToDoWhat]));
+                        int GetItemCount = 0;
+                        GetItemCount = ((Inventory.FreeBagSlots - 3) * 20 - HasDone > 0 ? ToDoCount - HasDone : (Inventory.FreeBagSlots - 3) * 20);
+                        if (!SpyFrame.lua_GetMAILAsItem(CreationMap[ToDoWhat], GetItemCount, 0))
+                        {
+                            logger.Add(string.Format("从邮箱里面拿{0}的原料{1}失败", ToDoWhat, CreationMap[ToDoWhat]));
+                            return;
+                        }
+                    }
+                }
+                // 发邮件
+                logger.Add(string.Format("东西做完，发邮件"));
+                if (!SpyTradeSkill.SendMain(MailList, logger)) return;
+            }
+        }
+    }
     // 分解矿+邮寄
     public static class SpyMineAndMail
     {
@@ -900,7 +1046,7 @@ namespace LazyEvo.Plugins
                 logger.Add("任务附近没有邮箱，失败啊。。。");
                 return;
             }
-            
+
             int CountJump = 0;
             foreach (string DoingMine in Mines)
             {
@@ -1041,7 +1187,8 @@ namespace LazyEvo.Plugins
             foreach (DataRow dr in Items.Rows)
             {
                 logger.Add("检查背包剩余空间");
-                if (Inventory.FreeBagSlots <= 1){
+                if (Inventory.FreeBagSlots <= 1)
+                {
                     logger.Add("检查背包剩余空间为1，不能继续");
                     return false;
                 }
@@ -1067,7 +1214,7 @@ namespace LazyEvo.Plugins
                                 : 0
                                 ;
                 // 拿邮件(LUA)
-                logger.Add(string.Format("从邮箱中拿{0}个{1}",WantCount,mine));
+                logger.Add(string.Format("从邮箱中拿{0}个{1}", WantCount, mine));
                 if (!SpyFrame.lua_GetMAILAsItem(mine, WantCount))
                 {
                     logger.Add("从邮箱里面拿  " + mine + " 失败");
@@ -1101,7 +1248,7 @@ namespace LazyEvo.Plugins
                 return false;
             }
             Thread.Sleep(2000);
-            
+
             // 上货。 遍历待拍卖物品，扫描物品最低价格，最低价格不低于起拍价格，就上架
             logger.Add(string.Format("开始上货"));
             foreach (DataRow dr in Items.Rows)
@@ -1200,7 +1347,7 @@ namespace LazyEvo.Plugins
             In_AlreadyEnter             //进入副本
         }
 
-        public static bool Init(string _fbname,string _leadername,Location _fbin,Location _fbout, Dictionary<int, Location> _lloc, Dictionary<int, Location> _path,Dictionary<int, int> _map)
+        public static bool Init(string _fbname, string _leadername, Location _fbin, Location _fbout, Dictionary<int, Location> _lloc, Dictionary<int, Location> _path, Dictionary<int, int> _map)
         {
             LastLeaderStep = 0;
             FBStatus = DBStatus.In_EntryChecking;
@@ -1233,7 +1380,7 @@ namespace LazyEvo.Plugins
 
         public static void gogo()
         {
-            Dictionary<int, Location> nowpath= new Dictionary<int, Location>();
+            Dictionary<int, Location> nowpath = new Dictionary<int, Location>();
             while (true)
             {
                 switch (FBStatus)
@@ -1285,8 +1432,8 @@ namespace LazyEvo.Plugins
                     case DBStatus.Out_Exiting:
                         break;
                     case DBStatus.Out_ExitDone:
-                        KeyHelper.SendLuaOverChat("/follow "+leader.Name);
-                        KeyHelper.SendLuaOverChat(string.Format("/whisper {0} {1}",leader.Name,me.Name+"已经跟随"));
+                        KeyHelper.SendLuaOverChat("/follow " + leader.Name);
+                        KeyHelper.SendLuaOverChat(string.Format("/whisper {0} {1}", leader.Name, me.Name + "已经跟随"));
                         FBStatus = DBStatus.Out_following;
                         break;
                     case DBStatus.Out_following:
@@ -1330,7 +1477,7 @@ namespace LazyEvo.Plugins
             {
                 // 找不到人了，然后判断我在哪里
                 if (me.ZoneText == FBName)
-                    return false; 
+                    return false;
                 else
                     return true;
             }
@@ -1362,7 +1509,7 @@ namespace LazyEvo.Plugins
         public static Dictionary<int, Location> GetMemPath()
         {
             Dictionary<int, Location> path = new Dictionary<int, Location>();
-            
+
             foreach (KeyValuePair<int, int> mm in MapOverLeaderAndMem)
             //foreach (KeyValuePair<int, Location> mm in memInFB)
             {
@@ -1384,7 +1531,7 @@ namespace LazyEvo.Plugins
             {
                 Location _destination = dest.Value;
                 double _stopDistance = 1;
-                
+
                 int stuck = 0;
                 double destinationDistance = _destination.DistanceToSelf2D;
                 while (destinationDistance > _stopDistance)
@@ -1418,7 +1565,7 @@ namespace LazyEvo.Plugins
                         MoveHelper.ReleaseKeys();
                     }
                     Thread.Sleep(10);
-                } 
+                }
             }
             return true;
 
@@ -1435,4 +1582,71 @@ namespace LazyEvo.Plugins
          * ****************************************/
 
     }
+
+    public static class SpyData
+    {
+        public static void GetAllItem()
+        {
+            for (int iloop = 1; iloop < 100000; iloop++)
+            {
+                Logging.Write(string.Format("正在处理{0}........", Convert.ToString(iloop)));
+                Dictionary<string, string> hhh = WowHeadData.GetWowHeadItem(iloop);
+                if (hhh != null)
+                {
+                    string name = hhh["name"];
+                    string quality = hhh["quality"];
+                    if (!string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(quality))
+                    {
+                        name = name.Replace("'", "''");
+                        string sql = string.Format("begin add_item('{0}','{1}','{2}'); end;", Convert.ToString(iloop), name, quality);
+                        Logging.Write(sql);
+                        if (!OraData.execSQLCmd(sql))
+                        {
+                            Logging.Write(string.Format("处理{0}时，出现错误", Convert.ToString(iloop)));
+                        }
+                    }
+                }
+            }
+        }
+        public static void GetAllSpell()
+        {
+            for (int iloop = 1; iloop < 100000; iloop++)
+            {
+                Logging.Write(string.Format("正在处理{0}........", Convert.ToString(iloop)));
+                string name = WowHeadData.GetWowHeadSpell(iloop);
+                if (name != null)
+                {
+                    if (!string.IsNullOrEmpty(name))
+                    {
+                        name = name.Replace("'", "''");
+                        string sql = string.Format("begin add_spell('{0}','{1}'); end;", Convert.ToString(iloop), name);
+                        Logging.Write(sql);
+                        if (!OraData.execSQLCmd(sql))
+                        {
+                            Logging.Write(string.Format("处理{0}时，出现错误", Convert.ToString(iloop)));
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public static class SpyDB
+    {
+        public static void SaveInfo_Bag(Dictionary<string, int> bag)
+        {
+            if (bag == null) return;
+            foreach (KeyValuePair<string, int> item in bag)
+            {
+                string sql = string.Format("begin add_bag('{0}','{1}',{2}); end;", ObjectManager.MyPlayer.Name, item.Key,item.Value);
+                Logging.Write(sql);
+                if (!OraData.execSQLCmd(sql))
+                {
+                    Logging.Write(string.Format("处理{0}时，出现错误", Convert.ToString(iloop)));
+                }
+            }
+        }
+    }
+
+    
 }

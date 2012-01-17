@@ -106,6 +106,8 @@ namespace LazyLib
         public static string StopMin;
         public static string FightFile;
         public static string MapFile;
+        public static string DBIP;
+        public static string DBSid;
 
         public static void LoadSettings()
         {
@@ -185,6 +187,8 @@ namespace LazyLib
             StopMin = pIniManager.GetString("Config", "StopMin", "");
             FightFile = pIniManager.GetString("Config", "FightFile", "");
             MapFile = pIniManager.GetString("Config", "MapFile", "");
+            DBIP = pIniManager.GetString("Config", "DBIP", "");
+            DBSid = pIniManager.GetString("Config", "DBSid", "");
         }
 
         public static void SaveSettings()
@@ -263,6 +267,8 @@ namespace LazyLib
             pIniManager.IniWriteValue("Config", "StopMin", StopMin);
             pIniManager.IniWriteValue("Config", "FightFile", FightFile);
             pIniManager.IniWriteValue("Config", "MapFile", MapFile);
+            pIniManager.IniWriteValue("Config", "DBIP", DBIP);
+            pIniManager.IniWriteValue("Config", "DBSid", DBSid);
         }
     }
 }
