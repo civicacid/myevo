@@ -39,6 +39,16 @@ create table items (
 comment on table items is '物品数据库';
 
 -- -----------------------------------------------------
+-- table spells
+-- -----------------------------------------------------
+create table spells (
+    spell_id         varchar(10)     not null ,
+    spell_name       varchar(98)     not null ,
+    primary key (spell_id)
+);
+comment on table spells is '法术数据库';
+
+-- -----------------------------------------------------
 -- table ahdata
 -- -----------------------------------------------------
 create table ahdata (
@@ -76,9 +86,9 @@ comment on column charcreation.tradeskill is '商业技能(1-珠宝，2-铭文，3-锻造，4
 -- -----------------------------------------------------
 create table itemsinbag (
    item_id                       varchar(10)                      not null ,
-   item_name                     varchar(98)                       not null ,
+   item_name                     varchar(98)                      not null ,
    char_id                       number(8)                        not null ,
-   char_name                     varchar(98)                       not null ,
+   char_name                     varchar(98)                      not null ,
    item_count                    number(8)      default 0         not null ,
    last_scan_time                date           default sysdate   not null ,
    constraint pk_itemsinbag primary key (item_id) ,
@@ -214,3 +224,64 @@ BEGIN
    END IF;
    commit;
 END add_item;
+
+-- 添加魔法
+CREATE OR REPLACE PROCEDURE add_spell
+(
+   p_spell_id   STRING,
+   p_spell_name STRING
+) IS
+   v_count INTEGER;
+BEGIN
+   SELECT COUNT(1)
+     INTO v_count
+     FROM dual
+    WHERE EXISTS (SELECT 1 FROM spells WHERE spell_id = p_spell_id);
+   IF v_count = 0 THEN
+      INSERT INTO spells
+         (spell_id,
+          spell_name)
+      VALUES
+         (p_spell_id,
+          p_spell_name);
+   ELSE
+      UPDATE spells
+         SET spell_name = p_spell_name
+       WHERE spell_id = p_spell_id;
+   END IF;
+   COMMIT;
+END add_spell;
+
+-- 添加背包
+CREATE OR REPLACE PROCEDURE add_bag
+(
+   p_char_name  STRING,
+   p_item_name  STRING,
+   p_item_count INTEGER
+) IS
+   v_i_char_id INTEGER;
+   v_i_item_id INTEGER;
+BEGIN
+   SELECT char_id
+     INTO v_i_char_id
+     FROM wowchar
+    WHERE char_name = p_char_name;
+   SELECT item_id
+     INTO v_i_item_id
+     FROM items
+    WHERE item_name = p_item_name;
+   INSERT INTO itemsinbag
+      (item_id,
+       item_name,
+       char_id,
+       char_name,
+       item_count)
+   VALUES
+      (v_i_char_id,
+       p_char_name,
+       v_i_item_id,
+       p_item_name,
+       p_item_count);
+   COMMIT;
+END;
+
