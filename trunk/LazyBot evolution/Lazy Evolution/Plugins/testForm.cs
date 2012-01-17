@@ -23,7 +23,7 @@ namespace LazyEvo.Plugins
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Dictionary<string,int> hhh = SpyFrame.lua_GetBagInfo();
+            Dictionary<string, int> hhh = SpyFrame.lua_GetBagInfo();
             dataGridView1.DataSource = hhh.ToList();
             //dataGridView1.bin
             dataGridView1.Refresh();
@@ -60,7 +60,31 @@ namespace LazyEvo.Plugins
         private void button2_Click(object sender, EventArgs e)
         {
             SpyAH.init();
-            
+
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            textBox1.AppendText("小号 " + ObjectManager.MyPlayer.Name +
+                                string.Format(" 的当前坐标是：[{0}]，属于Step{1}",
+                                ObjectManager.MyPlayer.Location.ToString(),
+                                Convert.ToString(Step.Value)+"\r\n"
+                ));
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtLeader.Text)) return;
+            foreach (PUnit unit in ObjectManager.GetUnits)
+            {
+                if (unit.Name.Equals(txtLeader.Text))
+                {
+                    textBox1.AppendText("大号 " + unit.Name + string.Format(" 的当前坐标是：[{0}]，属于Step{1}",
+                                unit.Location.ToString(),
+                                Convert.ToString(Step.Value)) + "\r\n"
+                                );
+                }
+            }
         }
 
     }
