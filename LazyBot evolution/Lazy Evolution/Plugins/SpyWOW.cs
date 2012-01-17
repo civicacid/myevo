@@ -1321,9 +1321,11 @@ namespace LazyEvo.Plugins
         private static PPlayerSelf me = ObjectManager.MyPlayer;
         public static Location FBEntry;                             // 副本入口
         public static Location FBExit;                              // 副本出口
+        public static string FBEndPass = "OKOK";
+        public static string LeaderWord;
 
-        public static Dictionary<int, Location> LeaderInFB;         // Step，坐标
-        public static Dictionary<int, Location> memInFB;            // 路径编号，坐标
+        public static Location[] LeaderInFB;                        // Step，坐标
+        public static Location[] memInFB;                           // 路径编号，坐标
         public static Dictionary<int, int> MapOverLeaderAndMem;     // 小号路径编号，大号step
 
         public static string FBName;
@@ -1347,7 +1349,7 @@ namespace LazyEvo.Plugins
             In_AlreadyEnter             //进入副本
         }
 
-        public static bool Init(string _fbname, string _leadername, Location _fbin, Location _fbout, Dictionary<int, Location> _lloc, Dictionary<int, Location> _path, Dictionary<int, int> _map)
+        public static bool Init(string _fbname, string _leadername, Location _fbin, Location _fbout, Location[] _lloc, Location[] _path, Dictionary<int, int> _map)
         {
             LastLeaderStep = 0;
             FBStatus = DBStatus.In_EntryChecking;
@@ -1496,7 +1498,7 @@ namespace LazyEvo.Plugins
 
         public static bool IsLeaderInScope()
         {
-            if (!LeaderInFB.ContainsKey(LastLeaderStep + 1)) return false;
+            if (LeaderInFB.Length < LastLeaderStep + 1) return false;
             double dd = me.Location.DistanceFromXY(LeaderInFB[LastLeaderStep + 1]);
             if (dd < Scope)
             {
@@ -1523,7 +1525,7 @@ namespace LazyEvo.Plugins
         }
 
         // 根据路点跑
-        public static bool MeGoGo(Dictionary<int, Location> path)
+        public static bool MeGoGo(Dictionary<int, Location> path, bool isBack)
         {
             Ticker StuckTimer = new Ticker(300000); //5 min
             Ticker _stuckTimer = new Ticker(3000);
@@ -1642,7 +1644,7 @@ namespace LazyEvo.Plugins
                 Logging.Write(sql);
                 if (!OraData.execSQLCmd(sql))
                 {
-                    Logging.Write(string.Format("处理{0}时，出现错误", Convert.ToString(iloop)));
+                    Logging.Write(string.Format("执行{0}时，出现错误", sql));
                 }
             }
         }

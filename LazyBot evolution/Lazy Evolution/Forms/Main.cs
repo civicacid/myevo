@@ -446,6 +446,7 @@ namespace LazyEvo.Forms
         public void WhisperMessage(string message)
         {
             AppendMessage(ChatWhisper, message, Color.Black);
+            SpyFB.LeaderWord = message;
         }
 
         private void Logging_OnWrite(string message, LogType logType)
@@ -926,7 +927,27 @@ namespace LazyEvo.Forms
             _wowProc = Process.GetProcessesByName("Wow");
             foreach (Process proc in _wowProc)
             {
-                MainComProcessSelection.Items.Add(proc.MainWindowTitle + "- " + proc.Id);
+                string name = "Not ingame";
+                if (Memory.OpenProcess(proc.Id))
+                {
+                    try
+                    {
+                        if (Memory.Read<byte>(Memory.BaseAddress + (uint)PublicPointers.InGame.InGame) == 1)
+                        {
+                            try
+                            {
+                                name = Memory.ReadUtf8(Memory.BaseAddress + (uint)PublicPointers.Globals.PlayerName, 256);
+                            }
+                            catch
+                            {
+                            }
+                        }
+                    }
+                    catch
+                    {
+                    }
+                }
+                MainComProcessSelection.Items.Add(proc.MainWindowTitle + "- " + proc.Id + " - " + name);
             }
             if (MainComProcessSelection.Items.Count == 0)
                 MainComProcessSelection.Items.Add("No game");
