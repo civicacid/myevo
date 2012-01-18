@@ -54,6 +54,7 @@
             this.superTabControlPanel5 = new DevComponents.DotNetBar.SuperTabControlPanel();
             this.buttonX3 = new DevComponents.DotNetBar.ButtonX();
             this.CBDebug = new DevComponents.DotNetBar.Controls.CheckBoxX();
+            this.buttonX1 = new DevComponents.DotNetBar.ButtonX();
             this.buttonX2 = new DevComponents.DotNetBar.ButtonX();
             this.buttonItem1 = new DevComponents.DotNetBar.ButtonItem();
             this.buttonItem2 = new DevComponents.DotNetBar.ButtonItem();
@@ -62,7 +63,6 @@
             this.MainGPPlayer = new DevComponents.DotNetBar.Controls.GroupPanel();
             this.labelX1 = new DevComponents.DotNetBar.LabelX();
             this.MainPBPlayerHP = new DevComponents.DotNetBar.Controls.ProgressBarX();
-            this.buttonX1 = new DevComponents.DotNetBar.ButtonX();
             this.MainLBPlayerPower = new DevComponents.DotNetBar.LabelX();
             this.LBVersion = new DevComponents.DotNetBar.LabelX();
             this.MainPBPlayerPower = new DevComponents.DotNetBar.Controls.ProgressBarX();
@@ -105,6 +105,9 @@
             this.comboItem3 = new DevComponents.Editors.ComboItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.StatsText = new System.Windows.Forms.ToolStripStatusLabel();
+            this.buttonX4 = new DevComponents.DotNetBar.ButtonX();
+            this.buttonItem4 = new DevComponents.DotNetBar.ButtonItem();
+            this.txtDaHao = new System.Windows.Forms.TextBox();
             this.ControlSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.superTabControl5)).BeginInit();
             this.superTabControl5.SuspendLayout();
@@ -386,6 +389,8 @@
             // 
             // superTabControlPanel5
             // 
+            this.superTabControlPanel5.Controls.Add(this.txtDaHao);
+            this.superTabControlPanel5.Controls.Add(this.buttonX4);
             this.superTabControlPanel5.Controls.Add(this.buttonX3);
             this.superTabControlPanel5.Controls.Add(this.CBDebug);
             this.superTabControlPanel5.Controls.Add(this.buttonX1);
@@ -424,7 +429,7 @@
             // 
             this.CBDebug.BackgroundStyle.Class = "";
             this.CBDebug.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.CBDebug.Font = new System.Drawing.Font("NSimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.CBDebug.Font = new System.Drawing.Font("新宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.CBDebug.Location = new System.Drawing.Point(348, 399);
             this.CBDebug.Margin = new System.Windows.Forms.Padding(4);
             this.CBDebug.Name = "CBDebug";
@@ -434,6 +439,19 @@
             this.CBDebug.Text = "Log debug";
             this.CBDebug.CheckedChanged += new System.EventHandler(this.CBDebug_CheckedChanged);
             // 
+            // buttonX1
+            // 
+            this.buttonX1.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
+            this.buttonX1.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
+            this.buttonX1.Location = new System.Drawing.Point(218, 401);
+            this.buttonX1.Margin = new System.Windows.Forms.Padding(4);
+            this.buttonX1.Name = "buttonX1";
+            this.buttonX1.Size = new System.Drawing.Size(106, 28);
+            this.buttonX1.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.buttonX1.TabIndex = 76;
+            this.buttonX1.Text = "抓取Item数据";
+            this.buttonX1.Click += new System.EventHandler(this.buttonX1_Click);
+            // 
             // buttonX2
             // 
             this.buttonX2.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
@@ -441,14 +459,14 @@
             this.buttonX2.Location = new System.Drawing.Point(455, 32);
             this.buttonX2.Margin = new System.Windows.Forms.Padding(4);
             this.buttonX2.Name = "buttonX2";
-            this.buttonX2.Size = new System.Drawing.Size(98, 27);
+            this.buttonX2.Size = new System.Drawing.Size(172, 27);
             this.buttonX2.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.buttonX2.SubItems.AddRange(new DevComponents.DotNetBar.BaseItem[] {
             this.buttonItem1,
             this.buttonItem2,
             this.buttonItem3});
             this.buttonX2.TabIndex = 77;
-            this.buttonX2.Text = "buttonX2";
+            this.buttonX2.Text = "获取所有魔法";
             this.buttonX2.Visible = false;
             this.buttonX2.Click += new System.EventHandler(this.buttonX2_Click);
             // 
@@ -479,7 +497,7 @@
             // 
             this.CBTopMost.BackgroundStyle.Class = "";
             this.CBTopMost.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.CBTopMost.Font = new System.Drawing.Font("NSimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.CBTopMost.Font = new System.Drawing.Font("新宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.CBTopMost.Location = new System.Drawing.Point(348, 420);
             this.CBTopMost.Margin = new System.Windows.Forms.Padding(4);
             this.CBTopMost.Name = "CBTopMost";
@@ -570,19 +588,6 @@
             this.MainPBPlayerHP.Name = "MainPBPlayerHP";
             this.MainPBPlayerHP.Size = new System.Drawing.Size(143, 16);
             this.MainPBPlayerHP.TabIndex = 62;
-            // 
-            // buttonX1
-            // 
-            this.buttonX1.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
-            this.buttonX1.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.buttonX1.Location = new System.Drawing.Point(218, 401);
-            this.buttonX1.Margin = new System.Windows.Forms.Padding(4);
-            this.buttonX1.Name = "buttonX1";
-            this.buttonX1.Size = new System.Drawing.Size(106, 28);
-            this.buttonX1.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.buttonX1.TabIndex = 76;
-            this.buttonX1.Text = "抓取Item数据";
-            this.buttonX1.Click += new System.EventHandler(this.buttonX1_Click);
             // 
             // MainLBPlayerPower
             // 
@@ -796,7 +801,7 @@
             this.LogWin.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(223)))), ((int)(((byte)(234)))), ((int)(((byte)(246)))));
             this.LogWin.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.LogWin.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.LogWin.Font = new System.Drawing.Font("NSimSun", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.LogWin.Font = new System.Drawing.Font("新宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.LogWin.Location = new System.Drawing.Point(0, 0);
             this.LogWin.Margin = new System.Windows.Forms.Padding(4);
             this.LogWin.Name = "LogWin";
@@ -1179,7 +1184,7 @@
             // 
             this.labelX24.BackgroundStyle.Class = "";
             this.labelX24.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX24.Font = new System.Drawing.Font("NSimSun", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.labelX24.Font = new System.Drawing.Font("新宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.labelX24.Location = new System.Drawing.Point(4, 404);
             this.labelX24.Margin = new System.Windows.Forms.Padding(4);
             this.labelX24.Name = "labelX24";
@@ -1273,6 +1278,33 @@
             this.StatsText.Name = "StatsText";
             this.StatsText.Size = new System.Drawing.Size(0, 17);
             // 
+            // buttonX4
+            // 
+            this.buttonX4.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
+            this.buttonX4.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
+            this.buttonX4.Location = new System.Drawing.Point(455, 64);
+            this.buttonX4.Name = "buttonX4";
+            this.buttonX4.Size = new System.Drawing.Size(172, 27);
+            this.buttonX4.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.buttonX4.SubItems.AddRange(new DevComponents.DotNetBar.BaseItem[] {
+            this.buttonItem4});
+            this.buttonX4.TabIndex = 79;
+            this.buttonX4.Text = "副本";
+            // 
+            // buttonItem4
+            // 
+            this.buttonItem4.GlobalItem = false;
+            this.buttonItem4.Name = "buttonItem4";
+            this.buttonItem4.Text = "血色-图书馆（开始）";
+            this.buttonItem4.Click += new System.EventHandler(this.buttonItem4_Click);
+            // 
+            // txtDaHao
+            // 
+            this.txtDaHao.Location = new System.Drawing.Point(455, 97);
+            this.txtDaHao.Name = "txtDaHao";
+            this.txtDaHao.Size = new System.Drawing.Size(172, 26);
+            this.txtDaHao.TabIndex = 80;
+            // 
             // Main
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -1282,8 +1314,9 @@
             this.Controls.Add(this.superTabControl5);
             this.Controls.Add(this.expandableSplitter1);
             this.Controls.Add(this.ControlSettings);
+            this.DoubleBuffered = true;
             this.EnableGlass = false;
-            this.Font = new System.Drawing.Font("NSimSun", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Font = new System.Drawing.Font("新宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
@@ -1389,6 +1422,9 @@
         private DevComponents.DotNetBar.ButtonItem buttonItem2;
         private DevComponents.DotNetBar.ButtonItem buttonItem3;
         public DevComponents.DotNetBar.LabelX LBVersion;
+        private DevComponents.DotNetBar.ButtonX buttonX4;
+        private DevComponents.DotNetBar.ButtonItem buttonItem4;
+        private System.Windows.Forms.TextBox txtDaHao;
     }
 }
 

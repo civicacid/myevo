@@ -1321,26 +1321,28 @@ namespace LazyEvo.Plugins
         private static PPlayerSelf me = ObjectManager.MyPlayer;
         public static Location FBEntry;                             // 副本入口
         public static Location FBExit;                              // 副本出口
-        public static string FBEndPass = "OKOK";
-        public static string LeaderWord;
 
-        public static Location[] LeaderInFB;                        // Step，坐标
-        public static Location[] memInFB;                           // 路径编号，坐标
+        public static Dictionary<int, Location> LeaderInFB;         // Step，坐标
+        public static Dictionary<int, Location> memInFB;            // 路径编号，坐标
         public static Dictionary<int, int> MapOverLeaderAndMem;     // 小号路径编号，大号step
 
-        public static string FBName;
-        private static int Scope = 10;
+        public static string FBEndPass = "OKOK";
+        public static string FBInPass = "ININ";
+        private static string LeaderName = "";
+
+        private static int Scope = 5;
         private static int LastLeaderStep;
 
         private static Thread _Thread;
         private static DBStatus FBStatus;
+        private static ActionStatus _Action;
 
         enum DBStatus
         {
             In_EntryChecking,           //入口检查，确定是否可以开始
             In_LeaderInScopeCheck,      //检查Leader有没有到达预定地点
             In_Running,                 //小号进行本阶段的跑路
-            In_CheckLeaderOut,          //
+            In_CheckIsOut,              //等待大号发出暗语，准备往回跑
             InOut_GoOut,
             Out_Exiting,                //正在退出副本，读条状态
             Out_ExitDone,               //读条结束
@@ -1349,12 +1351,20 @@ namespace LazyEvo.Plugins
             In_AlreadyEnter             //进入副本
         }
 
-        public static bool Init(string _fbname, string _leadername, Location _fbin, Location _fbout, Location[] _lloc, Location[] _path, Dictionary<int, int> _map)
+        enum ActionStatus
+        {
+            Nothing,
+            OutFB,
+            InFB
+        }
+
+        public static bool Init(string _leadername, Location _fbin, Location _fbout, Dictionary<int, Location> _lloc, Dictionary<int, Location> _path, Dictionary<int, int> _map)
         {
             LastLeaderStep = 0;
             FBStatus = DBStatus.In_EntryChecking;
-            if (!SetLeader(_leadername)) return false;
-            FBName = _fbname;
+            _Action = ActionStatus.Nothing;
+            LeaderName = _leadername;
+            if (!SetLeader()) return false;
             FBEntry = _fbin;
             FBExit = _fbout;
             LeaderInFB = _lloc;
@@ -1365,12 +1375,16 @@ namespace LazyEvo.Plugins
 
         public static void StartFB()
         {
-            if (!_Thread.IsAlive)
+            BarMapper.MapBars();
+            KeyHelper.LoadKeys();
+
+            if (_Thread == null || !_Thread.IsAlive)
             {
                 _Thread = new Thread(gogo);
                 _Thread.Name = "FB";
                 _Thread.IsBackground = true;
                 _Thread.Start();
+                Logging.Write("开始了。。。。。");
             }
         }
 
@@ -1380,7 +1394,7 @@ namespace LazyEvo.Plugins
             _Thread = null;
         }
 
-        public static void gogo()
+        private static void gogo()
         {
             Dictionary<int, Location> nowpath = new Dictionary<int, Location>();
             while (true)
@@ -1388,10 +1402,12 @@ namespace LazyEvo.Plugins
                 switch (FBStatus)
                 {
                     case DBStatus.In_EntryChecking:
+                        while (!SetLeader());
                         if (CanStart())
                         {
                             LastLeaderStep = 0;
                             FBStatus = DBStatus.In_LeaderInScopeCheck;
+                            Logging.Write("检查大号是不是在范围内");
                         }
                         break;
 
@@ -1400,6 +1416,7 @@ namespace LazyEvo.Plugins
                         {
                             nowpath = GetMemPath();
                             FBStatus = DBStatus.In_Running;
+                            Logging.Write(string.Format("第{0}次跑路。。。。",LastLeaderStep+1));
                         }
                         break;
 
@@ -1408,7 +1425,8 @@ namespace LazyEvo.Plugins
                         {
                             if (LastLeaderStep == LeaderInFB.Keys.Max())
                             {
-                                FBStatus = DBStatus.In_CheckLeaderOut;
+                                FBStatus = DBStatus.In_CheckIsOut;
+                                Logging.Write(string.Format("等待大号暗语，准备出本"));
                             }
                             else
                             {
@@ -1417,49 +1435,50 @@ namespace LazyEvo.Plugins
                             LastLeaderStep++;
                         }
                         break;
-                    case DBStatus.In_CheckLeaderOut:
-                        if (!IsLeaderInFB())
+                    case DBStatus.In_CheckIsOut:
+                        if (_Action == ActionStatus.OutFB)
                         {
+                            Logging.Write(string.Format("收到暗语，出本！！！"));
+                            MeGoGo(GetMemOutPath());
+
+                            //出副本
+                            Thread.Sleep(200);
                             FBExit.Face();
                             KeyHelper.PressKey("Up");
                             while (ObjectManager.InGame) Thread.Sleep(100);
                             KeyHelper.ReleaseKey("Up");
                             Thread.Sleep(2000);
                             while (!ObjectManager.InGame) Thread.Sleep(100);
+                            _Action = ActionStatus.Nothing;
+                            Logging.Write(string.Format("出来了，等待暗语，准备进本"));
                             FBStatus = DBStatus.Out_ExitDone;
                         }
                         break;
-                    case DBStatus.InOut_GoOut:
-                        break;
-                    case DBStatus.Out_Exiting:
-                        break;
                     case DBStatus.Out_ExitDone:
-                        KeyHelper.SendLuaOverChat("/follow " + leader.Name);
-                        KeyHelper.SendLuaOverChat(string.Format("/whisper {0} {1}", leader.Name, me.Name + "已经跟随"));
-                        FBStatus = DBStatus.Out_following;
-                        break;
-                    case DBStatus.Out_following:
-                        if (!leader.IsValid)
+                        if (_Action == ActionStatus.InFB)
                         {
-                            FBEntry.Face();
-                            KeyHelper.PressKey("Up");
-                            while (ObjectManager.InGame) Thread.Sleep(100);
-                            KeyHelper.ReleaseKey("Up");
-                            Thread.Sleep(2000);
-                            while (!ObjectManager.InGame) Thread.Sleep(100);
-                            FBStatus = DBStatus.In_EntryChecking;
+                            FBStatus = DBStatus.Out_following;
+                            _Action = ActionStatus.Nothing;
                         }
                         break;
-                    case DBStatus.In_Entering:
+                    case DBStatus.Out_following:
+                        Logging.Write(string.Format("进本！！！"));
+                        FBEntry.Face();
+                        KeyHelper.PressKey("Up");
+                        while (ObjectManager.InGame) Thread.Sleep(100);
+                        KeyHelper.ReleaseKey("Up");
+                        Thread.Sleep(2000);
+                        while (!ObjectManager.InGame) Thread.Sleep(100);
+                        Logging.Write(string.Format("又开始了。。。。。"));
+                        FBStatus = DBStatus.In_EntryChecking;
                         break;
-                    case DBStatus.In_AlreadyEnter:
-                        break;
+
                 }
                 Thread.Sleep(100);
             }
         }
 
-        public static bool SetLeader(string LeaderName)
+        private static bool SetLeader()
         {
             foreach (PPlayer unit in ObjectManager.GetPlayers)
             {
@@ -1472,34 +1491,20 @@ namespace LazyEvo.Plugins
             return false;
         }
 
-        public static bool IsLeaderInFB()
-        {
-            // 怎么判断人在副本里面了 ？？
-            if (leader.X == 0 && leader.Y == 0)
-            {
-                // 找不到人了，然后判断我在哪里
-                if (me.ZoneText == FBName)
-                    return false;
-                else
-                    return true;
-            }
-            return false;
-        }
-
         // 是否能开始
-        public static bool CanStart()
+        private static bool CanStart()
         {
             // 要求2个人都在副本区域内才能开始
-            if (me.ZoneText == FBName && leader.X != 0 && leader.Y != 0)
+            if (leader.Name.Equals(LeaderName))
                 return true;
             else
                 return false;
         }
 
-        public static bool IsLeaderInScope()
+        private static bool IsLeaderInScope()
         {
-            if (LeaderInFB.Length < LastLeaderStep + 1) return false;
-            double dd = me.Location.DistanceFromXY(LeaderInFB[LastLeaderStep + 1]);
+            //if (!LeaderInFB.ContainsKey(LastLeaderStep)) return false;
+            double dd = leader.Location.DistanceFromXY(LeaderInFB[LastLeaderStep]);
             if (dd < Scope)
             {
                 return true;
@@ -1508,7 +1513,7 @@ namespace LazyEvo.Plugins
         }
 
         // 获取路点地图
-        public static Dictionary<int, Location> GetMemPath()
+        private static Dictionary<int, Location> GetMemPath()
         {
             Dictionary<int, Location> path = new Dictionary<int, Location>();
 
@@ -1520,12 +1525,31 @@ namespace LazyEvo.Plugins
                     path.Add(mm.Key, memInFB[mm.Key]);
                 }
             }
-            var path1 = from pair in path orderby pair.Key select pair;
-            return (Dictionary<int, Location>)path1;
+            var tmppath = from pair in path orderby pair.Key select pair;
+            //path.Clear();
+            Dictionary<int, Location> path1 = new Dictionary<int, Location>();
+            //return (Dictionary<int, Location>)path1;
+            foreach (KeyValuePair<int, Location> dd in tmppath)
+            {
+                path1.Add(dd.Key, dd.Value);
+            }
+            return path1;
+        }
+
+        // 出副本地图
+        private static Dictionary<int, Location> GetMemOutPath()
+        {
+            Dictionary<int, Location> path = new Dictionary<int, Location>();
+            var tmppath = from pair in memInFB orderby pair.Key descending select pair;
+            foreach (KeyValuePair<int, Location> dd in tmppath)
+            {
+                path.Add(dd.Key, dd.Value);
+            }
+            return path; 
         }
 
         // 根据路点跑
-        public static bool MeGoGo(Dictionary<int, Location> path, bool isBack)
+        private static bool MeGoGo(Dictionary<int, Location> path)
         {
             Ticker StuckTimer = new Ticker(300000); //5 min
             Ticker _stuckTimer = new Ticker(3000);
@@ -1538,6 +1562,7 @@ namespace LazyEvo.Plugins
                 double destinationDistance = _destination.DistanceToSelf2D;
                 while (destinationDistance > _stopDistance)
                 {
+                    destinationDistance = _destination.DistanceToSelf2D;
                     if (LazyEvo.LGrindEngine.Helpers.Stuck.IsStuck && _stuckTimer.IsReady)
                     {
                         LazyEvo.LGrindEngine.Helpers.Unstuck.TryUnstuck();
@@ -1573,6 +1598,21 @@ namespace LazyEvo.Plugins
 
         }
 
+        // 看看传过来的信息里面，包不包含暗语，做一个翻译，设置相应状态
+        public static void CheckPassword(string msg)
+        {
+            if (msg.ToUpper().Contains(LeaderName) && msg.ToUpper().Contains(FBEndPass))
+            {
+                _Action = ActionStatus.OutFB;
+                return;
+            }
+            if (msg.ToUpper().Contains(LeaderName) && msg.ToUpper().Contains(FBInPass))
+            {
+                _Action = ActionStatus.InFB;
+                return;
+            }
+        }
+
 
         /******************************************
          * 根据法术名字获得动作条
@@ -1582,6 +1622,131 @@ namespace LazyEvo.Plugins
          *  BarMapper.MapBars();
          *  KeyHelper.LoadKeys();
          * ****************************************/
+
+        public static void XSXDY_MD(string DaHao)                   //墓地——血色
+        {
+            if (string.IsNullOrWhiteSpace(DaHao))
+            {
+                Logging.Write("没提供大号的名字");
+                return;
+            }
+            Dictionary<int, Location> small = new Dictionary<int, Location>();
+            Dictionary<int, Location> large = new Dictionary<int, Location>();
+            Dictionary<int, int> mapp = new Dictionary<int, int>();
+
+            large.Add(0, new Location((float)Convert.ToDouble(1703.884), (float)Convert.ToDouble(1097.721), (float)Convert.ToDouble(6.820244)));
+            large.Add(1, new Location((float)Convert.ToDouble(1797.786), (float)Convert.ToDouble(1167.898), (float)Convert.ToDouble(6.820681)));
+            large.Add(2, new Location((float)Convert.ToDouble(1797.543), (float)Convert.ToDouble(1390.579), (float)Convert.ToDouble(21.0289)));
+
+            small.Add(0, new Location((float)Convert.ToDouble(1687.463), (float)Convert.ToDouble(1052.708), (float)Convert.ToDouble(18.6773)));
+            small.Add(1, new Location((float)Convert.ToDouble(1702.782), (float)Convert.ToDouble(1053.758), (float)Convert.ToDouble(18.49206)));
+            small.Add(2, new Location((float)Convert.ToDouble(1702.369), (float)Convert.ToDouble(1098.05), (float)Convert.ToDouble(6.820761)));
+
+            small.Add(3, new Location((float)Convert.ToDouble(1710.781), (float)Convert.ToDouble(1097.89), (float)Convert.ToDouble(6.820291)));
+            small.Add(4, new Location((float)Convert.ToDouble(1732.834), (float)Convert.ToDouble(1097.47), (float)Convert.ToDouble(6.820291)));
+            small.Add(5, new Location((float)Convert.ToDouble(1755.895), (float)Convert.ToDouble(1097.032), (float)Convert.ToDouble(6.820291)));
+            small.Add(6, new Location((float)Convert.ToDouble(1758.96), (float)Convert.ToDouble(1108.889), (float)Convert.ToDouble(7.490634)));
+            small.Add(7, new Location((float)Convert.ToDouble(1759.459), (float)Convert.ToDouble(1140.953), (float)Convert.ToDouble(7.490634)));
+            small.Add(8, new Location((float)Convert.ToDouble(1781.824), (float)Convert.ToDouble(1147.978), (float)Convert.ToDouble(7.490634)));
+            small.Add(9, new Location((float)Convert.ToDouble(1783.685), (float)Convert.ToDouble(1167.668), (float)Convert.ToDouble(6.82066)));
+            small.Add(10, new Location((float)Convert.ToDouble(1797.073), (float)Convert.ToDouble(1167.381), (float)Convert.ToDouble(6.82066)));
+
+            small.Add(11, new Location((float)Convert.ToDouble(1797.499), (float)Convert.ToDouble(1173.833), (float)Convert.ToDouble(6.82066)));
+            small.Add(12, new Location((float)Convert.ToDouble(1796.883), (float)Convert.ToDouble(1204.196), (float)Convert.ToDouble(18.49159)));
+            small.Add(13, new Location((float)Convert.ToDouble(1797.17), (float)Convert.ToDouble(1223.217), (float)Convert.ToDouble(18.19079)));
+            small.Add(14, new Location((float)Convert.ToDouble(1796.428), (float)Convert.ToDouble(1259.853), (float)Convert.ToDouble(18.39784)));
+            small.Add(15, new Location((float)Convert.ToDouble(1795.763), (float)Convert.ToDouble(1292.662), (float)Convert.ToDouble(18.58248)));
+            small.Add(16, new Location((float)Convert.ToDouble(1797.835), (float)Convert.ToDouble(1309.065), (float)Convert.ToDouble(18.67566)));
+            small.Add(17, new Location((float)Convert.ToDouble(1788.97), (float)Convert.ToDouble(1322.456), (float)Convert.ToDouble(18.90245)));
+            small.Add(18, new Location((float)Convert.ToDouble(1794.272), (float)Convert.ToDouble(1352.333), (float)Convert.ToDouble(18.88878)));
+            small.Add(19, new Location((float)Convert.ToDouble(1797.968), (float)Convert.ToDouble(1390.656), (float)Convert.ToDouble(21.06569)));
+
+            mapp.Add(0, 0);
+            mapp.Add(1, 0);
+            mapp.Add(2, 0);
+            mapp.Add(3, 1);
+            mapp.Add(4, 1);
+            mapp.Add(5, 1);
+            mapp.Add(6, 1);
+            mapp.Add(7, 1);
+            mapp.Add(8, 1);
+            mapp.Add(9, 1);
+            mapp.Add(10, 1);
+            mapp.Add(11, 2);
+            mapp.Add(12, 2);
+            mapp.Add(13, 2);
+            mapp.Add(14, 2);
+            mapp.Add(15, 2);
+            mapp.Add(16, 2);
+            mapp.Add(17, 2);
+            mapp.Add(18, 2);
+            mapp.Add(19, 2);
+
+            Location inPoint = new Location((float)Convert.ToDouble(2915.34), (float)Convert.ToDouble(-771.58), (float)Convert.ToDouble(160.333));
+            Location outPoint = new Location((float)Convert.ToDouble(1687.27), (float)Convert.ToDouble(1020.09), (float)Convert.ToDouble(18.6773));
+
+            SpyFB.Init(DaHao, inPoint, outPoint, large, small, mapp);
+            SpyFB.StartFB();
+        }
+
+        public static void XSXDY_TSG(string DaHao)              //图书馆-血色
+        {
+            if (string.IsNullOrWhiteSpace(DaHao))
+            {
+                Logging.Write("没提供大号的名字");
+                return;
+            }
+            Dictionary<int, Location> small = new Dictionary<int, Location>();
+            Dictionary<int, Location> large = new Dictionary<int, Location>();
+            Dictionary<int, int> mapp = new Dictionary<int, int>();
+
+            large.Add(0, new Location((float)Convert.ToDouble(874.6886), (float)Convert.ToDouble(1399.048), (float)Convert.ToDouble(18.00647)));
+            large.Add(1, new Location((float)Convert.ToDouble(974.805), (float)Convert.ToDouble(1379.996), (float)Convert.ToDouble(21.97392)));
+            large.Add(2, new Location((float)Convert.ToDouble(1065.205), (float)Convert.ToDouble(1398.764), (float)Convert.ToDouble(30.76385)));
+
+            small.Add(0, new Location((float)Convert.ToDouble(853.2313), (float)Convert.ToDouble(1322.512), (float)Convert.ToDouble(18.67164)));
+            small.Add(1, new Location((float)Convert.ToDouble(870.9263), (float)Convert.ToDouble(1322.137), (float)Convert.ToDouble(18.00613)));
+            small.Add(2, new Location((float)Convert.ToDouble(870.5344), (float)Convert.ToDouble(1338.765), (float)Convert.ToDouble(18.00613)));
+            small.Add(3, new Location((float)Convert.ToDouble(870.0039), (float)Convert.ToDouble(1361.277), (float)Convert.ToDouble(18.00613)));
+            small.Add(4, new Location((float)Convert.ToDouble(869.5035), (float)Convert.ToDouble(1382.509), (float)Convert.ToDouble(18.00613)));
+
+            small.Add(5, new Location((float)Convert.ToDouble(869.079), (float)Convert.ToDouble(1400.522), (float)Convert.ToDouble(18.00613)));
+            small.Add(6, new Location((float)Convert.ToDouble(881.2842), (float)Convert.ToDouble(1399.369), (float)Convert.ToDouble(18.67652)));
+            small.Add(7, new Location((float)Convert.ToDouble(891.8546), (float)Convert.ToDouble(1399.188), (float)Convert.ToDouble(18.6765)));
+            small.Add(8, new Location((float)Convert.ToDouble(909.7885), (float)Convert.ToDouble(1399.16), (float)Convert.ToDouble(18.02418)));
+            small.Add(9, new Location((float)Convert.ToDouble(910.191), (float)Convert.ToDouble(1376.08), (float)Convert.ToDouble(17.99018)));
+            small.Add(10, new Location((float)Convert.ToDouble(944.8943), (float)Convert.ToDouble(1377.826), (float)Convert.ToDouble(18.02216)));
+            small.Add(11, new Location((float)Convert.ToDouble(972.0721), (float)Convert.ToDouble(1379.498), (float)Convert.ToDouble(20.64153)));
+
+            small.Add(12, new Location((float)Convert.ToDouble(985.4244), (float)Convert.ToDouble(1379.664), (float)Convert.ToDouble(24.29541)));
+            small.Add(13, new Location((float)Convert.ToDouble(986.4362), (float)Convert.ToDouble(1363.739), (float)Convert.ToDouble(27.2986)));
+            small.Add(14, new Location((float)Convert.ToDouble(1012.446), (float)Convert.ToDouble(1364.28), (float)Convert.ToDouble(27.30698)));
+            small.Add(15, new Location((float)Convert.ToDouble(1049.201), (float)Convert.ToDouble(1393.344), (float)Convert.ToDouble(27.30282)));
+
+
+            mapp.Add(0, 0);
+            mapp.Add(1, 0);
+            mapp.Add(2, 0);
+            mapp.Add(3, 0);
+            mapp.Add(4, 0);
+            mapp.Add(5, 1);
+            mapp.Add(6, 1);
+            mapp.Add(7, 1);
+            mapp.Add(8, 1);
+            mapp.Add(9, 1);
+            mapp.Add(10, 1);
+            mapp.Add(11, 1);
+            mapp.Add(12, 2);
+            mapp.Add(13, 2);
+            mapp.Add(14, 2);
+            mapp.Add(15, 2);
+
+            Location inPoint = new Location((float)Convert.ToDouble(2926.667), (float)Convert.ToDouble(-813.0659), (float)Convert.ToDouble(160.327));
+            Location outPoint = new Location((float)Convert.ToDouble(859.032), (float)Convert.ToDouble(1306.221), (float)Convert.ToDouble(18.67159));
+
+            SpyFB.Init(DaHao, inPoint, outPoint, large, small, mapp);
+            SpyFB.StartFB();
+        }
 
     }
 
@@ -1644,11 +1809,10 @@ namespace LazyEvo.Plugins
                 Logging.Write(sql);
                 if (!OraData.execSQLCmd(sql))
                 {
-                    Logging.Write(string.Format("执行{0}时，出现错误", sql));
+                    Logging.Write(string.Format("处理{0}时，出现错误", sql));
                 }
             }
         }
     }
 
-    
 }
