@@ -441,12 +441,13 @@ namespace LazyEvo.Forms
         public void ChatMessage(string message)
         {
             AppendMessage(ChatAll, message, Color.Black);
+            SpyFB.CheckPassword(message);
         }
 
         public void WhisperMessage(string message)
         {
             AppendMessage(ChatWhisper, message, Color.Black);
-            SpyFB.LeaderWord = message;
+            SpyFB.CheckPassword(message);
         }
 
         private void Logging_OnWrite(string message, LogType logType)
@@ -1193,6 +1194,24 @@ namespace LazyEvo.Forms
                 buttonX3.Text = "开始计划";
                 Logging.Write("计划结束!!!!!!!!");
                 nn.StopProc();
+            }
+        }
+
+        private void buttonItem4_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtDaHao.Text))
+            {
+                MessageBox.Show("在下面的框框里面输入大号的名字");
+                return;
+            }
+            if (buttonItem4.Text.Equals("血色-图书馆（开始）"))
+            {
+                buttonItem4.Text = "血色-图书馆（停止）";
+                SpyFB.XSXDY_TSG(txtDaHao.Text);
+            }
+            else
+            {
+                buttonItem4.Text = "血色-图书馆（开始）";
             }
         }
 
