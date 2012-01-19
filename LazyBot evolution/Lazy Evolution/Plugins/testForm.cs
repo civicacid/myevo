@@ -131,5 +131,11 @@ namespace LazyEvo.Plugins
             SpyZBJG.CreationMap = CreationMap;
             SpyZBJG.GoGo();
         }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            LazyEvo.Public.LazyHelpers.StopAll("时间到了，Kill Process");
+            SpyDB.SaveInfo_Bag(SpyFrame.lua_GetBagInfo());
+        }
     }
 }
