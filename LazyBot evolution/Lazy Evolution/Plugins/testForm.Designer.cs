@@ -38,7 +38,9 @@
             this.txtLeader = new System.Windows.Forms.TextBox();
             this.Step = new System.Windows.Forms.NumericUpDown();
             this.button6 = new System.Windows.Forms.Button();
-            this.button7 = new System.Windows.Forms.Button();
+            this.btnRefreshChar = new System.Windows.Forms.Button();
+            this.comboBoxCharList = new System.Windows.Forms.ComboBox();
+            this.btnAutoLogin = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Step)).BeginInit();
             this.SuspendLayout();
@@ -107,10 +109,10 @@
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(441, 119);
+            this.textBox1.Location = new System.Drawing.Point(405, 117);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(312, 278);
+            this.textBox1.Size = new System.Drawing.Size(359, 189);
             this.textBox1.TabIndex = 8;
             // 
             // txtLeader
@@ -137,22 +139,43 @@
             this.button6.UseVisualStyleBackColor = true;
             this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
-            // button7
+            // btnRefreshChar
             // 
-            this.button7.Location = new System.Drawing.Point(574, 69);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(93, 31);
-            this.button7.TabIndex = 13;
-            this.button7.Text = "button7";
-            this.button7.UseVisualStyleBackColor = true;
-            this.button7.Click += new System.EventHandler(this.button7_Click);
+            this.btnRefreshChar.Location = new System.Drawing.Point(393, 366);
+            this.btnRefreshChar.Name = "btnRefreshChar";
+            this.btnRefreshChar.Size = new System.Drawing.Size(93, 27);
+            this.btnRefreshChar.TabIndex = 13;
+            this.btnRefreshChar.Text = "Refresh";
+            this.btnRefreshChar.UseVisualStyleBackColor = true;
+            this.btnRefreshChar.Click += new System.EventHandler(this.btnRefreshChar_Click);
+            // 
+            // comboBoxCharList
+            // 
+            this.comboBoxCharList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxCharList.FormattingEnabled = true;
+            this.comboBoxCharList.Location = new System.Drawing.Point(393, 331);
+            this.comboBoxCharList.Name = "comboBoxCharList";
+            this.comboBoxCharList.Size = new System.Drawing.Size(202, 20);
+            this.comboBoxCharList.TabIndex = 14;
+            // 
+            // btnAutoLogin
+            // 
+            this.btnAutoLogin.Location = new System.Drawing.Point(500, 366);
+            this.btnAutoLogin.Name = "btnAutoLogin";
+            this.btnAutoLogin.Size = new System.Drawing.Size(95, 26);
+            this.btnAutoLogin.TabIndex = 15;
+            this.btnAutoLogin.Text = "AutoLogin";
+            this.btnAutoLogin.UseVisualStyleBackColor = true;
+            this.btnAutoLogin.Click += new System.EventHandler(this.btnAutoLogin_Click);
             // 
             // testForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(776, 421);
-            this.Controls.Add(this.button7);
+            this.Controls.Add(this.btnAutoLogin);
+            this.Controls.Add(this.comboBoxCharList);
+            this.Controls.Add(this.btnRefreshChar);
             this.Controls.Add(this.button6);
             this.Controls.Add(this.Step);
             this.Controls.Add(this.txtLeader);
@@ -184,6 +207,8 @@
         private System.Windows.Forms.TextBox txtLeader;
         private System.Windows.Forms.NumericUpDown Step;
         private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.Button btnRefreshChar;
+        private System.Windows.Forms.ComboBox comboBoxCharList;
+        private System.Windows.Forms.Button btnAutoLogin;
     }
 }

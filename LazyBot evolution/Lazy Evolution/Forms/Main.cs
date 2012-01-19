@@ -1215,5 +1215,35 @@ namespace LazyEvo.Forms
             }
         }
 
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            comboBoxCharList.Items.Clear();
+            Dictionary<string, string> chars = new Dictionary<string, string>();
+            chars = SpyDB.GetChars();
+            if (chars.Count == 0) return;
+            foreach (KeyValuePair<string, string> kk in chars)
+            {
+                comboBoxCharList.Items.Add(kk);
+            }
+        }
+
+        private void btnLogin_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(comboBoxCharList.Text)) return;
+            KeyValuePair<string, string> singlechar = (KeyValuePair<string, string>)comboBoxCharList.SelectedItem;
+            Dictionary<string, string> result = SpyDB.GetCharLoginInfo(singlechar.Key);
+            if (result.Count == 0)
+            {
+                MessageBox.Show("数据库没有找到信息，检查视图v_login_info的数据");
+                return;
+            }
+
+            SpyAutoLogin.initme(result["AccountName"], result["AccountPass"], result["RealmName"], result["CharIdx"], result["AccountList"]);
+            SpyAutoLogin.start();
+            while (!SpyAutoLogin.IsOK) { Thread.Sleep(100); };
+            //MessageBox.Show("OKOK_____AUTO Login");
+            ObjectManager.Initialize(SpyAutoLogin.WOW_P.Id);
+        }
+
     }
 }
