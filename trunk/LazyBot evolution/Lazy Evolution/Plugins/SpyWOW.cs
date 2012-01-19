@@ -502,8 +502,8 @@ namespace LazyEvo.Plugins
 
             // 取得返回值（注意排错）
             resultString = GetInfoFromFrame();
-            if (resultString == null) return null;
-            if (resultString.IndexOf("错误") > 0)
+            if (string.IsNullOrWhiteSpace(resultString)) return null;
+            if (resultString.Contains("错误"))
             {
                 Logging.Write("获取信息错误: " + resultString);
                 return null;
@@ -703,7 +703,7 @@ namespace LazyEvo.Plugins
             int ReTryCount = 0;
 
             // 调用lua，收集背包物品信息
-            KeyHelper.SendLuaOverChat(string.Format("/script AHSearchDoor(\"{0}\")", itemname));
+            KeyHelper.SendLuaOverChat(string.Format("/script AHSearchDoor(\"{0}\",1)", itemname));
             ReTryCount = 0;
             result = null;
             while (GetInfoFromFrame() == LUA_RUNNING_STRING)
@@ -716,14 +716,14 @@ namespace LazyEvo.Plugins
                     return result;
                 }
             }
-            if (GetInfoFromFrame().IndexOf("错误") > 0)
+            if (GetInfoFromFrame().Contains("错误"))
             {
                 Logging.Write("获取信息错误");
                 return result;
             }
 
-            string rtv = GetFrameRtv();
-            if (rtv != null)
+            string rtv = GetInfoFromFrame();
+            if (!string.IsNullOrWhiteSpace(rtv))
             {
                 result = new Dictionary<string, string>();
                 string[] split = rtv.Split('#');
@@ -788,9 +788,9 @@ namespace LazyEvo.Plugins
             return ExecSimpleLua(string.Format("/script SetDisplayItemName(\"{0}\")", ItemName));
         }
 
-        public static bool lua_TradeSkillDO(string ItemName, int count)
+        public static bool lua_TradeSkillDO(string ItemName)
         {
-            return ExecSimpleLua(string.Format("/script TradeSkillDO(\"{0}\",{1})", ItemName, count));
+            return ExecSimpleLua(string.Format("/script TradeSkillDO(\"{0}\")", ItemName));
         }
 
         public static bool OpenProfession(string pName)
@@ -830,12 +830,6 @@ namespace LazyEvo.Plugins
 
     public static class SpyTradeSkill
     {
-        //是不是正在分解
-        public static bool IsProspecting()
-        {
-            return (ObjectManager.MyPlayer.CastingId == 31252);
-        }
-
         public static bool SendMain(Dictionary<string, string> MailList, DBLogger logger)
         {
             if (MailList.Count == 0)
@@ -874,9 +868,9 @@ namespace LazyEvo.Plugins
             return true;
         }
 
-        public static bool DoItems(string item, int count)
+        public static bool DoItems(string item)
         {
-            return SpyFrame.lua_TradeSkillDO(item, count);
+            return SpyFrame.lua_TradeSkillDO(item);
         }
     }
 
@@ -918,13 +912,15 @@ namespace LazyEvo.Plugins
     //珠宝加工
     public static class SpyZBJG
     {
-        public static Dictionary<string, int> CreationList;                     //制作列表(产品：数量)
+        public static Dictionary<string, int> CreationList;                 //制作列表(产品：数量)
         public static Dictionary<string, string> CreationMap;               //对照关系(产品：原料)
         public static Dictionary<string, string> MailList;                  //发货列表
         public static DBLogger logger = new DBLogger("珠宝加工+邮寄");
 
         public static void GoGo()
         {
+            BarMapper.MapBars();
+            KeyHelper.LoadKeys();
             DoAction();
             logger.output();
         }
@@ -943,6 +939,9 @@ namespace LazyEvo.Plugins
             {
                 string ToDoWhat = Creation.Key;
                 int ToDoCount = Creation.Value;
+                Dictionary<string, string> subMailList = new Dictionary<string, string>();
+                subMailList.Add(ToDoWhat, MailList[ToDoWhat]);
+
                 if (!SpyFrame.lua_SetDispCountItemName(CreationMap[ToDoWhat]))
                 {
                     logger.Add(string.Format("在执行SetDispCountItemName时出错，需要制作{0}的原料{1}", ToDoWhat, CreationMap[ToDoWhat]));
@@ -982,28 +981,38 @@ namespace LazyEvo.Plugins
                     {
                         // 发邮件
                         logger.Add("发邮件");
-                        if (!SpyTradeSkill.SendMain(MailList, logger)) return;
+                        if (!SpyTradeSkill.SendMain(subMailList, logger)) return;
                     }
                     ItemCount = SpyFrame.GetDispCountItemCount();
+                    if (ItemCount["BAG"] == 0 && ItemCount["MAIL"] == 0) break;
                     // 当前包有没有原料，有就做，没有就拿，拿的时候判断包空间，如果空间足够，就一次拿完
                     if (ItemCount["BAG"] > 0)
                     {
                         // 打开界面
+                        if (!InterfaceHelper.GetFrameByName("TradeSkillFrame").IsVisible)
+                        {
+                            BarSpell gg = BarMapper.GetSpellByName("珠宝加工");
+                            gg.CastSpell();
+                        }
                         // 做东西
-                        if (!SpyTradeSkill.DoItems(ToDoWhat, ItemCount["BAG"]))
+                        if (!SpyTradeSkill.DoItems(ToDoWhat))
                         {
                             logger.Add(string.Format("做{0}时出现错误", ToDoWhat));
                             return;
                         }
-                        HasDone += ItemCount["BAG"];
+                        Thread.Sleep(100);
+                        while (ObjectManager.MyPlayer.IsCasting)
+                        {
+                            Thread.Sleep(100);
+                        }
+                        HasDone += 1;
                         CountJump++;
                         if (CountJump == 10)
                         {
                             // jump一下，防止AFK
                             CountJump = 0;
                             logger.Add("jump一下，防止AFK");
-                            KeyLowHelper.PressKey(MicrosoftVirtualKeys.Space);
-                            KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.Space);
+                            KeyHelper.SendKey("Space");
                             Thread.Sleep(5000);
                         }
                     }
@@ -1021,7 +1030,7 @@ namespace LazyEvo.Plugins
                 }
                 // 发邮件
                 logger.Add(string.Format("东西做完，发邮件"));
-                if (!SpyTradeSkill.SendMain(MailList, logger)) return;
+                if (!SpyTradeSkill.SendMain(subMailList, logger)) return;
             }
         }
     }
@@ -1034,6 +1043,8 @@ namespace LazyEvo.Plugins
 
         public static void GoGo()
         {
+            BarMapper.MapBars();
+            KeyHelper.LoadKeys(); 
             DoAction();
             logger.output();
         }
@@ -1137,10 +1148,15 @@ namespace LazyEvo.Plugins
 
         /********              需要设置的内容                 ******************/
         // 邮箱点
-        public static Location LocMailbox = new Location(1, 1, 1);
+        public static Location LocMailbox = new Location((float)Convert.ToDouble(-2039.034), (float)Convert.ToDouble(5351.313), (float)Convert.ToDouble(-9.351171));
+
+        // 中间节点
+        public static Location LocMid = new Location((float)Convert.ToDouble(-2014.044), (float)Convert.ToDouble(5364.521), (float)Convert.ToDouble(-9.351171));
+
         // AH拍卖师点
-        public static Location LocAHer = new Location(1, 1, 1);
-        public static string AHerName = "";
+        public static Location LocAHer = new Location((float)Convert.ToDouble(-2023.114), (float)Convert.ToDouble(5388.722), (float)Convert.ToDouble(-8.289739));
+
+        public static string AHerName = "拍卖师卡拉伦";
 
         public static void init()
         {
@@ -1151,7 +1167,7 @@ namespace LazyEvo.Plugins
             Items.Columns.Add("item_count", System.Type.GetType("System.Int32"));
             Items.Columns.Add("item_stacksize", System.Type.GetType("System.Int32"));
             DataColumn[] pk = new DataColumn[1];
-            pk[0] = Items.Columns["item_id"];
+            pk[0] = Items.Columns["item_name"];
             Items.PrimaryKey = pk;
             //DataRow dr = dt.NewRow();
             //dr["column0"] = "AX";
@@ -1160,6 +1176,8 @@ namespace LazyEvo.Plugins
 
         public static void gogo()
         {
+            BarMapper.MapBars();
+            KeyHelper.LoadKeys(); 
             DoAction();
             logger.output();
         }
@@ -1168,7 +1186,7 @@ namespace LazyEvo.Plugins
         {
             // 跑到邮箱点
             logger.Add("跑到邮箱点");
-            if (!MoveHelper.MoveToLoc(LocMailbox, 5))
+            if (!MoveHelper.MoveToLoc(LocMailbox, 2))
             {
                 logger.Add("跑到邮箱点出错");
                 return false;
@@ -1209,10 +1227,11 @@ namespace LazyEvo.Plugins
                 Thread.Sleep(500);
                 Dictionary<string, int> MineCount = SpyFrame.GetDispCountItemCount();
                 logger.Add(string.Format("物品{0}在背包中的数量为{1}，在邮箱中的数量为：{2}", mine, MineCount["BAG"], MineCount["MAIL"]));
-                int WantCount = (int)dr["item_name"] * (int)dr["item_stacksize"] > MineCount["BAG"]
-                                ? (int)dr["item_name"] * (int)dr["item_stacksize"] - MineCount["BAG"]
+                int WantCount = (int)dr["item_count"] * (int)dr["item_stacksize"] > MineCount["BAG"]
+                                ? (int)dr["item_count"] * (int)dr["item_stacksize"] - MineCount["BAG"]
                                 : 0
                                 ;
+                if (WantCount == 0) continue;
                 // 拿邮件(LUA)
                 logger.Add(string.Format("从邮箱中拿{0}个{1}", WantCount, mine));
                 if (!SpyFrame.lua_GetMAILAsItem(mine, WantCount))
@@ -1223,23 +1242,35 @@ namespace LazyEvo.Plugins
                 Thread.Sleep(1000);
             }
 
+            // 跑到邮箱点
+            logger.Add("跑到中间节点");
+            if (!MoveHelper.MoveToLoc(LocMid, 2))
+            {
+                logger.Add("跑到中间节点");
+                return false;
+            }
+
             // 跑到拍卖师身边
             logger.Add("跑到拍卖师身边");
-            if (!MoveHelper.MoveToLoc(LocAHer, 5))
+            if (!MoveHelper.MoveToLoc(LocAHer, 2))
             {
                 logger.Add("跑到拍卖师身边出错");
                 return false;
             }
             // 找到拍卖师，打开拍卖界面
             logger.Add(string.Format("定位拍卖师：{0}", AHerName));
+            PUnit aher = new PUnit(0);
             bool found = false;
             foreach (PUnit unit in ObjectManager.GetUnits)
             {
                 if (unit.Name.Equals(AHerName) && unit.Location.DistanceToSelf2D < 5)
                 {
-                    unit.Location.Face();
-                    unit.Interact();
+                    //unit.Location.Face();
+                    //unit.TargetFriend();
+                    //unit.Interact();
+                    aher = unit;
                     found = true;
+                    break;
                 }
             }
             if (!found)
@@ -1247,6 +1278,16 @@ namespace LazyEvo.Plugins
                 logger.Add(string.Format("没找到名字是{0}的拍卖师", AHerName));
                 return false;
             }
+            KeyHelper.SendLuaOverChat("/target " + AHerName);
+            Thread.Sleep(500);
+            if (!ObjectManager.MyPlayer.Target.Name.Equals(AHerName))
+            {
+                logger.Add(string.Format("没有命中拍卖师的目标"));
+                return false;
+            }
+            aher.Location.Face();
+            aher.InteractWithTarget();
+
             Thread.Sleep(2000);
 
             // 上货。 遍历待拍卖物品，扫描物品最低价格，最低价格不低于起拍价格，就上架
@@ -1255,14 +1296,14 @@ namespace LazyEvo.Plugins
             {
                 // 扫描最低价格
                 string ahitem = dr["item_name"].ToString();
-                logger.Add(string.Format("扫描物品{0]的最低价格", ahitem));
+                logger.Add(string.Format("扫描物品{0}的最低价格", ahitem));
                 Dictionary<string, string> scanresult = SpyFrame.lua_AHSearchDoor(ahitem);
                 if (scanresult == null)
                 {
-                    logger.Add(string.Format("获取物品{0]的最低价格出现错误，返回值为NULL", ahitem));
+                    logger.Add(string.Format("获取物品{0}的最低价格出现错误，返回值为NULL", ahitem));
                     return false;
                 }
-                logger.Add(string.Format("物品{0}的最低价格是{1]，由{2}出价", ahitem, scanresult["PRIZE"], scanresult["SELLER"]));
+                logger.Add(string.Format("物品{0}的最低价格是{1}，由{2}出价", ahitem, scanresult["PRIZE"], scanresult["SELLER"]));
 
                 // 计算最低价格，准备上货
                 if (scanresult["SELLER"].Equals(ObjectManager.MyPlayer.Name))
@@ -1278,7 +1319,7 @@ namespace LazyEvo.Plugins
                 // 如果目前出价低于心里价位，不出货
                 if (Convert.ToInt32(scanresult["PRIZE"]) < minprize)
                 {
-                    logger.Add(string.Format("{0}出价低过心里价位{1}，暂时不出货"));
+                    logger.Add(string.Format("{0}出价低过心里价位{1}，暂时不出货", scanresult["PRIZE"], minprize));
                     continue;
                 }
 

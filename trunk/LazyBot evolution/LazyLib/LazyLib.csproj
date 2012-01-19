@@ -190,6 +190,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="License.txt" />
+    <None Include="Resources\my.txt" />
     <Content Include="System.Data.SQLite.dll" />
   </ItemGroup>
   <ItemGroup>
