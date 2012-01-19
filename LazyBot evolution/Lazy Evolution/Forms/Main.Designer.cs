@@ -52,6 +52,9 @@
             this.OpenRotator = new DevComponents.DotNetBar.ButtonItem();
             this.superTabControl5 = new DevComponents.DotNetBar.SuperTabControl();
             this.superTabControlPanel5 = new DevComponents.DotNetBar.SuperTabControlPanel();
+            this.txtDaHao = new System.Windows.Forms.TextBox();
+            this.buttonX4 = new DevComponents.DotNetBar.ButtonX();
+            this.buttonItem4 = new DevComponents.DotNetBar.ButtonItem();
             this.buttonX3 = new DevComponents.DotNetBar.ButtonX();
             this.CBDebug = new DevComponents.DotNetBar.Controls.CheckBoxX();
             this.buttonX1 = new DevComponents.DotNetBar.ButtonX();
@@ -105,9 +108,6 @@
             this.comboItem3 = new DevComponents.Editors.ComboItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.StatsText = new System.Windows.Forms.ToolStripStatusLabel();
-            this.buttonX4 = new DevComponents.DotNetBar.ButtonX();
-            this.buttonItem4 = new DevComponents.DotNetBar.ButtonItem();
-            this.txtDaHao = new System.Windows.Forms.TextBox();
             this.ControlSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.superTabControl5)).BeginInit();
             this.superTabControl5.SuspendLayout();
@@ -406,6 +406,33 @@
             this.superTabControlPanel5.Size = new System.Drawing.Size(640, 443);
             this.superTabControlPanel5.TabIndex = 1;
             this.superTabControlPanel5.TabItem = this.superTabItem5;
+            // 
+            // txtDaHao
+            // 
+            this.txtDaHao.Location = new System.Drawing.Point(455, 97);
+            this.txtDaHao.Name = "txtDaHao";
+            this.txtDaHao.Size = new System.Drawing.Size(172, 26);
+            this.txtDaHao.TabIndex = 80;
+            // 
+            // buttonX4
+            // 
+            this.buttonX4.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
+            this.buttonX4.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
+            this.buttonX4.Location = new System.Drawing.Point(455, 64);
+            this.buttonX4.Name = "buttonX4";
+            this.buttonX4.Size = new System.Drawing.Size(172, 27);
+            this.buttonX4.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.buttonX4.SubItems.AddRange(new DevComponents.DotNetBar.BaseItem[] {
+            this.buttonItem4});
+            this.buttonX4.TabIndex = 79;
+            this.buttonX4.Text = "副本";
+            // 
+            // buttonItem4
+            // 
+            this.buttonItem4.GlobalItem = false;
+            this.buttonItem4.Name = "buttonItem4";
+            this.buttonItem4.Text = "血色-图书馆（开始）";
+            this.buttonItem4.Click += new System.EventHandler(this.buttonItem4_Click);
             // 
             // buttonX3
             // 
@@ -1277,33 +1304,6 @@
             this.StatsText.BackColor = System.Drawing.Color.Transparent;
             this.StatsText.Name = "StatsText";
             this.StatsText.Size = new System.Drawing.Size(0, 17);
-            // 
-            // buttonX4
-            // 
-            this.buttonX4.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
-            this.buttonX4.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.buttonX4.Location = new System.Drawing.Point(455, 64);
-            this.buttonX4.Name = "buttonX4";
-            this.buttonX4.Size = new System.Drawing.Size(172, 27);
-            this.buttonX4.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.buttonX4.SubItems.AddRange(new DevComponents.DotNetBar.BaseItem[] {
-            this.buttonItem4});
-            this.buttonX4.TabIndex = 79;
-            this.buttonX4.Text = "副本";
-            // 
-            // buttonItem4
-            // 
-            this.buttonItem4.GlobalItem = false;
-            this.buttonItem4.Name = "buttonItem4";
-            this.buttonItem4.Text = "血色-图书馆（开始）";
-            this.buttonItem4.Click += new System.EventHandler(this.buttonItem4_Click);
-            // 
-            // txtDaHao
-            // 
-            this.txtDaHao.Location = new System.Drawing.Point(455, 97);
-            this.txtDaHao.Name = "txtDaHao";
-            this.txtDaHao.Size = new System.Drawing.Size(172, 26);
-            this.txtDaHao.TabIndex = 80;
             // 
             // Main
             // 
