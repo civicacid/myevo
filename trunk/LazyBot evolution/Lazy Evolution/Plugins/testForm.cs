@@ -61,16 +61,37 @@ namespace LazyEvo.Plugins
 
         private void button2_Click(object sender, EventArgs e)
         {
-            SpyAH.init();
-            DataRow dr = SpyAH.Items.NewRow();
-            dr["item_name"] = "统御恶魔之眼";
-            dr["item_minprice"] = 10 * 100 * 100;
-            dr["item_maxprice"] = 140 * 100 * 100;
-            dr["item_count"] = 3;
-            dr["item_stacksize"] = 1;
-            SpyAH.Items.Rows.Add(dr);
-            SpyAH.gogo();
+            DataRow dr;
+            if (SpyAH.Items.Columns.Count == 0)
+            {
+                SpyAH.init();
+                dr = SpyAH.Items.NewRow();
+                //dr["item_name"] = "统御恶魔之眼";
+                dr["item_name"] = "之眼";
+                dr["item_minprice"] = 10 * 100 * 100;
+                dr["item_maxprice"] = 140 * 100 * 100;
+                dr["item_count"] = 3;
+                dr["item_stacksize"] = 1;
+                SpyAH.Items.Rows.Add(dr);
 
+                //dr = SpyAH.Items.NewRow();
+                //dr["item_name"] = "朴素地狱炎石";
+                //dr["item_minprice"] = 200 * 100 * 100;
+                //dr["item_maxprice"] = 250 * 100 * 100;
+                //dr["item_count"] = 3;
+                //dr["item_stacksize"] = 1;
+                //SpyAH.Items.Rows.Add(dr);
+
+                //dr = SpyAH.Items.NewRow();
+                //dr["item_name"] = "纯净恶魔之眼";
+                //dr["item_minprice"] = 10 * 100 * 100;
+                //dr["item_maxprice"] = 50 * 100 * 100;
+                //dr["item_count"] = 3;
+                //dr["item_stacksize"] = 1;
+                //SpyAH.Items.Rows.Add(dr);
+            }
+            SpyAH.gogo();
+            MessageBox.Show("结束");
         }
 
         private void button5_Click(object sender, EventArgs e)
@@ -132,10 +153,34 @@ namespace LazyEvo.Plugins
             SpyZBJG.GoGo();
         }
 
-        private void button7_Click(object sender, EventArgs e)
+        private void btnRefreshChar_Click(object sender, EventArgs e)
         {
-            LazyEvo.Public.LazyHelpers.StopAll("时间到了，Kill Process");
-            SpyDB.SaveInfo_Bag(SpyFrame.lua_GetBagInfo());
+            comboBoxCharList.Items.Clear();
+            Dictionary<string, string> chars = new Dictionary<string, string>();
+            chars = SpyDB.GetChars();
+            if (chars.Count == 0) return;
+            foreach (KeyValuePair<string, string> kk in chars)
+            {
+                comboBoxCharList.Items.Add(kk);
+            }
+        }
+
+        private void btnAutoLogin_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(comboBoxCharList.Text)) return;
+            KeyValuePair<string, string> singlechar = (KeyValuePair<string, string>)comboBoxCharList.SelectedItem;
+            Dictionary<string, string> result = SpyDB.GetCharLoginInfo(singlechar.Key);
+            if (result.Count == 0)
+            {
+                MessageBox.Show("数据库没有找到信息，检查视图v_login_info的数据");
+                return; 
+            }
+
+            SpyAutoLogin.initme(result["AccountName"], result["AccountPass"], result["RealmName"], result["CharIdx"], result["AccountList"]);
+            SpyAutoLogin.start();
+            while (!SpyAutoLogin.IsOK) { Thread.Sleep(100); };
+            MessageBox.Show("OKOK_____AUTO Login");
+            ObjectManager.Initialize(SpyAutoLogin.WOW_P.Id);
         }
     }
 }

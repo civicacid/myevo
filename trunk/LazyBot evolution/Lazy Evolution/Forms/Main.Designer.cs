@@ -59,9 +59,6 @@
             this.CBDebug = new DevComponents.DotNetBar.Controls.CheckBoxX();
             this.buttonX1 = new DevComponents.DotNetBar.ButtonX();
             this.buttonX2 = new DevComponents.DotNetBar.ButtonX();
-            this.buttonItem1 = new DevComponents.DotNetBar.ButtonItem();
-            this.buttonItem2 = new DevComponents.DotNetBar.ButtonItem();
-            this.buttonItem3 = new DevComponents.DotNetBar.ButtonItem();
             this.CBTopMost = new DevComponents.DotNetBar.Controls.CheckBoxX();
             this.MainGPPlayer = new DevComponents.DotNetBar.Controls.GroupPanel();
             this.labelX1 = new DevComponents.DotNetBar.LabelX();
@@ -108,6 +105,9 @@
             this.comboItem3 = new DevComponents.Editors.ComboItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.StatsText = new System.Windows.Forms.ToolStripStatusLabel();
+            this.comboBoxCharList = new System.Windows.Forms.ComboBox();
+            this.btnRefresh = new System.Windows.Forms.Button();
+            this.btnLogin = new System.Windows.Forms.Button();
             this.ControlSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.superTabControl5)).BeginInit();
             this.superTabControl5.SuspendLayout();
@@ -389,6 +389,9 @@
             // 
             // superTabControlPanel5
             // 
+            this.superTabControlPanel5.Controls.Add(this.btnLogin);
+            this.superTabControlPanel5.Controls.Add(this.btnRefresh);
+            this.superTabControlPanel5.Controls.Add(this.comboBoxCharList);
             this.superTabControlPanel5.Controls.Add(this.txtDaHao);
             this.superTabControlPanel5.Controls.Add(this.buttonX4);
             this.superTabControlPanel5.Controls.Add(this.buttonX3);
@@ -409,18 +412,18 @@
             // 
             // txtDaHao
             // 
-            this.txtDaHao.Location = new System.Drawing.Point(455, 97);
+            this.txtDaHao.Location = new System.Drawing.Point(458, 136);
             this.txtDaHao.Name = "txtDaHao";
-            this.txtDaHao.Size = new System.Drawing.Size(172, 26);
+            this.txtDaHao.Size = new System.Drawing.Size(168, 26);
             this.txtDaHao.TabIndex = 80;
             // 
             // buttonX4
             // 
             this.buttonX4.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.buttonX4.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.buttonX4.Location = new System.Drawing.Point(455, 64);
+            this.buttonX4.Location = new System.Drawing.Point(458, 106);
             this.buttonX4.Name = "buttonX4";
-            this.buttonX4.Size = new System.Drawing.Size(172, 27);
+            this.buttonX4.Size = new System.Drawing.Size(168, 24);
             this.buttonX4.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.buttonX4.SubItems.AddRange(new DevComponents.DotNetBar.BaseItem[] {
             this.buttonItem4});
@@ -483,37 +486,15 @@
             // 
             this.buttonX2.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.buttonX2.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.buttonX2.Location = new System.Drawing.Point(455, 32);
+            this.buttonX2.Location = new System.Drawing.Point(455, 412);
             this.buttonX2.Margin = new System.Windows.Forms.Padding(4);
             this.buttonX2.Name = "buttonX2";
             this.buttonX2.Size = new System.Drawing.Size(172, 27);
             this.buttonX2.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.buttonX2.SubItems.AddRange(new DevComponents.DotNetBar.BaseItem[] {
-            this.buttonItem1,
-            this.buttonItem2,
-            this.buttonItem3});
             this.buttonX2.TabIndex = 77;
-            this.buttonX2.Text = "获取所有魔法";
+            this.buttonX2.Text = "测试窗口";
             this.buttonX2.Visible = false;
             this.buttonX2.Click += new System.EventHandler(this.buttonX2_Click);
-            // 
-            // buttonItem1
-            // 
-            this.buttonItem1.GlobalItem = false;
-            this.buttonItem1.Name = "buttonItem1";
-            this.buttonItem1.Text = "buttonItem1";
-            // 
-            // buttonItem2
-            // 
-            this.buttonItem2.GlobalItem = false;
-            this.buttonItem2.Name = "buttonItem2";
-            this.buttonItem2.Text = "buttonItem2";
-            // 
-            // buttonItem3
-            // 
-            this.buttonItem3.GlobalItem = false;
-            this.buttonItem3.Name = "buttonItem3";
-            this.buttonItem3.Text = "buttonItem3";
             // 
             // CBTopMost
             // 
@@ -1305,6 +1286,35 @@
             this.StatsText.Name = "StatsText";
             this.StatsText.Size = new System.Drawing.Size(0, 17);
             // 
+            // comboBoxCharList
+            // 
+            this.comboBoxCharList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxCharList.FormattingEnabled = true;
+            this.comboBoxCharList.Location = new System.Drawing.Point(458, 29);
+            this.comboBoxCharList.Name = "comboBoxCharList";
+            this.comboBoxCharList.Size = new System.Drawing.Size(168, 24);
+            this.comboBoxCharList.TabIndex = 81;
+            // 
+            // btnRefresh
+            // 
+            this.btnRefresh.Location = new System.Drawing.Point(458, 57);
+            this.btnRefresh.Name = "btnRefresh";
+            this.btnRefresh.Size = new System.Drawing.Size(78, 25);
+            this.btnRefresh.TabIndex = 82;
+            this.btnRefresh.Text = "Refresh";
+            this.btnRefresh.UseVisualStyleBackColor = true;
+            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
+            // 
+            // btnLogin
+            // 
+            this.btnLogin.Location = new System.Drawing.Point(548, 57);
+            this.btnLogin.Name = "btnLogin";
+            this.btnLogin.Size = new System.Drawing.Size(78, 25);
+            this.btnLogin.TabIndex = 83;
+            this.btnLogin.Text = "Login";
+            this.btnLogin.UseVisualStyleBackColor = true;
+            this.btnLogin.Click += new System.EventHandler(this.btnLogin_Click);
+            // 
             // Main
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -1418,13 +1428,13 @@
         private DevComponents.DotNetBar.Controls.CheckBoxX CBDebug;
         private DevComponents.DotNetBar.ButtonItem OpenRotator;
         private DevComponents.DotNetBar.ButtonX buttonX3;
-        private DevComponents.DotNetBar.ButtonItem buttonItem1;
-        private DevComponents.DotNetBar.ButtonItem buttonItem2;
-        private DevComponents.DotNetBar.ButtonItem buttonItem3;
         public DevComponents.DotNetBar.LabelX LBVersion;
         private DevComponents.DotNetBar.ButtonX buttonX4;
         private DevComponents.DotNetBar.ButtonItem buttonItem4;
         private System.Windows.Forms.TextBox txtDaHao;
+        private System.Windows.Forms.Button btnLogin;
+        private System.Windows.Forms.Button btnRefresh;
+        private System.Windows.Forms.ComboBox comboBoxCharList;
     }
 }
 
