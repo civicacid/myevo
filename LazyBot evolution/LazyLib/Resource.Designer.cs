@@ -61,34 +61,52 @@ namespace LazyLib {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 88868=Fishing
-        ///80451=Survey
-        ///38371=Bestial Wrath
-        ///55428=Lifeblood
-        ///55480=Lifeblood
-        ///55500=Lifeblood
-        ///55501=Lifeblood
-        ///55502=Lifeblood
-        ///55503=Lifeblood
-        ///55078=Blood Plague
-        ///55095=Frost Fever
-        ///50466=Death Trance
-        ///49222=Bone Shield
-        ///2764=Throw
-        ///1784=Stealth
-        ///3018=Shoot
-        ///47241=Metamorphosis
-        ///47193=Demonic Empowerment
-        ///25771=Forbearance
-        ///63167=Decimation
-        ///25228=Soul Link
-        ///19028=Soul Link
-        ///6603=Attack
-        ///28877=Arcane Affinity
-        ///20592=Arcane Resistance
-        ///25046=Arcane Torrent
-        ///28730=Arcane Torrent
-        ///50613=Arcane Torrent [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to 2006=复活术
+        ///2008=先祖之魂
+        ///2018=锻造
+        ///2020=初级锻造
+        ///2021=中级锻造
+        ///2023=恢复法力
+        ///2024=治疗药水
+        ///2050=治疗术
+        ///2060=强效治疗术
+        ///2061=快速治疗
+        ///2062=土元素图腾
+        ///2075=灼热图腾
+        ///2094=致盲
+        ///2096=心灵视界
+        ///2098=刺骨
+        ///2108=制皮
+        ///2110=FIRESTAFF (DND)
+        ///2118=躲闪精通
+        ///2119=自然抗性
+        ///2120=烈焰风暴
+        ///2123=神圣亲和
+        ///2124=烈焰风暴
+        ///2125=烈焰风暴
+        ///2136=火焰冲击
+        ///2139=法术反制
+        ///2140=静电效果
+        ///2141=火焰冲击
+        ///2142=火焰冲击
+        ///2143=火焰冲击
+        ///2147=治疗
+        ///2148=周期性暗影风暴
+        ///2149=手工皮靴
+        ///2152=轻型护甲片
+        ///2153=手工皮短裤
+        ///2154=中级制皮
+        ///2155=初级制皮
+        ///2156=轻便冬季披风
+        ///2157=轻便冬季长靴
+        ///2158=优质皮靴
+        ///2159=优质皮披风
+        ///2160=雕花皮外衣
+        ///2161=雕花皮靴
+        ///2162=雕花皮质披风
+        ///2163=白色皮夹克
+        ///2164=优质皮手套
+        ///2 [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Spells {
             get {

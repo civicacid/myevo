@@ -146,6 +146,7 @@ namespace LazyLib.Helpers
         {
             try
             {
+                while (_allFrames.Count == 0) Thread.Sleep(100);
                 if (_allFrames[name] != null)
                     return _allFrames[name];
                 return null;

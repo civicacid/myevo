@@ -2,12 +2,12 @@
 -- 满包邮寄                                     function SendItemByNameFull(astrReceiver, astrName, aiSize)     无返回（获取到SendSuccData内容表示成功）
 -- 拿取邮箱中指定名称的物品                     function GetMAILAsItem(astrItemName)                            无返回（获取到SendSuccData内容表示成功）
 -- 指定数量的物品                               function GetMAILAsItemFull(astrItemName, aiSize)                无返回（获取到SendSuccData内容表示成功）
--- 拍卖场查询功能                               function AHSearchDoor(astrItemName, aidebugprint)               返回最小价格和seller
+-- 拍卖场查询功能                               function AHSearchDoor(astrItemName, aiprint)               返回最小价格和seller
 -- 取消AH中小于指定价格的已经上架的物品         function CancelAH(astrItemName, aiPrice)                        返回值中Yes表示已经取消一个，NO表示没有需要取消的了
 -- 获得背包物品名称和数量                       function ScanBag()                                              无返回（获取到SendSuccData内容表示成功）
 -- 获得邮箱中所有物品名称以及数量               function ScanInbox()                                            无返回（获取到SendSuccData内容表示成功）
 -- 获取执行结果                                 function SendResult(iNext)                                      返回值中包含TAG_NEXT_PAGE时，需要读取下一页，否则不需要
--- 商业技能中做物品                             function TradeSkillDO(astrName, aiCount)                        无返回（获取到SendSuccData内容表示成功）
+-- 商业技能中做物品                             function TradeSkillDO(astrName)                                 无返回（获取到SendSuccData内容表示成功）
 
 -- 在frame上实时显示物品在邮箱和背包中的数量    function DispItemCount(astrItemName)
 -- 获得背包中指定物品的数量                     function getXXcountInBag(asItemName)
@@ -51,7 +51,7 @@ function hello_world_initialize()
     frmTest.Text = frmTest:CreateFontString("frmTestText", "OVERLAY") -- 为Frame创建一个新的文字层
     frmTest.Text:SetFont("fonts\\zyhei.ttf", 50, "OUTLINE")
     frmTest.Text:SetPoint("CENTER", frmTest, "CENTER", 0, 0)
-    frmTest:Hide()
+    --frmTest:Hide()
 
     -- 显示数据框体
     frmData = CreateFrame("Frame", "frmData", UIParent)
@@ -62,7 +62,7 @@ function hello_world_initialize()
     frmDataText:SetFont("fonts\\zyhei.ttf", 64, "OUTLINE")
     frmDataText:SetPoint("TOP", frmData, "BOTTOM", 0, 0)
     --frmDataText:SetText("Hell World")
-    frmData:Hide()
+    --frmData:Hide()
     frmData:SetScript("OnUpdate", DispItemCount)
 
 end
@@ -80,7 +80,7 @@ AHSearch.SearchResult = {}                                  -- 搜索结果
 AHSearch.ResultHandle = ""                                  -- 搜索的句柄
 AHSearch.QueryEndHandle = ""                                -- 确定查询结束的句柄
 --AHSearch.Sort = 0                                         -- 是否按照价格做排序（0 不排序，1 按照单价做正序，2 倒序）
-AHSearch.debugprintOut = 0                                  -- 是否打印结果，0为不打印，1为打印
+AHSearch.printOut = 0                                  -- 是否打印结果，0为不打印，1为打印
 
 AHSearch.SearchResult.MAX_RETRY_COUNT = 5                   -- 查询后，收集结果时，没有人名，最多重试次数
 AHSearch.SearchResult.GET_RESULT_LOOP_TIME = 0.5            -- 收集结果，循环检查时间（秒）
@@ -103,25 +103,25 @@ AHSearch.SearchResult.Waiting = 0               -- 等待状态
 AHSearch.SearchResult.LastFire = 0              -- 最后一次时间触发的时间
 AHSearch.SearchResult.RetryCount = 0            -- 不出名字，重新刷新的次数
 
-function AHSearchDoor(astrItemName, aidebugprint)
+function AHSearchDoor(astrItemName, aiprint)
     SendBeginData()
 
     if astrItemName == nil then
         SendErrData("AHSearchDoor 要查什么？说话。。")
-        debugprint("AHSearchDoor 要查什么？说话。。")
+        print("AHSearchDoor 要查什么？说话。。")
         AHSearchItem:Fail()
         return
     end
     if astrItemName == "" then
         SendErrData("AHSearchDoor 要查什么？说话。。")
-        debugprint("AHSearchDoor 要查什么？说话。。")
+        print("AHSearchDoor 要查什么？说话。。")
         AHSearchItem:Fail()
         return
     end
-    AHSearch.debugprintOut = aidebugprint
+    AHSearch.printOut = aiprint
     if IsAHOpen() ~= 1 then
         SendErrData("AHSearchDoor AH has been closed")
-        debugprint("AHSearchDoor AH has been closed")
+        print("AHSearchDoor AH has been closed")
         AHSearchItem:Fail()
         return
     end
@@ -140,13 +140,13 @@ end
 
 function AHSearchItem:Start()
     if HWstatus.AHSearch ~= 0 and HWstatus.AHSearch ~= 10 then
-        debugprint("AHSearchItem:Start 查询正在进行，清稍后")
+        print("AHSearchItem:Start 查询正在进行，清稍后")
         AHSearchItem:Fail()
         return
     end
 
     if IsAHOpen() ~= 1 then
-        debugprint("AHSearchItem:Start AH has been closed")
+        print("AHSearchItem:Start AH has been closed")
         AHSearchItem:Fail()
         return
     end
@@ -180,8 +180,8 @@ end
 function AHSearchItem:Stop()
     AHSearchItem:CancelTimer(AHSearch.ResultHandle,true)
     HWstatus.AHSearch = 0
-    if AHSearch.debugprintOut == 1 then
-        AHSearchItem:debugprintOut()
+    if AHSearch.printOut == 1 then
+        AHSearchItem:printOut()
     end
 
     -- 显示查询结果，只显示最低价格和上货人
@@ -199,26 +199,28 @@ function AHSearchItem:Fail()
 end
 
 function AHSearchItem:Run()
-    --debugprint("........")
+    --print("........")
     local liTotal
     local liLoop, lstrSellerName
 
     if IsAHOpen() ~= 1 then
-        debugprint("AHSearchItem:GetResult AH has been closed")
+        print("AHSearchItem:GetResult AH has been closed")
         AHSearchItem:Fail()
         return
     end
+
+    print("run....")
 
     if AHSearch.SearchResult.Waiting == 1 then
         return
     end
 
     if HWstatus.AHSearch == 2 then
-        --debugprint("HWstatus.AHSearch == 2")
+        --print("HWstatus.AHSearch == 2")
         liPageCount, liTotal = GetNumAuctionItems("list")
         if liTotal == nil then
             -- 查询无结果
-            --debugprint("查询无结果")
+            --print("查询无结果")
             HWstatus.AHSearch = 1
             return
         end
@@ -262,7 +264,7 @@ function AHSearchItem:Run()
 
     if HWstatus.AHSearch == 3 then
         liPageCount, liTotal = GetNumAuctionItems("list")
-        --debugprint(liPageCount)
+        --print(liPageCount)
         if liPageCount == nil or liTotal == nil or liPageCount<=0 then
             -- 查询无结果，表示查询结束，开始处理查询结果
             HWstatus.AHSearch = 1
@@ -291,9 +293,9 @@ function AHSearchItem:Run()
         -- 下一页准备
         AHSearch.SearchResult.PassItems = AHSearch.SearchResult.PassItems + liPageCount
 
-        --debugprint(AHSearch.SearchResult.PassItems)
-        --debugprint(AHSearch.SearchResult.TotalItems)
-        --debugprint(AHSearch.SearchResult.NowPage)
+        --print(AHSearch.SearchResult.PassItems)
+        --print(AHSearch.SearchResult.TotalItems)
+        --print(AHSearch.SearchResult.NowPage)
         -- 看看是不是最后一页
         if AHSearch.SearchResult.PassItems >= AHSearch.SearchResult.TotalItems then
             -- 最后一页，冷静下来，状态置为1
@@ -316,11 +318,11 @@ function AHSearchItem:Run()
     end
 end
 
-function AHSearchItem:debugprintOut()
+function AHSearchItem:printOut()
     local liLoop
     for liLoop = 1, table.getn(AHSearch.SearchResult.ItemName) do
         if AHSearch.SearchResult.ItemName[liLoop] then
-            debugprint(liLoop..AHSearch.SearchResult.ItemName[liLoop].." "..AHSearch.SearchResult.ItemCount[liLoop].." "..AHSearch.SearchResult.ItemBuyout[liLoop].." "..AHSearch.SearchResult.ItemEachPrice[liLoop].." "..AHSearch.SearchResult.ItemSellerName[liLoop])
+            print(liLoop..AHSearch.SearchResult.ItemName[liLoop].." "..AHSearch.SearchResult.ItemCount[liLoop].." "..AHSearch.SearchResult.ItemBuyout[liLoop].." "..AHSearch.SearchResult.ItemEachPrice[liLoop].." "..AHSearch.SearchResult.ItemSellerName[liLoop])
         end
     end
 end
@@ -351,7 +353,7 @@ end
 
 function AHSearchItem:Waiting()
     AHSearch.SearchResult.Waiting = 0
-    --debugprint("Waiting()")
+    --print("Waiting()")
 end
 
 function AHSearchItem:QueryEnd()
@@ -972,7 +974,7 @@ function ScanBag()
                 if (iFound == 0) then
                     iCount = iCount + 1
                     gItemName[iCount] = (select(1,GetItemInfo(oItem)))
-                    gItemCount[iCount] = getXXcount(gItemName[iCount])
+                    gItemCount[iCount] = getXXcountInBag(gItemName[iCount])
                 end
             end
         end
@@ -1053,21 +1055,21 @@ function ahopen()
     if (HWstatus.AHBox == 0) then
         HWstatus.AHBox = 1
     end
-    --debugprint("AH Open")
+    --print("AH Open")
 end
 function ahclose()
     if (HWstatus.AHBox == 1) then
         HWstatus.AHBox = 0
     end
-    --debugprint("AH Close")
+    --print("AH Close")
 end
 function queryend()
-    --debugprint("Fire")
+    --print("Fire")
     AHSearchItem:QueryEnd()
 end
 
 function event_AH_LIST_UPDATE()
-    AHCancelMachine:CancelDone()
+--    AHCancelMachine:CancelDone()
 end
 
 function event_mail_close()
@@ -1153,7 +1155,9 @@ function getXXcountInMail(asItemName)
             for iLoopNext=1, 12 do
                 lstrItemName = select(1, GetInboxItem(liLoop, iLoopNext))
                 if (lstrItemName) then
-                    liMailCount = liMailCount + (select(3, GetInboxItem(liLoop, iLoopNext)))
+                    if asItemName == lstrItemName then
+                        liMailCount = liMailCount + (select(3, GetInboxItem(liLoop, iLoopNext)))
+                    end
                 end
             end
         end
@@ -1253,7 +1257,7 @@ end
 --------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------     商业技能中做物品     ----------------------------------------------
 --------------------------------------------------------------------------------------------------------------------------
-function TradeSkillDO(astrName, aiCount)
+function TradeSkillDO(astrName)
     SendBeginData()
 
     local iLoop, numSkills, skillName, liFound
@@ -1263,15 +1267,11 @@ function TradeSkillDO(astrName, aiCount)
         skillName = ((select(1,GetTradeSkillInfo(iLoop))))
         if skillName == astrName then
             liFound = 1
-            if aiCount > 1 then
-                DoTradeSkill(iLoop)
-            else
-                DoTradeSkill(iLoop, aiCount)
-            end
+            DoTradeSkill(iLoop)
             break
         end
     end
-    if (liFound == 0)
+    if (liFound == 0) then
         SendErrData("没找到这个物品")
     else
         SendSuccData()
@@ -1308,7 +1308,7 @@ function IsMailBoxOpen()
     end
 end
 
-function debugprint(astrMsg)
+function print(astrMsg)
     if HWstatus.debug == 1 then
         print(astrMsg)
         DEFAULT_CHAT_FRAME:AddMessage(astrMsg);
@@ -1326,4 +1326,116 @@ function table_copy(t)
         t2[k] = v
     end
     return t2
+end
+
+-- 搜索指定物品，返回bag和slot
+function SearchItem(astrItemName, aiStackSize)
+    -- aiStackSize = 0 表示不限定查询的数量
+    local bag, slot, item
+    for bag = 0,4 do
+        for slot = 1,GetContainerNumSlots(bag) do
+            item = select(7,GetContainerItemInfo(bag,slot))
+            if (item) then
+                if (select(1,GetItemInfo(item)) == astrItemName) then
+                    if aiStackSize == 0 then
+                        return bag, slot
+                    else
+                        if select(2,GetContainerItemInfo(bag,slot)) - aiStackSize == 0 then
+                            return bag, slot
+                        end
+                    end
+                end
+            end
+        end
+    end
+    return -1, -1
+end
+
+
+--------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------    拍卖场挂货功能(4.0)      ---------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------
+HWstatus.AHPostItem = 0                                 -- 0 闲置，10 准备发出挂货指令，20 挂货指令发出，等待结果, 30 正在挂货（这个状态通过前端宏实现）
+local AHPostItem4 = {}
+AHPostItem4.AH_TIME = 1                                  -- 拍卖时间（对于4.0来说是1、2、3，对于3.3来说是小时*60秒）
+AHPostItem4.CUT_PRICE = 1                                -- 砍价幅度
+
+AHPostItem4.ItemBag = 0                                  -- 待挂货物品所在包
+AHPostItem4.ItemSlot = 0                                 -- 待挂货物品所在槽
+AHPostItem4.ItemLeftStack = 0                            -- 剩余多少堆要挂出去
+
+function AHPostItemDoor(astrItemName, aiSingleItemPrice, aiItemStackSize, aiItemNumStack)
+    HWstatus.AHPostItem = 0
+    SendBeginData()
+    -- 检查参数值
+    if astrItemName == nil then
+        print("AHPostItem4Door： 要干什么？？说话。。")
+        AHPostItem4MachineFail()
+        return
+    end
+     if astrItemName == "" then
+        AHPostItem4MachineFail()
+        print("AHPostItem4Door： 要干什么？？说话。。")
+        return
+    end
+    if aiSingleItemPrice == nil or aiSingleItemPrice == 0 then
+        print("AHPostItem4Door： 参数aiSingleItemPrice=0")
+        AHPostItem4MachineFail()
+        return
+    end
+    if aiItemStackSize == nil or aiItemStackSize == 0 then
+        print("AHPostItem4Door： 参数aiItemStackSize=0")
+        AHPostItem4MachineFail()
+        return
+    end
+    if aiItemNumStack == nil or aiItemNumStack == 0 then
+        print("AHPostItem4Door： 参数aiItemNumStack=0")
+        AHPostItem4MachineFail()
+        return
+    end
+
+    -- 看看环境是不是合适
+    if IsAHOpen() ~= 1 then
+        print("AHPostItem4Door： AH Close")
+        AHPostItem4MachineFail()
+        return
+    end
+
+    -- 找到指定物品所在包、槽
+    AHPostItem4.ItemBag, AHPostItem4.ItemSlot = SearchItem(astrItemName, 0)
+    if AHPostItem4.ItemBag == -1 then
+        AHPostItem4MachineFail()
+        return
+    end
+
+    HWstatus.AHPostItem = 10
+    AHPostItem4.ItemLeftStack = aiItemNumStack
+
+    -- 做准备工作，把物品从包里面拉出来，放到拍卖框上去
+    PickupContainerItem(AHPostItem4.ItemBag, AHPostItem4.ItemSlot)
+    ClickAuctionSellItemButton()
+    ClearCursor()
+    prize = aiSingleItemPrice * aiItemStackSize - AHPostItem4.CUT_PRICE
+    StartAuction(prize, prize, AHPostItem4.AH_TIME, aiItemStackSize, aiItemNumStack)
+
+end
+
+function AHPostItem4FirstPost()
+    if HWstatus.AHPostItem == 10 then
+        --AHPostItem4.ItemLeftStack = AHPostItem4.PostItemNumStack
+    end
+end
+
+function AHPostItem4NextPost()
+    if HWstatus.AHPostItem == 10 then
+        AHPostItem4.ItemLeftStack = AHPostItem4.ItemLeftStack - 1
+        if AHPostItem4.ItemLeftStack == 0 then
+            HWstatus.AHPostItem = 0
+            SendSuccData()
+        end
+    end
+end
+
+function AHPostItem4MachineFail()
+    SendErrData("失败")
 end
