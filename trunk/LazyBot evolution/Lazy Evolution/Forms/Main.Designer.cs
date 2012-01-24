@@ -52,6 +52,9 @@
             this.OpenRotator = new DevComponents.DotNetBar.ButtonItem();
             this.superTabControl5 = new DevComponents.DotNetBar.SuperTabControl();
             this.superTabControlPanel5 = new DevComponents.DotNetBar.SuperTabControlPanel();
+            this.btnLogin = new System.Windows.Forms.Button();
+            this.btnRefresh = new System.Windows.Forms.Button();
+            this.comboBoxCharList = new System.Windows.Forms.ComboBox();
             this.txtDaHao = new System.Windows.Forms.TextBox();
             this.buttonX4 = new DevComponents.DotNetBar.ButtonX();
             this.buttonItem4 = new DevComponents.DotNetBar.ButtonItem();
@@ -105,9 +108,8 @@
             this.comboItem3 = new DevComponents.Editors.ComboItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.StatsText = new System.Windows.Forms.ToolStripStatusLabel();
-            this.comboBoxCharList = new System.Windows.Forms.ComboBox();
-            this.btnRefresh = new System.Windows.Forms.Button();
-            this.btnLogin = new System.Windows.Forms.Button();
+            this.buttonItem1 = new DevComponents.DotNetBar.ButtonItem();
+            this.buttonItem2 = new DevComponents.DotNetBar.ButtonItem();
             this.ControlSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.superTabControl5)).BeginInit();
             this.superTabControl5.SuspendLayout();
@@ -410,6 +412,35 @@
             this.superTabControlPanel5.TabIndex = 1;
             this.superTabControlPanel5.TabItem = this.superTabItem5;
             // 
+            // btnLogin
+            // 
+            this.btnLogin.Location = new System.Drawing.Point(548, 57);
+            this.btnLogin.Name = "btnLogin";
+            this.btnLogin.Size = new System.Drawing.Size(78, 25);
+            this.btnLogin.TabIndex = 83;
+            this.btnLogin.Text = "Login";
+            this.btnLogin.UseVisualStyleBackColor = true;
+            this.btnLogin.Click += new System.EventHandler(this.btnLogin_Click);
+            // 
+            // btnRefresh
+            // 
+            this.btnRefresh.Location = new System.Drawing.Point(458, 57);
+            this.btnRefresh.Name = "btnRefresh";
+            this.btnRefresh.Size = new System.Drawing.Size(78, 25);
+            this.btnRefresh.TabIndex = 82;
+            this.btnRefresh.Text = "Refresh";
+            this.btnRefresh.UseVisualStyleBackColor = true;
+            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
+            // 
+            // comboBoxCharList
+            // 
+            this.comboBoxCharList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxCharList.FormattingEnabled = true;
+            this.comboBoxCharList.Location = new System.Drawing.Point(458, 29);
+            this.comboBoxCharList.Name = "comboBoxCharList";
+            this.comboBoxCharList.Size = new System.Drawing.Size(168, 24);
+            this.comboBoxCharList.TabIndex = 81;
+            // 
             // txtDaHao
             // 
             this.txtDaHao.Location = new System.Drawing.Point(458, 136);
@@ -426,7 +457,9 @@
             this.buttonX4.Size = new System.Drawing.Size(168, 24);
             this.buttonX4.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.buttonX4.SubItems.AddRange(new DevComponents.DotNetBar.BaseItem[] {
-            this.buttonItem4});
+            this.buttonItem1,
+            this.buttonItem4,
+            this.buttonItem2});
             this.buttonX4.TabIndex = 79;
             this.buttonX4.Text = "副本";
             // 
@@ -1286,34 +1319,17 @@
             this.StatsText.Name = "StatsText";
             this.StatsText.Size = new System.Drawing.Size(0, 17);
             // 
-            // comboBoxCharList
+            // buttonItem1
             // 
-            this.comboBoxCharList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxCharList.FormattingEnabled = true;
-            this.comboBoxCharList.Location = new System.Drawing.Point(458, 29);
-            this.comboBoxCharList.Name = "comboBoxCharList";
-            this.comboBoxCharList.Size = new System.Drawing.Size(168, 24);
-            this.comboBoxCharList.TabIndex = 81;
+            this.buttonItem1.Name = "buttonItem1";
+            this.buttonItem1.Text = "血色-墓地（开始）";
+            this.buttonItem1.Click += new System.EventHandler(this.buttonItem1_Click);
             // 
-            // btnRefresh
+            // buttonItem2
             // 
-            this.btnRefresh.Location = new System.Drawing.Point(458, 57);
-            this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.Size = new System.Drawing.Size(78, 25);
-            this.btnRefresh.TabIndex = 82;
-            this.btnRefresh.Text = "Refresh";
-            this.btnRefresh.UseVisualStyleBackColor = true;
-            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
-            // 
-            // btnLogin
-            // 
-            this.btnLogin.Location = new System.Drawing.Point(548, 57);
-            this.btnLogin.Name = "btnLogin";
-            this.btnLogin.Size = new System.Drawing.Size(78, 25);
-            this.btnLogin.TabIndex = 83;
-            this.btnLogin.Text = "Login";
-            this.btnLogin.UseVisualStyleBackColor = true;
-            this.btnLogin.Click += new System.EventHandler(this.btnLogin_Click);
+            this.buttonItem2.Name = "buttonItem2";
+            this.buttonItem2.Text = "STSM-前门（开始）";
+            this.buttonItem2.Click += new System.EventHandler(this.buttonItem2_Click);
             // 
             // Main
             // 
@@ -1435,6 +1451,8 @@
         private System.Windows.Forms.Button btnLogin;
         private System.Windows.Forms.Button btnRefresh;
         private System.Windows.Forms.ComboBox comboBoxCharList;
+        private DevComponents.DotNetBar.ButtonItem buttonItem1;
+        private DevComponents.DotNetBar.ButtonItem buttonItem2;
     }
 }
 

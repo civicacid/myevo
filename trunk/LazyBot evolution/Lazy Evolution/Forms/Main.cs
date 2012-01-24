@@ -1197,24 +1197,6 @@ namespace LazyEvo.Forms
             }
         }
 
-        private void buttonItem4_Click(object sender, EventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(txtDaHao.Text))
-            {
-                MessageBox.Show("在下面的框框里面输入大号的名字");
-                return;
-            }
-            if (buttonItem4.Text.Equals("血色-图书馆（开始）"))
-            {
-                buttonItem4.Text = "血色-图书馆（停止）";
-                SpyFB.XSXDY_TSG(txtDaHao.Text);
-            }
-            else
-            {
-                buttonItem4.Text = "血色-图书馆（开始）";
-            }
-        }
-
         private void btnRefresh_Click(object sender, EventArgs e)
         {
             comboBoxCharList.Items.Clear();
@@ -1244,6 +1226,63 @@ namespace LazyEvo.Forms
             //MessageBox.Show("OKOK_____AUTO Login");
             ObjectManager.Initialize(SpyAutoLogin.WOW_P.Id);
         }
+
+        private void buttonItem4_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtDaHao.Text))
+            {
+                MessageBox.Show("在下面的框框里面输入大号的名字");
+                return;
+            }
+            if (buttonItem4.Text.Equals("血色-图书馆（开始）"))
+            {
+                buttonItem4.Text = "血色-图书馆（停止）";
+                SpyFB.XSXDY_TSG(txtDaHao.Text);
+            }
+            else
+            {
+                buttonItem4.Text = "血色-图书馆（开始）";
+            }
+        }
+
+        private void buttonItem1_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtDaHao.Text))
+            {
+                MessageBox.Show("在下面的框框里面输入大号的名字");
+                return;
+            }
+            if (buttonItem1.Text.Equals("血色-墓地（开始）"))
+            {
+                buttonItem1.Text = "血色-墓地（停止）";
+                SpyFB.XSXDY_MD(txtDaHao.Text);
+            }
+            else
+            {
+                buttonItem1.Text = "血色-墓地（开始）";
+            }
+        }
+
+        private void buttonItem2_Click(object sender, EventArgs e)
+        {
+            //STSM-前门（开始）
+            if (string.IsNullOrWhiteSpace(txtDaHao.Text))
+            {
+                MessageBox.Show("在下面的框框里面输入大号的名字");
+                return;
+            }
+            if (buttonItem2.Text.Equals("STSM-前门（开始）"))
+            {
+                buttonItem2.Text = "STSM-前门（停止）";
+                SpyFB.STSM_For(txtDaHao.Text);
+            }
+            else
+            {
+                buttonItem2.Text = "STSM-前门（开始）";
+            }
+        }
+
+
 
     }
 }
