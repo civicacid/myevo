@@ -1924,6 +1924,69 @@ namespace LazyEvo.Plugins
             SpyFB.StartFB();
         }
 
+        public static void STSM_For(string DaHao)              //STSM-前门
+        {
+            if (string.IsNullOrWhiteSpace(DaHao))
+            {
+                Logging.Write("没提供大号的名字");
+                return;
+            }
+            Dictionary<int, Location> small = new Dictionary<int, Location>();
+            Dictionary<int, Location> large = new Dictionary<int, Location>();
+            Dictionary<int, int> mapp = new Dictionary<int, int>();
+
+            large.Add(0, new Location((float)Convert.ToDouble(3552.746), (float)Convert.ToDouble(-3390.129), (float)Convert.ToDouble(133.6904)));
+            large.Add(1, new Location((float)Convert.ToDouble(3634.392), (float)Convert.ToDouble(-3335.104), (float)Convert.ToDouble(123.8209)));
+            large.Add(2, new Location((float)Convert.ToDouble(3694.374), (float)Convert.ToDouble(-3252.993), (float)Convert.ToDouble(126.9459)));
+            large.Add(3, new Location((float)Convert.ToDouble(3647.75), (float)Convert.ToDouble(-3123.231), (float)Convert.ToDouble(134.7812)));
+            large.Add(4, new Location((float)Convert.ToDouble(3577.48), (float)Convert.ToDouble(-3065.235), (float)Convert.ToDouble(135.6654)));
+
+            small.Add(0, new Location((float)Convert.ToDouble(3394.787), (float)Convert.ToDouble(-3378.851), (float)Convert.ToDouble(142.7063)));
+            small.Add(1, new Location((float)Convert.ToDouble(3458.428), (float)Convert.ToDouble(-3380.6), (float)Convert.ToDouble(139.2054)));
+            small.Add(2, new Location((float)Convert.ToDouble(3548.421), (float)Convert.ToDouble(-3383.074), (float)Convert.ToDouble(132.8665)));
+            small.Add(3, new Location((float)Convert.ToDouble(3549.881), (float)Convert.ToDouble(-3331.992), (float)Convert.ToDouble(129.3269)));
+            small.Add(4, new Location((float)Convert.ToDouble(3582.671), (float)Convert.ToDouble(-3335.25), (float)Convert.ToDouble(127.8763)));
+            small.Add(5, new Location((float)Convert.ToDouble(3625.19), (float)Convert.ToDouble(-3335.013), (float)Convert.ToDouble(122.9529)));
+            small.Add(6, new Location((float)Convert.ToDouble(3656.602), (float)Convert.ToDouble(-3334.31), (float)Convert.ToDouble(123.6646)));
+            small.Add(7, new Location((float)Convert.ToDouble(3687.047), (float)Convert.ToDouble(-3289.592), (float)Convert.ToDouble(128.2343)));
+            small.Add(8, new Location((float)Convert.ToDouble(3695.337), (float)Convert.ToDouble(-3254.503), (float)Convert.ToDouble(127.0161)));
+            small.Add(9, new Location((float)Convert.ToDouble(3680.442), (float)Convert.ToDouble(-3215.124), (float)Convert.ToDouble(127.1871)));
+            small.Add(10, new Location((float)Convert.ToDouble(3673.885), (float)Convert.ToDouble(-3193.536), (float)Convert.ToDouble(126.2168)));
+            small.Add(11, new Location((float)Convert.ToDouble(3670.725), (float)Convert.ToDouble(-3172.513), (float)Convert.ToDouble(126.4293)));
+            small.Add(12, new Location((float)Convert.ToDouble(3639.522), (float)Convert.ToDouble(-3128.482), (float)Convert.ToDouble(134.7796)));
+            small.Add(13, new Location((float)Convert.ToDouble(3652.425), (float)Convert.ToDouble(-3119.892), (float)Convert.ToDouble(134.7803)));
+            small.Add(14, new Location((float)Convert.ToDouble(3642.929), (float)Convert.ToDouble(-3106.38), (float)Convert.ToDouble(134.1169)));
+            small.Add(15, new Location((float)Convert.ToDouble(3654.825), (float)Convert.ToDouble(-3098.323), (float)Convert.ToDouble(134.1169)));
+            small.Add(16, new Location((float)Convert.ToDouble(3641.787), (float)Convert.ToDouble(-3080.266), (float)Convert.ToDouble(134.121)));
+            small.Add(17, new Location((float)Convert.ToDouble(3606.12), (float)Convert.ToDouble(-3105.424), (float)Convert.ToDouble(134.121)));
+            small.Add(18, new Location((float)Convert.ToDouble(3580.596), (float)Convert.ToDouble(-3069.592), (float)Convert.ToDouble(135.6633)));
+
+            mapp.Add(0, 0);
+            mapp.Add(1, 0);
+            mapp.Add(2, 0);
+            mapp.Add(3, 1);
+            mapp.Add(4, 1);
+            mapp.Add(5, 1);
+            mapp.Add(6, 2);
+            mapp.Add(7, 2);
+            mapp.Add(8, 2);
+            mapp.Add(9, 3);
+            mapp.Add(10, 3);
+            mapp.Add(11, 3);
+            mapp.Add(12, 3);
+            mapp.Add(13, 3);
+            mapp.Add(14, 4);
+            mapp.Add(15, 4);
+            mapp.Add(16, 4);
+            mapp.Add(17, 4);
+            mapp.Add(18, 4);
+
+            Location inPoint = new Location((float)Convert.ToDouble(3392.912), (float)Convert.ToDouble(-3304.423), (float)Convert.ToDouble(142.2488));
+            Location outPoint = new Location((float)Convert.ToDouble(3392.055), (float)Convert.ToDouble(-3496.787), (float)Convert.ToDouble(143.07));
+
+            SpyFB.Init(DaHao, inPoint, outPoint, large, small, mapp);
+            SpyFB.StartFB();
+        }
     }
 
     public static class SpyData
@@ -2036,6 +2099,12 @@ namespace LazyEvo.Plugins
                 chars.Add("AccountList", dr["acc_list"].ToString());
             }
             return chars;
+        }
+
+        public static Dictionary<string, string> GetMailList()
+        {
+            Dictionary<string, string> result = new Dictionary<string, string>();
+            return result;
         }
     }
 
