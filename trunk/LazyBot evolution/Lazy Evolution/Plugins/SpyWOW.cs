@@ -795,7 +795,7 @@ namespace LazyEvo.Plugins
         {
             return lua_GetMAILAsItem(ItemName, ItemCount, 0);
         }
-        public static bool lua_GetMAILAsItem(string ItemName, int ItemCount, int StackSize)
+        public static bool lua_GetMAILAsItem(string ItemName, int ItemCount, int StackSize) //itemcount指的是，一次拿几堆
         {
             if (!MailFrame.Open)
             {
@@ -1466,7 +1466,10 @@ namespace LazyEvo.Plugins
                 }
                 else
                 {
-                    prize = Convert.ToInt32(scanresult["PRIZE"]) - 1;
+                    if (maxprize < Convert.ToInt32(scanresult["PRIZE"])) 
+                        prize = maxprize;
+                    else
+                        prize = Convert.ToInt32(scanresult["PRIZE"]) - 1;
                     logger.Add(string.Format("进过计算，物品[{0}]将按照单价[{1}]上架", ahitem, prize));
                     // 取消拍卖物品
                     logger.Add(string.Format("取消AH中单价低于[{0}]的[{1}]", prize, ahitem));
@@ -2053,7 +2056,7 @@ namespace LazyEvo.Plugins
             }
         }
 
-        public static Dictionary<string,string> GetChars()
+        public static Dictionary<string, string> GetChars()
         {
             Dictionary<string, string> chars = new Dictionary<string, string>();
             DataTable dt;
@@ -2079,9 +2082,10 @@ namespace LazyEvo.Plugins
             Dictionary<string, string> chars = new Dictionary<string, string>();
             DataTable dt;
 
-            if (string.IsNullOrWhiteSpace(charID)) {
+            if (string.IsNullOrWhiteSpace(charID))
+            {
                 Logging.Write("输入为空");
-                return chars; 
+                return chars;
             }
             string sql = string.Format("select char_name,server,char_idx,acc_list,acc_name,acc_pass from v_login_info where char_id={0}", charID);
             dt = OraData.execSQL(sql);

@@ -1,8 +1,8 @@
 -- 发送指定名称物品                             function SendItemByName(astrReceiver, astrName)                 无返回（获取到SendSuccData内容表示成功）
 -- 满包邮寄                                     function SendItemByNameFull(astrReceiver, astrName, aiSize)     无返回（获取到SendSuccData内容表示成功）
--- 拿取邮箱中指定名称的物品                     function GetMAILAsItem(astrItemName)                            无返回（获取到SendSuccData内容表示成功）
--- 指定数量的物品                               function GetMAILAsItemFull(astrItemName, aiSize)                无返回（获取到SendSuccData内容表示成功）
--- 拍卖场查询功能                               function AHSearchDoor(astrItemName, aiprint)               返回最小价格和seller
+-- 拿取邮箱中指定名称的物品                     function GetMAILAsItem(astrItemName, aiCount)                   无返回（获取到SendSuccData内容表示成功）
+-- 指定数量的物品                               function GetMAILAsItemFull(astrItemName, aiCount, aiSize)       无返回（获取到SendSuccData内容表示成功）
+-- 拍卖场查询功能                               function AHSearchDoor(astrItemName, aiprint)                    返回最小价格和seller
 -- 取消AH中小于指定价格的已经上架的物品         function CancelAH(astrItemName, aiPrice)                        返回值中Yes表示已经取消一个，NO表示没有需要取消的了
 -- 获得背包物品名称和数量                       function ScanBag()                                              无返回（获取到SendSuccData内容表示成功）
 -- 获得邮箱中所有物品名称以及数量               function ScanInbox()                                            无返回（获取到SendSuccData内容表示成功）
@@ -532,13 +532,20 @@ end
 --------------------------------------------------------------------------------------------------------------------------
 --------------------------------      拿取邮箱中指定名称的物品      ------------------------------------------
 --------------------------------------------------------------------------------------------------------------------------
-function GetMAILAsItem(astrItemName)
+function GetMAILAsItem(astrItemName, aiCount)
     local liInboxCount, liLoop, iLoopNext, lstrItemName, liMaxCount
+    local liItemStackCount
 
     SendBeginData()
     if not astrItemName or astrItemName == "" then
         print("提供名称")
         SendErrData("提供名称")
+        return
+    end
+
+    if not aiCount or aiCount == "" then
+        print("提供数量")
+        SendErrData("提供数量")
         return
     end
 
@@ -553,6 +560,7 @@ function GetMAILAsItem(astrItemName)
     MailBoxGetItemNew.TblAttachID = wipe(MailBoxGetItemNew.TblAttachID)
 
     -- 在邮箱中找是否有满足条件的物品
+    liItemStackCount = 0
     liInboxCount,_ = GetInboxNumItems()
     for liLoop = 1, liInboxCount do
         for iLoopNext=1, 12 do
@@ -560,6 +568,10 @@ function GetMAILAsItem(astrItemName)
             if (lstrItemName) and lstrItemName == astrItemName then
                 table.insert(MailBoxGetItemNew.TblMailID, liLoop)
                 table.insert(MailBoxGetItemNew.TblAttachID, iLoopNext)
+                liItemStackCount = liItemStackCount + 1
+                if liItemStackCount == aiCount then
+                    break
+                end
             end
         end
     end
@@ -571,13 +583,20 @@ function GetMAILAsItem(astrItemName)
 
 end
 
-function GetMAILAsItemFull(astrItemName, aiSize)
+function GetMAILAsItemFull(astrItemName, aiCount, aiSize)
     local liInboxCount, liLoop, iLoopNext, lstrItemName, liMaxCount, liMaxStack, liNowCount
+    local liItemStackCount
 
     SendBeginData()
     if not astrItemName or astrItemName == "" then
         print("提供名称")
         SendErrData("提供名称")
+        return
+    end
+
+    if not aiCount or aiCount == "" then
+        print("提供数量")
+        SendErrData("提供数量")
         return
     end
 
@@ -592,6 +611,7 @@ function GetMAILAsItemFull(astrItemName, aiSize)
     MailBoxGetItemNew.TblAttachID = wipe(MailBoxGetItemNew.TblAttachID)
 
     -- 在邮箱中找是否有满足条件的物品
+    liItemStackCount = 0
     liInboxCount,_ = GetInboxNumItems()
     for liLoop = 1, liInboxCount do
         for iLoopNext=1, 12 do
@@ -603,6 +623,10 @@ function GetMAILAsItemFull(astrItemName, aiSize)
                 if aiSize == liNowCount then
                     table.insert(MailBoxGetItemNew.TblMailID, liLoop)
                     table.insert(MailBoxGetItemNew.TblAttachID, iLoopNext)
+                    liItemStackCount = liItemStackCount + 1
+                    if liItemStackCount == aiCount then
+                        break
+                    end
                 end
             end
         end
