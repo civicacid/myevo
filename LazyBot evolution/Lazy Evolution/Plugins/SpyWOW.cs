@@ -795,6 +795,7 @@ namespace LazyEvo.Plugins
         {
             return lua_GetMAILAsItem(ItemName, ItemCount, 0);
         }
+
         public static bool lua_GetMAILAsItem(string ItemName, int ItemCount, int StackSize) //itemcount指的是，一次拿几堆
         {
             if (!MailFrame.Open)
@@ -814,6 +815,11 @@ namespace LazyEvo.Plugins
                 return ExecSimpleLua(string.Format("/script GetMAILAsItem(\"{0}\",{1})", ItemName, ItemCount));
             else
                 return ExecSimpleLua(string.Format("/script GetMAILAsItemFull(\"{0}\",{1},{2})", ItemName, ItemCount, StackSize));
+        }
+
+        public static void lua_GetAllMail()
+        {
+            ExecSimpleLua("/script GetAllMailDoor()");
         }
 
         // 重新整理背包-整合背包，需要插件辅助
@@ -878,7 +884,12 @@ namespace LazyEvo.Plugins
         // 拍卖物品
         public static bool lua_StartAuction(string ItemName, int SinglePrize, int StackSize, int NumStack)
         {
-            return ExecSimpleLua(string.Format("/script AHPostItemDoor(\"{0}\",{1},{2},{3})", ItemName, SinglePrize, StackSize, NumStack));
+            if (ExecSimpleLua("/click AuctionFrameTab3"))
+            {
+                return ExecSimpleLua(string.Format("/script AHPostItemDoor(\"{0}\",{1},{2},{3})", ItemName, SinglePrize, StackSize, NumStack));
+            }
+            else
+                return false;
         }
 
         // 运行没有返回值的LUA命令
@@ -1110,7 +1121,17 @@ namespace LazyEvo.Plugins
                     if (ItemCount["BAG"] > 0)
                     {
                         // 打开界面
-                        if (!InterfaceHelper.GetFrameByName("TradeSkillFrame").IsVisible)
+                        bool ZB_frame;
+                        try
+                        {
+                            ZB_frame = InterfaceHelper.GetFrameByName("TradeSkillFrame").IsVisible;
+                        }
+                        catch
+                        {
+                            ZB_frame = false;
+                        }
+
+                        if (!ZB_frame)
                         {
                             BarSpell gg = BarMapper.GetSpellByName("珠宝加工");
                             gg.CastSpell();
@@ -1281,15 +1302,17 @@ namespace LazyEvo.Plugins
 
         public static void init()
         {
+            // 从数据库表读取拍卖列表(ahitem)
+            Items = SpyDB.GetAHList();
             //Items.PrimaryKey
-            Items.Columns.Add("item_name", System.Type.GetType("System.String"));
-            Items.Columns.Add("item_minprice", System.Type.GetType("System.Int32"));
-            Items.Columns.Add("item_maxprice", System.Type.GetType("System.Int32"));
-            Items.Columns.Add("item_count", System.Type.GetType("System.Int32"));
-            Items.Columns.Add("item_stacksize", System.Type.GetType("System.Int32"));
-            DataColumn[] pk = new DataColumn[1];
-            pk[0] = Items.Columns["item_name"];
-            Items.PrimaryKey = pk;
+            //Items.Columns.Add("item_name", System.Type.GetType("System.String"));
+            //Items.Columns.Add("item_minprice", System.Type.GetType("System.Int32"));
+            //Items.Columns.Add("item_maxprice", System.Type.GetType("System.Int32"));
+            //Items.Columns.Add("item_count", System.Type.GetType("System.Int32"));
+            //Items.Columns.Add("item_stacksize", System.Type.GetType("System.Int32"));
+            //DataColumn[] pk = new DataColumn[1];
+            //pk[0] = Items.Columns["item_name"];
+            //Items.PrimaryKey = pk;
             //DataRow dr = dt.NewRow();
             //dr["column0"] = "AX";
             //dr["column1"] = true;
@@ -1332,50 +1355,49 @@ namespace LazyEvo.Plugins
                 return false;
             }
 
-            // 遍历物品，保证背包中有足够的拍卖品。这里要注意背包空间
-            logger.Add("遍历 待拍卖物品列表 ");
-            foreach (DataRow dr in Items.Rows)
-            {
-                logger.Add("检查背包剩余空间");
-                if (Inventory.FreeBagSlots <= 1)
-                {
-                    logger.Add("检查背包剩余空间为1，不能继续");
-                    return false;
-                }
-                string AHSellItem = dr["item_name"].ToString();
-                logger.Add("处理拍卖对象 " + AHSellItem);
-                if (!SpyFrame.lua_SetDispCountItemName(AHSellItem))
-                {
-                    logger.Add("在执行SetDispCountItemName时出错，物品：" + AHSellItem);
-                    return false;
-                }
-                Thread.Sleep(500);
-                logger.Add("通过lua获知物品在背包和邮箱中的数量");
-                if (!SpyFrame.lua_SetDispCountItemName(AHSellItem))
-                {
-                    logger.Add("在执行SetDispCountItemName时出错，物品：" + AHSellItem);
-                    return false;
-                }
-                Thread.Sleep(500);
-                Dictionary<string, int> MineCount = SpyFrame.GetDispCountItemCount();
-                logger.Add(string.Format("物品{0}在背包中的数量为{1}，在邮箱中的数量为：{2}", AHSellItem, MineCount["BAG"], MineCount["MAIL"]));
-                if (MineCount["BAG"] == 0 && MineCount["MAIL"] == 0) continue;
-                //int WantCount = (int)dr["item_count"] * (int)dr["item_stacksize"] > MineCount["BAG"]
-                //                ? (int)dr["item_count"] * (int)dr["item_stacksize"] - MineCount["BAG"]
-                //                : 0
-                //                ;
-                //if (WantCount == 0) continue;
-                //// 拿邮件(LUA)
-                //logger.Add(string.Format("从邮箱中拿{0}个{1}", WantCount, mine));
+            //// 遍历物品，保证背包中有足够的拍卖品。这里要注意背包空间
+            //logger.Add("遍历 待拍卖物品列表 ");
+            //foreach (DataRow dr in Items.Rows)
+            //{
+            //    logger.Add("检查背包剩余空间");
+            //    if (Inventory.FreeBagSlots <= 1)
+            //    {
+            //        logger.Add("检查背包剩余空间为1，不能继续");
+            //        return false;
+            //    }
+            //    string AHSellItem = dr["item_name"].ToString();
+            //    logger.Add("通过lua获知物品在背包和邮箱中的数量");
+            //    if (!SpyFrame.lua_SetDispCountItemName(AHSellItem))
+            //    {
+            //        logger.Add("在执行SetDispCountItemName时出错，物品：" + AHSellItem);
+            //        return false;
+            //    }
+            //    Thread.Sleep(500);
+            //    Dictionary<string, int> MineCount = SpyFrame.GetDispCountItemCount();
+            //    logger.Add(string.Format("物品{0}在背包中的数量为{1}，在邮箱中的数量为：{2}", AHSellItem, MineCount["BAG"], MineCount["MAIL"]));
+            //    if (MineCount["BAG"] == 0 && MineCount["MAIL"] == 0) continue;
+            //    //int WantCount = (int)dr["item_count"] * (int)dr["item_stacksize"] > MineCount["BAG"]
+            //    //                ? (int)dr["item_count"] * (int)dr["item_stacksize"] - MineCount["BAG"]
+            //    //                : 0
+            //    //                ;
+            //    //if (WantCount == 0) continue;
+            //    //// 拿邮件(LUA)
+            //    //logger.Add(string.Format("从邮箱中拿{0}个{1}", WantCount, mine));
 
-                // 全拿东西，不考虑包包大小
-                if (!SpyFrame.lua_GetMAILAsItem(AHSellItem, 100000))
-                {
-                    logger.Add("从邮箱里面拿  " + AHSellItem + " 失败");
-                    return false;
-                }
-                Thread.Sleep(1000);
-            }
+            //    // 全拿东西，不考虑包包大小
+            //    if (MineCount["MAIL"] > 0)
+            //    {
+            //        if (!SpyFrame.lua_GetMAILAsItem(AHSellItem, 100000))
+            //        {
+            //            logger.Add("从邮箱里面拿  " + AHSellItem + " 失败");
+            //            return false;
+            //        }
+            //    }
+            //    Thread.Sleep(1000);
+            //}
+            // 邮箱东西全拿
+            SpyFrame.lua_GetAllMail();
+            Thread.Sleep(2000);
 
             // 跑到邮箱点
             logger.Add("跑到中间节点");
@@ -1448,8 +1470,8 @@ namespace LazyEvo.Plugins
                 }
 
                 int prize, minprize, maxprize;
-                maxprize = (int)(dr["item_maxprice"]);
-                minprize = (int)(dr["item_minprice"]);
+                maxprize = Convert.ToInt32(dr["item_maxprice"]);
+                minprize = Convert.ToInt32(dr["item_minprice"]);
 
                 // 如果目前出价低于心里价位，不出货
                 if (Convert.ToInt32(scanresult["PRIZE"]) < minprize)
@@ -1466,7 +1488,7 @@ namespace LazyEvo.Plugins
                 }
                 else
                 {
-                    if (maxprize < Convert.ToInt32(scanresult["PRIZE"])) 
+                    if (maxprize < Convert.ToInt32(scanresult["PRIZE"]))
                         prize = maxprize;
                     else
                         prize = Convert.ToInt32(scanresult["PRIZE"]) - 1;
@@ -1482,7 +1504,7 @@ namespace LazyEvo.Plugins
                 // 上货
                 int StackSize = (int)(dr["item_stacksize"]);
                 int StackCount = (int)(dr["item_count"]);
-                logger.Add(string.Format("开始拍卖单价为[{0}]的“{1}”[{2}]堆，每堆[{3}]个", prize, ahitem, StackSize, StackCount));
+                logger.Add(string.Format("开始拍卖单价为[{0}]的“{1}”[{2}]堆，每堆[{3}]个", prize, ahitem, StackCount, StackSize));
                 if (!SpyFrame.lua_StartAuction(ahitem, prize, StackSize, StackCount))
                 {
                     logger.Add(string.Format("拍卖失败"));
@@ -2109,6 +2131,19 @@ namespace LazyEvo.Plugins
         {
             Dictionary<string, string> result = new Dictionary<string, string>();
             return result;
+        }
+
+        public static DataTable GetAHList()
+        {
+            DataTable ahitems;
+            string sql = "select * from ahitem";
+            ahitems = OraData.execSQL(sql);
+            if (ahitems.Columns.Count == 0)
+            {
+                Logging.Write(string.Format("处理{0}时，出现错误", sql));
+                return ahitems;
+            }
+            return ahitems;
         }
     }
 

@@ -38,7 +38,7 @@ namespace LazyLib.Helpers
     {
         internal static readonly IDictionary<string, KeyWrapper> KeysList = new Dictionary<string, KeyWrapper>();
         private static readonly Ticker Open = new Ticker(800);
-        
+
         [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
         internal static extern short GetKeyState(int virtualKeyCode);
         private const string KeyFile = "\\Settings\\Keys.xml";
@@ -65,12 +65,13 @@ namespace LazyLib.Helpers
                 AddKey("MacroForMail", "None", LazySettings.KeysMailMacroBar, LazySettings.KeysMailMacroKey);
                 AddKey(InteractWithMouseover, "None", "Indifferent", LazySettings.KeysInteractKeyText);
                 AddKey(InteractTarget, "None", "Indifferent", LazySettings.KeysInteractTargetText);
-                AddKey(TargetLastTarget, "None", "Indifferent", LazySettings.KeysTargetLastTargetText);              
+                AddKey(TargetLastTarget, "None", "Indifferent", LazySettings.KeysTargetLastTargetText);
                 XmlDocument doc = new XmlDocument();
                 try
                 {
                     doc.Load(LazySettings.OurDirectory + KeyFile);
-                } catch (Exception e)
+                }
+                catch (Exception e)
                 {
                     Logging.Write(LogType.Error, "Could not load keys: " + e);
                     return;
@@ -142,7 +143,8 @@ namespace LazyLib.Helpers
                 var doc = new XmlDocument();
                 doc.LoadXml(xml.ToString());
                 doc.Save(LazySettings.OurDirectory + KeyFile);
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 Logging.Write("Could not save the keys: " + e);
             }
@@ -195,10 +197,10 @@ namespace LazyLib.Helpers
         public static void PressKey(string name)
         {
             lock (_lock)
-            {               
+            {
                 if (KeysList.ContainsKey(name))
                 {
-                   // Logging.Debug("PressKey: " + name);
+                    // Logging.Debug("PressKey: " + name);
                     KeyWrapper key = KeysList[name];
                     //Logging.Write(key.Bar + " " + key.Key);
                     key.PressKey();
@@ -222,7 +224,7 @@ namespace LazyLib.Helpers
             {
                 if (KeysList.ContainsKey(name))
                 {
-                  //  Logging.Debug("ReleaseKey: " + name);
+                    //  Logging.Debug("ReleaseKey: " + name);
                     KeyWrapper key = KeysList[name];
                     key.ReleaseKey();
                 }
@@ -255,7 +257,8 @@ namespace LazyLib.Helpers
                     Thread.Sleep(2);
                 }
             }
-            Clipboard.SetText(text);
+            Clipboard.SetDataObject(text, true, 10, 200);
+
             KeyLowHelper.SendCtrlV();
             Thread.Sleep(100);
             KeyLowHelper.SendEnter();

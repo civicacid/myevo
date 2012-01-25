@@ -65,14 +65,14 @@ namespace LazyEvo.Plugins
             if (SpyAH.Items.Columns.Count == 0)
             {
                 SpyAH.init();
-                dr = SpyAH.Items.NewRow();
-                //dr["item_name"] = "统御恶魔之眼";
-                dr["item_name"] = "之眼";
-                dr["item_minprice"] = 10 * 100 * 100;
-                dr["item_maxprice"] = 140 * 100 * 100;
-                dr["item_count"] = 3;
-                dr["item_stacksize"] = 1;
-                SpyAH.Items.Rows.Add(dr);
+                //dr = SpyAH.Items.NewRow();
+                ////dr["item_name"] = "统御恶魔之眼";
+                //dr["item_name"] = "之眼";
+                //dr["item_minprice"] = 10 * 100 * 100;
+                //dr["item_maxprice"] = 140 * 100 * 100;
+                //dr["item_count"] = 3;
+                //dr["item_stacksize"] = 1;
+                //SpyAH.Items.Rows.Add(dr);
 
                 //dr = SpyAH.Items.NewRow();
                 //dr["item_name"] = "朴素地狱炎石";
@@ -123,28 +123,67 @@ namespace LazyEvo.Plugins
             Dictionary<string, string> MailList;                //发货列表
 
             MailList = new Dictionary<string, string>();
+            MailList.Add("娴熟之暗烬黄玉", "收矿啊");
+            MailList.Add("机敏暗烬黄玉", "收矿啊");
+            MailList.Add("铭文暗烬黄玉", "收矿啊");
+            MailList.Add("华丽梦境翡翠", "收矿啊");
+            MailList.Add("禅悟之梦境翡翠", "收矿啊");
+            MailList.Add("火花海洋青玉", "收矿啊");
+            MailList.Add("致密海洋青玉", "收矿啊");
             MailList.Add("朴素地狱炎石", "收矿啊");
-            MailList.Add("精致地狱炎石", "收矿啊");
             MailList.Add("闪光地狱炎石", "收矿啊");
             MailList.Add("闪耀地狱炎石", "收矿啊");
+            MailList.Add("精致地狱炎石", "收矿啊");
+            MailList.Add("圆润琥珀晶石", "收矿啊");
+            MailList.Add("秘法琥珀晶石", "收矿啊");
             MailList.Add("纯净恶魔之眼", "收矿啊");
             MailList.Add("统御恶魔之眼", "收矿啊");
+            MailList.Add("防御者的恶魔之眼", "收矿啊");
+
+
 
             Dictionary<string, int> CreationList = new Dictionary<string, int>();
-            CreationList.Add("朴素地狱炎石", 5);
-            CreationList.Add("精致地狱炎石", 20);
-            CreationList.Add("闪光地狱炎石", 5);
-            CreationList.Add("闪耀地狱炎石", 5);
-            CreationList.Add("纯净恶魔之眼", 5);
-            CreationList.Add("统御恶魔之眼", 5);
+
 
             Dictionary<string, string> CreationMap = new Dictionary<string, string>();
-            CreationMap.Add("朴素地狱炎石", "地狱炎石");
-            CreationMap.Add("精致地狱炎石", "地狱炎石");
-            CreationMap.Add("闪光地狱炎石", "地狱炎石");
-            CreationMap.Add("闪耀地狱炎石", "地狱炎石");
-            CreationMap.Add("纯净恶魔之眼", "恶魔之眼");
-            CreationMap.Add("统御恶魔之眼", "恶魔之眼");
+            if (ObjectManager.MyPlayer.Name.Equals("最初的联盟"))
+            {
+                CreationList.Add("精致地狱炎石", 32);
+                CreationList.Add("闪光地狱炎石", 30);
+                CreationList.Add("闪耀地狱炎石", 40);
+                CreationList.Add("纯净恶魔之眼", 50);
+                CreationList.Add("统御恶魔之眼", 20);
+                CreationList.Add("圆润琥珀晶石", 40);
+
+                CreationMap.Add("朴素地狱炎石", "地狱炎石");
+                CreationMap.Add("精致地狱炎石", "地狱炎石");
+                CreationMap.Add("闪光地狱炎石", "地狱炎石");
+                CreationMap.Add("闪耀地狱炎石", "地狱炎石");
+                CreationMap.Add("纯净恶魔之眼", "恶魔之眼");
+                CreationMap.Add("统御恶魔之眼", "恶魔之眼");
+                CreationMap.Add("防御者的恶魔之眼", "恶魔之眼");
+                CreationMap.Add("圆润琥珀晶石", "琥珀晶石");
+                CreationMap.Add("秘法琥珀晶石", "琥珀晶石");
+            }
+
+            if (ObjectManager.MyPlayer.Name.ToLower().Equals("welcomex"))
+            {
+                CreationList.Add("娴熟之暗烬黄玉", 60);
+                CreationList.Add("机敏暗烬黄玉", 60);
+                CreationList.Add("铭文暗烬黄玉", 60);
+                CreationList.Add("华丽梦境翡翠", 50);
+                CreationList.Add("禅悟之梦境翡翠", 50);
+                CreationList.Add("火花海洋青玉", 40);
+                CreationList.Add("致密海洋青玉", 40); 
+                
+                CreationMap.Add("娴熟之暗烬黄玉", "暗烬黄玉");
+                CreationMap.Add("机敏暗烬黄玉", "暗烬黄玉");
+                CreationMap.Add("铭文暗烬黄玉", "暗烬黄玉");
+                CreationMap.Add("华丽梦境翡翠", "梦境翡翠");
+                CreationMap.Add("禅悟之梦境翡翠", "梦境翡翠");
+                CreationMap.Add("火花海洋青玉", "海洋青玉");
+                CreationMap.Add("致密海洋青玉", "海洋青玉");
+            }
 
             SpyZBJG.logger.clear();
             SpyZBJG.MailList = MailList;

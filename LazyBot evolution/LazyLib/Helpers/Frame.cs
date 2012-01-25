@@ -49,20 +49,29 @@ namespace LazyLib.Helpers
         {
             get
             {
-                return ((Memory.Read<int>(BaseAddress + (uint) Pointers.UiFrame.Visible) >> (int) Pointers.UiFrame.Visible1) & (int) Pointers.UiFrame.Visible2) == 1;
+                try
+                {
+                    int vv = ((Memory.Read<int>(BaseAddress + (uint)Pointers.UiFrame.Visible) >> (int)Pointers.UiFrame.Visible1) & (int)Pointers.UiFrame.Visible2);
+                    return (vv == 1);
+                }
+                catch (Exception)
+                {
+
+                    return false;
+                }
             }
         }
 
         public bool IsButtonChecked
         {
-            get { return (Memory.Read<uint>(BaseAddress + (uint) Pointers.UiFrame.ButtonChecked) > 0); }
+            get { return (Memory.Read<uint>(BaseAddress + (uint)Pointers.UiFrame.ButtonChecked) > 0); }
         }
 
         public bool IsEnabled
         {
             get
             {
-                return ((Memory.Read<uint>(BaseAddress + (uint) 200) & (uint) 0xF) == 0);
+                return ((Memory.Read<uint>(BaseAddress + (uint)200) & (uint)0xF) == 0);
             }
         }
 
@@ -71,8 +80,8 @@ namespace LazyLib.Helpers
         {
             get
             {
-                int num1 = Memory.Read<byte>(BaseAddress + (uint) Pointers.UiFrame.ButtonEnabledPointer);
-                const int num4 = (int) Pointers.UiFrame.ButtonEnabledMask;
+                int num1 = Memory.Read<byte>(BaseAddress + (uint)Pointers.UiFrame.ButtonEnabledPointer);
+                const int num4 = (int)Pointers.UiFrame.ButtonEnabledMask;
                 num1 &= num4;
                 const int num5 = 0;
                 num1 = num1 == num5 ? 1 : 0;
@@ -105,8 +114,8 @@ namespace LazyLib.Helpers
         {
             get
             {
-                var a1 = Memory.Read<float>(BaseAddress + (uint) Pointers.UiFrame.FrameLeft);
-                return (a1*InterfaceHelper.WindowWidth/Memory.ReadRelative<float>((uint) Pointers.UiFrame.ScrWidth));
+                var a1 = Memory.Read<float>(BaseAddress + (uint)Pointers.UiFrame.FrameLeft);
+                return (a1 * InterfaceHelper.WindowWidth / Memory.ReadRelative<float>((uint)Pointers.UiFrame.ScrWidth));
             }
         }
 
@@ -114,8 +123,8 @@ namespace LazyLib.Helpers
         {
             get
             {
-                var a1 = Memory.Read<float>(BaseAddress + (uint) Pointers.UiFrame.FrameRight);
-                return (a1*InterfaceHelper.WindowWidth/Memory.ReadRelative<float>((uint) Pointers.UiFrame.ScrWidth));
+                var a1 = Memory.Read<float>(BaseAddress + (uint)Pointers.UiFrame.FrameRight);
+                return (a1 * InterfaceHelper.WindowWidth / Memory.ReadRelative<float>((uint)Pointers.UiFrame.ScrWidth));
             }
         }
 
@@ -123,8 +132,8 @@ namespace LazyLib.Helpers
         {
             get
             {
-                var a1 = Memory.Read<float>(BaseAddress + (uint) Pointers.UiFrame.FrameTop);
-                return (a1*InterfaceHelper.WindowHeight/Memory.ReadRelative<float>((uint) Pointers.UiFrame.ScrHeight));
+                var a1 = Memory.Read<float>(BaseAddress + (uint)Pointers.UiFrame.FrameTop);
+                return (a1 * InterfaceHelper.WindowHeight / Memory.ReadRelative<float>((uint)Pointers.UiFrame.ScrHeight));
             }
         }
 
@@ -132,8 +141,8 @@ namespace LazyLib.Helpers
         {
             get
             {
-                var a1 = Memory.Read<float>(BaseAddress + (uint) Pointers.UiFrame.FrameBottom);
-                return (a1*InterfaceHelper.WindowHeight/Memory.ReadRelative<float>((uint) Pointers.UiFrame.ScrHeight));
+                var a1 = Memory.Read<float>(BaseAddress + (uint)Pointers.UiFrame.FrameBottom);
+                return (a1 * InterfaceHelper.WindowHeight / Memory.ReadRelative<float>((uint)Pointers.UiFrame.ScrHeight));
             }
         }
 
@@ -153,7 +162,7 @@ namespace LazyLib.Helpers
             {
                 var p = new Point();
                 ScreenToClient(Memory.WindowHandle, ref p);
-                return Math.Abs(p.X) + (int) Left + (int) (Width/2);
+                return Math.Abs(p.X) + (int)Left + (int)(Width / 2);
             }
         }
 
@@ -163,7 +172,7 @@ namespace LazyLib.Helpers
             {
                 var p = new Point();
                 ScreenToClient(Memory.WindowHandle, ref p);
-                return (Math.Abs(p.Y) + InterfaceHelper.WindowHeight - (int) Top + (int) (Height/2));
+                return (Math.Abs(p.Y) + InterfaceHelper.WindowHeight - (int)Top + (int)(Height / 2));
             }
         }
 
@@ -173,7 +182,7 @@ namespace LazyLib.Helpers
             {
                 var result = new List<Frame>();
 
-                var child = Memory.Read<uint>(BaseAddress + (uint) Pointers.UiFrame.RegionsFirst);
+                var child = Memory.Read<uint>(BaseAddress + (uint)Pointers.UiFrame.RegionsFirst);
 
                 while (child != 0 && (child & 1) == 0)
                 {
@@ -183,7 +192,7 @@ namespace LazyLib.Helpers
                         result.Add(new Frame(child));
 
                     child =
-                        Memory.Read<uint>(child + Memory.Read<uint>(BaseAddress + (uint) Pointers.UiFrame.RegionsNext) +
+                        Memory.Read<uint>(child + Memory.Read<uint>(BaseAddress + (uint)Pointers.UiFrame.RegionsNext) +
                                           4);
                 }
 
