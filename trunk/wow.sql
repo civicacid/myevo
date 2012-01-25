@@ -178,6 +178,18 @@ create table autowork_mine (
 comment on table autowork_mine is '分矿列表';
 
 -- -----------------------------------------------------
+-- table ahitem 挂货
+-- -----------------------------------------------------
+create table ahitem (
+   item_name                     varchar(200)                     not null,
+   item_minprice                 number(15)        default 0      not null,            -- 每个物品的最低价格
+   item_maxprice                 number(15)        default 0      not null,            -- 每个物品的最高价格
+   item_count                    number(8)         default 0      not null,            -- 一次挂几堆
+   item_stacksize                number(8)         default 0      not null             -- 每一堆物品的数量
+);
+comment on table ahitemgroup is '挂货';
+
+-- -----------------------------------------------------
 -- Sequence 公用序列
 -- -----------------------------------------------------
 create sequence seq_all;
@@ -349,7 +361,7 @@ welcomex
  
  黄色：
  [珠宝加工: 圆润琥珀晶石]
- [图鉴：秘法琥珀晶石]
+ [珠宝加工：秘法琥珀晶石]
  
  紫色：
  [珠宝加工: 纯净恶魔之眼]		+20智力 +20精通

@@ -8,6 +8,7 @@
 -- 获得邮箱中所有物品名称以及数量               function ScanInbox()                                            无返回（获取到SendSuccData内容表示成功）
 -- 获取执行结果                                 function SendResult(iNext)                                      返回值中包含TAG_NEXT_PAGE时，需要读取下一页，否则不需要
 -- 商业技能中做物品                             function TradeSkillDO(astrName)                                 无返回（获取到SendSuccData内容表示成功）
+-- 收全部的信                                   function GetAllMailDoor()                                       无返回（获取到SendSuccData内容表示成功）
 
 -- 在frame上实时显示物品在邮箱和背包中的数量    function DispItemCount(astrItemName)
 -- 获得背包中指定物品的数量                     function getXXcountInBag(asItemName)
@@ -1462,4 +1463,55 @@ end
 
 function AHPostItem4MachineFail()
     SendErrData("失败")
+end
+
+--------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------        收全部信      ----------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------
+local GetAllMailMachine = LibStub("AceAddon-3.0"):NewAddon("GetAllMail", "AceTimer-3.0")
+local GetAllMail = {}
+GetAllMail.LeftMail = 0
+GetAllMail.Handle = ""
+
+function GetAllMailDoor()
+    SendBeginData()
+    GetAllMail.LeftMail = (select(2, GetInboxNumItems()))
+    print(GetAllMail.LeftMail)
+    if GetAllMail.LeftMail == nil then
+        GetAllMail:Stop()
+        return
+    end
+    if GetAllMail.LeftMail == 0 then
+        GetAllMail:Stop()
+        return
+    end
+    if GetAllMail.LeftMail <= 50 then
+        GetAllMail:Single()
+        GetAllMail:Stop()
+        return
+    end
+    
+    GetAllMail.Handle = GetAllMailMachine:ScheduleRepeatingTimer("Run", 65)
+end
+
+function GetAllMail:Run()
+    GetAllMail:Single()
+    GetAllMail.LeftMail = GetAllMail.LeftMail - 50
+    if GetAllMail.LeftMail < 0 then
+        GetAllMail:Stop()
+    end
+end
+
+function GetAllMail:Stop()
+    if GetAllMail.Handle then
+        GetAllMailMachine:CancelTimer(GetAllMail.Handle, true)
+    end
+    SendSuccData()
+end
+
+function GetAllMail:Single()
+    local liLoop
+    for liLoop = 1, 50 do
+        AutoLootMailItem(liLoop)
+    end
 end
