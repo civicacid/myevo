@@ -1282,6 +1282,25 @@ namespace LazyEvo.Forms
             }
         }
 
+        private void buttonItem3_Click(object sender, EventArgs e)
+        {
+            //神庙副本（开始）
+            if (string.IsNullOrWhiteSpace(txtDaHao.Text))
+            {
+                MessageBox.Show("在下面的框框里面输入大号的名字");
+                return;
+            }
+            if (buttonItem3.Text.Equals("神庙副本（开始）"))
+            {
+                buttonItem3.Text = "神庙副本（停止）";
+                SpyFB.ATHKSM(txtDaHao.Text);
+            }
+            else
+            {
+                buttonItem3.Text = "神庙副本（开始）";
+            }
+        }
+
 
 
     }

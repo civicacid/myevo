@@ -223,7 +223,7 @@ insert into wowaccount(acc_id,acc_name,acc_pass,status) values(seq_all.nextval,'
 
 insert into wowchar(acc_id,char_id,char_name,server,acc_list,char_idx) values ((select acc_id from wowaccount where acc_name = 'ctais2k@sina.cn'),seq_all.nextval,'亣眔龘','爱斯特纳','WoW1|!WoW2|',0);
 insert into wowchar(acc_id,char_id,char_name,server,acc_list,char_idx) values ((select acc_id from wowaccount where acc_name = 'spyman1802@hotmail.com'),seq_all.nextval,'鹤鹤六号','爱斯特纳','',0);
-insert into wowchar(acc_id,char_id,char_name,server,acc_list,char_idx) values ((select acc_id from wowaccount where acc_name = 'rubyfly9@gmail.com'),seq_all.nextval,'鹤鹤五号','爱斯特纳','!WoW1|WoW2|',0);
+insert into wowchar(acc_id,char_id,char_name,server,acc_list,char_idx) values ((select acc_id from wowaccount where acc_name = 'rubyfly9@gmail.com'),seq_all.nextval,'卖东西的公主','爱斯特纳','!WoW1|WoW2|',0);
 insert into wowchar(acc_id,char_id,char_name,server,acc_list,char_idx) values ((select acc_id from wowaccount where acc_name = 'rubyfly9@gmail.com'),seq_all.nextval,'HUHUHU','爱斯特纳','WoW1|!WoW2|',0);
 insert into wowchar(acc_id,char_id,char_name,server,acc_list,char_idx) values ((select acc_id from wowaccount where acc_name = 'nnoky123@gmail.com'),seq_all.nextval,'鹤鹤四号','爱斯特纳','',0);
 insert into wowchar(acc_id,char_id,char_name,server,acc_list,char_idx) values ((select acc_id from wowaccount where acc_name = 'h3ufobio@163.com'),seq_all.nextval,'奡寗燊','爱斯特纳','',0);
@@ -243,8 +243,7 @@ insert into wowchar(acc_id,char_id,char_name,server,acc_list,char_idx) values ((
 insert into wowchar(acc_id,char_id,char_name,server,acc_list,char_idx) values ((select acc_id from wowaccount where acc_name = 'spyman1802@gmail.com'),seq_all.nextval,'Onedisk','爱斯特纳','SPYMAN1801|!SPYMAN1802|TYILOVEYH|WoW1|WoW2|',2);
 insert into wowchar(acc_id,char_id,char_name,server,acc_list,char_idx) values ((select acc_id from wowaccount where acc_name = 'spyman1802@gmail.com'),seq_all.nextval,'Tyutone','爱斯特纳','SPYMAN1801|!SPYMAN1802|TYILOVEYH|WoW1|WoW2|',3);
 insert into wowchar(acc_id,char_id,char_name,server,acc_list,char_idx) values ((select acc_id from wowaccount where acc_name = 'spyman1802@gmail.com'),seq_all.nextval,'伤人无数','爱斯特纳','SPYMAN1801|!SPYMAN1802|TYILOVEYH|WoW1|WoW2|',4);
-insert into wowchar(acc_id,char_id,char_name,server,acc_list,char_idx) values ((select acc_id from wowaccount where acc_name = 'spyman1802@gmail.com'),seq_all.nextval,'哗哗的银子','爱斯特纳','SPYMAN1801|TYILOVEYH|SPYMAN1802|WoW1|!WoW2|',0);
-insert into wowchar(acc_id,char_id,char_name,server,acc_list,char_idx) values ((select acc_id from wowaccount where acc_name = 'spyman1802@gmail.com'),seq_all.nextval,'哗哗的银子','爱斯特纳','SPYMAN1801|TYILOVEYH|SPYMAN1802|WoW1|!WoW2|',0);
+insert into wowchar(acc_id,char_id,char_name,server,acc_list,char_idx) values ((select acc_id from wowaccount where acc_name = 'spyman1802@gmail.com'),seq_all.nextval,'哗哗的银子','爱斯特纳','SPYMAN1801|SPYMAN1802|TYILOVEYH|WoW1|!WoW2|',0);
 
 -----------------------------------------------------------------------------------------------------------------------------------
 -- 添加物品

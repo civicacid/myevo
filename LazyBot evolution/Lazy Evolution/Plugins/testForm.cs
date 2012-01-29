@@ -57,6 +57,7 @@ namespace LazyEvo.Plugins
             SpyMineAndMail.MailList = MailList;
             SpyMineAndMail.Mines = Mines;
             SpyMineAndMail.GoGo();
+            SpyDB.SaveInfo_Bag();
         }
 
         private void button2_Click(object sender, EventArgs e)

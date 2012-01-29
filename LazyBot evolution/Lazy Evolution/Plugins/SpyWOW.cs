@@ -151,7 +151,7 @@ namespace LazyEvo.Plugins
                     if (LazyEvo.Forms.Helpers.LazyForms.MainForm.Text.ToLower().Equals("navigating"))
                     {
                         LazyHelpers.StopAll("时间到了，Kill Process");
-                        SpyDB.SaveInfo_Bag(SpyFrame.lua_GetBagInfo());
+                        //SpyDB.SaveInfo_Bag(SpyFrame.lua_GetBagInfo());
                         Thread.Sleep(1000);
                         if (WOWProc != null)
                         {
@@ -785,6 +785,7 @@ namespace LazyEvo.Plugins
             KeyLowHelper.PressKey(MicrosoftVirtualKeys.Escape);
             KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.Escape);
             Thread.Sleep(500);
+            if (MailFrame.CurrentTabIsSendMail) MailFrame.ClickInboxTab();
             if (!ExecSimpleLua(string.Format("/script SendItemByName(\"{0}\",\"{1}\")", receiver, itemname))) return false;
             MailFrame.ClickInboxTab();
             return true;
@@ -819,7 +820,24 @@ namespace LazyEvo.Plugins
 
         public static void lua_GetAllMail()
         {
-            ExecSimpleLua("/script GetAllMailDoor()");
+            // 确保邮箱开着
+            if (MailFrame.CurrentTabIsSendMail) MailFrame.ClickInboxTab();
+            // 发送取结果的命令
+            KeyHelper.SendLuaOverChat("/script GetAllMailDoor()");
+            while (GetInfoFromFrame() == LUA_RUNNING_STRING)
+            {
+                // 看看是否所有邮件都取完
+                Thread.Sleep(10);
+            }
+
+            // 取得返回值（注意排错）
+            string resultString = GetInfoFromFrame();
+            if (resultString.Contains("错误"))
+            {
+                Logging.Write("获取信息错误: " + resultString);
+                return;
+            }
+
         }
 
         // 重新整理背包-整合背包，需要插件辅助
@@ -895,7 +913,6 @@ namespace LazyEvo.Plugins
         // 运行没有返回值的LUA命令
         public static bool ExecSimpleLua(string LuaCmd)
         {
-            if (MailFrame.CurrentTabIsSendMail) MailFrame.ClickInboxTab();
             // 发送取结果的命令
             KeyHelper.SendLuaOverChat(LuaCmd);
             while (GetInfoFromFrame() == LUA_RUNNING_STRING)
@@ -1324,6 +1341,7 @@ namespace LazyEvo.Plugins
             KeyHelper.LoadKeys();
             DoAction();
             logger.output();
+            SpyDB.SaveInfo_Bag();
         }
 
         public static bool DoAction()
@@ -1396,6 +1414,7 @@ namespace LazyEvo.Plugins
             //    Thread.Sleep(1000);
             //}
             // 邮箱东西全拿
+            Thread.Sleep(2000);
             SpyFrame.lua_GetAllMail();
             Thread.Sleep(2000);
 
@@ -1598,11 +1617,26 @@ namespace LazyEvo.Plugins
         private static void gogo()
         {
             Dictionary<int, Location> nowpath = new Dictionary<int, Location>();
+            Ticker isJump = new Ticker(500000);
+            int level = ObjectManager.MyPlayer.Level;
+            int nowlevel = ObjectManager.MyPlayer.Level;
+            int exp = ObjectManager.MyPlayer.ExperiencePercentage;
+            int nowexp = ObjectManager.MyPlayer.ExperiencePercentage;
+            int last_run_exp = ObjectManager.MyPlayer.ExperiencePercentage;
+            DateTime intime = DateTime.Now;
+            DateTime last_run_time = DateTime.Now;
             while (true)
             {
                 switch (FBStatus)
                 {
                     case DBStatus.In_EntryChecking:
+                        if (isJump.IsReady)
+                        {
+                            isJump.Reset();
+                            KeyLowHelper.PressKey(MicrosoftVirtualKeys.Space);
+                            KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.Space);
+                            Thread.Sleep(4000);
+                        }
                         while (!SetLeader()) ;
                         if (CanStart())
                         {
@@ -1613,11 +1647,25 @@ namespace LazyEvo.Plugins
                         break;
 
                     case DBStatus.In_LeaderInScopeCheck:
+                        if (isJump.IsReady)
+                        {
+                            isJump.Reset();
+                            KeyLowHelper.PressKey(MicrosoftVirtualKeys.Space);
+                            KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.Space);
+                            Thread.Sleep(4000);
+                        }
                         if (IsLeaderInScope())
                         {
                             nowpath = GetMemPath();
                             FBStatus = DBStatus.In_Running;
-                            Logging.Write(string.Format("第{0}次跑路。。。。", LastLeaderStep + 1));
+                            int this_turn_exp = ObjectManager.MyPlayer.ExperiencePercentage - last_run_exp;
+                            this_turn_exp = this_turn_exp > 0 ? this_turn_exp : 100 + this_turn_exp;
+                            Logging.Write(string.Format("第{0}次跑路。这次共获得经验[{1}]，耗时[{2}]。",
+                                LastLeaderStep + 1,
+                                this_turn_exp,
+                                DateTime.Now - last_run_time));
+                            last_run_exp = ObjectManager.MyPlayer.ExperiencePercentage;
+                            last_run_time = DateTime.Now;
                         }
                         break;
 
@@ -1637,9 +1685,18 @@ namespace LazyEvo.Plugins
                         }
                         break;
                     case DBStatus.In_CheckIsOut:
+                        if (isJump.IsReady)
+                        {
+                            isJump.Reset();
+                            KeyLowHelper.PressKey(MicrosoftVirtualKeys.Space);
+                            KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.Space);
+                            Thread.Sleep(4000);
+                        }
                         if (_Action == ActionStatus.OutFB)
                         {
                             Logging.Write(string.Format("收到暗语，出本！！！"));
+                            nowlevel = ObjectManager.MyPlayer.Level;
+                            nowexp = ObjectManager.MyPlayer.ExperiencePercentage;
                             MeGoGo(GetMemOutPath());
 
                             //出副本
@@ -1651,7 +1708,10 @@ namespace LazyEvo.Plugins
                             Thread.Sleep(2000);
                             while (!ObjectManager.InGame) Thread.Sleep(100);
                             _Action = ActionStatus.Nothing;
-                            Logging.Write(string.Format("出来了，等待暗语，准备进本"));
+                            Logging.Write(string.Format("出来了，等待暗语，准备进本。上次刷本经验获得了{0}%，耗时{1}，升了{2}级",
+                                nowexp - exp > 0 ? nowexp - exp : 100 + nowexp - exp,
+                                DateTime.Now - intime,
+                                nowlevel - level));
                             FBStatus = DBStatus.Out_ExitDone;
                         }
                         break;
@@ -1663,6 +1723,13 @@ namespace LazyEvo.Plugins
                         }
                         break;
                     case DBStatus.Out_following:
+                        if (isJump.IsReady)
+                        {
+                            isJump.Reset();
+                            KeyLowHelper.PressKey(MicrosoftVirtualKeys.Space);
+                            KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.Space);
+                            Thread.Sleep(4000);
+                        }
                         Logging.Write(string.Format("进本！！！"));
                         FBEntry.Face();
                         KeyHelper.PressKey("Up");
@@ -1670,7 +1737,12 @@ namespace LazyEvo.Plugins
                         KeyHelper.ReleaseKey("Up");
                         Thread.Sleep(2000);
                         while (!ObjectManager.InGame) Thread.Sleep(100);
-                        Logging.Write(string.Format("又开始了。。。。。"));
+                        Logging.Write(string.Format("进副本了，现在是{0}级，经验{1}%", ObjectManager.MyPlayer.Level, ObjectManager.MyPlayer.ExperiencePercentage));
+                        level = ObjectManager.MyPlayer.Level;
+                        exp = ObjectManager.MyPlayer.ExperiencePercentage;
+                        last_run_exp = exp;
+                        intime = DateTime.Now;
+                        last_run_time = intime;
                         FBStatus = DBStatus.In_EntryChecking;
                         break;
 
@@ -2012,6 +2084,37 @@ namespace LazyEvo.Plugins
             SpyFB.Init(DaHao, inPoint, outPoint, large, small, mapp);
             SpyFB.StartFB();
         }
+
+        public static void ATHKSM(string DaHao)              //阿塔哈卡神庙
+        {
+            if (string.IsNullOrWhiteSpace(DaHao))
+            {
+                Logging.Write("没提供大号的名字");
+                return;
+            }
+            Dictionary<int, Location> small = new Dictionary<int, Location>();
+            Dictionary<int, Location> large = new Dictionary<int, Location>();
+            Dictionary<int, int> mapp = new Dictionary<int, int>();
+
+            large.Add(0, new Location((float)Convert.ToDouble(-403.0322), (float)Convert.ToDouble(70.44502), (float)Convert.ToDouble(-90.92807)));
+            large.Add(1, new Location((float)Convert.ToDouble(-590.7496), (float)Convert.ToDouble(113.9529), (float)Convert.ToDouble(-90.87166)));
+
+            small.Add(0, new Location((float)Convert.ToDouble(-358.1343), (float)Convert.ToDouble(95.7), (float)Convert.ToDouble(-90.88229)));
+            small.Add(1, new Location((float)Convert.ToDouble(-465.3393), (float)Convert.ToDouble(95.7), (float)Convert.ToDouble(-94.95782)));
+            small.Add(2, new Location((float)Convert.ToDouble(-514.1118), (float)Convert.ToDouble(85.07677), (float)Convert.ToDouble(-91.4877)));
+            small.Add(3, new Location((float)Convert.ToDouble(-587.5876), (float)Convert.ToDouble(94.92146), (float)Convert.ToDouble(-90.88853)));
+
+            mapp.Add(0, 0);
+            mapp.Add(1, 0);
+            mapp.Add(2, 1);
+            mapp.Add(3, 1);
+
+            Location inPoint = new Location((float)Convert.ToDouble(-10299.08), (float)Convert.ToDouble(-4000.266), (float)Convert.ToDouble(-70.85023));
+            Location outPoint = new Location((float)Convert.ToDouble(-300.5324), (float)Convert.ToDouble(95.67683), (float)Convert.ToDouble(-91.26634));
+
+            SpyFB.Init(DaHao, inPoint, outPoint, large, small, mapp);
+            SpyFB.StartFB();
+        }
     }
 
     public static class SpyData
@@ -2064,6 +2167,11 @@ namespace LazyEvo.Plugins
 
     public static class SpyDB
     {
+        public static void SaveInfo_Bag()
+        {
+            SaveInfo_Bag(SpyFrame.lua_GetBagInfo());
+        }
+
         public static void SaveInfo_Bag(Dictionary<string, int> bag)
         {
             if (bag == null) return;
