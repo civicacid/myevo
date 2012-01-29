@@ -57,7 +57,9 @@
             this.comboBoxCharList = new System.Windows.Forms.ComboBox();
             this.txtDaHao = new System.Windows.Forms.TextBox();
             this.buttonX4 = new DevComponents.DotNetBar.ButtonX();
+            this.buttonItem1 = new DevComponents.DotNetBar.ButtonItem();
             this.buttonItem4 = new DevComponents.DotNetBar.ButtonItem();
+            this.buttonItem2 = new DevComponents.DotNetBar.ButtonItem();
             this.buttonX3 = new DevComponents.DotNetBar.ButtonX();
             this.CBDebug = new DevComponents.DotNetBar.Controls.CheckBoxX();
             this.buttonX1 = new DevComponents.DotNetBar.ButtonX();
@@ -108,8 +110,7 @@
             this.comboItem3 = new DevComponents.Editors.ComboItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.StatsText = new System.Windows.Forms.ToolStripStatusLabel();
-            this.buttonItem1 = new DevComponents.DotNetBar.ButtonItem();
-            this.buttonItem2 = new DevComponents.DotNetBar.ButtonItem();
+            this.buttonItem3 = new DevComponents.DotNetBar.ButtonItem();
             this.ControlSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.superTabControl5)).BeginInit();
             this.superTabControl5.SuspendLayout();
@@ -414,7 +415,7 @@
             // 
             // btnLogin
             // 
-            this.btnLogin.Location = new System.Drawing.Point(548, 57);
+            this.btnLogin.Location = new System.Drawing.Point(545, 48);
             this.btnLogin.Name = "btnLogin";
             this.btnLogin.Size = new System.Drawing.Size(78, 25);
             this.btnLogin.TabIndex = 83;
@@ -424,7 +425,7 @@
             // 
             // btnRefresh
             // 
-            this.btnRefresh.Location = new System.Drawing.Point(458, 57);
+            this.btnRefresh.Location = new System.Drawing.Point(455, 48);
             this.btnRefresh.Name = "btnRefresh";
             this.btnRefresh.Size = new System.Drawing.Size(78, 25);
             this.btnRefresh.TabIndex = 82;
@@ -436,14 +437,14 @@
             // 
             this.comboBoxCharList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxCharList.FormattingEnabled = true;
-            this.comboBoxCharList.Location = new System.Drawing.Point(458, 29);
+            this.comboBoxCharList.Location = new System.Drawing.Point(455, 20);
             this.comboBoxCharList.Name = "comboBoxCharList";
             this.comboBoxCharList.Size = new System.Drawing.Size(168, 24);
             this.comboBoxCharList.TabIndex = 81;
             // 
             // txtDaHao
             // 
-            this.txtDaHao.Location = new System.Drawing.Point(458, 136);
+            this.txtDaHao.Location = new System.Drawing.Point(455, 109);
             this.txtDaHao.Name = "txtDaHao";
             this.txtDaHao.Size = new System.Drawing.Size(168, 26);
             this.txtDaHao.TabIndex = 80;
@@ -452,16 +453,23 @@
             // 
             this.buttonX4.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.buttonX4.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.buttonX4.Location = new System.Drawing.Point(458, 106);
+            this.buttonX4.Location = new System.Drawing.Point(455, 79);
             this.buttonX4.Name = "buttonX4";
             this.buttonX4.Size = new System.Drawing.Size(168, 24);
             this.buttonX4.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.buttonX4.SubItems.AddRange(new DevComponents.DotNetBar.BaseItem[] {
             this.buttonItem1,
             this.buttonItem4,
-            this.buttonItem2});
+            this.buttonItem2,
+            this.buttonItem3});
             this.buttonX4.TabIndex = 79;
             this.buttonX4.Text = "副本";
+            // 
+            // buttonItem1
+            // 
+            this.buttonItem1.Name = "buttonItem1";
+            this.buttonItem1.Text = "血色-墓地（开始）";
+            this.buttonItem1.Click += new System.EventHandler(this.buttonItem1_Click);
             // 
             // buttonItem4
             // 
@@ -470,14 +478,20 @@
             this.buttonItem4.Text = "血色-图书馆（开始）";
             this.buttonItem4.Click += new System.EventHandler(this.buttonItem4_Click);
             // 
+            // buttonItem2
+            // 
+            this.buttonItem2.Name = "buttonItem2";
+            this.buttonItem2.Text = "STSM-前门（开始）";
+            this.buttonItem2.Click += new System.EventHandler(this.buttonItem2_Click);
+            // 
             // buttonX3
             // 
             this.buttonX3.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.buttonX3.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.buttonX3.Location = new System.Drawing.Point(112, 402);
+            this.buttonX3.Location = new System.Drawing.Point(112, 407);
             this.buttonX3.Margin = new System.Windows.Forms.Padding(4);
             this.buttonX3.Name = "buttonX3";
-            this.buttonX3.Size = new System.Drawing.Size(98, 27);
+            this.buttonX3.Size = new System.Drawing.Size(98, 28);
             this.buttonX3.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.buttonX3.TabIndex = 78;
             this.buttonX3.Text = "开始计划";
@@ -493,7 +507,7 @@
             this.CBDebug.BackgroundStyle.Class = "";
             this.CBDebug.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.CBDebug.Font = new System.Drawing.Font("新宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.CBDebug.Location = new System.Drawing.Point(348, 399);
+            this.CBDebug.Location = new System.Drawing.Point(348, 405);
             this.CBDebug.Margin = new System.Windows.Forms.Padding(4);
             this.CBDebug.Name = "CBDebug";
             this.CBDebug.Size = new System.Drawing.Size(82, 16);
@@ -506,7 +520,7 @@
             // 
             this.buttonX1.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.buttonX1.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.buttonX1.Location = new System.Drawing.Point(218, 401);
+            this.buttonX1.Location = new System.Drawing.Point(218, 407);
             this.buttonX1.Margin = new System.Windows.Forms.Padding(4);
             this.buttonX1.Name = "buttonX1";
             this.buttonX1.Size = new System.Drawing.Size(106, 28);
@@ -519,14 +533,13 @@
             // 
             this.buttonX2.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.buttonX2.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.buttonX2.Location = new System.Drawing.Point(455, 412);
+            this.buttonX2.Location = new System.Drawing.Point(455, 407);
             this.buttonX2.Margin = new System.Windows.Forms.Padding(4);
             this.buttonX2.Name = "buttonX2";
-            this.buttonX2.Size = new System.Drawing.Size(172, 27);
+            this.buttonX2.Size = new System.Drawing.Size(172, 28);
             this.buttonX2.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.buttonX2.TabIndex = 77;
             this.buttonX2.Text = "测试窗口";
-            this.buttonX2.Visible = false;
             this.buttonX2.Click += new System.EventHandler(this.buttonX2_Click);
             // 
             // CBTopMost
@@ -539,7 +552,7 @@
             this.CBTopMost.BackgroundStyle.Class = "";
             this.CBTopMost.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.CBTopMost.Font = new System.Drawing.Font("新宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.CBTopMost.Location = new System.Drawing.Point(348, 420);
+            this.CBTopMost.Location = new System.Drawing.Point(348, 421);
             this.CBTopMost.Margin = new System.Windows.Forms.Padding(4);
             this.CBTopMost.Name = "CBTopMost";
             this.CBTopMost.Size = new System.Drawing.Size(76, 16);
@@ -566,10 +579,10 @@
             this.MainGPPlayer.Controls.Add(this.MainPBPlayerXP);
             this.MainGPPlayer.Controls.Add(this.labelX36);
             this.MainGPPlayer.Controls.Add(this.labelX5);
-            this.MainGPPlayer.Location = new System.Drawing.Point(4, 12);
+            this.MainGPPlayer.Location = new System.Drawing.Point(4, 4);
             this.MainGPPlayer.Margin = new System.Windows.Forms.Padding(4);
             this.MainGPPlayer.Name = "MainGPPlayer";
-            this.MainGPPlayer.Size = new System.Drawing.Size(425, 124);
+            this.MainGPPlayer.Size = new System.Drawing.Size(425, 132);
             // 
             // 
             // 
@@ -785,7 +798,7 @@
             this.StartStopEngine.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.StartStopEngine.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
             this.StartStopEngine.Enabled = false;
-            this.StartStopEngine.Location = new System.Drawing.Point(4, 401);
+            this.StartStopEngine.Location = new System.Drawing.Point(4, 407);
             this.StartStopEngine.Margin = new System.Windows.Forms.Padding(4);
             this.StartStopEngine.Name = "StartStopEngine";
             this.StartStopEngine.Size = new System.Drawing.Size(100, 28);
@@ -803,7 +816,7 @@
             this.groupPanel3.Location = new System.Drawing.Point(4, 144);
             this.groupPanel3.Margin = new System.Windows.Forms.Padding(4);
             this.groupPanel3.Name = "groupPanel3";
-            this.groupPanel3.Size = new System.Drawing.Size(425, 250);
+            this.groupPanel3.Size = new System.Drawing.Size(632, 255);
             // 
             // 
             // 
@@ -847,7 +860,7 @@
             this.LogWin.Margin = new System.Windows.Forms.Padding(4);
             this.LogWin.Name = "LogWin";
             this.LogWin.ReadOnly = true;
-            this.LogWin.Size = new System.Drawing.Size(419, 244);
+            this.LogWin.Size = new System.Drawing.Size(626, 249);
             this.LogWin.TabIndex = 6;
             this.LogWin.Text = "";
             // 
@@ -1319,17 +1332,11 @@
             this.StatsText.Name = "StatsText";
             this.StatsText.Size = new System.Drawing.Size(0, 17);
             // 
-            // buttonItem1
+            // buttonItem3
             // 
-            this.buttonItem1.Name = "buttonItem1";
-            this.buttonItem1.Text = "血色-墓地（开始）";
-            this.buttonItem1.Click += new System.EventHandler(this.buttonItem1_Click);
-            // 
-            // buttonItem2
-            // 
-            this.buttonItem2.Name = "buttonItem2";
-            this.buttonItem2.Text = "STSM-前门（开始）";
-            this.buttonItem2.Click += new System.EventHandler(this.buttonItem2_Click);
+            this.buttonItem3.Name = "buttonItem3";
+            this.buttonItem3.Text = "神庙副本（开始）";
+            this.buttonItem3.Click += new System.EventHandler(this.buttonItem3_Click);
             // 
             // Main
             // 
@@ -1453,6 +1460,7 @@
         private System.Windows.Forms.ComboBox comboBoxCharList;
         private DevComponents.DotNetBar.ButtonItem buttonItem1;
         private DevComponents.DotNetBar.ButtonItem buttonItem2;
+        private DevComponents.DotNetBar.ButtonItem buttonItem3;
     }
 }
 

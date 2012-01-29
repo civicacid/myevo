@@ -1426,6 +1426,16 @@ function AHPostItemDoor(astrItemName, aiSingleItemPrice, aiItemStackSize, aiItem
         return
     end
 
+    -- 按照背包中物品的数量修改输入参数
+    local ItemCount = getXXcountInBag(astrItemName)
+    if ItemCount == 0 then
+        SendSuccData()
+        return
+    end
+    if ItemCount < aiItemStackSize * aiItemNumStack then
+        aiItemNumStack = math.floor(ItemCount/aiItemStackSize)
+    end
+
     -- 找到指定物品所在包、槽
     AHPostItem4.ItemBag, AHPostItem4.ItemSlot = SearchItem(astrItemName, 0)
     if AHPostItem4.ItemBag == -1 then
@@ -1485,19 +1495,19 @@ function GetAllMailDoor()
         GetAllMail:Stop()
         return
     end
-    if GetAllMail.LeftMail <= 50 then
-        GetAllMail:Single()
-        GetAllMail:Stop()
-        return
-    end
     
-    GetAllMail.Handle = GetAllMailMachine:ScheduleRepeatingTimer("Run", 65)
+    GetAllMail.Handle = GetAllMailMachine:ScheduleRepeatingTimer("Run", 0.1)
 end
 
-function GetAllMail:Run()
+function GetAllMailMachine:Run()
     GetAllMail:Single()
-    GetAllMail.LeftMail = GetAllMail.LeftMail - 50
-    if GetAllMail.LeftMail < 0 then
+    local MailCount = 0
+    MailCount = (select(2, GetInboxNumItems()))
+    if (select(1, GetInboxNumItems())) and (select(2, GetInboxNumItems())) then
+        frmDataText:SetText((select(1, GetInboxNumItems())) .. (select(2, GetInboxNumItems())))
+    end
+    --GetAllMail.LeftMail = GetAllMail.LeftMail - 50
+    if MailCount <= 0 then
         GetAllMail:Stop()
     end
 end
@@ -1510,8 +1520,22 @@ function GetAllMail:Stop()
 end
 
 function GetAllMail:Single()
-    local liLoop
-    for liLoop = 1, 50 do
-        AutoLootMailItem(liLoop)
+    local liLoop, liInboxCount, lstrItemName, iLoopNext
+
+    liInboxCount,_ = GetInboxNumItems()
+    for liLoop = 1, liInboxCount do
+        local sender, msgSubject, msgMoney, msgCOD, _, msgItem, _, _, msgText, _, isGM = select(3, GetInboxHeaderInfo(liLoop))
+        if not((msgCOD and msgCOD > 0) or (isGM)) then
+            for iLoopNext=1, 12 do
+                lstrItemName = select(1, GetInboxItem(liLoop, iLoopNext))
+                if (lstrItemName) then
+                    TakeInboxItem(liLoop, iLoopNext)
+                end
+            end
+            if msgMoney > 0 then
+                TakeInboxMoney(liLoop)
+            end
+            break
+        end
     end
 end
