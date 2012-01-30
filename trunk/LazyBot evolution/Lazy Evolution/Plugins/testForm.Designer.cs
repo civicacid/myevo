@@ -41,6 +41,7 @@
             this.btnRefreshChar = new System.Windows.Forms.Button();
             this.comboBoxCharList = new System.Windows.Forms.ComboBox();
             this.btnAutoLogin = new System.Windows.Forms.Button();
+            this.button7 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Step)).BeginInit();
             this.SuspendLayout();
@@ -168,11 +169,22 @@
             this.btnAutoLogin.UseVisualStyleBackColor = true;
             this.btnAutoLogin.Click += new System.EventHandler(this.btnAutoLogin_Click);
             // 
+            // button7
+            // 
+            this.button7.Location = new System.Drawing.Point(506, 65);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(120, 24);
+            this.button7.TabIndex = 16;
+            this.button7.Text = "研磨";
+            this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
+            // 
             // testForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(776, 421);
+            this.Controls.Add(this.button7);
             this.Controls.Add(this.btnAutoLogin);
             this.Controls.Add(this.comboBoxCharList);
             this.Controls.Add(this.btnRefreshChar);
@@ -210,5 +222,6 @@
         private System.Windows.Forms.Button btnRefreshChar;
         private System.Windows.Forms.ComboBox comboBoxCharList;
         private System.Windows.Forms.Button btnAutoLogin;
+        private System.Windows.Forms.Button button7;
     }
 }

@@ -50,21 +50,32 @@ function hello_world_initialize()
     frmTest:SetBackdropBorderColor(0, 0, 0, 1)  -- 边框材质颜色 (Red, Green, Black, Alpha) 各参数的范围都是 0-1
     frmTest:SetPoint("TOPLEFT", WorldFrame, "TOPLEFT", 0, 0)
     frmTest.Text = frmTest:CreateFontString("frmTestText", "OVERLAY") -- 为Frame创建一个新的文字层
-    frmTest.Text:SetFont("fonts\\zyhei.ttf", 50, "OUTLINE")
+    frmTest.Text:SetFont("fonts\\zyhei.ttf", 10, "OUTLINE")
     frmTest.Text:SetPoint("CENTER", frmTest, "CENTER", 0, 0)
     --frmTest:Hide()
 
-    -- 显示数据框体
+    -- 显示数据框体（专用于显示物品数量）
     frmData = CreateFrame("Frame", "frmData", UIParent)
     frmData:SetWidth(64) -- 设置宽度
     frmData:SetHeight(64) -- 设置高度
     frmData:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 0, 0)
     frmDataText = frmData:CreateFontString("frmDataText", "OVERLAY") -- 为Frame创建一个新的文字层
-    frmDataText:SetFont("fonts\\zyhei.ttf", 64, "OUTLINE")
+    frmDataText:SetFont("fonts\\zyhei.ttf", 10, "OUTLINE")
     frmDataText:SetPoint("TOP", frmData, "BOTTOM", 0, 0)
     --frmDataText:SetText("Hell World")
     --frmData:Hide()
     frmData:SetScript("OnUpdate", DispItemCount)
+
+    -- 显示数据框体（专用于显示邮箱是否需要关闭）
+    frmMailData = CreateFrame("Frame", "frmMailData", UIParent)
+    frmMailData:SetWidth(64) -- 设置宽度
+    frmMailData:SetHeight(64) -- 设置高度
+    frmMailData:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 0, 20)
+    frmMailDataText = frmMailData:CreateFontString("frmMailDataText", "OVERLAY") -- 为Frame创建一个新的文字层
+    frmMailDataText:SetFont("fonts\\zyhei.ttf", 10, "OUTLINE")
+    frmMailDataText:SetPoint("TOP", frmMailData, "BOTTOM", 0, 0)
+    --frmDataText:SetText("Hell World")
+    --frmData:Hide()
 
 end
 
@@ -1120,7 +1131,7 @@ function event_quit()
 end
 
 function event_ah_first()
-    AHPostItem4FirstPost()
+    --AHPostItem4FirstPost()
 end
 
 function event_ah_next()
@@ -1452,14 +1463,17 @@ function AHPostItemDoor(astrItemName, aiSingleItemPrice, aiItemStackSize, aiItem
     ClearCursor()
     prize = aiSingleItemPrice * aiItemStackSize - AHPostItem4.CUT_PRICE
     StartAuction(prize, prize, AHPostItem4.AH_TIME, aiItemStackSize, aiItemNumStack)
-
-end
-
-function AHPostItem4FirstPost()
-    if HWstatus.AHPostItem == 10 then
-        --AHPostItem4.ItemLeftStack = AHPostItem4.PostItemNumStack
+    if aiItemNumStack == 1 then
+        HWstatus.AHPostItem = 0
+        SendSuccData()
     end
 end
+
+--function AHPostItem4FirstPost()
+--    if HWstatus.AHPostItem == 10 then
+        --AHPostItem4.ItemLeftStack = AHPostItem4.PostItemNumStack
+--    end
+--end
 
 function AHPostItem4NextPost()
     if HWstatus.AHPostItem == 10 then
@@ -1503,8 +1517,8 @@ function GetAllMailMachine:Run()
     GetAllMail:Single()
     local MailCount = 0
     MailCount = (select(2, GetInboxNumItems()))
-    if (select(1, GetInboxNumItems())) and (select(2, GetInboxNumItems())) then
-        frmDataText:SetText((select(1, GetInboxNumItems())) .. (select(2, GetInboxNumItems())))
+    if (select(1, GetInboxNumItems())) then
+        frmMailDataText:SetText((select(1, GetInboxNumItems())))
     end
     --GetAllMail.LeftMail = GetAllMail.LeftMail - 50
     if MailCount <= 0 then

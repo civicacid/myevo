@@ -222,5 +222,10 @@ namespace LazyEvo.Plugins
             MessageBox.Show("OKOK_____AUTO Login");
             ObjectManager.Initialize(SpyAutoLogin.WOW_P.Id);
         }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            SpyYM.test();
+        }
     }
 }
