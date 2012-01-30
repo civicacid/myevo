@@ -820,14 +820,34 @@ namespace LazyEvo.Plugins
 
         public static void lua_GetAllMail()
         {
+            Ticker ServerMail = new Ticker(65000);
             // 确保邮箱开着
             if (MailFrame.CurrentTabIsSendMail) MailFrame.ClickInboxTab();
+            ServerMail.Reset();
             // 发送取结果的命令
             KeyHelper.SendLuaOverChat("/script GetAllMailDoor()");
             while (GetInfoFromFrame() == LUA_RUNNING_STRING)
             {
                 // 看看是否所有邮件都取完
-                Thread.Sleep(10);
+                Frame MailInfoFrame = InterfaceHelper.GetFrameByName("frmMailData");
+                if (MailInfoFrame == null)
+                {
+                    Logging.Write("插件没有打开");
+                    return;
+                }
+                string info = MailInfoFrame.GetChildObject("frmMailDataText").GetInfoText;
+                if (Convert.ToInt16(info) == 0)
+                {
+                    if (GetInfoFromFrame() != LUA_RUNNING_STRING) break;
+                    // 关闭邮箱，等待一段时间，再开启
+                    MailFrame.Close();
+                    while (ServerMail.IsReady)
+                    {
+                        MailManager.TargetMailBox();
+                        ServerMail.Reset();
+                    }
+                }
+                Thread.Sleep(100);
             }
 
             // 取得返回值（注意排错）
@@ -1193,6 +1213,37 @@ namespace LazyEvo.Plugins
             }
         }
     }
+
+    // 研磨
+    public static class SpyYM
+    {
+        public static void test()
+        {
+            int CountJump = 0;
+            string ItemName = "鞭尾草";
+            while (true)
+            {
+                if (Inventory.FreeBagSlots < 3) return;
+                CountJump++;
+                if (CountJump == 10)
+                {
+                    KeyLowHelper.PressKey(MicrosoftVirtualKeys.Space);
+                    KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.Space);
+                    CountJump = 0;
+                    Thread.Sleep(4000);
+                }
+                KeyLowHelper.PressKey(MicrosoftVirtualKeys.key4);
+                KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.key4);
+                Thread.Sleep(1000);
+                while (ObjectManager.MyPlayer.IsCasting)
+                {
+                    Thread.Sleep(100);
+                }
+                Thread.Sleep(1000);
+            }
+        }
+    }
+
     // 分解矿+邮寄
     public static class SpyMineAndMail
     {
@@ -1470,8 +1521,19 @@ namespace LazyEvo.Plugins
             logger.Add(string.Format("开始上货"));
             foreach (DataRow dr in Items.Rows)
             {
-                // 扫描最低价格
                 string ahitem = dr["item_name"].ToString();
+
+                // 看看包里面有没有货
+                if (!SpyFrame.lua_SetDispCountItemName(ahitem))
+                {
+                    logger.Add("在执行SetDispCountItemName时出错，物品：" + ahitem);
+                    return false;
+                }
+                Thread.Sleep(500);
+                Dictionary<string, int> ItemCount = SpyFrame.GetDispCountItemCount();
+                if (ItemCount["BAG"] == 0) continue;
+
+                // 扫描最低价格
                 logger.Add(string.Format("扫描物品[{0}]的最低价格", ahitem));
                 Dictionary<string, string> scanresult = SpyFrame.lua_AHSearchDoor(ahitem);
                 if (scanresult == null)
@@ -1583,7 +1645,7 @@ namespace LazyEvo.Plugins
             LastLeaderStep = 0;
             FBStatus = DBStatus.In_EntryChecking;
             _Action = ActionStatus.Nothing;
-            LeaderName = _leadername;
+            LeaderName = _leadername.ToUpper();
             if (!SetLeader()) return false;
             FBEntry = _fbin;
             FBExit = _fbout;
@@ -1755,7 +1817,7 @@ namespace LazyEvo.Plugins
         {
             foreach (PPlayer unit in ObjectManager.GetPlayers)
             {
-                if (unit.Name.Equals(LeaderName))
+                if (unit.Name.ToUpper().Equals(LeaderName))
                 {
                     leader = unit;
                     return true;
@@ -1768,7 +1830,7 @@ namespace LazyEvo.Plugins
         private static bool CanStart()
         {
             // 要求2个人都在副本区域内才能开始
-            if (leader.Name.Equals(LeaderName))
+            if (leader.Name.ToUpper().Equals(LeaderName))
                 return true;
             else
                 return false;
@@ -1874,12 +1936,12 @@ namespace LazyEvo.Plugins
         // 看看传过来的信息里面，包不包含暗语，做一个翻译，设置相应状态
         public static void CheckPassword(string msg)
         {
-            if (msg.ToUpper().Contains(LeaderName) && msg.ToUpper().Contains(FBEndPass))
+            if (msg.ToUpper().Contains(LeaderName.ToUpper()) && msg.ToUpper().Contains(FBEndPass))
             {
                 _Action = ActionStatus.OutFB;
                 return;
             }
-            if (msg.ToUpper().Contains(LeaderName) && msg.ToUpper().Contains(FBInPass))
+            if (msg.ToUpper().Contains(LeaderName.ToUpper()) && msg.ToUpper().Contains(FBInPass))
             {
                 _Action = ActionStatus.InFB;
                 return;
