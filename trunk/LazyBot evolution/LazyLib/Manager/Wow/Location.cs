@@ -41,10 +41,10 @@ namespace LazyLib.Wow
         {
             try
             {
-                string[] split = loc.Split(new[] {' '});
-                X = (float) Convert.ToDouble(split[0]);
-                Y = (float) Convert.ToDouble(split[1]);
-                Z = (float) Convert.ToDouble(split[2]);
+                string[] split = loc.Split(new[] { ' ' });
+                X = (float)Convert.ToDouble(split[0]);
+                Y = (float)Convert.ToDouble(split[1]);
+                Z = (float)Convert.ToDouble(split[2]);
             }
             catch (Exception)
             {
@@ -85,7 +85,7 @@ namespace LazyLib.Wow
         /// <value>The bearing.</value>
         public float Bearing
         {
-            get { return NegativeAngle((float) Math.Atan2((Y - ObjectManager.MyPlayer.Y), (X - ObjectManager.MyPlayer.X))); }
+            get { return NegativeAngle((float)Math.Atan2((Y - ObjectManager.MyPlayer.Y), (X - ObjectManager.MyPlayer.X))); }
         }
 
 
@@ -128,7 +128,7 @@ namespace LazyLib.Wow
             //if the turning angle is negative
             if (angle < 0)
                 //add the maximum possible angle (PI x 2) to normalize the negative angle
-                angle += (float) (Math.PI*2);
+                angle += (float)(Math.PI * 2);
             return angle;
         }
 
@@ -248,6 +248,40 @@ namespace LazyLib.Wow
             }
         }
 
+        /// <summary>
+        ///   让打架赛车面朝制定目标
+        /// </summary>
+        /// <param name = "打架赛车的PUnit">The pos.</param>
+        /// <returns></returns>
+        public void MFace(PUnit mObj)
+        {
+            float face;
+            if (LazyMath.NegativeAngle(AngleHorizontal - mObj.Facing) < Math.PI)
+            {
+                face = LazyMath.NegativeAngle(AngleHorizontal - mObj.Facing);
+
+                bool moving = mObj.IsMoving;
+                if (face > 1)
+                {
+                    MoveHelper.ReleaseKeys();
+                    moving = false;
+                }
+                FaceHorizontalWithTimer(face, "Left", moving);
+            }
+            else
+            {
+                face = LazyMath.NegativeAngle(mObj.Facing - AngleHorizontal);
+
+                bool moving = mObj.IsMoving;
+                if (face > 1)
+                {
+                    MoveHelper.ReleaseKeys();
+                    moving = false;
+                }
+                FaceHorizontalWithTimer(face, "Right", moving);
+            }
+        }
+
         public static void FaceAngle(float angle)
         {
             float face;
@@ -291,7 +325,7 @@ namespace LazyLib.Wow
                 return;
             Int32 turnTime = moving ? 1328 : 980;
             KeyHelper.PressKey(key);
-            Thread.Sleep((int) ((radius*turnTime*Math.PI)/10));
+            Thread.Sleep((int)((radius * turnTime * Math.PI) / 10));
             KeyHelper.ReleaseKey(key);
         }
 
@@ -316,8 +350,8 @@ namespace LazyLib.Wow
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != typeof (Location)) return false;
-            return Equals((Location) obj);
+            if (obj.GetType() != typeof(Location)) return false;
+            return Equals((Location)obj);
         }
 
         public bool Equals(Location other)
@@ -332,8 +366,8 @@ namespace LazyLib.Wow
             unchecked
             {
                 int result = X.GetHashCode();
-                result = (result*397) ^ Y.GetHashCode();
-                result = (result*397) ^ Z.GetHashCode();
+                result = (result * 397) ^ Y.GetHashCode();
+                result = (result * 397) ^ Z.GetHashCode();
                 return result;
             }
         }

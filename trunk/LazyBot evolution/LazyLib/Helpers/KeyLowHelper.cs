@@ -47,9 +47,19 @@ namespace LazyLib.Helpers
             PostMessage(Memory.WindowHandle, PressKeyCode, (IntPtr)key, (IntPtr)0);
         }
 
+        public static void PressKey(IntPtr wnd, MicrosoftVirtualKeys key)
+        {
+            PostMessage(wnd, PressKeyCode, (IntPtr)key, (IntPtr)0);
+        }
+
         public static void ReleaseKey(MicrosoftVirtualKeys key)
         {
             PostMessage(Memory.WindowHandle, ReleaseKeyCode, (IntPtr)key, (IntPtr)0);
+        }
+
+        public static void ReleaseKey(IntPtr wnd, MicrosoftVirtualKeys key)
+        {
+            PostMessage(wnd, ReleaseKeyCode, (IntPtr)key, (IntPtr)0);
         }
 
         public static void SendEnter()

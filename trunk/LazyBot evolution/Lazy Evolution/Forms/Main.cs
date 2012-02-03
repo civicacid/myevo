@@ -1150,10 +1150,9 @@ namespace LazyEvo.Forms
 
         private void buttonX2_Click(object sender, EventArgs e)
         {
-            
             testForm myform;
             myform = new testForm();
-            myform.ShowDialog();
+            myform.Show();
             myform = null;
             //Dictionary<string,int> hhh = SpyFrame.lua_GetBagInfo();
             //Logging.Write("fff");
@@ -1298,6 +1297,44 @@ namespace LazyEvo.Forms
             else
             {
                 buttonItem3.Text = "神庙副本（开始）";
+            }
+        }
+
+        private void buttonItem5_Click(object sender, EventArgs e)
+        {
+            //外域—城墙（开始）
+            if (string.IsNullOrWhiteSpace(txtDaHao.Text))
+            {
+                MessageBox.Show("在下面的框框里面输入大号的名字");
+                return;
+            }
+            if (buttonItem5.Text.Equals("外域—城墙（开始）"))
+            {
+                buttonItem5.Text = "外域—城墙（停止）";
+                SpyFB.WY_CQ(txtDaHao.Text);
+            }
+            else
+            {
+                buttonItem5.Text = "外域—城墙（开始）";
+            }
+        }
+
+        private void buttonItem6_Click(object sender, EventArgs e)
+        {
+            //外域-魔导师平台（开始）
+            if (string.IsNullOrWhiteSpace(txtDaHao.Text))
+            {
+                MessageBox.Show("在下面的框框里面输入大号的名字");
+                return;
+            }
+            if (buttonItem6.Text.Equals("外域-魔导师平台（开始）"))
+            {
+                buttonItem6.Text = "外域-魔导师平台（停止）";
+                SpyFB.WY_MDSPT(txtDaHao.Text);
+            }
+            else
+            {
+                buttonItem6.Text = "外域-魔导师平台（开始）";
             }
         }
 
