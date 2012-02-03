@@ -1705,6 +1705,9 @@ namespace LazyEvo.Plugins
                             LastLeaderStep = 0;
                             FBStatus = DBStatus.In_LeaderInScopeCheck;
                             Logging.Write("检查大号是不是在范围内");
+                            last_run_exp = ObjectManager.MyPlayer.ExperiencePercentage;
+                            exp = ObjectManager.MyPlayer.ExperiencePercentage;
+                            level = ObjectManager.MyPlayer.Level;
                         }
                         break;
 
@@ -1721,7 +1724,7 @@ namespace LazyEvo.Plugins
                             nowpath = GetMemPath();
                             FBStatus = DBStatus.In_Running;
                             int this_turn_exp = ObjectManager.MyPlayer.ExperiencePercentage - last_run_exp;
-                            this_turn_exp = this_turn_exp > 0 ? this_turn_exp : 100 + this_turn_exp;
+                            this_turn_exp = this_turn_exp >= 0 ? this_turn_exp : 100 + this_turn_exp;
                             Logging.Write(string.Format("第{0}次跑路。这次共获得经验[{1}]，耗时[{2}]。",
                                 LastLeaderStep + 1,
                                 this_turn_exp,
@@ -1732,6 +1735,13 @@ namespace LazyEvo.Plugins
                         break;
 
                     case DBStatus.In_Running:
+                        if (isJump.IsReady)
+                        {
+                            isJump.Reset();
+                            KeyLowHelper.PressKey(MicrosoftVirtualKeys.Space);
+                            KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.Space);
+                            Thread.Sleep(4000);
+                        }
                         if (MeGoGo(nowpath))
                         {
                             if (LastLeaderStep == LeaderInFB.Keys.Max())
@@ -1771,7 +1781,7 @@ namespace LazyEvo.Plugins
                             while (!ObjectManager.InGame) Thread.Sleep(100);
                             _Action = ActionStatus.Nothing;
                             Logging.Write(string.Format("出来了，等待暗语，准备进本。上次刷本经验获得了{0}%，耗时{1}，升了{2}级",
-                                nowexp - exp > 0 ? nowexp - exp : 100 + nowexp - exp,
+                                nowexp - exp >= 0 ? nowexp - exp : 100 + nowexp - exp,
                                 DateTime.Now - intime,
                                 nowlevel - level));
                             FBStatus = DBStatus.Out_ExitDone;
@@ -2173,6 +2183,62 @@ namespace LazyEvo.Plugins
 
             Location inPoint = new Location((float)Convert.ToDouble(-10299.08), (float)Convert.ToDouble(-4000.266), (float)Convert.ToDouble(-70.85023));
             Location outPoint = new Location((float)Convert.ToDouble(-300.5324), (float)Convert.ToDouble(95.67683), (float)Convert.ToDouble(-91.26634));
+
+            SpyFB.Init(DaHao, inPoint, outPoint, large, small, mapp);
+            SpyFB.StartFB();
+        }
+
+        public static void WY_CQ(string DaHao)              //外域--城墙
+        {
+            if (string.IsNullOrWhiteSpace(DaHao))
+            {
+                Logging.Write("没提供大号的名字");
+                return;
+            }
+            Dictionary<int, Location> small = new Dictionary<int, Location>();
+            Dictionary<int, Location> large = new Dictionary<int, Location>();
+            Dictionary<int, int> mapp = new Dictionary<int, int>();
+
+            large.Add(0, new Location((float)Convert.ToDouble(-1351.121), (float)Convert.ToDouble(1651.274), (float)Convert.ToDouble(68.74297)));
+
+            small.Add(0, new Location((float)Convert.ToDouble(-1353.837), (float)Convert.ToDouble(1644.862), (float)Convert.ToDouble(68.41888)));
+
+            mapp.Add(0, 0);
+
+            Location inPoint = new Location((float)Convert.ToDouble(-363.836), (float)Convert.ToDouble(3178.43), (float)Convert.ToDouble(-15.0013));
+            Location outPoint = new Location((float)Convert.ToDouble(-1360), (float)Convert.ToDouble(1630.171), (float)Convert.ToDouble(68.53243));
+
+            SpyFB.Init(DaHao, inPoint, outPoint, large, small, mapp);
+            SpyFB.StartFB();
+        }
+
+        public static void WY_MDSPT(string DaHao)              //外域--魔导师平台
+        {
+            if (string.IsNullOrWhiteSpace(DaHao))
+            {
+                Logging.Write("没提供大号的名字");
+                return;
+            }
+            Dictionary<int, Location> small = new Dictionary<int, Location>();
+            Dictionary<int, Location> large = new Dictionary<int, Location>();
+            Dictionary<int, int> mapp = new Dictionary<int, int>();
+
+            large.Add(0, new Location((float)Convert.ToDouble(147.0217), (float)Convert.ToDouble(-0.7574186), (float)Convert.ToDouble(-2.621897)));
+
+            small.Add(0, new Location((float)Convert.ToDouble(23.72066), (float)Convert.ToDouble(0.3930818), (float)Convert.ToDouble(-2.820039)));
+            small.Add(1, new Location((float)Convert.ToDouble(24.34679), (float)Convert.ToDouble(18.49923), (float)Convert.ToDouble(-1.801288)));
+            small.Add(2, new Location((float)Convert.ToDouble(32.9401), (float)Convert.ToDouble(17.48651), (float)Convert.ToDouble(-2.024594)));
+            small.Add(3, new Location((float)Convert.ToDouble(33.59445), (float)Convert.ToDouble(0.4313231), (float)Convert.ToDouble(-2.81209)));
+            small.Add(4, new Location((float)Convert.ToDouble(114.8011), (float)Convert.ToDouble(-0.579667), (float)Convert.ToDouble(-2.726018)));
+
+            mapp.Add(0, 0);
+            mapp.Add(1, 0);
+            mapp.Add(2, 0);
+            mapp.Add(3, 0);
+            mapp.Add(4, 0);
+
+            Location inPoint = new Location((float)Convert.ToDouble(12880.3), (float)Convert.ToDouble(-7346.42), (float)Convert.ToDouble(65.4882));
+            Location outPoint = new Location((float)Convert.ToDouble(5), (float)Convert.ToDouble(-0.579667), (float)Convert.ToDouble(-2.820039));
 
             SpyFB.Init(DaHao, inPoint, outPoint, large, small, mapp);
             SpyFB.StartFB();

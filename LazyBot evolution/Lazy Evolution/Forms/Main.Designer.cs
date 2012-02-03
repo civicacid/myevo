@@ -60,6 +60,8 @@
             this.buttonItem1 = new DevComponents.DotNetBar.ButtonItem();
             this.buttonItem4 = new DevComponents.DotNetBar.ButtonItem();
             this.buttonItem2 = new DevComponents.DotNetBar.ButtonItem();
+            this.buttonItem3 = new DevComponents.DotNetBar.ButtonItem();
+            this.buttonItem5 = new DevComponents.DotNetBar.ButtonItem();
             this.buttonX3 = new DevComponents.DotNetBar.ButtonX();
             this.CBDebug = new DevComponents.DotNetBar.Controls.CheckBoxX();
             this.buttonX1 = new DevComponents.DotNetBar.ButtonX();
@@ -110,7 +112,7 @@
             this.comboItem3 = new DevComponents.Editors.ComboItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.StatsText = new System.Windows.Forms.ToolStripStatusLabel();
-            this.buttonItem3 = new DevComponents.DotNetBar.ButtonItem();
+            this.buttonItem6 = new DevComponents.DotNetBar.ButtonItem();
             this.ControlSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.superTabControl5)).BeginInit();
             this.superTabControl5.SuspendLayout();
@@ -461,7 +463,9 @@
             this.buttonItem1,
             this.buttonItem4,
             this.buttonItem2,
-            this.buttonItem3});
+            this.buttonItem3,
+            this.buttonItem5,
+            this.buttonItem6});
             this.buttonX4.TabIndex = 79;
             this.buttonX4.Text = "副本";
             // 
@@ -483,6 +487,18 @@
             this.buttonItem2.Name = "buttonItem2";
             this.buttonItem2.Text = "STSM-前门（开始）";
             this.buttonItem2.Click += new System.EventHandler(this.buttonItem2_Click);
+            // 
+            // buttonItem3
+            // 
+            this.buttonItem3.Name = "buttonItem3";
+            this.buttonItem3.Text = "神庙副本（开始）";
+            this.buttonItem3.Click += new System.EventHandler(this.buttonItem3_Click);
+            // 
+            // buttonItem5
+            // 
+            this.buttonItem5.Name = "buttonItem5";
+            this.buttonItem5.Text = "外域—城墙（开始）";
+            this.buttonItem5.Click += new System.EventHandler(this.buttonItem5_Click);
             // 
             // buttonX3
             // 
@@ -1332,11 +1348,11 @@
             this.StatsText.Name = "StatsText";
             this.StatsText.Size = new System.Drawing.Size(0, 17);
             // 
-            // buttonItem3
+            // buttonItem6
             // 
-            this.buttonItem3.Name = "buttonItem3";
-            this.buttonItem3.Text = "神庙副本（开始）";
-            this.buttonItem3.Click += new System.EventHandler(this.buttonItem3_Click);
+            this.buttonItem6.Name = "buttonItem6";
+            this.buttonItem6.Text = "外域-魔导师平台（开始）";
+            this.buttonItem6.Click += new System.EventHandler(this.buttonItem6_Click);
             // 
             // Main
             // 
@@ -1461,6 +1477,8 @@
         private DevComponents.DotNetBar.ButtonItem buttonItem1;
         private DevComponents.DotNetBar.ButtonItem buttonItem2;
         private DevComponents.DotNetBar.ButtonItem buttonItem3;
+        private DevComponents.DotNetBar.ButtonItem buttonItem5;
+        private DevComponents.DotNetBar.ButtonItem buttonItem6;
     }
 }
 
