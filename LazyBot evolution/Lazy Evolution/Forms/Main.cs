@@ -1338,6 +1338,25 @@ namespace LazyEvo.Forms
             }
         }
 
+        private void buttonItem7_Click(object sender, EventArgs e)
+        {
+            //WLK-古达克（开始）
+            if (string.IsNullOrWhiteSpace(txtDaHao.Text))
+            {
+                MessageBox.Show("在下面的框框里面输入大号的名字");
+                return;
+            }
+            if (buttonItem7.Text.Equals("WLK-古达克（开始）"))
+            {
+                buttonItem7.Text = "WLK-古达克（停止）";
+                SpyFB.WLK_GDK(txtDaHao.Text);
+            }
+            else
+            {
+                buttonItem7.Text = "WLK-古达克（开始）";
+            }
+        }
+
 
 
     }

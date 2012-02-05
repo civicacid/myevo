@@ -62,6 +62,7 @@
             this.buttonItem2 = new DevComponents.DotNetBar.ButtonItem();
             this.buttonItem3 = new DevComponents.DotNetBar.ButtonItem();
             this.buttonItem5 = new DevComponents.DotNetBar.ButtonItem();
+            this.buttonItem6 = new DevComponents.DotNetBar.ButtonItem();
             this.buttonX3 = new DevComponents.DotNetBar.ButtonX();
             this.CBDebug = new DevComponents.DotNetBar.Controls.CheckBoxX();
             this.buttonX1 = new DevComponents.DotNetBar.ButtonX();
@@ -112,7 +113,7 @@
             this.comboItem3 = new DevComponents.Editors.ComboItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.StatsText = new System.Windows.Forms.ToolStripStatusLabel();
-            this.buttonItem6 = new DevComponents.DotNetBar.ButtonItem();
+            this.buttonItem7 = new DevComponents.DotNetBar.ButtonItem();
             this.ControlSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.superTabControl5)).BeginInit();
             this.superTabControl5.SuspendLayout();
@@ -465,7 +466,8 @@
             this.buttonItem2,
             this.buttonItem3,
             this.buttonItem5,
-            this.buttonItem6});
+            this.buttonItem6,
+            this.buttonItem7});
             this.buttonX4.TabIndex = 79;
             this.buttonX4.Text = "副本";
             // 
@@ -499,6 +501,12 @@
             this.buttonItem5.Name = "buttonItem5";
             this.buttonItem5.Text = "外域—城墙（开始）";
             this.buttonItem5.Click += new System.EventHandler(this.buttonItem5_Click);
+            // 
+            // buttonItem6
+            // 
+            this.buttonItem6.Name = "buttonItem6";
+            this.buttonItem6.Text = "外域-魔导师平台（开始）";
+            this.buttonItem6.Click += new System.EventHandler(this.buttonItem6_Click);
             // 
             // buttonX3
             // 
@@ -1348,11 +1356,11 @@
             this.StatsText.Name = "StatsText";
             this.StatsText.Size = new System.Drawing.Size(0, 17);
             // 
-            // buttonItem6
+            // buttonItem7
             // 
-            this.buttonItem6.Name = "buttonItem6";
-            this.buttonItem6.Text = "外域-魔导师平台（开始）";
-            this.buttonItem6.Click += new System.EventHandler(this.buttonItem6_Click);
+            this.buttonItem7.Name = "buttonItem7";
+            this.buttonItem7.Text = "WLK-古达克（开始）";
+            this.buttonItem7.Click += new System.EventHandler(this.buttonItem7_Click);
             // 
             // Main
             // 
@@ -1479,6 +1487,7 @@
         private DevComponents.DotNetBar.ButtonItem buttonItem3;
         private DevComponents.DotNetBar.ButtonItem buttonItem5;
         private DevComponents.DotNetBar.ButtonItem buttonItem6;
+        private DevComponents.DotNetBar.ButtonItem buttonItem7;
     }
 }
 
