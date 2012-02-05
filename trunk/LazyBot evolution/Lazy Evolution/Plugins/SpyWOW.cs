@@ -1610,6 +1610,8 @@ namespace LazyEvo.Plugins
 
         public static string FBEndPass = "OKOK";
         public static string FBInPass = "ININ";
+        public static string FBNextStep = "NS";
+        public static string FBDirectOut = "DO";
         private static string LeaderName = "";
 
         private static int Scope = 5;
@@ -1637,7 +1639,9 @@ namespace LazyEvo.Plugins
         {
             Nothing,
             OutFB,
-            InFB
+            InFB,
+            NextStep,
+            DirectOut
         }
 
         public static bool Init(string _leadername, Location _fbin, Location _fbout, Dictionary<int, Location> _lloc, Dictionary<int, Location> _path, Dictionary<int, int> _map)
@@ -1764,12 +1768,12 @@ namespace LazyEvo.Plugins
                             KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.Space);
                             Thread.Sleep(4000);
                         }
-                        if (_Action == ActionStatus.OutFB)
+                        if (_Action == ActionStatus.OutFB || _Action == ActionStatus.DirectOut)
                         {
                             Logging.Write(string.Format("收到暗语，出本！！！"));
                             nowlevel = ObjectManager.MyPlayer.Level;
                             nowexp = ObjectManager.MyPlayer.ExperiencePercentage;
-                            MeGoGo(GetMemOutPath());
+                            if (_Action == ActionStatus.OutFB) MeGoGo(GetMemOutPath());
 
                             //出副本
                             Thread.Sleep(200);
@@ -1849,11 +1853,17 @@ namespace LazyEvo.Plugins
         private static bool IsLeaderInScope()
         {
             //if (!LeaderInFB.ContainsKey(LastLeaderStep)) return false;
-            double dd = leader.Location.DistanceFromXY(LeaderInFB[LastLeaderStep]);
-            if (dd < Scope)
+            if (_Action == ActionStatus.NextStep)
             {
+                _Action = ActionStatus.Nothing;
                 return true;
             }
+
+            //double dd = leader.Location.DistanceFromXY(LeaderInFB[LastLeaderStep]);
+            //if (dd < Scope)
+            //{
+            //    return true;
+            //}
             return false;
         }
 
@@ -1954,6 +1964,16 @@ namespace LazyEvo.Plugins
             if (msg.ToUpper().Contains(LeaderName.ToUpper()) && msg.ToUpper().Contains(FBInPass))
             {
                 _Action = ActionStatus.InFB;
+                return;
+            }
+            if (msg.ToUpper().Contains(LeaderName.ToUpper()) && msg.ToUpper().Contains(FBNextStep))
+            {
+                _Action = ActionStatus.NextStep;
+                return;
+            }
+            if (msg.ToUpper().Contains(LeaderName.ToUpper()) && msg.ToUpper().Contains(FBDirectOut))
+            {
+                _Action = ActionStatus.DirectOut;
                 return;
             }
         }
@@ -2239,6 +2259,60 @@ namespace LazyEvo.Plugins
 
             Location inPoint = new Location((float)Convert.ToDouble(12880.3), (float)Convert.ToDouble(-7346.42), (float)Convert.ToDouble(65.4882));
             Location outPoint = new Location((float)Convert.ToDouble(5), (float)Convert.ToDouble(-0.579667), (float)Convert.ToDouble(-2.820039));
+
+            SpyFB.Init(DaHao, inPoint, outPoint, large, small, mapp);
+            SpyFB.StartFB();
+        }
+
+        public static void WLK_GDK(string DaHao)              //WLK-古达克
+        {
+            if (string.IsNullOrWhiteSpace(DaHao))
+            {
+                Logging.Write("没提供大号的名字");
+                return;
+            }
+            Dictionary<int, Location> small = new Dictionary<int, Location>();
+            Dictionary<int, Location> large = new Dictionary<int, Location>();
+            Dictionary<int, int> mapp = new Dictionary<int, int>();
+
+            large.Add(0, new Location((float)Convert.ToDouble(147.0217), (float)Convert.ToDouble(-0.7574186), (float)Convert.ToDouble(-2.621897)));
+            large.Add(1, new Location((float)Convert.ToDouble(147.0217), (float)Convert.ToDouble(-0.7574186), (float)Convert.ToDouble(-2.621897)));
+            large.Add(2, new Location((float)Convert.ToDouble(147.0217), (float)Convert.ToDouble(-0.7574186), (float)Convert.ToDouble(-2.621897)));
+            large.Add(3, new Location((float)Convert.ToDouble(147.0217), (float)Convert.ToDouble(-0.7574186), (float)Convert.ToDouble(-2.621897)));
+
+            small.Add(0, new Location((float)Convert.ToDouble(1882.32), (float)Convert.ToDouble(631.027), (float)Convert.ToDouble(176.696)));
+            small.Add(1, new Location((float)Convert.ToDouble(1865.156), (float)Convert.ToDouble(631.027), (float)Convert.ToDouble(176.6707)));
+            small.Add(2, new Location((float)Convert.ToDouble(1864.86), (float)Convert.ToDouble(644.0133), (float)Convert.ToDouble(176.6822)));
+            small.Add(3, new Location((float)Convert.ToDouble(1829.27), (float)Convert.ToDouble(642.1031), (float)Convert.ToDouble(159.941)));
+            small.Add(4, new Location((float)Convert.ToDouble(1829.068), (float)Convert.ToDouble(623.2595), (float)Convert.ToDouble(152.2446)));
+            small.Add(5, new Location((float)Convert.ToDouble(1853.23), (float)Convert.ToDouble(622.9475), (float)Convert.ToDouble(144.8592)));
+            small.Add(6, new Location((float)Convert.ToDouble(1852.397), (float)Convert.ToDouble(643.9853), (float)Convert.ToDouble(135.4792)));
+            small.Add(7, new Location((float)Convert.ToDouble(1827.927), (float)Convert.ToDouble(642.1819), (float)Convert.ToDouble(129.2708)));
+            small.Add(8, new Location((float)Convert.ToDouble(1828.352), (float)Convert.ToDouble(633.4611), (float)Convert.ToDouble(129.2857)));
+
+            small.Add(9, new Location((float)Convert.ToDouble(1716.94), (float)Convert.ToDouble(632.9564), (float)Convert.ToDouble(129.1974)));
+
+            small.Add(10, new Location((float)Convert.ToDouble(1661.818), (float)Convert.ToDouble(635.2555), (float)Convert.ToDouble(130.2019)));
+            small.Add(11, new Location((float)Convert.ToDouble(1624.687), (float)Convert.ToDouble(694.1088), (float)Convert.ToDouble(142.1722)));
+
+            small.Add(12, new Location((float)Convert.ToDouble(1625.095), (float)Convert.ToDouble(783.053), (float)Convert.ToDouble(142.7822)));
+
+            mapp.Add(0, 0);
+            mapp.Add(1, 0);
+            mapp.Add(2, 0);
+            mapp.Add(3, 0);
+            mapp.Add(4, 0);
+            mapp.Add(5, 0);
+            mapp.Add(6, 0);
+            mapp.Add(7, 0);
+            mapp.Add(8, 0);
+            mapp.Add(9, 1);
+            mapp.Add(10, 2);
+            mapp.Add(11, 2);
+            mapp.Add(12, 3);
+
+            Location inPoint = new Location((float)Convert.ToDouble(6995.587), (float)Convert.ToDouble(-4376.675), (float)Convert.ToDouble(445.7651));
+            Location outPoint = new Location((float)Convert.ToDouble(1902), (float)Convert.ToDouble(667), (float)Convert.ToDouble(176.696));
 
             SpyFB.Init(DaHao, inPoint, outPoint, large, small, mapp);
             SpyFB.StartFB();
