@@ -38,18 +38,8 @@ namespace LazyEvo.Plugins
             Dictionary<string, string> MailList;                //发货列表
             DBLogger logger = new DBLogger("拿取邮件+分矿+邮寄");
 
-            MailList = new Dictionary<string, string>();
-            MailList.Add("地狱炎石", "最初的联盟");
-            MailList.Add("琥珀晶石", "最初的联盟");
-            MailList.Add("恶魔之眼", "最初的联盟");
-            MailList.Add("泽菲蓝晶石", "最初的联盟");
-            MailList.Add("碧玉", "最初的联盟");
-            MailList.Add("阿里锡黄晶", "最初的联盟");
-            MailList.Add("红玉髓", "杀贝贝熊");
-
-            Mines = new List<string>();
-            Mines.Add("源质矿石");
-            Mines.Add("燃铁矿石");
+            MailList = SpyDB.GetMailList();
+            Mines = SpyDB.GetMineList();
 
             // 打开邮箱
             //if (!MailManager.TargetMailBox())
@@ -63,34 +53,9 @@ namespace LazyEvo.Plugins
 
         private void button2_Click(object sender, EventArgs e)
         {
-            DataRow dr;
             if (SpyAH.Items.Columns.Count == 0)
             {
-                SpyAH.initme();
-                //dr = SpyAH.Items.NewRow();
-                ////dr["item_name"] = "统御恶魔之眼";
-                //dr["item_name"] = "之眼";
-                //dr["item_minprice"] = 10 * 100 * 100;
-                //dr["item_maxprice"] = 140 * 100 * 100;
-                //dr["item_count"] = 3;
-                //dr["item_stacksize"] = 1;
-                //SpyAH.Items.Rows.Add(dr);
-
-                //dr = SpyAH.Items.NewRow();
-                //dr["item_name"] = "朴素地狱炎石";
-                //dr["item_minprice"] = 200 * 100 * 100;
-                //dr["item_maxprice"] = 250 * 100 * 100;
-                //dr["item_count"] = 3;
-                //dr["item_stacksize"] = 1;
-                //SpyAH.Items.Rows.Add(dr);
-
-                //dr = SpyAH.Items.NewRow();
-                //dr["item_name"] = "纯净恶魔之眼";
-                //dr["item_minprice"] = 10 * 100 * 100;
-                //dr["item_maxprice"] = 50 * 100 * 100;
-                //dr["item_count"] = 3;
-                //dr["item_stacksize"] = 1;
-                //SpyAH.Items.Rows.Add(dr);
+                SpyAH.initme("拍卖师卡拉伦");
             }
             SpyAH.gogo();
             MessageBox.Show("结束");
@@ -128,28 +93,6 @@ namespace LazyEvo.Plugins
 
         private void button6_Click(object sender, EventArgs e)
         {
-            Dictionary<string, string> MailList;                //发货列表
-
-            MailList = new Dictionary<string, string>();
-            MailList.Add("娴熟之暗烬黄玉", "收矿啊");
-            MailList.Add("机敏暗烬黄玉", "收矿啊");
-            MailList.Add("铭文暗烬黄玉", "收矿啊");
-            MailList.Add("华丽梦境翡翠", "收矿啊");
-            MailList.Add("禅悟之梦境翡翠", "收矿啊");
-            MailList.Add("火花海洋青玉", "收矿啊");
-            MailList.Add("致密海洋青玉", "收矿啊");
-            MailList.Add("朴素地狱炎石", "收矿啊");
-            MailList.Add("闪光地狱炎石", "收矿啊");
-            MailList.Add("闪耀地狱炎石", "收矿啊");
-            MailList.Add("精致地狱炎石", "收矿啊");
-            MailList.Add("圆润琥珀晶石", "收矿啊");
-            MailList.Add("秘法琥珀晶石", "收矿啊");
-            MailList.Add("纯净恶魔之眼", "收矿啊");
-            MailList.Add("统御恶魔之眼", "收矿啊");
-            MailList.Add("防御者的恶魔之眼", "收矿啊");
-
-
-
             Dictionary<string, int> CreationList = new Dictionary<string, int>();
 
 
@@ -194,40 +137,16 @@ namespace LazyEvo.Plugins
             }
 
             SpyZBJG.logger.clear();
-            SpyZBJG.MailList = MailList;
+            SpyZBJG.MailList = SpyDB.GetMailList();
+            SpyZBJG.CreationMap = SpyDB.GetCreationMap_ZBJG();
+
+            /* 生成制作列表，需要综合挂货人库存、挂货清单、当前角色可以做什么，综合考虑  */
+            Dictionary<string, int> lessitem = SpyDB.GetAHLessItem();
+            foreach (KeyValuePair<string, int> kv in lessitem){
+                if (CreationMap.ContainsKey(kv.Key)) CreationList.Add(kv.Key,kv.Value);
+            }
             SpyZBJG.CreationList = CreationList;
-            SpyZBJG.CreationMap = CreationMap;
             SpyZBJG.start();
-        }
-
-        private void btnRefreshChar_Click(object sender, EventArgs e)
-        {
-            comboBoxCharList.Items.Clear();
-            Dictionary<string, string> chars = new Dictionary<string, string>();
-            chars = SpyDB.GetChars();
-            if (chars.Count == 0) return;
-            foreach (KeyValuePair<string, string> kk in chars)
-            {
-                comboBoxCharList.Items.Add(kk);
-            }
-        }
-
-        private void btnAutoLogin_Click(object sender, EventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(comboBoxCharList.Text)) return;
-            KeyValuePair<string, string> singlechar = (KeyValuePair<string, string>)comboBoxCharList.SelectedItem;
-            Dictionary<string, string> result = SpyDB.GetCharLoginInfo(singlechar.Key);
-            if (result.Count == 0)
-            {
-                MessageBox.Show("数据库没有找到信息，检查视图v_login_info的数据");
-                return;
-            }
-
-            SpyAutoLogin.initme(result["AccountName"], result["AccountPass"], result["RealmName"], result["CharIdx"], result["AccountList"]);
-            SpyAutoLogin.start();
-            while (!SpyAutoLogin.IsOK) { Thread.Sleep(100); };
-            MessageBox.Show("OKOK_____AUTO Login");
-            ObjectManager.Initialize(SpyAutoLogin.WOW_P.Id);
         }
 
         private void button7_Click(object sender, EventArgs e)
@@ -553,39 +472,6 @@ namespace LazyEvo.Plugins
             }
         }
 
-        private void button9_Click(object sender, EventArgs e)
-        {
-            PUnit testObj = new PUnit(0);
-            PUnit djscObj = new PUnit(0);
-            List<PUnit> nnn = new List<PUnit>();
-            foreach (PUnit uu in ObjectManager.GetUnits)
-            {
-                if (uu.Name.Contains("复国者")) testObj = uu;
-                if (uu.Name.Contains("打架赛车")) djscObj = uu;
-                if (uu.IsPlayer) continue;
-                //if (uu.fl) continue;
-                if (uu.TargetGUID.Equals(ObjectManager.MyPlayer.GUID))
-                    nnn.Add(uu);
-            }
 
-            testObj.Location.MFace(djscObj);
-            while (djscObj.Location.DistanceFromXY(testObj.Location) > 10)
-            {
-                KeyLowHelper.PressKey(MicrosoftVirtualKeys.Up);
-                Thread.Sleep(50);
-            }
-            KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.Up);
-
-            KeyHelper.LoadKeys();
-            Thread.Sleep(500);
-
-            testObj.Location.MFace(djscObj);
-            while (djscObj.Location.DistanceFromXY(testObj.Location) > 4)
-            {
-                KeyLowHelper.PressKey(MicrosoftVirtualKeys.Up);
-                Thread.Sleep(50);
-            }
-            KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.Up);
-        }
     }
 }
