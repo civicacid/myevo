@@ -58,6 +58,18 @@ namespace LazyEvo.Plugins
                 _RunCheck = new Thread(ProcCheck);
                 //_RunCheck.Name = "AutoLogin";
                 _RunCheck.IsBackground = true;
+
+                // 设置线程状态为单线程
+                try
+                {
+                    _RunCheck.TrySetApartmentState(ApartmentState.STA);
+                }
+                catch (Exception ex)
+                {
+                    Logging.Write("启动失败，线程设置出现错误，原因是：" + ex.ToString());
+                    return;
+                }
+                
                 _RunCheck.Start();
                 ps = ProcStatus.Start;
             }
@@ -151,7 +163,7 @@ namespace LazyEvo.Plugins
                     if (LazyEvo.Forms.Helpers.LazyForms.MainForm.Text.ToLower().Equals("navigating"))
                     {
                         LazyHelpers.StopAll("时间到了，Kill Process");
-                        //SpyDB.SaveInfo_Bag(SpyFrame.lua_GetBagInfo());
+                        SpyDB.SaveInfo_Bag(SpyFrame.lua_GetBagInfo());
                         Thread.Sleep(1000);
                         if (WOWProc != null)
                         {
@@ -382,6 +394,16 @@ namespace LazyEvo.Plugins
                 _AutoLogin = new Thread(gogo);
                 _AutoLogin.Name = "AutoLoginWOW";
                 _AutoLogin.IsBackground = true;
+                // 设置线程状态为单线程
+                try
+                {
+                    _AutoLogin.TrySetApartmentState(ApartmentState.STA);
+                }
+                catch (Exception ex)
+                {
+                    Logging.Write("启动失败，线程设置出现错误，原因是：" + ex.ToString());
+                    return;
+                }
                 _AutoLogin.Start();
                 Logging.Write("AutoLoginWOW开始了。。。。。");
             }
@@ -674,30 +696,38 @@ namespace LazyEvo.Plugins
         // 获知背包物品内容
         public static Dictionary<string, int> lua_GetBagInfo()
         {
-            Dictionary<string, int> bag;
+            return lua_GetBagInfo(true);
+        }
+
+        public static Dictionary<string, int> lua_GetBagInfo(bool UseMacro)
+        {
+            Dictionary<string, int> bag = new Dictionary<string, int>();
             int MaxReTryCount = 5;
             int ReTryCount = 0;
 
             // 调用lua，收集背包物品信息
-            KeyHelper.SendLuaOverChat("/script ScanBag()");
-            ReTryCount = 0;
-            bag = null;
-            while (GetInfoFromFrame() == LUA_RUNNING_STRING)
+            if (UseMacro)
             {
-                Thread.Sleep(100);
-                ReTryCount++;
-                if (ReTryCount > MaxReTryCount)
+                KeyHelper.SendLuaOverChat("/script ScanBag()");
+                ReTryCount = 0;
+                bag = null;
+                while (GetInfoFromFrame() == LUA_RUNNING_STRING)
                 {
-                    Logging.Write("[GetBagInfo]超过Retry次数");
-                    return bag;
+                    Thread.Sleep(100);
+                    ReTryCount++;
+                    if (ReTryCount > MaxReTryCount)
+                    {
+                        Logging.Write("[GetBagInfo]超过Retry次数");
+                        return bag;
+                    }
                 }
-            }
-            if (GetInfoFromFrame() != null)
-            {
-                if (GetInfoFromFrame().IndexOf("错误") > 0)
+                if (GetInfoFromFrame() != null)
                 {
-                    Logging.Write("获取信息错误");
-                    return bag;
+                    if (GetInfoFromFrame().IndexOf("错误") > 0)
+                    {
+                        Logging.Write("获取信息错误");
+                        return bag;
+                    }
                 }
             }
 
@@ -1085,8 +1115,41 @@ namespace LazyEvo.Plugins
         public static Dictionary<string, string> CreationMap;               //对照关系(产品：原料)
         public static Dictionary<string, string> MailList;                  //发货列表
         public static DBLogger logger = new DBLogger("珠宝加工+邮寄");
+        private static Thread _thread;
 
-        public static void GoGo()
+        public static void start()
+        {
+            if (_thread == null || !_thread.IsAlive)
+            {
+                _thread = new Thread(GoGo);
+                _thread.Name = "ZBJG";
+                _thread.IsBackground = true;
+                // 设置线程状态为单线程
+                try
+                {
+                    _thread.TrySetApartmentState(ApartmentState.STA);
+                }
+                catch (Exception ex)
+                {
+                    Logging.Write("启动失败，线程设置出现错误，原因是：" + ex.ToString());
+                    return;
+                }
+                _thread.Start();
+                Logging.Write("珠宝加工开始了。。。。。");
+            }
+        }
+
+        public static void stop()
+        {
+            if (_thread == null) return;
+            if (_thread.IsAlive)
+            {
+                _thread.Abort();
+                _thread = null;
+            }
+        }
+        
+        private static void GoGo()
         {
             BarMapper.MapBars();
             KeyHelper.LoadKeys();
@@ -1094,7 +1157,7 @@ namespace LazyEvo.Plugins
             logger.output();
         }
 
-        public static void DoAction()
+        private static void DoAction()
         {
             // 打开邮箱
             if (!MailManager.TargetMailBox())
@@ -1250,6 +1313,39 @@ namespace LazyEvo.Plugins
         public static List<string> Mines;                                 //待分解清单
         public static Dictionary<string, string> MailList;                //发货列表
         public static DBLogger logger = new DBLogger("拿取邮件+分矿+邮寄");
+        private static Thread _thread;
+
+        public static void start()
+        {
+            if (_thread == null || !_thread.IsAlive)
+            {
+                _thread = new Thread(GoGo);
+                _thread.Name = "分解矿";
+                _thread.IsBackground = true;
+                // 设置线程状态为单线程
+                try
+                {
+                    _thread.TrySetApartmentState(ApartmentState.STA);
+                }
+                catch (Exception ex)
+                {
+                    Logging.Write("启动失败，线程设置出现错误，原因是：" + ex.ToString());
+                    return;
+                }
+                _thread.Start();
+                Logging.Write("分解矿 开始了。。。。。");
+            }
+        }
+
+        public static void stop()
+        {
+            if (_thread == null) return;
+            if (_thread.IsAlive)
+            {
+                _thread.Abort();
+                _thread = null;
+            }
+        }
 
         public static void GoGo()
         {
@@ -1368,7 +1464,40 @@ namespace LazyEvo.Plugins
 
         public static string AHerName = "拍卖师卡拉伦";
 
-        public static void init()
+        private static Thread _thread;
+
+        public static void start()
+        {
+            if (_thread == null || !_thread.IsAlive)
+            {
+                _thread = new Thread(gogo);
+                _thread.Name = "ZBJG";
+                _thread.IsBackground = true;
+                // 设置线程状态为单线程
+                try
+                {
+                    _thread.TrySetApartmentState(ApartmentState.STA);
+                }
+                catch (Exception ex)
+                {
+                    Logging.Write("启动失败，线程设置出现错误，原因是：" + ex.ToString());
+                    return;
+                }
+                _thread.Start();
+                Logging.Write("珠宝加工开始了。。。。。");
+            }
+        }
+
+        public static void stop()
+        {
+            if (_thread == null) return;
+            if (_thread.IsAlive)
+            {
+                _thread.Abort();
+                _thread = null;
+            }
+        }
+        public static void initme()
         {
             // 从数据库表读取拍卖列表(ahitem)
             Items = SpyDB.GetAHList();
@@ -1390,6 +1519,7 @@ namespace LazyEvo.Plugins
         {
             BarMapper.MapBars();
             KeyHelper.LoadKeys();
+            initme();
             DoAction();
             logger.output();
             SpyDB.SaveInfo_Bag();
@@ -1669,6 +1799,16 @@ namespace LazyEvo.Plugins
                 _Thread = new Thread(gogo);
                 _Thread.Name = "FB";
                 _Thread.IsBackground = true;
+                // 设置线程状态为单线程
+                try
+                {
+                    _Thread.TrySetApartmentState(ApartmentState.STA);
+                }
+                catch (Exception ex)
+                {
+                    Logging.Write("启动失败，线程设置出现错误，原因是："+ex.ToString());
+                    return;
+                }
                 _Thread.Start();
                 Logging.Write("开始了。。。。。");
             }
