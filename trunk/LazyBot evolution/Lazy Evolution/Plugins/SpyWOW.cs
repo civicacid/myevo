@@ -69,7 +69,7 @@ namespace LazyEvo.Plugins
                     Logging.Write("启动失败，线程设置出现错误，原因是：" + ex.ToString());
                     return;
                 }
-                
+
                 _RunCheck.Start();
                 ps = ProcStatus.Start;
             }
@@ -1148,7 +1148,7 @@ namespace LazyEvo.Plugins
                 _thread = null;
             }
         }
-        
+
         private static void GoGo()
         {
             BarMapper.MapBars();
@@ -1468,10 +1468,15 @@ namespace LazyEvo.Plugins
 
         public static void start()
         {
+            if (Items == null || Items.Columns.Count == 0)
+            {
+                Logging.Write("没有设置拍卖列表");
+                return;
+            }
             if (_thread == null || !_thread.IsAlive)
             {
                 _thread = new Thread(gogo);
-                _thread.Name = "ZBJG";
+                _thread.Name = "AutoAH";
                 _thread.IsBackground = true;
                 // 设置线程状态为单线程
                 try
@@ -1484,7 +1489,7 @@ namespace LazyEvo.Plugins
                     return;
                 }
                 _thread.Start();
-                Logging.Write("珠宝加工开始了。。。。。");
+                Logging.Write("自动拍卖开始了。。。。。");
             }
         }
 
@@ -1497,29 +1502,18 @@ namespace LazyEvo.Plugins
                 _thread = null;
             }
         }
-        public static void initme()
+        public static void initme(string AHer)
         {
+            // 设置拍卖师的名称
+            AHerName = AHer;
             // 从数据库表读取拍卖列表(ahitem)
             Items = SpyDB.GetAHList();
-            //Items.PrimaryKey
-            //Items.Columns.Add("item_name", System.Type.GetType("System.String"));
-            //Items.Columns.Add("item_minprice", System.Type.GetType("System.Int32"));
-            //Items.Columns.Add("item_maxprice", System.Type.GetType("System.Int32"));
-            //Items.Columns.Add("item_count", System.Type.GetType("System.Int32"));
-            //Items.Columns.Add("item_stacksize", System.Type.GetType("System.Int32"));
-            //DataColumn[] pk = new DataColumn[1];
-            //pk[0] = Items.Columns["item_name"];
-            //Items.PrimaryKey = pk;
-            //DataRow dr = dt.NewRow();
-            //dr["column0"] = "AX";
-            //dr["column1"] = true;
         }
 
         public static void gogo()
         {
             BarMapper.MapBars();
             KeyHelper.LoadKeys();
-            initme();
             DoAction();
             logger.output();
             SpyDB.SaveInfo_Bag();
@@ -1806,7 +1800,7 @@ namespace LazyEvo.Plugins
                 }
                 catch (Exception ex)
                 {
-                    Logging.Write("启动失败，线程设置出现错误，原因是："+ex.ToString());
+                    Logging.Write("启动失败，线程设置出现错误，原因是：" + ex.ToString());
                     return;
                 }
                 _Thread.Start();
@@ -2509,11 +2503,13 @@ namespace LazyEvo.Plugins
 
     public static class SpyDB
     {
+        // 保存char背包信息
         public static void SaveInfo_Bag()
         {
             SaveInfo_Bag(SpyFrame.lua_GetBagInfo());
         }
 
+        // 保存char背包信息
         public static void SaveInfo_Bag(Dictionary<string, int> bag)
         {
             if (bag == null) return;
@@ -2528,6 +2524,28 @@ namespace LazyEvo.Plugins
             }
         }
 
+        // 获取角色背包信息
+        public static Dictionary<string, int> GetCharBagInfo(string CharName)
+        {
+            Dictionary<string, int> result = new Dictionary<string, int>();
+            DataTable dt;
+
+            string sql = string.Format("select item_name,item_count from itemsinbag where char_name='{0}'", CharName);
+            Logging.Write(sql);
+            dt = OraData.execSQL(sql);
+            if (dt.Columns.Count == 0)
+            {
+                Logging.Write(string.Format("处理{0}时，出现错误", sql));
+                return null;
+            }
+            foreach (DataRow dr in dt.Rows)
+            {
+                result.Add(dr[0].ToString(), Convert.ToInt16(dr[1]));
+            }
+            return result;
+        }
+
+        // 获取角色列表
         public static Dictionary<string, string> GetChars()
         {
             Dictionary<string, string> chars = new Dictionary<string, string>();
@@ -2549,6 +2567,7 @@ namespace LazyEvo.Plugins
             return chars;
         }
 
+        // 获取角色登陆信息
         public static Dictionary<string, string> GetCharLoginInfo(string charID)
         {
             Dictionary<string, string> chars = new Dictionary<string, string>();
@@ -2580,20 +2599,103 @@ namespace LazyEvo.Plugins
         public static Dictionary<string, string> GetMailList()
         {
             Dictionary<string, string> result = new Dictionary<string, string>();
+            string sql = string.Format("select receiver_char_name,item_name from maillist where sender_char_name='{0}' or (sender_char_name='ALL' and server=(select server from wowchar where char_name='{0}'))", ObjectManager.MyPlayer.Name);
+            DataTable dt = OraData.execSQL(sql);
+            if (dt.Columns.Count == 0)
+            {
+                Logging.Write(string.Format("GetMailList处理{0}时，出现错误", sql));
+                return null;
+            }
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                // 收件人是自己的话，跳过
+                if (dr[0].ToString().Equals(ObjectManager.MyPlayer.Name)) continue;
+                result.Add(dr[0].ToString(), dr[1].ToString());
+            }
             return result;
         }
 
         public static DataTable GetAHList()
         {
             DataTable ahitems;
-            string sql = "select * from ahitem";
+
+            string sql = string.Format("select item_name,item_minprice,item_maxprice,item_count,item_stacksize from ahitem where char_name='{0}'", ObjectManager.MyPlayer.Name);
             ahitems = OraData.execSQL(sql);
             if (ahitems.Columns.Count == 0)
             {
-                Logging.Write(string.Format("处理{0}时，出现错误", sql));
+                Logging.Write(string.Format("GetAHList处理{0}时，出现错误", sql));
                 return ahitems;
             }
             return ahitems;
+        }
+
+        public static List<string> GetMineList()
+        {
+            List<string> result = new List<string>();
+            string sql = string.Format("select item_name from mine_fj");
+            DataTable dt = OraData.execSQL(sql);
+            if (dt.Columns.Count == 0)
+            {
+                Logging.Write(string.Format("GetMineList处理{0}时，出现错误", sql));
+                return null;
+            }
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                result.Add(dr[0].ToString());
+            }
+            return result;
+        }
+
+        public static Dictionary<string, string> GetCreationMap_ZBJG()
+        {
+            Dictionary<string, string> result = new Dictionary<string, string>();
+            foreach (DataRow dr in GetCreationMap(1).Rows)
+            {
+                result.Add(dr[0].ToString(), dr[1].ToString());
+            }
+            return result;
+        }
+
+        public static DataTable GetCreationMap(int sk)
+        {
+            //商业技能(1-珠宝，2-铭文，3-锻造，4-炼金，5-裁缝，6-附魔)'
+            string sql = string.Format("select item_name,need_item_name1,need_item_name2 from charcreation where char_name='{0}' and tradeskill={1}", ObjectManager.MyPlayer.Name, sk);
+            DataTable dt = OraData.execSQL(sql);
+            if (dt.Columns.Count == 0)
+            {
+                Logging.Write(string.Format("GetMineList处理{0}时，出现错误", sql));
+                return null;
+            }
+
+            return dt;
+        }
+
+        public static Dictionary<string, int> GetAHLessItem()
+        {
+            Dictionary<string, int> result = new Dictionary<string, int>();
+            string sql = "";
+            sql += "WITH server_ahinfo AS";
+            sql += " (SELECT char_name, item_name, backup_count";
+            sql += "    FROM ahitem";
+            sql += "   WHERE server = (SELECT server FROM wowchar WHERE char_name = '" + ObjectManager.MyPlayer.Name + "'))";
+            sql += "SELECT req_item.item_name, req_item.backup_count - avi_item.item_count";
+            sql += "  FROM (SELECT item_name, backup_count FROM server_ahinfo) req_item,";
+            sql += "       (SELECT item_name, item_count FROM itemsinbag WHERE char_name IN (SELECT char_name FROM server_ahinfo)) avi_item";
+            sql += " WHERE req_item.item_name = avi_item.item_name AND req_item.backup_count > avi_item.item_count";
+
+            DataTable dt = OraData.execSQL(sql);
+            if (dt.Columns.Count == 0)
+            {
+                Logging.Write(string.Format("GetLessItem处理{0}时，出现错误", sql));
+                return null;
+            }
+            foreach (DataRow dr in dt.Rows)
+            {
+                result.Add(dr[0].ToString(), Convert.ToInt16(dr[1]));
+            }
+            return result;
         }
     }
 

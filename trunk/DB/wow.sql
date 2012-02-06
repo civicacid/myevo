@@ -38,13 +38,10 @@ create table items (
 );
 comment on table items is '物品数据库';
 
--- -----------------------------------------------------
--- table spells
--- -----------------------------------------------------
 create table spells (
-    spell_id         varchar(10)     not null ,
-    spell_name       varchar(98)     not null ,
-    primary key (spell_id)
+    SPELL_ID         varchar(10)     not null ,
+    SPELL_NAME       varchar(98)     not null ,
+    primary key (SPELL_ID)
 );
 comment on table spells is '法术数据库';
 
@@ -68,17 +65,15 @@ comment on table ahdata is 'ah扫描数据';
 -- table charcreation
 -- -----------------------------------------------------
 create table charcreation (
-   char_id             number(8)                         not null ,
    char_name           varchar(98)                       not null ,
    tradeskill          number(1)                         not null ,
-   item_id             varchar(10)                       not null ,
    item_name           varchar(98)                       not null ,
-   constraint pk_charcreation primary key (char_id),
-   constraint fk_char_id foreign key (char_id) references wowchar(char_id),
-   constraint fk_item_id foreign key (item_id) references items(item_id)
+   need_item_name1     varchar(98)                       not null ,
+   need_item_name2     varchar(98)                       null ,
+   constraint pk_charcreation primary key (char_name,tradeskill,item_name)
 );
 comment on table charcreation is '人物能做什么，包括技能和可以制造什么';
-comment on column charcreation.tradeskill is '商业技能(1-珠宝，2-铭文，3-锻造，4-炼金，5-裁缝)';
+comment on column charcreation.tradeskill is '商业技能(1-珠宝，2-铭文，3-锻造，4-炼金，5-裁缝，6-附魔)';
 
 
 -- -----------------------------------------------------
@@ -96,22 +91,6 @@ create table itemsinbag (
    constraint fk_itemsinbag_char_id foreign key (char_id) references wowchar (char_id)
 );
 comment on table itemsinbag is '背包里面的东西';
-
--- -----------------------------------------------------
--- table AHItemGroup 挂货组
--- -----------------------------------------------------
-create table ahitemgroup (
-   group_id                      number(8)                        not null,
-   item_id                       varchar(10)                      not null,
-   item_name                     varchar(200)                     not null,
-   item_minprice                 number(15)        default 0      not null,            -- 每个物品的最低价格
-   item_maxprice                 number(15)        default 0      not null,            -- 每个物品的最高价格
-   item_count                    number(8)         default 0      not null,            -- 一次挂几堆
-   item_stacksize                number(8)         default 0      not null,            -- 每一堆物品的数量
-   constraint pk_ahitemgroup primary key (group_id, item_id),
-   constraint fk_ahitemgroup_item_id foreign key (item_id) references items (item_id)
-);
-comment on table ahitemgroup is '挂货组';
 
 -- -----------------------------------------------------
 -- table charahitem 角色挂货计划
@@ -155,40 +134,41 @@ create table autowork_diag_mine (
 comment on table autologin is '自动挖矿';
 
 -- -----------------------------------------------------
--- table autowork_maillist  邮件列表
+-- table maillist  邮件列表
 -- -----------------------------------------------------
-create table autowork_maillist (
+create table maillist (
    server                     varchar(200)       not null,
-   work_id                    number(8)          not null,
-   work_desc                  varchar(200)       not null,
-   item_id                    varchar(200)       not null,
-   char_id                    number(8)          not null,
-   primary key (work_id)
+   sender_char_name           varchar(200)       not null,              --寄件人（ALL，适用于该服务器的全部角色）
+   receiver_char_name         varchar(200)       not null,              --收件人
+   item_name                  varchar(200)       not null,   
+   primary key (server,sender_char_name,receiver_char_name,item_name)
 );
-comment on table autowork_maillist is '邮件列表';
+comment on table maillist is '邮件列表';
 
 -- -----------------------------------------------------
--- table autowork_mine  分矿列表
+-- table mine_fj  分矿列表
 -- -----------------------------------------------------
-create table autowork_mine (
-   work_id                    number(8)          not null,
-   work_desc                  varchar(200)       not null,
-   item_id                    varchar(200)       not null,
-   primary key (work_id)
+create table mine_fj (
+   item_name                    varchar(200)       not null,
+   primary key (item_name)
 );
-comment on table autowork_mine is '分矿列表';
+comment on table mine_fj is '分矿列表';
 
 -- -----------------------------------------------------
 -- table ahitem 挂货
 -- -----------------------------------------------------
 create table ahitem (
+   server                        varchar(200)                     not null,
+   char_name                     varchar(200)                     not null,
    item_name                     varchar(200)                     not null,
    item_minprice                 number(15)        default 0      not null,            -- 每个物品的最低价格
    item_maxprice                 number(15)        default 0      not null,            -- 每个物品的最高价格
    item_count                    number(8)         default 0      not null,            -- 一次挂几堆
-   item_stacksize                number(8)         default 0      not null             -- 每一堆物品的数量
+   item_stacksize                number(8)         default 0      not null,            -- 每一堆物品的数量
+   backup_count                  number(8)         default 0      not null,            -- 备货数量
+   constraint pk_ahitem primary key (char_name, item_name)
 );
-comment on table ahitemgroup is '挂货';
+comment on table ahitem is '挂货';
 
 -- -----------------------------------------------------
 -- Sequence 公用序列
