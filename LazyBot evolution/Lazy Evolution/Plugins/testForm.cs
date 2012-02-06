@@ -66,7 +66,7 @@ namespace LazyEvo.Plugins
             DataRow dr;
             if (SpyAH.Items.Columns.Count == 0)
             {
-                SpyAH.init();
+                SpyAH.initme();
                 //dr = SpyAH.Items.NewRow();
                 ////dr["item_name"] = "统御恶魔之眼";
                 //dr["item_name"] = "之眼";
@@ -197,7 +197,7 @@ namespace LazyEvo.Plugins
             SpyZBJG.MailList = MailList;
             SpyZBJG.CreationList = CreationList;
             SpyZBJG.CreationMap = CreationMap;
-            SpyZBJG.GoGo();
+            SpyZBJG.start();
         }
 
         private void btnRefreshChar_Click(object sender, EventArgs e)
