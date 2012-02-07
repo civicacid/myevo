@@ -80,7 +80,7 @@ namespace LazyLib.ActionBar
                                 _spellDatabase.Add(id, name);
                         }
                     }
-                    Logging.Debug("[Mapper] We loaded " + _spellDatabase.Count + " spells");
+                    //Logging.Debug("[Mapper] We loaded " + _spellDatabase.Count + " spells");
                 }
                 catch (Exception e)
                 {

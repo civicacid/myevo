@@ -63,7 +63,8 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data.SQLite, Version=1.0.66.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>.\System.Data.SQLite.dll</HintPath>
+      <HintPath>..\Lazy Evolution\System.Data.SQLite.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.EnterpriseServices" />
@@ -191,7 +192,6 @@
   <ItemGroup>
     <Content Include="License.txt" />
     <None Include="Resources\my.txt" />
-    <Content Include="System.Data.SQLite.dll" />
   </ItemGroup>
   <ItemGroup>
     <WebReferences Include="Web References\" />

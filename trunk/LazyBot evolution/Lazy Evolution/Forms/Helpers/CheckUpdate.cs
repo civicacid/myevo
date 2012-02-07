@@ -36,32 +36,32 @@ namespace LazyEvo.Forms.Helpers
 
         public static void CheckForUpdate()
         {
-#if !DEBUG
-            _executableFileInfo = new FileInfo(ExecutableName);
-            _executableDirectoryName = _executableFileInfo.DirectoryName;
-            _ourDirectory = _executableDirectoryName;
-            try
-            {
-                var proc = new Process
-                               {
-                                   StartInfo = new ProcessStartInfo(_ourDirectory + "\\wyUpdate.exe", "-quickcheck -justcheck -noerr")
-                               };
-                proc.Start();
-                proc.WaitForExit();
-                int exitCode = proc.ExitCode;
-                proc.Close();
-                if (exitCode == 2)
-                {
-                    MessageBox.Show(@"New update ready. Closing to update");
-                    Process.Start(_ourDirectory + "\\wyUpdate.exe");
-                    Environment.Exit(0);
-                }
-            }
-            catch (Exception e)
-            {
-                Logging.Write("Could not start the updating program, cannot auto update: " + e);
-            }
-#endif
+//#if !DEBUG
+//            _executableFileInfo = new FileInfo(ExecutableName);
+//            _executableDirectoryName = _executableFileInfo.DirectoryName;
+//            _ourDirectory = _executableDirectoryName;
+//            try
+//            {
+//                var proc = new Process
+//                               {
+//                                   StartInfo = new ProcessStartInfo(_ourDirectory + "\\wyUpdate.exe", "-quickcheck -justcheck -noerr")
+//                               };
+//                proc.Start();
+//                proc.WaitForExit();
+//                int exitCode = proc.ExitCode;
+//                proc.Close();
+//                if (exitCode == 2)
+//                {
+//                    MessageBox.Show(@"New update ready. Closing to update");
+//                    Process.Start(_ourDirectory + "\\wyUpdate.exe");
+//                    Environment.Exit(0);
+//                }
+//            }
+//            catch (Exception e)
+//            {
+//                Logging.Write("Could not start the updating program, cannot auto update: " + e);
+//            }
+//#endif
         }
     }
 }
