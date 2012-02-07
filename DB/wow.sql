@@ -20,7 +20,7 @@ create table wowchar (
     acc_id          number(8)       not null ,
     char_name       varchar(98)     not null ,
     server          varchar(98)     not null ,
-    acc_list        varchar(98)     not null ,
+    acc_list        varchar(98)     null ,
     char_idx        number(1)       not null ,
     primary key (char_id) ,
     constraint fk_acc_id foreign key (acc_id ) references wowaccount (acc_id)
@@ -49,15 +49,12 @@ comment on table spells is '法术数据库';
 -- table ahdata
 -- -----------------------------------------------------
 create table ahdata (
-   idahdata            number(8)                     not null ,
-   item_id             varchar(10)                   not null ,
-   item_name           varchar(98)                   not null ,
-   bid                 number(8)          default 0  null ,
-   buyout              number(8)          default 0  null,
-   seller              varchar(98)                   not null ,
-   scantime            date                          not null ,
-   constraint pk_ahdata primary key (idahdata) ,
-   constraint fk_item foreign key (item_id) references items (item_id)
+   server               varchar(98)                   not null ,
+   seller               varchar(98)                   not null ,
+   item_name            varchar(98)                   not null ,
+   prize                number(8)          default 0  null,
+   scantime             date                          not null ,
+   constraint pk_ahdata primary key (seller,item_name)
 );
 comment on table ahdata is 'ah扫描数据';
 
@@ -80,58 +77,28 @@ comment on column charcreation.tradeskill is '商业技能(1-珠宝，2-铭文，3-锻造，4
 -- table itemsinbag
 -- -----------------------------------------------------
 create table itemsinbag (
-   item_id                       varchar(10)                      not null ,
    item_name                     varchar(98)                      not null ,
-   char_id                       number(8)                        not null ,
    char_name                     varchar(98)                      not null ,
    item_count                    number(8)      default 0         not null ,
    last_scan_time                date           default sysdate   not null ,
-   constraint pk_itemsinbag primary key (item_id) ,
-   constraint fk_itemsinbag_item_id foreign key (item_id) references items (item_id) ,
-   constraint fk_itemsinbag_char_id foreign key (char_id) references wowchar (char_id)
+   constraint pk_itemsinbag primary key (char_name, item_name)
 );
 comment on table itemsinbag is '背包里面的东西';
-
--- -----------------------------------------------------
--- table charahitem 角色挂货计划
--- -----------------------------------------------------
-create table ahplan (
-   char_id                       number(8)                           not null,            --角色ID
-   char_name                     varchar(98)                         not null ,
-   group_id                      number(8)                           not null,            --挂货组ID
-   begin_time                    date              default sysdate   not null,            --开始时间
-   end_time                      date,                                                    --结束时间
-   constraint pk_charahitem primary key(char_id, group_id),
-   constraint fk_charahitem_char_id foreign key(char_id) references wowchar(char_id)
-);
-comment on table ahplan is '角色挂货计划';
 
 -- -----------------------------------------------------
 -- table autologin 自动登录计划
 -- -----------------------------------------------------
 create table autologin (
-   autologin_id               number(8)          not null,
-   worktime                   date               not null,     -- 启动时间
-   downtime                   date               not null,     -- 结束时间
+   starttime                  date               not null,                 -- 启动时间
+   runtime                    number(8)          default 0 null,           -- 持续时间，分钟
    char_id                    number(8)          not null,
-   char_name                  varchar(98)        not null,
-   dowhat                     varchar(200)       not null,     -- worktype#work_id$worktype#work_id$
-   primary key (autologin_id),
-   constraint fk_autologin_char_id foreign key (char_id) references wowchar (char_id)
+   char_name                  varchar(98)        null,
+   dowhat                     varchar(200)       not null,                 -- CJ|ZBJG|AH|FJKS  (采集|珠宝加工|AH拍卖|分解矿石)
+   machineid                  varchar(200)       not null,                 -- 机器标示
+   everyday                   number(1)          default 0 null,           -- 是否每天执行(1--是,0--否)
+   primary key (machineid,starttime,char_name)
 );
 comment on table autologin is '自动登录计划';
-
--- -----------------------------------------------------
--- table autowork_diag_mine  自动挖矿
--- -----------------------------------------------------
-create table autowork_diag_mine (
-   work_id                    number(8)          not null,
-   work_desc                  varchar(200)       not null,
-   profile                    varchar(200)       not null,
-   behavior                   varchar(200)       not null,
-   primary key (work_id)
-);
-comment on table autologin is '自动挖矿';
 
 -- -----------------------------------------------------
 -- table maillist  邮件列表
@@ -169,6 +136,21 @@ create table ahitem (
    constraint pk_ahitem primary key (char_name, item_name)
 );
 comment on table ahitem is '挂货';
+
+-- -----------------------------------------------------
+-- table logging 日志
+-- -----------------------------------------------------
+create table logging (
+   logtype                       varchar(100)                        not null,
+   logtext                       varchar(1000)                       not null,
+   logtime                       date              default sysdate   not null
+);
+comment on table logging is '日志';
+
+-- -----------------------------------------------------
+-- table logging 日志
+-- -----------------------------------------------------
+
 
 -- -----------------------------------------------------
 -- Sequence 公用序列
@@ -255,34 +237,66 @@ CREATE OR REPLACE PROCEDURE add_bag
    p_item_name  STRING,
    p_item_count INTEGER
 ) IS
-   v_i_char_id INTEGER;
-   v_i_item_id INTEGER;
+   v_i_count INTEGER;
 BEGIN
-   SELECT char_id
-     INTO v_i_char_id
-     FROM wowchar
-    WHERE char_name = p_char_name;
-   SELECT item_id
-     INTO v_i_item_id
-     FROM items
-    WHERE item_name = p_item_name;
-   INSERT INTO itemsinbag
-      (item_id,
-       item_name,
-       char_id,
-       char_name,
-       item_count)
-   VALUES
-      (v_i_char_id,
-       p_char_name,
-       v_i_item_id,
-       p_item_name,
-       p_item_count);
+   SELECT COUNT(*)
+     INTO v_i_count
+     FROM itemsinbag
+    WHERE item_name = p_item_name
+      AND char_name = p_char_name;
+   IF v_i_count = 0 THEN
+      INSERT INTO itemsinbag
+         (char_name,
+          item_name,
+          item_count)
+      VALUES
+         (p_char_name,
+          p_item_name,
+          p_item_count);
+   ELSE
+      UPDATE itemsinbag
+         SET item_count     = p_item_count,
+             last_scan_time = SYSDATE
+       WHERE item_name = p_item_name
+         AND char_name = p_char_name;
+   END IF;
    COMMIT;
 END;
 /
 
+CREATE OR REPLACE PROCEDURE add_ahinfo
+(
+   p_char_name   STRING,
+   p_seller_name STRING,
+   p_item_name   STRING,
+   p_item_prize  INTEGER
+) IS
+   v_vc_server VARCHAR(100);
+BEGIN
+   SELECT server
+     INTO v_vc_server
+     FROM wowchar
+    WHERE char_name = p_char_name;
+   IF v_vc_server IS NULL THEN
+      v_vc_server := 'UNKNOW';
+   END IF;
 
+   INSERT INTO ahdata
+      (server,
+       seller,
+       item_name,
+       prize,
+       scantime)
+   VALUES
+      (v_vc_server,
+       p_seller_name,
+       p_item_name,
+       p_item_prize,
+       SYSDATE);
+
+   COMMIT;
+END;
+/
 
 welcomex
  橙色：

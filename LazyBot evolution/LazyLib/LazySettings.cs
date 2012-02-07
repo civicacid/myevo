@@ -108,6 +108,8 @@ namespace LazyLib
         public static string MapFile;
         public static string DBIP;
         public static string DBSid;
+        public static string MachineID;
+        public static string AHer;
 
         public static void LoadSettings()
         {
@@ -189,6 +191,8 @@ namespace LazyLib
             MapFile = pIniManager.GetString("Config", "MapFile", "");
             DBIP = pIniManager.GetString("Config", "DBIP", "");
             DBSid = pIniManager.GetString("Config", "DBSid", "");
+            MachineID = pIniManager.GetString("Config", "MachineID", "");
+            AHer = pIniManager.GetString("Config", "AHer", "");
         }
 
         public static void SaveSettings()
@@ -269,6 +273,8 @@ namespace LazyLib
             pIniManager.IniWriteValue("Config", "MapFile", MapFile);
             pIniManager.IniWriteValue("Config", "DBIP", DBIP);
             pIniManager.IniWriteValue("Config", "DBSid", DBSid);
+            pIniManager.IniWriteValue("Config", "MachineID", MachineID);
+            pIniManager.IniWriteValue("Config", "AHer", AHer);
         }
     }
 }
