@@ -34,21 +34,14 @@ namespace LazyEvo.Plugins
 
         private void button4_Click(object sender, EventArgs e)
         {
-            List<string> Mines;                                 //待分解清单
-            Dictionary<string, string> MailList;                //发货列表
-            DBLogger logger = new DBLogger("拿取邮件+分矿+邮寄");
-
-            MailList = SpyDB.GetMailList();
-            Mines = SpyDB.GetMineList();
-
-            // 打开邮箱
-            //if (!MailManager.TargetMailBox())
-            // 分解和邮寄
-            SpyMineAndMail.logger.clear();
-            SpyMineAndMail.MailList = MailList;
-            SpyMineAndMail.Mines = Mines;
-            SpyMineAndMail.GoGo();
-            SpyDB.SaveInfo_Bag();
+            SpyMineAndMail.initme();
+            SpyMineAndMail.start();
+            while (true)
+            {
+                Thread.Sleep(1000);
+                if (!SpyMineAndMail.RUNNING) break;
+            }
+            MessageBox.Show("OK");
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -93,65 +86,27 @@ namespace LazyEvo.Plugins
 
         private void button6_Click(object sender, EventArgs e)
         {
-            Dictionary<string, int> CreationList = new Dictionary<string, int>();
-
-
-            Dictionary<string, string> CreationMap = new Dictionary<string, string>();
-            if (ObjectManager.MyPlayer.Name.Equals("最初的联盟"))
-            {
-                CreationList.Add("精致地狱炎石", 32);
-                CreationList.Add("闪光地狱炎石", 30);
-                CreationList.Add("闪耀地狱炎石", 40);
-                CreationList.Add("纯净恶魔之眼", 50);
-                CreationList.Add("统御恶魔之眼", 20);
-                CreationList.Add("圆润琥珀晶石", 40);
-
-                CreationMap.Add("朴素地狱炎石", "地狱炎石");
-                CreationMap.Add("精致地狱炎石", "地狱炎石");
-                CreationMap.Add("闪光地狱炎石", "地狱炎石");
-                CreationMap.Add("闪耀地狱炎石", "地狱炎石");
-                CreationMap.Add("纯净恶魔之眼", "恶魔之眼");
-                CreationMap.Add("统御恶魔之眼", "恶魔之眼");
-                CreationMap.Add("防御者的恶魔之眼", "恶魔之眼");
-                CreationMap.Add("圆润琥珀晶石", "琥珀晶石");
-                CreationMap.Add("秘法琥珀晶石", "琥珀晶石");
-            }
-
-            if (ObjectManager.MyPlayer.Name.ToLower().Equals("welcomex"))
-            {
-                CreationList.Add("娴熟之暗烬黄玉", 60);
-                CreationList.Add("机敏暗烬黄玉", 60);
-                CreationList.Add("铭文暗烬黄玉", 60);
-                CreationList.Add("华丽梦境翡翠", 50);
-                CreationList.Add("禅悟之梦境翡翠", 50);
-                CreationList.Add("火花海洋青玉", 40);
-                CreationList.Add("致密海洋青玉", 40);
-
-                CreationMap.Add("娴熟之暗烬黄玉", "暗烬黄玉");
-                CreationMap.Add("机敏暗烬黄玉", "暗烬黄玉");
-                CreationMap.Add("铭文暗烬黄玉", "暗烬黄玉");
-                CreationMap.Add("华丽梦境翡翠", "梦境翡翠");
-                CreationMap.Add("禅悟之梦境翡翠", "梦境翡翠");
-                CreationMap.Add("火花海洋青玉", "海洋青玉");
-                CreationMap.Add("致密海洋青玉", "海洋青玉");
-            }
-
             SpyZBJG.logger.clear();
             SpyZBJG.MailList = SpyDB.GetMailList();
             SpyZBJG.CreationMap = SpyDB.GetCreationMap_ZBJG();
 
             /* 生成制作列表，需要综合挂货人库存、挂货清单、当前角色可以做什么，综合考虑  */
-            Dictionary<string, int> lessitem = SpyDB.GetAHLessItem();
-            foreach (KeyValuePair<string, int> kv in lessitem){
-                if (CreationMap.ContainsKey(kv.Key)) CreationList.Add(kv.Key,kv.Value);
+            SpyZBJG.CreationList.Clear();
+            foreach (KeyValuePair<string, int> kv in SpyDB.GetAHLessItem())
+            {
+                if (SpyZBJG.CreationMap.ContainsKey(kv.Key)) SpyZBJG.CreationList.Add(kv.Key, kv.Value);
             }
-            SpyZBJG.CreationList = CreationList;
+            if (SpyZBJG.CreationList.Keys.Count == 0)
+            {
+                Logging.Write("没有待制作物品，有可能是货物充足");
+                return;
+            }
             SpyZBJG.start();
         }
 
         private void button7_Click(object sender, EventArgs e)
         {
-            SpyYM.test();
+            SpyDB.SaveInfo_Bag(SpyFrame.lua_GetBagInfo());
         }
 
         private void button8_Click(object sender, EventArgs e)

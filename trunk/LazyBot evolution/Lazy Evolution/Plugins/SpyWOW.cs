@@ -332,7 +332,38 @@ namespace LazyEvo.Plugins
         }
     }
 
-    public static class SpyAutoLogin
+    // 采集类启动
+    public static class SpyCJ
+    {
+        public static bool RUNNING;
+
+        public static bool initme()
+        {
+            // 根据角色职业和地图获取角色的战斗文件和地图文件
+            
+            // 获取当前执行路径
+            var executableFileInfo = new FileInfo(Application.ExecutablePath);
+            string executableDirectoryName = executableFileInfo.DirectoryName;
+            string ourDirectory = executableDirectoryName;
+
+            //调用Profile
+            FlyingProfile hh = new FlyingProfile();
+            hh.LoadFile(LazySettings.MapFile);
+            FlyingEngine.CurrentProfile = hh;
+
+            //调用Behavior
+            var pIniManager = new IniManager(ourDirectory + PveBehaviorSettings.SettingsName);
+            pIniManager.IniWriteValue("Config", "LoadedBeharvior", LazySettings.FightFile);
+
+            return true;
+        }
+
+        public static void start()
+        {
+        }
+    }
+
+    public static class SpyLogin
     {
         private static string WOWPath;
         private static string AccountName;
@@ -346,7 +377,19 @@ namespace LazyEvo.Plugins
         public static bool IsOK;
         public static Process WOW_P;
 
-        public static void initme(string _aname, string _apass, string _realname, string _charidx, string _alist)
+        public static bool initme(string char_id)
+        {
+            Dictionary<string, string> result = SpyDB.GetCharLoginInfo(char_id);
+            if (result.Count == 0)
+            {
+                MessageBox.Show("数据库没有找到信息，检查视图v_login_info的数据");
+                return false;
+            }
+
+            return SpyLogin.initme(result["AccountName"], result["AccountPass"], result["RealmName"], result["CharIdx"], result["AccountList"]);
+        }
+
+        public static bool initme(string _aname, string _apass, string _realname, string _charidx, string _alist)
         {
             LazySettings.LoadSettings();
             WOWPath = LazySettings.WOWPath;
@@ -355,22 +398,22 @@ namespace LazyEvo.Plugins
             if (string.IsNullOrWhiteSpace(_aname))
             {
                 Logging.Write("参数【_aname】为空");
-                return;
+                return false;
             }
             if (string.IsNullOrWhiteSpace(_apass))
             {
                 Logging.Write("参数【_apass】为空");
-                return;
+                return false;
             }
             if (string.IsNullOrWhiteSpace(_realname))
             {
                 Logging.Write("参数【_realname】为空");
-                return;
+                return false;
             }
             if (string.IsNullOrWhiteSpace(_charidx))
             {
                 Logging.Write("参数【_charidx】为空");
-                return;
+                return false;
             }
 
             AccountName = _aname;
@@ -383,8 +426,9 @@ namespace LazyEvo.Plugins
             if (!WTFFile.ChangeWTF(WOWPath, AccountName, RealmName, CharIdx, AccountList))
             {
                 Logging.Write("修改WTF文件时，发生错误！！\r\n" + WTFFile.errMsg);
-                return;
+                return false;
             }
+            return true;
         }
 
         public static void start()
@@ -1077,22 +1121,26 @@ namespace LazyEvo.Plugins
     {
         private List<string> logger;
         private string toAppend;
+        private string loggtype;
+
         public DBLogger(string AppendMessage)
         {
             logger = new List<string>();
             toAppend = AppendMessage;
+            loggtype = AppendMessage;
         }
 
         public void Add(string msg)
         {
-            logger.Add("[" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "]<" + toAppend + ">" + msg);
+            logger.Add(msg);
         }
 
         public void output()
         {
             foreach (string msg in logger)
             {
-                Logging.Write(msg);
+                Logging.Write("[" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "]<" + toAppend + ">" + msg);
+                SpyDB.WriteLog(loggtype,msg);
             }
         }
 
@@ -1117,6 +1165,28 @@ namespace LazyEvo.Plugins
         public static DBLogger logger = new DBLogger("珠宝加工+邮寄");
         private static Thread _thread;
 
+        public static bool RUNNING = false;
+
+        public static bool initme()
+        {
+            logger.clear();
+            MailList = SpyDB.GetMailList();
+            CreationMap = SpyDB.GetCreationMap_ZBJG();
+
+            /* 生成制作列表，需要综合挂货人库存、挂货清单、当前角色可以做什么，综合考虑  */
+            CreationList.Clear();
+            foreach (KeyValuePair<string, int> kv in SpyDB.GetAHLessItem())
+            {
+                if (CreationMap.ContainsKey(kv.Key)) CreationList.Add(kv.Key, kv.Value);
+            }
+            if (CreationList.Keys.Count == 0)
+            {
+                Logging.Write("没有待制作物品，有可能是货物充足");
+                return false;
+            }
+            return true;
+        }
+
         public static void start()
         {
             if (_thread == null || !_thread.IsAlive)
@@ -1136,6 +1206,7 @@ namespace LazyEvo.Plugins
                 }
                 _thread.Start();
                 Logging.Write("珠宝加工开始了。。。。。");
+                RUNNING = true;
             }
         }
 
@@ -1155,6 +1226,7 @@ namespace LazyEvo.Plugins
             KeyHelper.LoadKeys();
             DoAction();
             logger.output();
+            RUNNING = false;
         }
 
         private static void DoAction()
@@ -1283,7 +1355,6 @@ namespace LazyEvo.Plugins
         public static void test()
         {
             int CountJump = 0;
-            string ItemName = "鞭尾草";
             while (true)
             {
                 if (Inventory.FreeBagSlots < 3) return;
@@ -1315,6 +1386,18 @@ namespace LazyEvo.Plugins
         public static DBLogger logger = new DBLogger("拿取邮件+分矿+邮寄");
         private static Thread _thread;
 
+        public static bool RUNNING;
+
+        public static bool initme()
+        {
+            MailList = SpyDB.GetMailList();
+            if (MailList.Count == 0) return false;
+            Mines = SpyDB.GetMineList();
+            if (Mines.Count == 0) return false;
+            logger.clear();
+            return true;
+        }
+
         public static void start()
         {
             if (_thread == null || !_thread.IsAlive)
@@ -1334,6 +1417,7 @@ namespace LazyEvo.Plugins
                 }
                 _thread.Start();
                 Logging.Write("分解矿 开始了。。。。。");
+                RUNNING = true;
             }
         }
 
@@ -1353,6 +1437,8 @@ namespace LazyEvo.Plugins
             KeyHelper.LoadKeys();
             DoAction();
             logger.output();
+            SpyDB.SaveInfo_Bag();
+            RUNNING = false;
         }
 
         public static void DoAction()
@@ -1451,6 +1537,7 @@ namespace LazyEvo.Plugins
     {
         public static DBLogger logger = new DBLogger("拿取邮件+找到拍卖师+AH上货");
         public static DataTable Items = new DataTable();
+        public static bool RUNNING;
 
         /********              需要设置的内容                 ******************/
         // 邮箱点
@@ -1502,21 +1589,34 @@ namespace LazyEvo.Plugins
                 _thread = null;
             }
         }
-        public static void initme(string AHer)
+        public static bool initme()
         {
             // 设置拍卖师的名称
-            AHerName = AHer;
+            if (string.IsNullOrWhiteSpace(LazySettings.AHer))
+            {
+                logger.Add("没有设置拍卖师");
+                return false;
+            }
+            AHerName = LazySettings.AHer;
+
             // 从数据库表读取拍卖列表(ahitem)
             Items = SpyDB.GetAHList();
+            if (Items.Rows.Count > 0)
+            {
+                return true;
+            }
+            return false;
         }
 
         public static void gogo()
         {
+            RUNNING = true;
             BarMapper.MapBars();
             KeyHelper.LoadKeys();
             DoAction();
             logger.output();
             SpyDB.SaveInfo_Bag();
+            RUNNING = false;
         }
 
         public static bool DoAction()
@@ -1666,6 +1766,7 @@ namespace LazyEvo.Plugins
                     return false;
                 }
                 logger.Add(string.Format("物品[{0}]的最低价格是[{1}]，由[{2}]出价", ahitem, scanresult["PRIZE"], scanresult["SELLER"]));
+                SpyDB.SaveAhInfo(scanresult["SELLER"].ToString(), ahitem, Convert.ToInt16(scanresult["PRIZE"]));
 
                 // 计算最低价格，准备上货
                 if (scanresult["SELLER"].Equals(ObjectManager.MyPlayer.Name))
@@ -2680,10 +2781,10 @@ namespace LazyEvo.Plugins
             sql += " (SELECT char_name, item_name, backup_count";
             sql += "    FROM ahitem";
             sql += "   WHERE server = (SELECT server FROM wowchar WHERE char_name = '" + ObjectManager.MyPlayer.Name + "'))";
-            sql += "SELECT req_item.item_name, req_item.backup_count - avi_item.item_count";
+            sql += "SELECT req_item.item_name, req_item.backup_count - nvl(avi_item.item_count,0)";
             sql += "  FROM (SELECT item_name, backup_count FROM server_ahinfo) req_item,";
             sql += "       (SELECT item_name, item_count FROM itemsinbag WHERE char_name IN (SELECT char_name FROM server_ahinfo)) avi_item";
-            sql += " WHERE req_item.item_name = avi_item.item_name AND req_item.backup_count > avi_item.item_count";
+            sql += " WHERE req_item.item_name = avi_item.item_name(+) AND req_item.backup_count > nvl(avi_item.item_count,0)";
 
             DataTable dt = OraData.execSQL(sql);
             if (dt.Columns.Count == 0)
@@ -2696,6 +2797,214 @@ namespace LazyEvo.Plugins
                 result.Add(dr[0].ToString(), Convert.ToInt16(dr[1]));
             }
             return result;
+        }
+
+        public static void WriteLog(string LogType, string LogText)
+        {
+            if (string.IsNullOrWhiteSpace(LogType)) return;
+            if (string.IsNullOrWhiteSpace(LogText)) return;
+            OraData.execSQLCmd(string.Format("insert into logging (logtype,logtext) values ('{0}','{1}')", LogType,LogText));
+        }
+
+        public static void SaveAhInfo(string seller, string item, int prize)
+        {
+            if (string.IsNullOrWhiteSpace(seller)) return;
+            if (string.IsNullOrWhiteSpace(item)) return;
+            OraData.execSQLCmd(string.Format("begin add_ahinfo('{0}','{1}','{2}',{3}); end;", ObjectManager.MyPlayer.Name, seller, item, prize));
+        }
+
+        public static DataTable GetJob(string MachineID)
+        {
+            string sql = string.Format("select runtime,char_id,dowhat where ((to_char(starttime,'hh24mi') = to_char(sysdate,'hh24mi') and everyday = 1) or to_char(starttime,'yyyymmddhh24mi') = to_char(sysdate,'yyyymmddhh24mi')) and machineid = '{0}'", MachineID);
+            return OraData.execSQL(sql);
+        }
+
+    }
+
+    public static class SpySchdule
+    {
+        static Thread _thread;
+        static DateTime JobStartTime;
+        static bool JobRunning;
+        static int RunMiniute;
+        static string char_id;
+        static string DoWhat;
+        static DateTime StatusStartTime;
+
+        const int RUN_OUT_MIN_LOGIN = 10;
+        const int RUN_OUT_MIN_WORK = 30;
+
+        enum EnumJobStatus
+        {
+            Nothing,
+            Logging,
+            login_OK,
+            Working,
+            Work_OK
+
+        }
+        static EnumJobStatus JobStatus;
+
+        public static void startScanDB()
+        {
+            if (_thread == null || !_thread.IsAlive)
+            {
+                _thread = new Thread(GoGo);
+                _thread.Name = "Schduler";
+                _thread.IsBackground = true;
+                // 设置线程状态为单线程
+                try
+                {
+                    _thread.TrySetApartmentState(ApartmentState.STA);
+                }
+                catch (Exception ex)
+                {
+                    Logging.Write("启动失败，线程设置出现错误，原因是：" + ex.ToString());
+                    return;
+                }
+                _thread.Start();
+                Logging.Write("计划开始运行。。。。。");
+                SpyDB.WriteLog("计划任务","开始运行");
+            }
+        }
+
+        public static void stopScanDB()
+        {
+            if (_thread == null) return;
+            if (_thread.IsAlive)
+            {
+                _thread.Abort();
+                _thread = null;
+            }
+        }
+
+        public static void GoGo()
+        {
+            DataTable job = new DataTable();
+            JobRunning = false;
+
+            while (true)
+            {
+                // 数据库中，找当天启动的程序
+                if (!JobRunning)
+                {
+                    // 传入机器编号，找任务
+                    job = SpyDB.GetJob(LazySettings.MachineID);
+                    if (job.Rows.Count > 0)
+                    {
+                        // 获取JOB的持续时间、角色ID、工作内容
+                        foreach (DataRow dr in job.Rows)
+                        {
+
+                            char_id = dr["char_id"].ToString();
+                            DoWhat = dr["dowhat"].ToString();
+                            RunMiniute = Convert.ToInt16(dr["runtime"]);
+                            SpyDB.WriteLog("计划任务", string.Format("获得任务，角色ID：{0}，任务描述：{1}，持续时间：{2}", char_id, DoWhat, dr["runtime"].ToString()));
+                        }
+
+                        JobStartTime = System.DateTime.Now;
+                        JobRunning = true;
+                        JobStatus = EnumJobStatus.Nothing;
+                    }
+                }
+
+                if (JobRunning)
+                {
+                    DoJob();
+                }
+
+                // 当job内容是采矿的时候，判断停止时间是不是到了，到了就停止
+                if (JobRunning && RunMiniute != 0)
+                {
+                    if (string.Format("{0:yyyy-MM-dd HH:mm}", JobStartTime.AddMinutes(RunMiniute)).Equals(string.Format("{0:yyyy-MM-dd HH:mm}", DateTime.Now)))
+                    {
+                        LazyHelpers.StopAll("时间到了，Kill Process");
+                        SpyLogin.WOW_P.Kill();
+                        SpyDB.WriteLog("计划任务", string.Format("结束任务，角色ID：{0}，任务描述：{1}，持续时间：{2}", char_id, DoWhat, RunMiniute.ToString()));
+                        JobRunning = false;
+                    }
+                }
+
+                Thread.Sleep(500);
+            }
+        }
+
+        public static void DoJob()
+        {
+            switch (JobStatus)
+            {
+                // 每一Job都需要进行登录
+                case EnumJobStatus.Nothing:
+                    SpyLogin.initme(char_id);
+                    SpyLogin.start();
+                    SpyDB.WriteLog("计划任务", string.Format("任务角色登录，角色ID：{0}，任务描述：{1}，持续时间：{2}", char_id, DoWhat, RunMiniute.ToString()));
+                    JobStatus = EnumJobStatus.Logging;
+                    StatusStartTime = DateTime.Now;
+                    break;
+
+                case EnumJobStatus.Logging:
+                    if (SpyLogin.IsOK)
+                    {
+                        SpyDB.WriteLog("计划任务", string.Format("任务角色登录成功，角色ID：{0}，任务描述：{1}，持续时间：{2}", char_id, DoWhat, RunMiniute.ToString()));
+                        JobStatus = EnumJobStatus.login_OK;
+                    }
+                    if (string.Format("{0:yyyy-MM-dd HH:mm}", StatusStartTime.AddMinutes(RUN_OUT_MIN_LOGIN)).Equals(string.Format("{0:yyyy-MM-dd HH:mm}", DateTime.Now)))
+                    {
+                        SpyDB.WriteLog("计划任务", string.Format("任务角色登录超时，角色ID：{0}，任务描述：{1}，持续时间：{2}", char_id, DoWhat, RunMiniute.ToString()));
+                        JobStatus = EnumJobStatus.Work_OK;
+                    }
+                    break;
+
+                // 判断job的内容，启动相应的程序
+                case EnumJobStatus.login_OK:
+                    switch (DoWhat)
+                    {
+                        case "ZBJG":
+                            if (SpyZBJG.initme()) SpyZBJG.start();
+                            break;
+                        case "AH":
+                            if (SpyAH.initme()) SpyAH.start();
+                            break;
+                        case "FJKS":
+                            if (SpyMineAndMail.initme()) SpyMineAndMail.start();
+                            break;
+                    }
+                    SpyDB.WriteLog("计划任务", string.Format("任务开始工作，角色ID：{0}，任务描述：{1}，持续时间：{2}", char_id, DoWhat, RunMiniute.ToString()));
+                    StatusStartTime = DateTime.Now;
+                    JobStatus = EnumJobStatus.Working;
+
+                    break;
+
+                case EnumJobStatus.Working:
+                    switch (DoWhat)
+                    {
+                        case "ZBJG":
+                            if (SpyZBJG.RUNNING) return;
+                            break;
+                        case "AH":
+                            if (SpyAH.RUNNING) return;
+                            break;
+                        case "FJKS":
+                            if (SpyMineAndMail.RUNNING) return;
+                            break;
+                    }
+                    if (string.Format("{0:yyyy-MM-dd HH:mm}", StatusStartTime.AddMinutes(RUN_OUT_MIN_WORK)).Equals(string.Format("{0:yyyy-MM-dd HH:mm}", DateTime.Now)))
+                    {
+                        SpyDB.WriteLog("计划任务", string.Format("任务工作超时，角色ID：{0}，任务描述：{1}，持续时间：{2}", char_id, DoWhat, RunMiniute.ToString()));
+                        JobStatus = EnumJobStatus.Work_OK;
+                        return;
+                    }
+                    SpyDB.WriteLog("计划任务", string.Format("任务结束工作，角色ID：{0}，任务描述：{1}，持续时间：{2}", char_id, DoWhat, RunMiniute.ToString()));
+                    JobStatus = EnumJobStatus.Work_OK;
+                    break;
+
+                case EnumJobStatus.Work_OK:
+                    SpyDB.WriteLog("计划任务", string.Format("任务完结，角色ID：{0}，任务描述：{1}，持续时间：{2}", char_id, DoWhat, RunMiniute.ToString()));
+                    SpyLogin.WOW_P.Kill();
+                    JobRunning = false;
+                    JobStatus = EnumJobStatus.Nothing;
+                    break;
+            }
         }
     }
 

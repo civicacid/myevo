@@ -197,6 +197,8 @@ namespace LazyEvo.Forms
             txtMap.Text = LazySettings.MapFile;
             txtDBIP.Text = LazySettings.DBIP;
             txtDBSid.Text = LazySettings.DBSid;
+            txtMachineID.Text = LazySettings.MachineID;
+            txtAher.Text = LazySettings.AHer;
 
         }
 
@@ -292,6 +294,8 @@ namespace LazyEvo.Forms
             LazySettings.MapFile = txtMap.Text;
             LazySettings.DBIP = txtDBIP.Text;
             LazySettings.DBSid = txtDBSid.Text;
+            LazySettings.MachineID = txtMachineID.Text;
+            LazySettings.AHer = txtAher.Text;
 
             //Save Setting
             LazySettings.SaveSettings();
