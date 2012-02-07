@@ -1390,11 +1390,17 @@ namespace LazyEvo.Plugins
 
         public static bool initme()
         {
+            BarMapper.MapBars();
+            KeyHelper.LoadKeys();
+
             MailList = SpyDB.GetMailList();
             if (MailList.Count == 0) return false;
             Mines = SpyDB.GetMineList();
             if (Mines.Count == 0) return false;
             logger.clear();
+
+            //GoGo();
+
             return true;
         }
 
@@ -1433,8 +1439,6 @@ namespace LazyEvo.Plugins
 
         public static void GoGo()
         {
-            BarMapper.MapBars();
-            KeyHelper.LoadKeys();
             DoAction();
             logger.output();
             SpyDB.SaveInfo_Bag();
@@ -2711,8 +2715,8 @@ namespace LazyEvo.Plugins
             foreach (DataRow dr in dt.Rows)
             {
                 // 收件人是自己的话，跳过
-                if (dr[0].ToString().Equals(ObjectManager.MyPlayer.Name)) continue;
-                result.Add(dr[0].ToString(), dr[1].ToString());
+                if (dr[0].ToString().ToUpper().Equals(ObjectManager.MyPlayer.Name.ToUpper())) continue;
+                result.Add(dr[1].ToString(), dr[0].ToString());
             }
             return result;
         }

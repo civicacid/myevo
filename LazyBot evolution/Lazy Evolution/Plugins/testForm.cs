@@ -36,11 +36,11 @@ namespace LazyEvo.Plugins
         {
             SpyMineAndMail.initme();
             SpyMineAndMail.start();
-            while (true)
-            {
-                Thread.Sleep(1000);
-                if (!SpyMineAndMail.RUNNING) break;
-            }
+            //while (true)
+            //{
+            //    Thread.Sleep(1000);
+            //    if (!SpyMineAndMail.RUNNING) break;
+            //}
             MessageBox.Show("OK");
         }
 
@@ -48,7 +48,8 @@ namespace LazyEvo.Plugins
         {
             if (SpyAH.Items.Columns.Count == 0)
             {
-                SpyAH.initme("拍卖师卡拉伦");
+                //"拍卖师卡拉伦"
+                SpyAH.initme();
             }
             SpyAH.gogo();
             MessageBox.Show("结束");
@@ -106,7 +107,8 @@ namespace LazyEvo.Plugins
 
         private void button7_Click(object sender, EventArgs e)
         {
-            SpyDB.SaveInfo_Bag(SpyFrame.lua_GetBagInfo());
+            //SpyDB.SaveInfo_Bag(SpyFrame.lua_GetBagInfo());
+            Logging.Write("asdasd");
         }
 
         private void button8_Click(object sender, EventArgs e)

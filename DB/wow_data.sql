@@ -39,40 +39,40 @@ insert into wowchar(acc_id,char_id,char_name,server,acc_list,char_idx) values ((
 
 /**********************************/
 /***********    邮寄列表     *************/
-insert into maillist (server,sender_char_name,receiver_char_name,item_name) values ('爱斯特纳','ALL','源质矿石','welcomex');
-insert into maillist (server,sender_char_name,receiver_char_name,item_name) values ('爱斯特纳','ALL','燃铁矿石','welcomex');
-insert into maillist (server,sender_char_name,receiver_char_name,item_name) values ('爱斯特纳','ALL','黑曜石矿','welcomex');
-
-insert into maillist (server,sender_char_name,receiver_char_name,item_name) values ('爱斯特纳','ALL','地狱炎石','最初的联盟');
-insert into maillist (server,sender_char_name,receiver_char_name,item_name) values ('爱斯特纳','ALL','琥珀晶石','最初的联盟');
-insert into maillist (server,sender_char_name,receiver_char_name,item_name) values ('爱斯特纳','ALL','恶魔之眼','最初的联盟');
-insert into maillist (server,sender_char_name,receiver_char_name,item_name) values ('爱斯特纳','ALL','海洋青玉','welcomex');
-insert into maillist (server,sender_char_name,receiver_char_name,item_name) values ('爱斯特纳','ALL','梦境翡翠','welcomex');
-insert into maillist (server,sender_char_name,receiver_char_name,item_name) values ('爱斯特纳','ALL','暗烬黄玉','welcomex');
-
-insert into maillist (server,sender_char_name,receiver_char_name,item_name) values ('爱斯特纳','ALL','泽菲蓝晶石','最初的联盟');
-insert into maillist (server,sender_char_name,receiver_char_name,item_name) values ('爱斯特纳','ALL','碧玉','最初的联盟');
-insert into maillist (server,sender_char_name,receiver_char_name,item_name) values ('爱斯特纳','ALL','阿里锡黄晶','最初的联盟');
-insert into maillist (server,sender_char_name,receiver_char_name,item_name) values ('爱斯特纳','ALL','红玉髓','爱贝贝熊');
-insert into maillist (server,sender_char_name,receiver_char_name,item_name) values ('爱斯特纳','ALL','夜之石','爱贝贝熊');
-insert into maillist (server,sender_char_name,receiver_char_name,item_name) values ('爱斯特纳','ALL','桂榴石','爱贝贝熊');
-
-insert into maillist (server,sender_char_name,receiver_char_name,item_name) values ('爱斯特纳','ALL','娴熟之暗烬黄玉',   '收矿啊');
-insert into maillist (server,sender_char_name,receiver_char_name,item_name) values ('爱斯特纳','ALL','机敏暗烬黄玉',     '收矿啊');
-insert into maillist (server,sender_char_name,receiver_char_name,item_name) values ('爱斯特纳','ALL','铭文暗烬黄玉',     '收矿啊');
-insert into maillist (server,sender_char_name,receiver_char_name,item_name) values ('爱斯特纳','ALL','华丽梦境翡翠',     '收矿啊');
-insert into maillist (server,sender_char_name,receiver_char_name,item_name) values ('爱斯特纳','ALL','禅悟之梦境翡翠',   '收矿啊');
-insert into maillist (server,sender_char_name,receiver_char_name,item_name) values ('爱斯特纳','ALL','火花海洋青玉',     '收矿啊');
-insert into maillist (server,sender_char_name,receiver_char_name,item_name) values ('爱斯特纳','ALL','致密海洋青玉',     '收矿啊');
-insert into maillist (server,sender_char_name,receiver_char_name,item_name) values ('爱斯特纳','ALL','朴素地狱炎石',     '收矿啊');
-insert into maillist (server,sender_char_name,receiver_char_name,item_name) values ('爱斯特纳','ALL','闪光地狱炎石',     '收矿啊');
-insert into maillist (server,sender_char_name,receiver_char_name,item_name) values ('爱斯特纳','ALL','闪耀地狱炎石',     '收矿啊');
-insert into maillist (server,sender_char_name,receiver_char_name,item_name) values ('爱斯特纳','ALL','精致地狱炎石',     '收矿啊');
-insert into maillist (server,sender_char_name,receiver_char_name,item_name) values ('爱斯特纳','ALL','圆润琥珀晶石',     '收矿啊');
-insert into maillist (server,sender_char_name,receiver_char_name,item_name) values ('爱斯特纳','ALL','秘法琥珀晶石',     '收矿啊');
-insert into maillist (server,sender_char_name,receiver_char_name,item_name) values ('爱斯特纳','ALL','纯净恶魔之眼',     '收矿啊');
-insert into maillist (server,sender_char_name,receiver_char_name,item_name) values ('爱斯特纳','ALL','统御恶魔之眼',     '收矿啊');
-insert into maillist (server,sender_char_name,receiver_char_name,item_name) values ('爱斯特纳','ALL','防御者的恶魔之眼', '收矿啊');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','源质矿石','Welcomex');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','燃铁矿石','Welcomex');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','黑曜石矿','Welcomex');
+                                                       
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','地狱炎石','最初的联盟');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','琥珀晶石','最初的联盟');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','恶魔之眼','最初的联盟');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','海洋青玉','Welcomex');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','梦境翡翠','Welcomex');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','暗烬黄玉','Welcomex');
+                                                       
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','泽菲蓝晶石','最初的联盟');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','碧玉','最初的联盟');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','阿里锡黄晶','最初的联盟');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','红玉髓','爱贝贝熊');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','夜之石','爱贝贝熊');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','桂榴石','爱贝贝熊');
+                                                       
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','娴熟之暗烬黄玉',   '收矿啊');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','机敏暗烬黄玉',     '收矿啊');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','铭文暗烬黄玉',     '收矿啊');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','华丽梦境翡翠',     '收矿啊');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','禅悟之梦境翡翠',   '收矿啊');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','火花海洋青玉',     '收矿啊');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','致密海洋青玉',     '收矿啊');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','朴素地狱炎石',     '收矿啊');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','闪光地狱炎石',     '收矿啊');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','闪耀地狱炎石',     '收矿啊');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','精致地狱炎石',     '收矿啊');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','圆润琥珀晶石',     '收矿啊');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','秘法琥珀晶石',     '收矿啊');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','纯净恶魔之眼',     '收矿啊');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','统御恶魔之眼',     '收矿啊');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','防御者的恶魔之眼', '收矿啊');
 -----------------------------------------------------------------------------------------------------------------------------------
 
 /**********************************/
@@ -84,13 +84,13 @@ insert into mine_fj (item_name) values ('黑曜石矿');
 
 /**********************************/
 /***********    炸矿列表     *************/
-insert into charcreation (char_name,tradeskill,item_name,need_item_name1,need_item_name2) values ('welcomex',1,'娴熟之暗烬黄玉', '暗烬黄玉',null);
-insert into charcreation (char_name,tradeskill,item_name,need_item_name1,need_item_name2) values ('welcomex',1,'机敏暗烬黄玉'  , '暗烬黄玉',null);
-insert into charcreation (char_name,tradeskill,item_name,need_item_name1,need_item_name2) values ('welcomex',1,'铭文暗烬黄玉'  , '暗烬黄玉',null);
-insert into charcreation (char_name,tradeskill,item_name,need_item_name1,need_item_name2) values ('welcomex',1,'华丽梦境翡翠'  , '梦境翡翠',null);
-insert into charcreation (char_name,tradeskill,item_name,need_item_name1,need_item_name2) values ('welcomex',1,'禅悟之梦境翡翠', '梦境翡翠',null);
-insert into charcreation (char_name,tradeskill,item_name,need_item_name1,need_item_name2) values ('welcomex',1,'火花海洋青玉'  , '海洋青玉',null);
-insert into charcreation (char_name,tradeskill,item_name,need_item_name1,need_item_name2) values ('welcomex',1,'致密海洋青玉'  , '海洋青玉',null);
+insert into charcreation (char_name,tradeskill,item_name,need_item_name1,need_item_name2) values ('Welcomex',1,'娴熟之暗烬黄玉', '暗烬黄玉',null);
+insert into charcreation (char_name,tradeskill,item_name,need_item_name1,need_item_name2) values ('Welcomex',1,'机敏暗烬黄玉'  , '暗烬黄玉',null);
+insert into charcreation (char_name,tradeskill,item_name,need_item_name1,need_item_name2) values ('Welcomex',1,'铭文暗烬黄玉'  , '暗烬黄玉',null);
+insert into charcreation (char_name,tradeskill,item_name,need_item_name1,need_item_name2) values ('Welcomex',1,'华丽梦境翡翠'  , '梦境翡翠',null);
+insert into charcreation (char_name,tradeskill,item_name,need_item_name1,need_item_name2) values ('Welcomex',1,'禅悟之梦境翡翠', '梦境翡翠',null);
+insert into charcreation (char_name,tradeskill,item_name,need_item_name1,need_item_name2) values ('Welcomex',1,'火花海洋青玉'  , '海洋青玉',null);
+insert into charcreation (char_name,tradeskill,item_name,need_item_name1,need_item_name2) values ('Welcomex',1,'致密海洋青玉'  , '海洋青玉',null);
 insert into charcreation (char_name,tradeskill,item_name,need_item_name1,need_item_name2) values ('最初的联盟',1,'朴素地狱炎石',     '地狱炎石',null);
 insert into charcreation (char_name,tradeskill,item_name,need_item_name1,need_item_name2) values ('最初的联盟',1,'精致地狱炎石',     '地狱炎石',null);
 insert into charcreation (char_name,tradeskill,item_name,need_item_name1,need_item_name2) values ('最初的联盟',1,'闪光地狱炎石',     '地狱炎石',null);
@@ -105,10 +105,21 @@ insert into charcreation (char_name,tradeskill,item_name,need_item_name1,need_it
 
 /**********************************/
 /***********    炸矿列表     *************/
-insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','收矿啊','朴素地狱炎石',10,10,10,10,10);
-insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','收矿啊','精致地狱炎石',10,10,10,10,10);
-insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','收矿啊','闪光地狱炎石',10,10,10,10,10);
-insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','收矿啊','闪耀地狱炎石',10,10,10,10,10);
-insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','收矿啊','纯净恶魔之眼',10,10,10,10,10);
-insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','收矿啊','统御恶魔之眼',10,10,10,10,10);
+insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','收矿啊','朴素地狱炎石',2000000,3000000,8,1,20);
+insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','收矿啊','精致地狱炎石',2000000,3000000,8,1,20);
+insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','收矿啊','闪光地狱炎石',2000000,3000000,8,1,0);
+insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','收矿啊','闪耀地狱炎石',2000000,3000000,8,1,20);
+insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','收矿啊','纯净恶魔之眼',100000,1000000,8,1,20);
+insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','收矿啊','统御恶魔之眼',100000,1000000,8,1,20);
+insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','收矿啊','防御者的恶魔之眼',100000,1000000,8,1,20);
+insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','收矿啊','圆润琥珀晶石',50000,1000000,8,1,20);
+insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','收矿啊','秘法琥珀晶石',50000,1000000,8,1,20);
+insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','收矿啊','娴熟之暗烬黄玉',100000,1000000,8,1,20);
+insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','收矿啊','机敏暗烬黄玉'  ,100000,1000000,8,1,20);
+insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','收矿啊','铭文暗烬黄玉'  ,100000,1000000,8,1,20);
+insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','收矿啊','华丽梦境翡翠'  ,50000,1000000,8,1,20);
+insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','收矿啊','禅悟之梦境翡翠',50000,1000000,8,1,20);
+insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','收矿啊','火花海洋青玉'  ,50000,1000000,8,1,20);
+insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','收矿啊','致密海洋青玉'  ,50000,1000000,8,1,20);
+
 -----------------------------------------------------------------------------------------------------------------------------------
