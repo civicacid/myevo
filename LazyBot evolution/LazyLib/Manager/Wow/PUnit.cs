@@ -218,7 +218,7 @@ namespace LazyLib.Wow
         }
 
         /// <summary>
-        ///   Gets the gender.
+        ///   Gets the gender. 男女
         /// </summary>
         /// <value>The gender.</value>
         public string Gender
@@ -278,7 +278,7 @@ namespace LazyLib.Wow
         }
 
         /// <summary>
-        ///   Gets the class.
+        ///   Gets the class. 职业
         /// </summary>
         /// <value>The class.</value>
         public string Class

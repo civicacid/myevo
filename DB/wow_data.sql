@@ -83,7 +83,7 @@ insert into mine_fj (item_name) values ('黑曜石矿');
 -----------------------------------------------------------------------------------------------------------------------------------
 
 /**********************************/
-/***********    炸矿列表     *************/
+/***********    角色制作物品列表     *************/
 insert into charcreation (char_name,tradeskill,item_name,need_item_name1,need_item_name2) values ('Welcomex',1,'娴熟之暗烬黄玉', '暗烬黄玉',null);
 insert into charcreation (char_name,tradeskill,item_name,need_item_name1,need_item_name2) values ('Welcomex',1,'机敏暗烬黄玉'  , '暗烬黄玉',null);
 insert into charcreation (char_name,tradeskill,item_name,need_item_name1,need_item_name2) values ('Welcomex',1,'铭文暗烬黄玉'  , '暗烬黄玉',null);
@@ -104,7 +104,7 @@ insert into charcreation (char_name,tradeskill,item_name,need_item_name1,need_it
 -----------------------------------------------------------------------------------------------------------------------------------
 
 /**********************************/
-/***********    炸矿列表     *************/
+/***********    上货清单     *************/
 insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','收矿啊','朴素地狱炎石',2000000,3000000,8,1,20);
 insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','收矿啊','精致地狱炎石',2000000,3000000,8,1,20);
 insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','收矿啊','闪光地狱炎石',2000000,3000000,8,1,0);
@@ -122,4 +122,16 @@ insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_
 insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','收矿啊','火花海洋青玉'  ,50000,1000000,8,1,20);
 insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','收矿啊','致密海洋青玉'  ,50000,1000000,8,1,20);
 
+-----------------------------------------------------------------------------------------------------------------------------------
+
+
+/**********************************/
+/***********    战斗文件     *************/
+insert into fight_file (roll_type,file_name) values ("德鲁伊","德鲁伊.xml");
+insert into fight_file (roll_type,file_name) values ("骑士","骑士.xml");
+-----------------------------------------------------------------------------------------------------------------------------------
+
+/**********************************/
+/***********    地图文件     *************/
+insert into map_file (map_name,file_name,mine_list,herb_list) values ("奥丹姆","奥丹姆.xml","源质矿$富源质矿$燃铁矿脉$","鞭尾草");
 -----------------------------------------------------------------------------------------------------------------------------------

@@ -429,6 +429,56 @@ namespace LazyEvo.Plugins
             }
         }
 
+        private void button9_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtRole.Text))
+            {
+                MessageBox.Show("输入角色名称");
+                return;
+            }
 
+            string filename = "";
+            OpenFileDialog fileDialog1 = new OpenFileDialog();
+            fileDialog1.InitialDirectory = "c:\\";
+            fileDialog1.Filter = "xml files (*.xml)|*.xml|All files (*.*)|*.*";
+            fileDialog1.FilterIndex = 1;
+            fileDialog1.RestoreDirectory = true;
+            if (fileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                filename = fileDialog1.FileName;
+            }
+
+            if (!OraData.SaveFileToDB(2, "txtRole.Text", filename))
+            {
+                MessageBox.Show("上传失败，看主界面提示信息");
+                return;
+            }
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtRole.Text))
+            {
+                MessageBox.Show("输入地图名称");
+                return;
+            }
+
+            string filename = "";
+            OpenFileDialog fileDialog1 = new OpenFileDialog();
+            fileDialog1.InitialDirectory = "c:\\";
+            fileDialog1.Filter = "xml files (*.xml)|*.xml|All files (*.*)|*.*";
+            fileDialog1.FilterIndex = 1;
+            fileDialog1.RestoreDirectory = true;
+            if (fileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                filename = fileDialog1.FileName;
+            }
+
+            if (!OraData.SaveFileToDB(1, "txtRole.Text", filename))
+            {
+                MessageBox.Show("上传失败，看主界面提示信息");
+                return;
+            }
+        }
     }
 }

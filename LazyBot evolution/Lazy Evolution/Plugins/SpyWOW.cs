@@ -333,33 +333,100 @@ namespace LazyEvo.Plugins
     }
 
     // 采集类启动
+    // 按照当前角色类型获取战斗文件
+    // 按照当前角色所在区域，获取地图文件和采集清单
     public static class SpyCJ
     {
         public static bool RUNNING;
 
+        // 从数据库读取文件，写入相关位置
         public static bool initme()
         {
-            // 根据角色职业和地图获取角色的战斗文件和地图文件
-            
+            RUNNING = false;
+
             // 获取当前执行路径
             var executableFileInfo = new FileInfo(Application.ExecutablePath);
             string executableDirectoryName = executableFileInfo.DirectoryName;
-            string ourDirectory = executableDirectoryName;
 
+            // 根据角色职业和地图获取角色的战斗文件和地图文件
+            string stringClass = "";
+            switch (ObjectManager.MyPlayer.UnitClassId)
+            {
+                case (uint)Constants.UnitClass.UnitClass_Warrior:
+                    stringClass = "战士";
+                    break;
+                case (uint)Constants.UnitClass.UnitClass_Paladin:
+                    stringClass = "骑士";
+                    break;
+                case (uint)Constants.UnitClass.UnitClass_Hunter:
+                    stringClass = "猎人";
+                    break;
+                case (uint)Constants.UnitClass.UnitClass_Rogue:
+                    stringClass = "盗贼";
+                    break;
+                case (uint)Constants.UnitClass.UnitClass_Priest:
+                    stringClass = "牧师";
+                    break;
+                case (uint)Constants.UnitClass.UnitClass_Shaman:
+                    stringClass = "萨满";
+                    break;
+                case (uint)Constants.UnitClass.UnitClass_Mage:
+                    stringClass = "法师";
+                    break;
+                case (uint)Constants.UnitClass.UnitClass_Warlock:
+                    stringClass = "术士";
+                    break;
+                case (uint)Constants.UnitClass.UnitClass_Druid:
+                    stringClass = "德鲁伊";
+                    break;
+                case (uint)Constants.UnitClass.UnitClass_DeathKnight:
+                    stringClass = "死骑";
+                    break;
+                default:
+                    stringClass = "未知";
+                    break;
+            }
+            if (!OraData.GetFileFromDB(2, stringClass, executableDirectoryName + "\\Behaviors"))
+            {
+                Logging.Write("SpyCJ:initme 错误：角色文件写入失败");
+                return false;
+            }
+            //调用Behavior
+            var pIniManager = new IniManager(executableDirectoryName + PveBehaviorSettings.SettingsName);
+            pIniManager.IniWriteValue("Config", "LoadedBeharvior", stringClass);
+
+            //下载地图文件
+            string map = ObjectManager.MyPlayer.WorldMap;
+            if (!OraData.GetFileFromDB(1, map, executableDirectoryName + "\\FlyingProfiles"))
+            {
+                Logging.Write("SpyCJ:initme 错误：下载地图文件失败");
+                return false;
+            }
             //调用Profile
             FlyingProfile hh = new FlyingProfile();
-            hh.LoadFile(LazySettings.MapFile);
+            hh.LoadFile(executableDirectoryName + "\\FlyingProfiles\\" + map + ".xml");
             FlyingEngine.CurrentProfile = hh;
 
-            //调用Behavior
-            var pIniManager = new IniManager(ourDirectory + PveBehaviorSettings.SettingsName);
-            pIniManager.IniWriteValue("Config", "LoadedBeharvior", LazySettings.FightFile);
+            //获得采集物品列表
+            List<string> rtv = SpyDB.GetMapCollect(map);
+            if (rtv == null) return false;
+
+            string[] toCollect;
+            toCollect = rtv[0].Split('$');
+            for (int iloop=0;iloop<toCollect.Length;iloop++)
+                Mine.AddMine(toCollect[iloop]);
+
+            toCollect = rtv[1].Split('$');
+            for (int iloop = 0; iloop < toCollect.Length; iloop++)
+                Herb.AddHerb(toCollect[iloop]);
 
             return true;
         }
 
         public static void start()
         {
+            LazyHelpers.StartBotting();
+            RUNNING = true;
         }
     }
 
@@ -1140,7 +1207,7 @@ namespace LazyEvo.Plugins
             foreach (string msg in logger)
             {
                 Logging.Write("[" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "]<" + toAppend + ">" + msg);
-                SpyDB.WriteLog(loggtype,msg);
+                SpyDB.WriteLog(loggtype, msg);
             }
         }
 
@@ -1184,6 +1251,10 @@ namespace LazyEvo.Plugins
                 Logging.Write("没有待制作物品，有可能是货物充足");
                 return false;
             }
+
+            BarMapper.MapBars();
+            KeyHelper.LoadKeys();
+
             return true;
         }
 
@@ -1222,8 +1293,6 @@ namespace LazyEvo.Plugins
 
         private static void GoGo()
         {
-            BarMapper.MapBars();
-            KeyHelper.LoadKeys();
             DoAction();
             logger.output();
             RUNNING = false;
@@ -1390,16 +1459,14 @@ namespace LazyEvo.Plugins
 
         public static bool initme()
         {
-            BarMapper.MapBars();
-            KeyHelper.LoadKeys();
-
             MailList = SpyDB.GetMailList();
             if (MailList.Count == 0) return false;
             Mines = SpyDB.GetMineList();
             if (Mines.Count == 0) return false;
             logger.clear();
 
-            //GoGo();
+            BarMapper.MapBars();
+            KeyHelper.LoadKeys();
 
             return true;
         }
@@ -1607,16 +1674,17 @@ namespace LazyEvo.Plugins
             Items = SpyDB.GetAHList();
             if (Items.Rows.Count > 0)
             {
+                BarMapper.MapBars();
+                KeyHelper.LoadKeys();
                 return true;
             }
+
             return false;
         }
 
         public static void gogo()
         {
             RUNNING = true;
-            BarMapper.MapBars();
-            KeyHelper.LoadKeys();
             DoAction();
             logger.output();
             SpyDB.SaveInfo_Bag();
@@ -2807,7 +2875,7 @@ namespace LazyEvo.Plugins
         {
             if (string.IsNullOrWhiteSpace(LogType)) return;
             if (string.IsNullOrWhiteSpace(LogText)) return;
-            OraData.execSQLCmd(string.Format("insert into logging (logtype,logtext) values ('{0}','{1}')", LogType,LogText));
+            OraData.execSQLCmd(string.Format("insert into logging (logtype,logtext) values ('{0}','{1}')", LogType, LogText));
         }
 
         public static void SaveAhInfo(string seller, string item, int prize)
@@ -2821,6 +2889,31 @@ namespace LazyEvo.Plugins
         {
             string sql = string.Format("select runtime,char_id,dowhat where ((to_char(starttime,'hh24mi') = to_char(sysdate,'hh24mi') and everyday = 1) or to_char(starttime,'yyyymmddhh24mi') = to_char(sysdate,'yyyymmddhh24mi')) and machineid = '{0}'", MachineID);
             return OraData.execSQL(sql);
+        }
+
+        /// <summary>
+        /// 获取地图对应的采集列表
+        /// </summary>
+        public static List<string> GetMapCollect(string MapName)
+        {
+            List<string> result = new List<string>();
+            string sql = string.Format("select mine_list,herb_list from map_file where map_name='{0}'", MapName);
+            try
+            {
+                DataTable dt = OraData.execSQL(sql);
+                foreach (DataRow dr in dt.Rows)
+                {
+                    result.Add(dr[0].ToString());
+                    result.Add(dr[1].ToString());
+                }
+            }
+            catch (Exception ex)
+            {
+                Logging.Write("GetMapCollect Error: " + ex.ToString());
+                return null;
+            }
+
+            return result;
         }
 
     }
@@ -2868,7 +2961,7 @@ namespace LazyEvo.Plugins
                 }
                 _thread.Start();
                 Logging.Write("计划开始运行。。。。。");
-                SpyDB.WriteLog("计划任务","开始运行");
+                SpyDB.WriteLog("计划任务", "开始运行");
             }
         }
 
@@ -2926,6 +3019,7 @@ namespace LazyEvo.Plugins
                         SpyLogin.WOW_P.Kill();
                         SpyDB.WriteLog("计划任务", string.Format("结束任务，角色ID：{0}，任务描述：{1}，持续时间：{2}", char_id, DoWhat, RunMiniute.ToString()));
                         JobRunning = false;
+                        RunMiniute = 0;
                     }
                 }
 
@@ -2972,6 +3066,9 @@ namespace LazyEvo.Plugins
                         case "FJKS":
                             if (SpyMineAndMail.initme()) SpyMineAndMail.start();
                             break;
+                        case "CJ":
+                            if (SpyCJ.initme()) SpyCJ.start();
+                            break;
                     }
                     SpyDB.WriteLog("计划任务", string.Format("任务开始工作，角色ID：{0}，任务描述：{1}，持续时间：{2}", char_id, DoWhat, RunMiniute.ToString()));
                     StatusStartTime = DateTime.Now;
@@ -2983,21 +3080,37 @@ namespace LazyEvo.Plugins
                     switch (DoWhat)
                     {
                         case "ZBJG":
+                            if (string.Format("{0:yyyy-MM-dd HH:mm}", StatusStartTime.AddMinutes(RUN_OUT_MIN_WORK)).Equals(string.Format("{0:yyyy-MM-dd HH:mm}", DateTime.Now)))
+                            {
+                                SpyDB.WriteLog("计划任务", string.Format("任务工作超时，角色ID：{0}，任务描述：{1}，持续时间：{2}", char_id, DoWhat, RunMiniute.ToString()));
+                                JobStatus = EnumJobStatus.Work_OK;
+                                return;
+                            }
                             if (SpyZBJG.RUNNING) return;
                             break;
                         case "AH":
+                            if (string.Format("{0:yyyy-MM-dd HH:mm}", StatusStartTime.AddMinutes(RUN_OUT_MIN_WORK)).Equals(string.Format("{0:yyyy-MM-dd HH:mm}", DateTime.Now)))
+                            {
+                                SpyDB.WriteLog("计划任务", string.Format("任务工作超时，角色ID：{0}，任务描述：{1}，持续时间：{2}", char_id, DoWhat, RunMiniute.ToString()));
+                                JobStatus = EnumJobStatus.Work_OK;
+                                return;
+                            }
                             if (SpyAH.RUNNING) return;
                             break;
                         case "FJKS":
+                            if (string.Format("{0:yyyy-MM-dd HH:mm}", StatusStartTime.AddMinutes(RUN_OUT_MIN_WORK)).Equals(string.Format("{0:yyyy-MM-dd HH:mm}", DateTime.Now)))
+                            {
+                                SpyDB.WriteLog("计划任务", string.Format("任务工作超时，角色ID：{0}，任务描述：{1}，持续时间：{2}", char_id, DoWhat, RunMiniute.ToString()));
+                                JobStatus = EnumJobStatus.Work_OK;
+                                return;
+                            }
                             if (SpyMineAndMail.RUNNING) return;
                             break;
+                        case "CJ":
+                            if (SpyCJ.RUNNING) return;
+                            break;
                     }
-                    if (string.Format("{0:yyyy-MM-dd HH:mm}", StatusStartTime.AddMinutes(RUN_OUT_MIN_WORK)).Equals(string.Format("{0:yyyy-MM-dd HH:mm}", DateTime.Now)))
-                    {
-                        SpyDB.WriteLog("计划任务", string.Format("任务工作超时，角色ID：{0}，任务描述：{1}，持续时间：{2}", char_id, DoWhat, RunMiniute.ToString()));
-                        JobStatus = EnumJobStatus.Work_OK;
-                        return;
-                    }
+
                     SpyDB.WriteLog("计划任务", string.Format("任务结束工作，角色ID：{0}，任务描述：{1}，持续时间：{2}", char_id, DoWhat, RunMiniute.ToString()));
                     JobStatus = EnumJobStatus.Work_OK;
                     break;
