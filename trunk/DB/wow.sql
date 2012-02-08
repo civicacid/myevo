@@ -148,9 +148,30 @@ create table logging (
 comment on table logging is '日志';
 
 -- -----------------------------------------------------
--- table logging 日志
+-- table fight_file  战斗角色文件
 -- -----------------------------------------------------
+create table fight_file (
+   roll_type               varchar(100)            not null,
+   file_name               varchar(100)            not null,
+   file_context            clob                    null,
+   constraint pk_fight primary key (roll_type)
+);
+create unique index uk_fight_file on fight_file(file_name);
+comment on table fight_file is '战斗角色文件';
 
+-- -----------------------------------------------------
+-- table map_file  地图文件
+-- -----------------------------------------------------
+create table map_file (
+   map_name                varchar(100)            not null,
+   file_name               varchar(100)            not null,
+   file_context            clob                    null,
+   mine_list               varchar(100)            null,                         -- 采矿列表，用$分割
+   herb_list               varchar(100)            null,                         -- 采药列表，用$分割
+   constraint pk_map primary key (map_name)
+);
+create unique index uk_map_file on map_file(file_name);
+comment on table map_file is '地图文件';
 
 -- -----------------------------------------------------
 -- Sequence 公用序列

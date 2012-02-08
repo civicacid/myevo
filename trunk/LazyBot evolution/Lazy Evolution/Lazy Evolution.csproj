@@ -249,6 +249,7 @@
       <DependentUpon>Frame Dumper.cs</DependentUpon>
     </Compile>
     <Compile Include="Plugins\ExtraLazy\FrameViewer.cs" />
+    <Compile Include="Plugins\IdentifyEncoding.cs" />
     <Compile Include="Plugins\OraData.cs" />
     <Compile Include="Plugins\PeriodicRelogger.cs" />
     <Compile Include="Plugins\ExtraLazy\Professions.cs" />
