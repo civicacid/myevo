@@ -413,7 +413,7 @@ namespace LazyEvo.Plugins
 
             string[] toCollect;
             toCollect = rtv[0].Split('$');
-            for (int iloop=0;iloop<toCollect.Length;iloop++)
+            for (int iloop = 0; iloop < toCollect.Length; iloop++)
                 Mine.AddMine(toCollect[iloop]);
 
             toCollect = rtv[1].Split('$');
@@ -851,7 +851,7 @@ namespace LazyEvo.Plugins
                 {
                     if (iLoop % 2 == 0)
                     {
-                        bag.Add(split[iLoop], Convert.ToInt16(split[iLoop + 1]));
+                        bag.Add(split[iLoop], Convert.ToInt32(split[iLoop + 1]));
                     }
                 }
             }
@@ -897,7 +897,7 @@ namespace LazyEvo.Plugins
                 {
                     if (iLoop % 2 == 0)
                     {
-                        inbox.Add(split[iLoop], Convert.ToInt16(split[iLoop + 1]));
+                        inbox.Add(split[iLoop], Convert.ToInt32(split[iLoop + 1]));
                     }
                 }
             }
@@ -977,16 +977,12 @@ namespace LazyEvo.Plugins
                     return;
                 }
                 string info = MailInfoFrame.GetChildObject("frmMailDataText").GetInfoText;
-                if (Convert.ToInt16(info) == 0)
+                if (Convert.ToInt32(info) == 0) MailFrame.Close();
+                if (ServerMail.IsReady)
                 {
-                    if (GetInfoFromFrame() != LUA_RUNNING_STRING) break;
-                    // 关闭邮箱，等待一段时间，再开启
-                    MailFrame.Close();
-                    while (ServerMail.IsReady)
-                    {
-                        MailManager.TargetMailBox();
-                        ServerMail.Reset();
-                    }
+                    MailManager.TargetMailBox();
+                    ServerMail.Reset();
+                    Thread.Sleep(1000);
                 }
                 Thread.Sleep(100);
             }
@@ -1132,8 +1128,8 @@ namespace LazyEvo.Plugins
             string info = InfoFrame.GetChildObject("frmDataText").GetInfoText;
             if (string.IsNullOrWhiteSpace(info)) return ItemCount;
             string[] split = info.Split(SPLIT_CHAR);
-            ItemCount["BAG"] = Convert.ToInt16(split[0]);        //背包
-            ItemCount["MAIL"] = Convert.ToInt16(split[1]);        //邮件
+            ItemCount["BAG"] = Convert.ToInt32(split[0]);        //背包
+            ItemCount["MAIL"] = Convert.ToInt32(split[1]);        //邮件
             return ItemCount;
         }
     }
@@ -1226,7 +1222,7 @@ namespace LazyEvo.Plugins
     //珠宝加工
     public static class SpyZBJG
     {
-        public static Dictionary<string, int> CreationList;                 //制作列表(产品：数量)
+        public static Dictionary<string, int> CreationList = new Dictionary<string, int>();                 //制作列表(产品：数量)
         public static Dictionary<string, string> CreationMap;               //对照关系(产品：原料)
         public static Dictionary<string, string> MailList;                  //发货列表
         public static DBLogger logger = new DBLogger("珠宝加工+邮寄");
@@ -1241,7 +1237,7 @@ namespace LazyEvo.Plugins
             CreationMap = SpyDB.GetCreationMap_ZBJG();
 
             /* 生成制作列表，需要综合挂货人库存、挂货清单、当前角色可以做什么，综合考虑  */
-            CreationList.Clear();
+            if (CreationList !=null) CreationList.Clear();
             foreach (KeyValuePair<string, int> kv in SpyDB.GetAHLessItem())
             {
                 if (CreationMap.ContainsKey(kv.Key)) CreationList.Add(kv.Key, kv.Value);
@@ -1838,7 +1834,7 @@ namespace LazyEvo.Plugins
                     return false;
                 }
                 logger.Add(string.Format("物品[{0}]的最低价格是[{1}]，由[{2}]出价", ahitem, scanresult["PRIZE"], scanresult["SELLER"]));
-                SpyDB.SaveAhInfo(scanresult["SELLER"].ToString(), ahitem, Convert.ToInt16(scanresult["PRIZE"]));
+                SpyDB.SaveAhInfo(scanresult["SELLER"].ToString(), ahitem, Convert.ToInt32(scanresult["PRIZE"]));
 
                 // 计算最低价格，准备上货
                 if (scanresult["SELLER"].Equals(ObjectManager.MyPlayer.Name))
@@ -2713,7 +2709,7 @@ namespace LazyEvo.Plugins
             }
             foreach (DataRow dr in dt.Rows)
             {
-                result.Add(dr[0].ToString(), Convert.ToInt16(dr[1]));
+                result.Add(dr[0].ToString(), Convert.ToInt32(dr[1]));
             }
             return result;
         }
@@ -2866,7 +2862,7 @@ namespace LazyEvo.Plugins
             }
             foreach (DataRow dr in dt.Rows)
             {
-                result.Add(dr[0].ToString(), Convert.ToInt16(dr[1]));
+                result.Add(dr[0].ToString(), Convert.ToInt32(dr[1]));
             }
             return result;
         }
@@ -2995,7 +2991,7 @@ namespace LazyEvo.Plugins
 
                             char_id = dr["char_id"].ToString();
                             DoWhat = dr["dowhat"].ToString();
-                            RunMiniute = Convert.ToInt16(dr["runtime"]);
+                            RunMiniute = Convert.ToInt32(dr["runtime"]);
                             SpyDB.WriteLog("计划任务", string.Format("获得任务，角色ID：{0}，任务描述：{1}，持续时间：{2}", char_id, DoWhat, dr["runtime"].ToString()));
                         }
 

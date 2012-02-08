@@ -67,7 +67,7 @@ namespace LazyEvo.Plugins
                                 Convert.ToString(ObjectManager.MyPlayer.Location.Y),
                                 Convert.ToString(ObjectManager.MyPlayer.Location.Z)
                 ) + "\r\n");
-            textBox2.Text = Convert.ToString(Convert.ToInt16(textBox2.Text) + 1);
+            textBox2.Text = Convert.ToString(Convert.ToInt32(textBox2.Text) + 1);
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -87,22 +87,7 @@ namespace LazyEvo.Plugins
 
         private void button6_Click(object sender, EventArgs e)
         {
-            SpyZBJG.logger.clear();
-            SpyZBJG.MailList = SpyDB.GetMailList();
-            SpyZBJG.CreationMap = SpyDB.GetCreationMap_ZBJG();
-
-            /* 生成制作列表，需要综合挂货人库存、挂货清单、当前角色可以做什么，综合考虑  */
-            SpyZBJG.CreationList.Clear();
-            foreach (KeyValuePair<string, int> kv in SpyDB.GetAHLessItem())
-            {
-                if (SpyZBJG.CreationMap.ContainsKey(kv.Key)) SpyZBJG.CreationList.Add(kv.Key, kv.Value);
-            }
-            if (SpyZBJG.CreationList.Keys.Count == 0)
-            {
-                Logging.Write("没有待制作物品，有可能是货物充足");
-                return;
-            }
-            SpyZBJG.start();
+            if (SpyZBJG.initme()) SpyZBJG.start();
         }
 
         private void button7_Click(object sender, EventArgs e)
