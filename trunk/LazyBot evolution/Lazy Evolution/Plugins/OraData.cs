@@ -164,32 +164,32 @@ namespace LazyEvo.Plugins
                 sql = string.Format("update fight_file set file_context = :2 where roll_type = '{0}'", DBKey);
             }
 
-            OracleTransaction transaction = null;
-            try
-            {
-                if (!isConnected) OraConnect();
-                // 利用事务处理（必须）
-                transaction = conn.BeginTransaction();
-                OracleCommand oCmd = new OracleCommand(sql, conn);
-                OracleParameter param = oCmd.Parameters.Add("1", OracleDbType.Clob, ParameterDirection.Input);
+            //OracleTransaction transaction = null;
+            //try
+            //{
+            //    if (!isConnected) OraConnect();
+            //    // 利用事务处理（必须）
+            //    transaction = conn.BeginTransaction();
+            //    OracleCommand oCmd = new OracleCommand(sql, conn);
+            //    OracleParameter param = oCmd.Parameters.Add("1", OracleDbType.Clob, ParameterDirection.Input);
 
-                IdentifyEncoding sinodetector = new IdentifyEncoding();
-                FileInfo finfo = new FileInfo(FullFileName);
-                StreamReader sr = new StreamReader(mapfs, sinodetector.GetEncoding(sinodetector.GetEncodingName(finfo)));
-                string context = sr.ReadToEnd();
-                param.Value = context;
+            //    IdentifyEncoding sinodetector = new IdentifyEncoding();
+            //    FileInfo finfo = new FileInfo(FullFileName);
+            //    StreamReader sr = new StreamReader(mapfs, sinodetector.GetEncoding(sinodetector.GetEncodingName(finfo)));
+            //    string context = sr.ReadToEnd();
+            //    param.Value = context;
 
-                oCmd.ExecuteNonQuery();
+            //    oCmd.ExecuteNonQuery();
 
-                transaction.Commit();
+            //    transaction.Commit();
 
-            }
-            catch (Exception ex)
-            {
-                transaction.Rollback();
-                Logging.Write("SaveFileToDB error: " + ex.ToString());
-                return false;
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    transaction.Rollback();
+            //    Logging.Write("SaveFileToDB error: " + ex.ToString());
+            //    return false;
+            //}
 
             return true;
 

@@ -1179,10 +1179,10 @@ namespace LazyEvo.Forms
                     Logging.Write("配置文件中，有空项，补全！");
                     return;
                 }
-                nn.StartHour = Convert.ToInt16(LazySettings.StartHour);
-                nn.StartMin = Convert.ToInt16(LazySettings.StartMin);
-                nn.StopHour = Convert.ToInt16(LazySettings.StopHour);
-                nn.StopMin = Convert.ToInt16(LazySettings.StopMin);
+                nn.StartHour = Convert.ToInt32(LazySettings.StartHour);
+                nn.StartMin = Convert.ToInt32(LazySettings.StartMin);
+                nn.StopHour = Convert.ToInt32(LazySettings.StopHour);
+                nn.StopMin = Convert.ToInt32(LazySettings.StopMin);
 
                 buttonX3.Text = "结束计划";
                 Logging.Write("计划开始。。。。。。。");

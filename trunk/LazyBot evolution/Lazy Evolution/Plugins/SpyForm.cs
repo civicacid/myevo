@@ -220,7 +220,7 @@ namespace LazyEvo.Plugins
                     MessageBox.Show("账号已经存在");
                     return;
                 }
-                WOWAll.NewWOWChar(txtAccName.Text.ToLower(), txtCharName.Text.ToLower(),txtServer.Text.ToLower(), Convert.ToInt16(comboChaIdx.Text));
+                WOWAll.NewWOWChar(txtAccName.Text.ToLower(), txtCharName.Text.ToLower(),txtServer.Text.ToLower(), Convert.ToInt32(comboChaIdx.Text));
                 
                 ResetTextColor();
                 reload_data();
@@ -229,7 +229,7 @@ namespace LazyEvo.Plugins
 
             if (isChanged())
             {
-                WOWAll.UpdateWOWChar(txtAccName.Text.ToLower(), txtCharName.Text.ToLower(), txtServer.Text.ToLower(), Convert.ToInt16(comboChaIdx.Text));
+                WOWAll.UpdateWOWChar(txtAccName.Text.ToLower(), txtCharName.Text.ToLower(), txtServer.Text.ToLower(), Convert.ToInt32(comboChaIdx.Text));
                 ResetTextColor();
                 reload_data();
                 return;

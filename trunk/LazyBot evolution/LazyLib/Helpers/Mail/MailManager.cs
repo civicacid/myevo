@@ -203,7 +203,7 @@ namespace LazyLib.Helpers.Mail
                                     ItemCount = 1;
                                     if (itemOb.GetChildObject(itemStr + "Count") != null)
                                         if (!string.IsNullOrEmpty(itemOb.GetChildObject(itemStr + "Count").GetText))
-                                            ItemCount = Convert.ToInt16(itemOb.GetChildObject(itemStr + "Count").GetText);
+                                            ItemCount = Convert.ToInt32(itemOb.GetChildObject(itemStr + "Count").GetText);
                                     if (MailList.ShouldMail(ItemName))
                                     {
                                         if (ItemName.Equals("源质矿石") || ItemName.Equals("鞭尾草")
