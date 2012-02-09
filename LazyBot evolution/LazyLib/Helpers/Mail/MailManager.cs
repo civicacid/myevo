@@ -297,6 +297,7 @@ namespace LazyLib.Helpers.Mail
                     if (!MailFrame.Open)
                     {
                         node.Interact(false);
+                        Thread.Sleep(1000);
                         if (!MailFrame.Open)
                         {
                             RetryMailOpen(node);

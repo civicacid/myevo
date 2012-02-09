@@ -31,6 +31,9 @@ namespace LazyEvo.LFlyingEngine
 
         private void SettingsLoad(object sender, EventArgs e)
         {
+            Herb.HasLoaded = false;
+            Mine.HasLoaded = false;
+            
             groupPanel5.Visible = true;
             // superTabItem2.Visible = LazyLib.License.LoadedLicense;
             SetupCBHerb.Checked = FlyingSettings.Herb;

@@ -2,18 +2,14 @@
 
 <Langs>
   <zh>
-    <BagsFull>背包满了</BagsFull>
-    <SkillToLow>Requires</SkillToLow>
-    <DruidFlying>You are flying</DruidFlying>
-    <ShapeShift>
-      You are in shapeshift form
-    </ShapeShift>
-    <CantMount>can't mount here</CantMount>
-    <WhileMoving>
-      Can't do that while moving
-    </WhileMoving>
-    <TrainingDummy>Training Dummy</TrainingDummy>
-    <YouHaveBeen>You have been</YouHaveBeen>
+    <BagsFull>物品栏已满</BagsFull>
+    <SkillToLow>需要</SkillToLow>
+    <DruidFlying>你正在飞行</DruidFlying>
+    <ShapeShift>你正在变形状态下</ShapeShift>
+    <CantMount>你不能在这里召唤坐骑</CantMount>
+    <WhileMoving>不能在移动中实施该动作</WhileMoving>
+    <TrainingDummy>假人</TrainingDummy>
+    <YouHaveBeen>你已经</YouHaveBeen>
   </zh>
   <en>
     <BagsFull>Inventory is full</BagsFull>

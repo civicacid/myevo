@@ -95,6 +95,14 @@ namespace LazyEvo.Plugins
         {
             //SpyDB.SaveInfo_Bag(SpyFrame.lua_GetBagInfo());
             Logging.Write("asdasd");
+            string ff = "";
+            while (true)
+            {
+                Thread.Sleep(500);
+                if (!ff.Equals(ObjectManager.MyPlayer.RedMessage))
+                    SpyDB.WriteLazyLog(ObjectManager.MyPlayer.RedMessage);
+                ff = ObjectManager.MyPlayer.RedMessage;
+            }
         }
 
         private void button8_Click(object sender, EventArgs e)
@@ -417,7 +425,7 @@ namespace LazyEvo.Plugins
 
                 private void button9_Click_1(object sender, EventArgs e)
         {
-            if (SpyLogin.initme("11"))
+            if (SpyLogin.initme("48"))
             {
                 SpyLogin.start();
                 while (!SpyLogin.IsOK) Thread.Sleep(1000);

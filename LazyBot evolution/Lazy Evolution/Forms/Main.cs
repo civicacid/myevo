@@ -93,7 +93,7 @@ namespace LazyEvo.Forms
             SelectEngine.SelectedIndex = SelectEngine.FindStringExact(LazySettings.SelectedEngine, -1);
             SelectCombat.SelectedIndex = SelectEngine.FindStringExact(LazySettings.SelectedCombat, -1);
             if (SelectEngine.SelectedIndex == -1)
-                SelectEngine.SelectedIndex = 0;
+                SelectEngine.SelectedIndex = 1;
             if (SelectCombat.SelectedIndex == -1)
                 SelectCombat.SelectedIndex = 0;
             PluginCompiler.RecompileAll();
