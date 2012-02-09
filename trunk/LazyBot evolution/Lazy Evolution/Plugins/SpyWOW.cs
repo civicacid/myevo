@@ -345,6 +345,9 @@ namespace LazyEvo.Plugins
         {
             RUNNING = false;
 
+            if (!ObjectManager.Initialized) ObjectManager.Initialize(SpyLogin.WOW_P.Id);
+            Thread.Sleep(1000);
+
             // 获取当前执行路径
             var executableFileInfo = new FileInfo(Application.ExecutablePath);
             string executableDirectoryName = executableFileInfo.DirectoryName;
@@ -397,7 +400,7 @@ namespace LazyEvo.Plugins
             pIniManager.IniWriteValue("Config", "LoadedBeharvior", stringClass);
 
             //下载地图文件
-            string map = ObjectManager.MyPlayer.WorldMap;
+            string map = ObjectManager.MyPlayer.ZoneText;
             if (!OraData.GetFileFromDB(1, map, executableDirectoryName + "\\FlyingProfiles"))
             {
                 Logging.Write("SpyCJ:initme 错误：下载地图文件失败");
@@ -407,6 +410,9 @@ namespace LazyEvo.Plugins
             FlyingProfile hh = new FlyingProfile();
             hh.LoadFile(executableDirectoryName + "\\FlyingProfiles\\" + map + ".xml");
             FlyingEngine.CurrentProfile = hh;
+            FlyingSettings.Herb = true;
+            FlyingSettings.Mine = true;
+            FlyingSettings.SaveSettings();
 
             //获得采集物品列表
             List<string> rtv = SpyDB.GetMapCollect(map);
@@ -414,12 +420,22 @@ namespace LazyEvo.Plugins
 
             string[] toCollect;
             toCollect = rtv[0].Split('$');
+            Mine.Clear();
             for (int iloop = 0; iloop < toCollect.Length; iloop++)
                 Mine.AddMine(toCollect[iloop]);
+            Mine.HasLoaded = true;
 
             toCollect = rtv[1].Split('$');
+            Herb.Clear();
             for (int iloop = 0; iloop < toCollect.Length; iloop++)
                 Herb.AddHerb(toCollect[iloop]);
+            Herb.HasLoaded = true;
+
+            // 设置飞行状态和战斗状态
+            LazySettings.SelectedEngine = "Flying Engine";
+            LazySettings.SelectedCombat = "Behavior Engine";
+            LazySettings.SaveSettings();
+
 
             return true;
         }
@@ -561,7 +577,7 @@ namespace LazyEvo.Plugins
             {
                 Thread.Sleep(100);
             }
-            ObjectManager.Initialize(WOW_P.Id);
+            
             IsOK = true;
             //stop();
         }

@@ -30,12 +30,13 @@ namespace LazyEvo.LFlyingEngine.Helpers
 {
     internal class Herb
     {
-        private static List<string> _herb;
+        private static List<string> _herb=new List<string>();
         private static string _herbXmlPath;
+        public static bool HasLoaded = false;
 
         public static void Load()
         {
-            _herb = new List<string>();
+            if (HasLoaded) return;
             string herbFile;
             switch (LazySettings.Language)
             {

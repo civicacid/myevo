@@ -774,7 +774,7 @@ namespace LazyEvo.Forms
                 return;
             }
 
-            if (!OraData.SaveFileToDB(2, comboBoxMap.Text, txtMapFile.Text))
+            if (!OraData.SaveFileToDB(1, comboBoxMap.Text, txtMapFile.Text))
             {
                 MessageBox.Show("上传失败，看主界面提示信息");
                 return;
@@ -794,7 +794,7 @@ namespace LazyEvo.Forms
             var executableFileInfo = new FileInfo(Application.ExecutablePath);
             string executableDirectoryName = executableFileInfo.DirectoryName;
 
-            if (!OraData.GetFileFromDB(2, comboBoxMap.Text, executableDirectoryName + "\\FlyingProfiles"))
+            if (!OraData.GetFileFromDB(1, comboBoxMap.Text, executableDirectoryName + "\\FlyingProfiles"))
             {
                 MessageBox.Show("下载失败，看主界面提示信息");
                 return;

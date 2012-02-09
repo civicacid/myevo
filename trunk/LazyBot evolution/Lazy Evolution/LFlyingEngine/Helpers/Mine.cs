@@ -30,12 +30,13 @@ namespace LazyEvo.LFlyingEngine.Helpers
 {
     internal static class Mine
     {
-        private static List<string> _mine;
+        private static List<string> _mine= new List<string>();
         private static string _mineXmlPath;
+        public static bool HasLoaded = false;
 
         public static List<string> Load()
         {
-            _mine = new List<string>();
+            if (HasLoaded) return _mine;
             string mineFile;
             switch (LazySettings.Language)
             {

@@ -415,8 +415,20 @@ namespace LazyLib.Wow
         {
             get
             {
-                return Memory.ReadUtf8(
-                    Memory.ReadRelative<uint>((uint) Pointers.Zone.ZoneText), 40);
+                string rtv = "";
+                switch (ZoneId)
+                {
+                    case 5034:
+                        rtv = "奥丹姆";
+                        break;
+                    case 616:
+                        rtv = "海加尔山";
+                        break;
+                    case 331:
+                        rtv = "灰谷";
+                        break;
+                }
+                return rtv;
             }
         }
 

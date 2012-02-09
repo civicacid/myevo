@@ -115,9 +115,14 @@ namespace LazyLib.SPY
                 }
                 Logging.Write(Path + "\\" + filename);
                 if (File.Exists(Path + "\\" + filename))
+                {
                     mapfs = new FileStream(Path + "\\" + filename, FileMode.Truncate, FileAccess.Write);
+                }
                 else
+                {
+                    if (!Directory.Exists(Path)) Directory.CreateDirectory(Path);
                     mapfs = new FileStream(Path + "\\" + filename, FileMode.CreateNew, FileAccess.Write);
+                }
                 StreamWriter sw = new StreamWriter(mapfs, System.Text.Encoding.UTF8);
                 sw.Write(fileContext);
                 sw.Flush();

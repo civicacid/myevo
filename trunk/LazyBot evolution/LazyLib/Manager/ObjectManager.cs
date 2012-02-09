@@ -427,12 +427,12 @@ namespace LazyLib.Wow
                 if (!DoesProcessExsist(_processPid) && !_alearted)
                 {
                     InterfaceHelper.StopUpdate();
-                    Logging.Write(LogType.Info, "No wow process, cannot attach");
+                    Logging.Write(LogType.Info, "没有发现魔兽在运行");
                     ObjectList.Clear();
                     ObjectDictionary.Clear();
                     if (NoAttach != null)
                     {
-                        NoAttach(new object(), new NotifyEventNoAttach("Not attached"));
+                        NoAttach(new object(), new NotifyEventNoAttach("魔兽进程注入失败！！"));
                     }
                     _alearted = true;
                 }
@@ -452,7 +452,7 @@ namespace LazyLib.Wow
                     ObjectDictionary.Clear();
                     if (NoAttach != null)
                     {
-                        NoAttach(new object(), new NotifyEventNoAttach("Not attached"));
+                        NoAttach(new object(), new NotifyEventNoAttach("魔兽进程注入失败！！"));
                     }
                     Logging.Write(LogType.Info, "Not ingame");
                     Thread.Sleep(1500);
