@@ -6,7 +6,7 @@ using System.IO;
 using System.Diagnostics;
 using System.Threading;
 using System.Windows.Forms;
-using System.Data.SQLite;
+//using System.Data.SQLite;
 using System.Data;
 using System.Runtime.InteropServices;
 
@@ -561,6 +561,7 @@ namespace LazyEvo.Plugins
             {
                 Thread.Sleep(100);
             }
+            ObjectManager.Initialize(WOW_P.Id);
             IsOK = true;
             //stop();
         }

@@ -42,11 +42,6 @@
             this.button8 = new System.Windows.Forms.Button();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.button9 = new System.Windows.Forms.Button();
-            this.txtRole = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.button10 = new System.Windows.Forms.Button();
-            this.txtMap = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Step)).BeginInit();
             this.SuspendLayout();
@@ -174,67 +169,20 @@
             // 
             // button9
             // 
-            this.button9.Location = new System.Drawing.Point(506, 428);
+            this.button9.Location = new System.Drawing.Point(303, 371);
             this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(103, 29);
+            this.button9.Size = new System.Drawing.Size(86, 39);
             this.button9.TabIndex = 17;
-            this.button9.Text = "上传角色文件";
+            this.button9.Text = "自动采矿测试";
             this.button9.UseVisualStyleBackColor = true;
-            this.button9.Click += new System.EventHandler(this.button9_Click);
-            // 
-            // txtRole
-            // 
-            this.txtRole.Location = new System.Drawing.Point(656, 433);
-            this.txtRole.Name = "txtRole";
-            this.txtRole.Size = new System.Drawing.Size(114, 21);
-            this.txtRole.TabIndex = 19;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(615, 436);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(31, 13);
-            this.label1.TabIndex = 20;
-            this.label1.Text = "角色";
-            // 
-            // button10
-            // 
-            this.button10.Location = new System.Drawing.Point(506, 393);
-            this.button10.Name = "button10";
-            this.button10.Size = new System.Drawing.Size(103, 29);
-            this.button10.TabIndex = 17;
-            this.button10.Text = "上传地图文件";
-            this.button10.UseVisualStyleBackColor = true;
-            this.button10.Click += new System.EventHandler(this.button10_Click);
-            // 
-            // txtMap
-            // 
-            this.txtMap.Location = new System.Drawing.Point(656, 398);
-            this.txtMap.Name = "txtMap";
-            this.txtMap.Size = new System.Drawing.Size(114, 21);
-            this.txtMap.TabIndex = 19;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(615, 401);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(31, 13);
-            this.label2.TabIndex = 20;
-            this.label2.Text = "地图";
+            this.button9.Click += new System.EventHandler(this.button9_Click_1);
             // 
             // testForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(776, 456);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.txtMap);
-            this.Controls.Add(this.txtRole);
             this.Controls.Add(this.textBox2);
-            this.Controls.Add(this.button10);
             this.Controls.Add(this.button9);
             this.Controls.Add(this.button8);
             this.Controls.Add(this.button7);
@@ -273,10 +221,5 @@
         private System.Windows.Forms.Button button8;
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Button button9;
-        private System.Windows.Forms.TextBox txtRole;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button10;
-        private System.Windows.Forms.TextBox txtMap;
-        private System.Windows.Forms.Label label2;
     }
 }

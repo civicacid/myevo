@@ -57,6 +57,7 @@
     <Reference Include="DevComponents.DotNetBar2, Version=9.0.0.4, Culture=neutral, PublicKeyToken=7eb7c3a35b91de04, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Program Files (x86)\DotNetBar for Windows Forms\DevComponents.DotNetBar2.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="DevComponents.Instrumentation, Version=10.1.0.8, Culture=neutral, PublicKeyToken=f90dc37c26666a67, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -81,10 +82,6 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Data.SQLite, Version=1.0.66.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>.\System.Data.SQLite.dll</HintPath>
-    </Reference>
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Management" />
     <Reference Include="System.Web.Services" />

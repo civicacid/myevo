@@ -200,6 +200,7 @@ namespace LazyEvo.Forms
             txtDBSid.Text = LazySettings.DBSid;
             txtMachineID.Text = LazySettings.MachineID;
             txtAher.Text = LazySettings.AHer;
+            CBDoVendor.Checked = LazySettings.WriteLazyLog;
 
         }
 
@@ -297,6 +298,7 @@ namespace LazyEvo.Forms
             LazySettings.DBSid = txtDBSid.Text;
             LazySettings.MachineID = txtMachineID.Text;
             LazySettings.AHer = txtAher.Text;
+            LazySettings.WriteLazyLog = CBDoVendor.Checked;
 
             //Save Setting
             LazySettings.SaveSettings();
@@ -567,9 +569,6 @@ namespace LazyEvo.Forms
             ListProtectedItems.EndUpdate();
         }
 
-        private void superTabControlPanel4_Click(object sender, EventArgs e)
-        {
-        }
 
         private void SetupCBRelogEnablePeriodicRelog_CheckedChanged(object sender, EventArgs e)
         {

@@ -32,12 +32,14 @@
             System.Windows.Forms.GroupBox groupBox1;
             System.Windows.Forms.GroupBox groupBox2;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Setup));
+            this.lblFightTip = new DevComponents.DotNetBar.LabelX();
             this.txtFightFile = new DevComponents.DotNetBar.Controls.TextBoxX();
             this.comboBoxFight = new DevComponents.DotNetBar.Controls.ComboBoxEx();
             this.btnSelectFight = new DevComponents.DotNetBar.ButtonX();
             this.btnDownloadFight = new DevComponents.DotNetBar.ButtonX();
             this.btnUploadFight = new DevComponents.DotNetBar.ButtonX();
             this.btnRefreshFight = new DevComponents.DotNetBar.ButtonX();
+            this.lblMapTip = new DevComponents.DotNetBar.LabelX();
             this.txtMapFile = new DevComponents.DotNetBar.Controls.TextBoxX();
             this.comboBoxMap = new DevComponents.DotNetBar.Controls.ComboBoxEx();
             this.btnSelectMap = new DevComponents.DotNetBar.ButtonX();
@@ -252,8 +254,6 @@
             this.SetupCBSoundFollow = new DevComponents.DotNetBar.Controls.CheckBoxX();
             this.styleManager1 = new DevComponents.DotNetBar.StyleManager(this.components);
             this.superTabControl2 = new DevComponents.DotNetBar.SuperTabControl();
-            this.superTabControlPanel10 = new DevComponents.DotNetBar.SuperTabControlPanel();
-            this.superTabItem8 = new DevComponents.DotNetBar.SuperTabItem();
             this.superTabControlPanel4 = new DevComponents.DotNetBar.SuperTabControlPanel();
             this.labelX55 = new DevComponents.DotNetBar.LabelX();
             this.labelX57 = new DevComponents.DotNetBar.LabelX();
@@ -277,11 +277,14 @@
             this.Latency = new DevComponents.Editors.IntegerInput();
             this.labelX44 = new DevComponents.DotNetBar.LabelX();
             this.SetupDebugMode = new DevComponents.DotNetBar.Controls.CheckBoxX();
+            this.CBWriteLazyLog = new DevComponents.DotNetBar.Controls.CheckBoxX();
             this.CBHookMouse = new DevComponents.DotNetBar.Controls.CheckBoxX();
             this.labelX21 = new DevComponents.DotNetBar.LabelX();
             this.labelX19 = new DevComponents.DotNetBar.LabelX();
             this.SetupUseHotkeys = new DevComponents.DotNetBar.Controls.CheckBoxX();
             this.superTabItem4 = new DevComponents.DotNetBar.SuperTabItem();
+            this.superTabControlPanel10 = new DevComponents.DotNetBar.SuperTabControlPanel();
+            this.superTabItem8 = new DevComponents.DotNetBar.SuperTabItem();
             this.superTabControlPanel9 = new DevComponents.DotNetBar.SuperTabControlPanel();
             this.txtFight = new DevComponents.DotNetBar.Controls.ComboBoxEx();
             this.labelX11 = new DevComponents.DotNetBar.LabelX();
@@ -423,8 +426,6 @@
             this.superTabItem5 = new DevComponents.DotNetBar.SuperTabItem();
             this.buttonX1 = new DevComponents.DotNetBar.ButtonX();
             this.superTooltip1 = new DevComponents.DotNetBar.SuperTooltip();
-            this.lblFightTip = new DevComponents.DotNetBar.LabelX();
-            this.lblMapTip = new DevComponents.DotNetBar.LabelX();
             groupBox1 = new System.Windows.Forms.GroupBox();
             groupBox2 = new System.Windows.Forms.GroupBox();
             groupBox1.SuspendLayout();
@@ -435,10 +436,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.SetupTBStopAfter)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.superTabControl2)).BeginInit();
             this.superTabControl2.SuspendLayout();
-            this.superTabControlPanel10.SuspendLayout();
             this.superTabControlPanel4.SuspendLayout();
             this.groupPanel10.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Latency)).BeginInit();
+            this.superTabControlPanel10.SuspendLayout();
             this.superTabControlPanel9.SuspendLayout();
             this.superTabControlPanel1.SuspendLayout();
             this.superTabControlPanel7.SuspendLayout();
@@ -480,6 +481,21 @@
             groupBox1.TabIndex = 1;
             groupBox1.TabStop = false;
             groupBox1.Text = "战斗";
+            // 
+            // lblFightTip
+            // 
+            this.lblFightTip.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.lblFightTip.BackgroundStyle.Class = "";
+            this.lblFightTip.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.lblFightTip.ForeColor = System.Drawing.Color.Blue;
+            this.lblFightTip.Location = new System.Drawing.Point(35, 121);
+            this.lblFightTip.Margin = new System.Windows.Forms.Padding(2);
+            this.lblFightTip.Name = "lblFightTip";
+            this.lblFightTip.Size = new System.Drawing.Size(391, 23);
+            this.lblFightTip.TabIndex = 261;
             // 
             // txtFightFile
             // 
@@ -583,6 +599,21 @@
             groupBox2.TabIndex = 1;
             groupBox2.TabStop = false;
             groupBox2.Text = "地图";
+            // 
+            // lblMapTip
+            // 
+            this.lblMapTip.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.lblMapTip.BackgroundStyle.Class = "";
+            this.lblMapTip.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.lblMapTip.ForeColor = System.Drawing.Color.Blue;
+            this.lblMapTip.Location = new System.Drawing.Point(35, 121);
+            this.lblMapTip.Margin = new System.Windows.Forms.Padding(2);
+            this.lblMapTip.Name = "lblMapTip";
+            this.lblMapTip.Size = new System.Drawing.Size(391, 23);
+            this.lblMapTip.TabIndex = 261;
             // 
             // txtMapFile
             // 
@@ -2192,8 +2223,8 @@
             this.superTabControl2.ControlBox.SubItems.AddRange(new DevComponents.DotNetBar.BaseItem[] {
             this.superTabControl2.ControlBox.MenuBox,
             this.superTabControl2.ControlBox.CloseBox});
-            this.superTabControl2.Controls.Add(this.superTabControlPanel10);
             this.superTabControl2.Controls.Add(this.superTabControlPanel4);
+            this.superTabControl2.Controls.Add(this.superTabControlPanel10);
             this.superTabControl2.Controls.Add(this.superTabControlPanel9);
             this.superTabControl2.Controls.Add(this.superTabControlPanel1);
             this.superTabControl2.Controls.Add(this.superTabControlPanel7);
@@ -2224,24 +2255,6 @@
             this.superTabControl2.TabStyle = DevComponents.DotNetBar.eSuperTabStyle.WinMediaPlayer12;
             this.superTabControl2.Text = "Grinder settings";
             // 
-            // superTabControlPanel10
-            // 
-            this.superTabControlPanel10.Controls.Add(groupBox2);
-            this.superTabControlPanel10.Controls.Add(groupBox1);
-            this.superTabControlPanel10.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.superTabControlPanel10.Location = new System.Drawing.Point(0, 24);
-            this.superTabControlPanel10.Name = "superTabControlPanel10";
-            this.superTabControlPanel10.Size = new System.Drawing.Size(618, 375);
-            this.superTabControlPanel10.TabIndex = 0;
-            this.superTabControlPanel10.TabItem = this.superTabItem8;
-            // 
-            // superTabItem8
-            // 
-            this.superTabItem8.AttachedControl = this.superTabControlPanel10;
-            this.superTabItem8.GlobalItem = false;
-            this.superTabItem8.Name = "superTabItem8";
-            this.superTabItem8.Text = "文件管理";
-            // 
             // superTabControlPanel4
             // 
             this.superTabControlPanel4.Controls.Add(this.labelX55);
@@ -2258,6 +2271,7 @@
             this.superTabControlPanel4.Controls.Add(this.Latency);
             this.superTabControlPanel4.Controls.Add(this.labelX44);
             this.superTabControlPanel4.Controls.Add(this.SetupDebugMode);
+            this.superTabControlPanel4.Controls.Add(this.CBWriteLazyLog);
             this.superTabControlPanel4.Controls.Add(this.CBHookMouse);
             this.superTabControlPanel4.Controls.Add(this.labelX21);
             this.superTabControlPanel4.Controls.Add(this.labelX19);
@@ -2272,7 +2286,6 @@
             this.superTabControlPanel4.TabIndex = 1;
             this.superTabControlPanel4.TabItem = this.superTabItem4;
             this.superTabControlPanel4.ThemeAware = true;
-            this.superTabControlPanel4.Click += new System.EventHandler(this.superTabControlPanel4_Click);
             // 
             // labelX55
             // 
@@ -2565,6 +2578,22 @@
             this.SetupDebugMode.TabIndex = 178;
             this.SetupDebugMode.Text = "Debug mode";
             // 
+            // CBWriteLazyLog
+            // 
+            this.CBWriteLazyLog.AutoSize = true;
+            this.CBWriteLazyLog.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.CBWriteLazyLog.BackgroundStyle.Class = "";
+            this.CBWriteLazyLog.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.CBWriteLazyLog.Location = new System.Drawing.Point(308, 298);
+            this.CBWriteLazyLog.Margin = new System.Windows.Forms.Padding(2);
+            this.CBWriteLazyLog.Name = "CBWriteLazyLog";
+            this.CBWriteLazyLog.Size = new System.Drawing.Size(200, 20);
+            this.CBWriteLazyLog.TabIndex = 177;
+            this.CBWriteLazyLog.Text = "是否记录Lazy日志到数据库";
+            // 
             // CBHookMouse
             // 
             this.CBHookMouse.AutoSize = true;
@@ -2634,6 +2663,24 @@
             this.superTabItem4.GlobalItem = false;
             this.superTabItem4.Name = "superTabItem4";
             this.superTabItem4.Text = "通用";
+            // 
+            // superTabControlPanel10
+            // 
+            this.superTabControlPanel10.Controls.Add(groupBox2);
+            this.superTabControlPanel10.Controls.Add(groupBox1);
+            this.superTabControlPanel10.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.superTabControlPanel10.Location = new System.Drawing.Point(0, 0);
+            this.superTabControlPanel10.Name = "superTabControlPanel10";
+            this.superTabControlPanel10.Size = new System.Drawing.Size(618, 399);
+            this.superTabControlPanel10.TabIndex = 0;
+            this.superTabControlPanel10.TabItem = this.superTabItem8;
+            // 
+            // superTabItem8
+            // 
+            this.superTabItem8.AttachedControl = this.superTabControlPanel10;
+            this.superTabItem8.GlobalItem = false;
+            this.superTabItem8.Name = "superTabItem8";
+            this.superTabItem8.Text = "文件管理";
             // 
             // superTabControlPanel9
             // 
@@ -4564,36 +4611,6 @@
             this.buttonX1.Text = "Save and close";
             this.buttonX1.Click += new System.EventHandler(this.CloseForm);
             // 
-            // lblFightTip
-            // 
-            this.lblFightTip.BackColor = System.Drawing.Color.Transparent;
-            // 
-            // 
-            // 
-            this.lblFightTip.BackgroundStyle.Class = "";
-            this.lblFightTip.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.lblFightTip.ForeColor = System.Drawing.Color.Blue;
-            this.lblFightTip.Location = new System.Drawing.Point(35, 121);
-            this.lblFightTip.Margin = new System.Windows.Forms.Padding(2);
-            this.lblFightTip.Name = "lblFightTip";
-            this.lblFightTip.Size = new System.Drawing.Size(391, 23);
-            this.lblFightTip.TabIndex = 261;
-            // 
-            // lblMapTip
-            // 
-            this.lblMapTip.BackColor = System.Drawing.Color.Transparent;
-            // 
-            // 
-            // 
-            this.lblMapTip.BackgroundStyle.Class = "";
-            this.lblMapTip.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.lblMapTip.ForeColor = System.Drawing.Color.Blue;
-            this.lblMapTip.Location = new System.Drawing.Point(35, 121);
-            this.lblMapTip.Margin = new System.Windows.Forms.Padding(2);
-            this.lblMapTip.Name = "lblMapTip";
-            this.lblMapTip.Size = new System.Drawing.Size(391, 23);
-            this.lblMapTip.TabIndex = 261;
-            // 
             // Setup
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -4616,11 +4633,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.superTabControl2)).EndInit();
             this.superTabControl2.ResumeLayout(false);
             this.superTabControl2.PerformLayout();
-            this.superTabControlPanel10.ResumeLayout(false);
             this.superTabControlPanel4.ResumeLayout(false);
             this.superTabControlPanel4.PerformLayout();
             this.groupPanel10.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.Latency)).EndInit();
+            this.superTabControlPanel10.ResumeLayout(false);
             this.superTabControlPanel9.ResumeLayout(false);
             this.superTabControlPanel9.PerformLayout();
             this.superTabControlPanel1.ResumeLayout(false);
@@ -5047,6 +5064,7 @@
         private DevComponents.DotNetBar.ButtonX btnRefreshMap;
         private DevComponents.DotNetBar.LabelX lblFightTip;
         private DevComponents.DotNetBar.LabelX lblMapTip;
+        internal DevComponents.DotNetBar.Controls.CheckBoxX CBWriteLazyLog;
 
 
     }

@@ -110,6 +110,7 @@ namespace LazyLib
         public static string DBSid;
         public static string MachineID;
         public static string AHer;
+        public static bool WriteLazyLog;
 
         public static void LoadSettings()
         {
@@ -193,6 +194,7 @@ namespace LazyLib
             DBSid = pIniManager.GetString("Config", "DBSid", "");
             MachineID = pIniManager.GetString("Config", "MachineID", "");
             AHer = pIniManager.GetString("Config", "AHer", "");
+            WriteLazyLog = pIniManager.GetBoolean("Config", "WriteLazyLog", false);
         }
 
         public static void SaveSettings()
@@ -275,6 +277,7 @@ namespace LazyLib
             pIniManager.IniWriteValue("Config", "DBSid", DBSid);
             pIniManager.IniWriteValue("Config", "MachineID", MachineID);
             pIniManager.IniWriteValue("Config", "AHer", AHer);
+            pIniManager.IniWriteValue("Config", "WriteLazyLog", WriteLazyLog);
         }
     }
 }

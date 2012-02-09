@@ -1,6 +1,20 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 
 <Langs>
+  <zh>
+    <BagsFull>背包满了</BagsFull>
+    <SkillToLow>Requires</SkillToLow>
+    <DruidFlying>You are flying</DruidFlying>
+    <ShapeShift>
+      You are in shapeshift form
+    </ShapeShift>
+    <CantMount>can't mount here</CantMount>
+    <WhileMoving>
+      Can't do that while moving
+    </WhileMoving>
+    <TrainingDummy>Training Dummy</TrainingDummy>
+    <YouHaveBeen>You have been</YouHaveBeen>
+  </zh>
   <en>
     <BagsFull>Inventory is full</BagsFull>
     <SkillToLow>Requires</SkillToLow>

@@ -1,3 +1,5 @@
+insert into LazyParameters (bh,nr,ms) values ('1','Y','是否将lazy的日志写入数据库(Y/N)');
+
 /**********************************/
 /***********    角色信息     *************/
 insert into wowaccount(acc_id,acc_name,acc_pass,status) values(seq_all.nextval,'ctais2k@sina.cn','ctais!1@2oracle',1);
