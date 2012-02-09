@@ -422,13 +422,19 @@ namespace LazyEvo.Plugins
             toCollect = rtv[0].Split('$');
             Mine.Clear();
             for (int iloop = 0; iloop < toCollect.Length; iloop++)
+            {
+                if (string.IsNullOrWhiteSpace(toCollect[iloop])) continue;
                 Mine.AddMine(toCollect[iloop]);
+            }
             Mine.HasLoaded = true;
 
             toCollect = rtv[1].Split('$');
             Herb.Clear();
             for (int iloop = 0; iloop < toCollect.Length; iloop++)
+            {
+                if (string.IsNullOrWhiteSpace(toCollect[iloop])) continue;
                 Herb.AddHerb(toCollect[iloop]);
+            }
             Herb.HasLoaded = true;
 
             // 设置飞行状态和战斗状态
