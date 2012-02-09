@@ -138,14 +138,24 @@ create table ahitem (
 comment on table ahitem is '挂货';
 
 -- -----------------------------------------------------
--- table logging 日志
+-- table wowlog 日志
 -- -----------------------------------------------------
-create table logging (
+create table wowlog (
    logtype                       varchar(100)                        not null,
    logtext                       varchar(1000)                       not null,
    logtime                       date              default sysdate   not null
 );
-comment on table logging is '日志';
+comment on table wowlog is '日志';
+
+-- -----------------------------------------------------
+-- table lazylog 日志
+-- -----------------------------------------------------
+create table lazylog (
+   char_name                     varchar(100)                        not null,
+   logtext                       varchar(1000)                       not null,
+   logtime                       date              default sysdate   not null
+);
+comment on table lazylog is '日志';
 
 -- -----------------------------------------------------
 -- table fight_file  战斗角色文件

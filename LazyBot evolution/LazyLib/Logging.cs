@@ -21,6 +21,7 @@ using System.IO;
 using System.Reflection;
 using System.Threading;
 using LazyLib.Helpers;
+using LazyLib.SPY;
 
 namespace LazyLib
 {
@@ -153,7 +154,9 @@ namespace LazyLib
                     {
                         while (LogQueue.Count != 0)
                         {
-                            tw.WriteLine(LogQueue.Dequeue());
+                            string log = LogQueue.Dequeue();
+                            tw.WriteLine(log);
+                            SpyDB.WriteLazyLog(log);
                         }
                         if (!((bool) blocking))
                         {

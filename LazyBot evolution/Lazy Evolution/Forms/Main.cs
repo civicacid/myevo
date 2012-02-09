@@ -41,6 +41,7 @@ using LazyLib.IEngine;
 using LazyLib.LazyRadar;
 using LazyLib.LazyRadar.Drawer;
 using LazyLib.Wow;
+using LazyLib.SPY;
 
 
 

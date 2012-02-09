@@ -31,6 +31,7 @@ using LazyLib;
 using LazyLib.Helpers;
 using LazyLib.Helpers.Mail;
 using LazyLib.Helpers.Vendor;
+using LazyLib.SPY;
 
 #endregion
 
@@ -669,6 +670,137 @@ namespace LazyEvo.Forms
                 MessageBox.Show(
                     "You should create a macro: /script SendMailNameEditBox:SetText(\"RECEIVERNAME\") and place it on a bar");
             }
+        }
+
+        private void btnRefreshFight_Click(object sender, EventArgs e)
+        {
+            comboBoxFight.Items.Clear();
+            foreach (string FightName in SpyDB.GetFightList())
+            {
+                comboBoxFight.Items.Add(FightName);
+            }
+        }
+
+        private void btnSelectFight_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog fileDialog1 = new OpenFileDialog();
+            fileDialog1.InitialDirectory = "c:\\";
+            fileDialog1.Filter = "xml files (*.xml)|*.xml|All files (*.*)|*.*";
+            fileDialog1.FilterIndex = 1;
+            fileDialog1.RestoreDirectory = true;
+            if (fileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                txtFightFile.Text = fileDialog1.FileName;
+            }
+        }
+
+        private void btnUploadFight_Click(object sender, EventArgs e)
+        {
+            lblFightTip.Text = "";
+            if (string.IsNullOrWhiteSpace(comboBoxFight.Text))
+            {
+                MessageBox.Show("选一个角色");
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtFightFile.Text))
+            {
+                MessageBox.Show("选择上传文件");
+                return;
+            }
+
+            if (!OraData.SaveFileToDB(2, comboBoxFight.Text, txtFightFile.Text))
+            {
+                MessageBox.Show("上传失败，看主界面提示信息");
+                return;
+            }
+
+            lblFightTip.Text = "上传成功";
+        }
+
+        private void btnDownloadFight_Click(object sender, EventArgs e)
+        {
+            lblFightTip.Text = "";
+            if (string.IsNullOrWhiteSpace(comboBoxFight.Text))
+            {
+                MessageBox.Show("选一个角色");
+                return;
+            }
+            
+            var executableFileInfo = new FileInfo(Application.ExecutablePath);
+            string executableDirectoryName = executableFileInfo.DirectoryName;
+
+            if (!OraData.GetFileFromDB(2, comboBoxFight.Text, executableDirectoryName + "\\Behaviors"))
+            {
+                MessageBox.Show("下载失败，看主界面提示信息");
+                return;
+            }
+            lblFightTip.Text = "下载成功";
+        }
+
+        private void btnRefreshMap_Click(object sender, EventArgs e)
+        {
+            comboBoxMap.Items.Clear();
+            foreach (string MapName in SpyDB.GetMapList())
+            {
+                comboBoxMap.Items.Add(MapName);
+            }
+        }
+
+        private void btnSelectMap_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog fileDialog1 = new OpenFileDialog();
+            fileDialog1.InitialDirectory = "c:\\";
+            fileDialog1.Filter = "xml files (*.xml)|*.xml|All files (*.*)|*.*";
+            fileDialog1.FilterIndex = 1;
+            fileDialog1.RestoreDirectory = true;
+            if (fileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                txtMapFile.Text = fileDialog1.FileName;
+            }
+        }
+
+        private void btnUploadMap_Click(object sender, EventArgs e)
+        {
+            lblMapTip.Text = "";
+            if (string.IsNullOrWhiteSpace(comboBoxMap.Text))
+            {
+                MessageBox.Show("选一个角色");
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtMapFile.Text))
+            {
+                MessageBox.Show("选择上传文件");
+                return;
+            }
+
+            if (!OraData.SaveFileToDB(2, comboBoxMap.Text, txtMapFile.Text))
+            {
+                MessageBox.Show("上传失败，看主界面提示信息");
+                return;
+            }
+            lblMapTip.Text = "上传成功";
+        }
+
+        private void btnDownloadMap_Click(object sender, EventArgs e)
+        {
+            lblMapTip.Text = "";
+            if (string.IsNullOrWhiteSpace(comboBoxMap.Text))
+            {
+                MessageBox.Show("选一个角色");
+                return;
+            }
+
+            var executableFileInfo = new FileInfo(Application.ExecutablePath);
+            string executableDirectoryName = executableFileInfo.DirectoryName;
+
+            if (!OraData.GetFileFromDB(2, comboBoxMap.Text, executableDirectoryName + "\\FlyingProfiles"))
+            {
+                MessageBox.Show("下载失败，看主界面提示信息");
+                return;
+            }
+            lblMapTip.Text = "下载失败";
         }
 
     }
