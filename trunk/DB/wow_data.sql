@@ -127,11 +127,11 @@ insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_
 
 /**********************************/
 /***********    战斗文件     *************/
-insert into fight_file (roll_type,file_name) values ("德鲁伊","德鲁伊.xml");
-insert into fight_file (roll_type,file_name) values ("骑士","骑士.xml");
+insert into fight_file (roll_type,file_name) values ('德鲁伊','德鲁伊.xml');
+insert into fight_file (roll_type,file_name) values ('骑士','骑士.xml');
 -----------------------------------------------------------------------------------------------------------------------------------
 
 /**********************************/
 /***********    地图文件     *************/
-insert into map_file (map_name,file_name,mine_list,herb_list) values ("奥丹姆","奥丹姆.xml","源质矿$富源质矿$燃铁矿脉$","鞭尾草");
+insert into map_file (map_name,file_name,mine_list,herb_list) values ('奥丹姆','奥丹姆.xml','源质矿$富源质矿$燃铁矿脉$','鞭尾草');
 -----------------------------------------------------------------------------------------------------------------------------------
