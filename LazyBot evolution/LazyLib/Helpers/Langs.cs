@@ -64,6 +64,7 @@ namespace LazyLib.Helpers
                 LoadLang("fr");
                 LoadLang("ru");
                 LoadLang("pt");
+                LoadLang("zh");
             }
             catch (Exception)
             {

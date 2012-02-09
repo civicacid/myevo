@@ -415,56 +415,21 @@ namespace LazyEvo.Plugins
             }
         }
 
-        private void button9_Click(object sender, EventArgs e)
+                private void button9_Click_1(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtRole.Text))
+            if (SpyLogin.initme("11"))
             {
-                MessageBox.Show("输入角色名称");
-                return;
+                SpyLogin.start();
+                while (!SpyLogin.IsOK) Thread.Sleep(1000);
             }
 
-            string filename = "";
-            OpenFileDialog fileDialog1 = new OpenFileDialog();
-            fileDialog1.InitialDirectory = "c:\\";
-            fileDialog1.Filter = "xml files (*.xml)|*.xml|All files (*.*)|*.*";
-            fileDialog1.FilterIndex = 1;
-            fileDialog1.RestoreDirectory = true;
-            if (fileDialog1.ShowDialog() == DialogResult.OK)
+            if (SpyCJ.initme())
             {
-                filename = fileDialog1.FileName;
-            }
-
-            if (!OraData.SaveFileToDB(2, txtRole.Text, filename))
-            {
-                MessageBox.Show("上传失败，看主界面提示信息");
-                return;
+                SpyCJ.start();
+                Thread.Sleep(5000);
+                Logging.Write("现在的运行状态是："+(SpyCJ.RUNNING?"正常":"不正常"));
             }
         }
 
-        private void button10_Click(object sender, EventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(txtMap.Text))
-            {
-                MessageBox.Show("输入地图名称");
-                return;
-            }
-
-            string filename = "";
-            OpenFileDialog fileDialog1 = new OpenFileDialog();
-            fileDialog1.InitialDirectory = "c:\\";
-            fileDialog1.Filter = "xml files (*.xml)|*.xml|All files (*.*)|*.*";
-            fileDialog1.FilterIndex = 1;
-            fileDialog1.RestoreDirectory = true;
-            if (fileDialog1.ShowDialog() == DialogResult.OK)
-            {
-                filename = fileDialog1.FileName;
-            }
-
-            if (!OraData.SaveFileToDB(1, txtMap.Text, filename))
-            {
-                MessageBox.Show("上传失败，看主界面提示信息");
-                return;
-            }
-        }
     }
 }

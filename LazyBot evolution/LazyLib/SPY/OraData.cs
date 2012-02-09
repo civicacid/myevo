@@ -88,6 +88,8 @@ namespace LazyLib.SPY
         /// </summary>
         public static bool GetFileFromDB(int file_type, string Name, string Path)
         {
+            Logging.Write("[[["+Name+"]]]]");
+            Logging.Write(Path);
             FileStream mapfs;
             bool HasRecord = false;
             try
@@ -108,9 +110,10 @@ namespace LazyLib.SPY
                 foreach (DataRow dr in dt.Rows)
                 {
                     HasRecord = true;
-                    filename = dr[0].ToString();
-                    fileContext = dr[1].ToString();
+                    filename = dr["file_name"].ToString();
+                    fileContext = dr["file_context"].ToString();
                 }
+                Logging.Write(Path + "\\" + filename);
                 if (File.Exists(Path + "\\" + filename))
                     mapfs = new FileStream(Path + "\\" + filename, FileMode.Truncate, FileAccess.Write);
                 else

@@ -11,6 +11,11 @@ namespace LazyLib.SPY
 {
     public static class SpyDB
     {
+        public static string IsWriteLazy
+        {
+            get { return GetParam("1"); }
+        }
+
         /// <summary>保存char背包信息</summary>
         public static void SaveInfo_Bag(Dictionary<string, int> bag)
         {
@@ -218,6 +223,7 @@ namespace LazyLib.SPY
         /// <param name="LogText">日志内容</param>
         public static void WriteLazyLog(string LogText)
         {
+            //if (!IsWriteLazy.Equals("Y")) return;
             if (string.IsNullOrWhiteSpace(LogText)) return;
             OraData.execSQLCmd(string.Format("insert into lazylog (char_name,logtext) values ('{0}','{1}')", ObjectManager.MyPlayer.Name, LogText));
         }
@@ -258,6 +264,25 @@ namespace LazyLib.SPY
             }
 
             return result;
+        }
+
+        public static string GetParam(string Param)
+        {
+            string rtv = "", sql="";
+            sql = string.Format("select nr from LazyParameters where bh='{0}'", Param);
+                        try
+            {
+                DataTable dt = OraData.execSQL(sql);
+                foreach (DataRow dr in dt.Rows)
+                {
+                    rtv = dr[0].ToString();
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+            return rtv;
         }
 
         /// <summary>
