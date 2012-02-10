@@ -56,7 +56,7 @@ create table ahdata (
    item_name            varchar(98)                   not null ,
    prize                number(8)          default 0  null,
    scantime             date                          not null ,
-   constraint pk_ahdata primary key (seller,item_name)
+   constraint pk_ahdata primary key (server,seller,item_name,scantime)
 );
 comment on table ahdata is 'ahÉ¨ÃèÊı¾İ';
 
