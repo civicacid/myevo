@@ -50,12 +50,12 @@ namespace LazyEvo.LFlyingEngine.States
                 Mount.MountUp();
                 MoveHelper.Jump(3000);
             }
-            LazyHelpers.StopAll("Bags are full, stopping");
+            LazyHelpers.StopAll("背包满了, 停止工作");
         }
 
         public override string Name()
         {
-            return "Full bags";
+            return "背包满了";
         }
     }
 }

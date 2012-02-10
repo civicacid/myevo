@@ -45,6 +45,8 @@ create table spells (
 );
 comment on table spells is '法术数据库';
 
+create table wowzone (z_id varchar(100),z_name varchar(200), constraint pk_zone primary key (z_id));
+
 -- -----------------------------------------------------
 -- table ahdata
 -- -----------------------------------------------------

@@ -683,7 +683,9 @@ namespace LazyEvo.Forms
         private void btnSelectFight_Click(object sender, EventArgs e)
         {
             OpenFileDialog fileDialog1 = new OpenFileDialog();
-            fileDialog1.InitialDirectory = "c:\\";
+            var executableFileInfo = new FileInfo(Application.ExecutablePath);
+            string executableDirectoryName = executableFileInfo.DirectoryName;
+            fileDialog1.InitialDirectory = executableDirectoryName;
             fileDialog1.Filter = "xml files (*.xml)|*.xml|All files (*.*)|*.*";
             fileDialog1.FilterIndex = 1;
             fileDialog1.RestoreDirectory = true;
@@ -749,7 +751,9 @@ namespace LazyEvo.Forms
         private void btnSelectMap_Click(object sender, EventArgs e)
         {
             OpenFileDialog fileDialog1 = new OpenFileDialog();
-            fileDialog1.InitialDirectory = "c:\\";
+            var executableFileInfo = new FileInfo(Application.ExecutablePath);
+            string executableDirectoryName = executableFileInfo.DirectoryName;
+            fileDialog1.InitialDirectory = executableDirectoryName;
             fileDialog1.Filter = "xml files (*.xml)|*.xml|All files (*.*)|*.*";
             fileDialog1.FilterIndex = 1;
             fileDialog1.RestoreDirectory = true;

@@ -67,6 +67,7 @@ namespace LazyLib.SPY
                 return chars;
             }
 
+            chars.Clear();
             foreach (DataRow dr in dt.Rows)
             {
                 chars.Add(dr["char_id"].ToString(), dr["char_name"].ToString());
@@ -92,6 +93,8 @@ namespace LazyLib.SPY
                 Logging.Write(string.Format("处理{0}时，出现错误", sql));
                 return chars;
             }
+
+            chars.Clear();
             foreach (DataRow dr in dt.Rows)
             {
                 chars.Add("AccountName", dr["acc_name"].ToString());
@@ -114,6 +117,7 @@ namespace LazyLib.SPY
                 return null;
             }
 
+            result.Clear();
             foreach (DataRow dr in dt.Rows)
             {
                 // 收件人是自己的话，跳过
@@ -225,7 +229,14 @@ namespace LazyLib.SPY
         {
             //if (!IsWriteLazy.Equals("Y")) return;
             if (string.IsNullOrWhiteSpace(LogText)) return;
-            OraData.execSQLCmd(string.Format("insert into lazylog (char_name,logtext) values ('{0}','{1}')", ObjectManager.MyPlayer.Name, LogText));
+
+            string role_name = "";
+            if (string.IsNullOrWhiteSpace(ObjectManager.MyPlayer.Name)) 
+                role_name = "系统"; 
+            else 
+                role_name = ObjectManager.MyPlayer.Name;
+
+            OraData.execSQLCmd(string.Format("insert into lazylog (char_name,logtext) values ('{0}','{1}')", role_name, LogText));
         }
 
         public static void SaveAhInfo(string seller, string item, int prize)
@@ -237,7 +248,7 @@ namespace LazyLib.SPY
 
         public static DataTable GetJob(string MachineID)
         {
-            string sql = string.Format("select runtime,char_id,dowhat where ((to_char(starttime,'hh24mi') = to_char(sysdate,'hh24mi') and everyday = 1) or to_char(starttime,'yyyymmddhh24mi') = to_char(sysdate,'yyyymmddhh24mi')) and machineid = '{0}'", MachineID);
+            string sql = string.Format("select runtime,char_id,dowhat from autologin where ((to_char(starttime,'hh24mi') = to_char(sysdate,'hh24mi') and everyday = 1) or to_char(starttime,'yyyymmddhh24mi') = to_char(sysdate,'yyyymmddhh24mi')) and machineid = '{0}'", MachineID);
             return OraData.execSQL(sql);
         }
 
@@ -268,9 +279,9 @@ namespace LazyLib.SPY
 
         public static string GetParam(string Param)
         {
-            string rtv = "", sql="";
+            string rtv = "", sql = "";
             sql = string.Format("select nr from LazyParameters where bh='{0}'", Param);
-                        try
+            try
             {
                 DataTable dt = OraData.execSQL(sql);
                 foreach (DataRow dr in dt.Rows)

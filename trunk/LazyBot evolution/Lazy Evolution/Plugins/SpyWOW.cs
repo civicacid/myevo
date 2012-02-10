@@ -1479,13 +1479,29 @@ namespace LazyEvo.Plugins
 
         public static bool initme()
         {
+            RUNNING = true;
+
+            Logging.Write("获取邮寄列表");
             MailList = SpyDB.GetMailList();
-            if (MailList.Count == 0) return false;
+            if (MailList.Count == 0)
+            {
+                Logging.Write("获取邮寄列表时，获得的列表内容为空");
+                RUNNING = false;
+                return false;
+            }
+            Logging.Write("获取分解列表");
             Mines = SpyDB.GetMineList();
-            if (Mines.Count == 0) return false;
+            if (Mines.Count == 0)
+            {
+                Logging.Write("获取分解列表时，获得的列表内容为空");
+                RUNNING = false;
+                return false;
+            }
             logger.clear();
 
+            Logging.Write("进行外挂初始化--动作条初始化");
             BarMapper.MapBars();
+            Logging.Write("进行外挂初始化--按键初始化");
             KeyHelper.LoadKeys();
 
             return true;
@@ -1506,11 +1522,12 @@ namespace LazyEvo.Plugins
                 catch (Exception ex)
                 {
                     Logging.Write("启动失败，线程设置出现错误，原因是：" + ex.ToString());
+                    RUNNING = false;
                     return;
                 }
                 _thread.Start();
                 Logging.Write("分解矿 开始了。。。。。");
-                RUNNING = true;
+                
             }
         }
 
@@ -2754,6 +2771,7 @@ namespace LazyEvo.Plugins
             {
                 _thread.Abort();
                 _thread = null;
+                Logging.Write("计划结束运行。。。。。");
             }
         }
 
@@ -2778,6 +2796,7 @@ namespace LazyEvo.Plugins
                             char_id = dr["char_id"].ToString();
                             DoWhat = dr["dowhat"].ToString();
                             RunMiniute = Convert.ToInt32(dr["runtime"]);
+                            Logging.Write(string.Format("获得任务，角色ID：{0}，任务描述：{1}，持续时间：{2}", char_id, DoWhat, dr["runtime"].ToString()));
                             SpyDB.WriteLog("计划任务", string.Format("获得任务，角色ID：{0}，任务描述：{1}，持续时间：{2}", char_id, DoWhat, dr["runtime"].ToString()));
                         }
 
@@ -2826,6 +2845,11 @@ namespace LazyEvo.Plugins
                     if (SpyLogin.IsOK)
                     {
                         SpyDB.WriteLog("计划任务", string.Format("任务角色登录成功，角色ID：{0}，任务描述：{1}，持续时间：{2}", char_id, DoWhat, RunMiniute.ToString()));
+
+                        Thread.Sleep(2000);
+                        if (!ObjectManager.Initialized) ObjectManager.Initialize(SpyLogin.WOW_P.Id);
+                        Thread.Sleep(2000);
+
                         JobStatus = EnumJobStatus.login_OK;
                     }
                     if (string.Format("{0:yyyy-MM-dd HH:mm}", StatusStartTime.AddMinutes(RUN_OUT_MIN_LOGIN)).Equals(string.Format("{0:yyyy-MM-dd HH:mm}", DateTime.Now)))
@@ -2856,6 +2880,7 @@ namespace LazyEvo.Plugins
                     StatusStartTime = DateTime.Now;
                     JobStatus = EnumJobStatus.Working;
 
+                    Thread.Sleep(2000);         //暂停，再获取运行状态，保留充分的初始化时间
                     break;
 
                 case EnumJobStatus.Working:

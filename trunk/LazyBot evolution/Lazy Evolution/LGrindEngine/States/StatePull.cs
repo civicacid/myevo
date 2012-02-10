@@ -69,13 +69,13 @@ namespace LazyEvo.LGrindEngine.States
         {
             if (ObjectManager.ShouldDefend)
             {
-                Logging.Write("Not pulling, we are in combat");
+                Logging.Write("Not pulling, 正在战斗状态");
                 return;
             }
             GrindingEngine.Navigator.Stop();
             if (ObjectManager.ShouldDefend)
             {
-                Logging.Write("Not pulling, we are in combat");
+                Logging.Write("Not pulling, 正在战斗状态");
                 return;
             }
             CombatHandler.StartCombat(_unit);

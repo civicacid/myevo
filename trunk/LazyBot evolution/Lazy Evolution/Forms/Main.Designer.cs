@@ -63,6 +63,7 @@
             this.buttonItem3 = new DevComponents.DotNetBar.ButtonItem();
             this.buttonItem5 = new DevComponents.DotNetBar.ButtonItem();
             this.buttonItem6 = new DevComponents.DotNetBar.ButtonItem();
+            this.buttonItem7 = new DevComponents.DotNetBar.ButtonItem();
             this.buttonX3 = new DevComponents.DotNetBar.ButtonX();
             this.CBDebug = new DevComponents.DotNetBar.Controls.CheckBoxX();
             this.buttonX1 = new DevComponents.DotNetBar.ButtonX();
@@ -113,7 +114,6 @@
             this.comboItem3 = new DevComponents.Editors.ComboItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.StatsText = new System.Windows.Forms.ToolStripStatusLabel();
-            this.buttonItem7 = new DevComponents.DotNetBar.ButtonItem();
             this.ControlSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.superTabControl5)).BeginInit();
             this.superTabControl5.SuspendLayout();
@@ -131,37 +131,37 @@
             // 
             // styleManager1
             // 
-            this.styleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Metro;
+            this.styleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2010Black;
             this.styleManager1.MetroColorParameters = new DevComponents.DotNetBar.Metro.ColorTables.MetroColorGeneratorParameters(System.Drawing.Color.White, System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(163)))), ((int)(((byte)(26))))));
             // 
             // expandableSplitter1
             // 
-            this.expandableSplitter1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(216)))), ((int)(((byte)(216)))));
-            this.expandableSplitter1.BackColor2 = System.Drawing.Color.Empty;
+            this.expandableSplitter1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(207)))), ((int)(((byte)(207)))), ((int)(((byte)(207)))));
+            this.expandableSplitter1.BackColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(49)))), ((int)(((byte)(49)))));
             this.expandableSplitter1.BackColor2SchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
             this.expandableSplitter1.BackColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
             this.expandableSplitter1.Enabled = false;
             this.expandableSplitter1.ExpandableControl = this.ControlSettings;
-            this.expandableSplitter1.ExpandFillColor = System.Drawing.Color.Empty;
+            this.expandableSplitter1.ExpandFillColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(49)))), ((int)(((byte)(49)))));
             this.expandableSplitter1.ExpandFillColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
-            this.expandableSplitter1.ExpandLineColor = System.Drawing.Color.FromArgb(((int)(((byte)(140)))), ((int)(((byte)(140)))), ((int)(((byte)(140)))));
+            this.expandableSplitter1.ExpandLineColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.expandableSplitter1.ExpandLineColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.ItemText;
             this.expandableSplitter1.ForeColor = System.Drawing.Color.Black;
-            this.expandableSplitter1.GripDarkColor = System.Drawing.Color.FromArgb(((int)(((byte)(140)))), ((int)(((byte)(140)))), ((int)(((byte)(140)))));
+            this.expandableSplitter1.GripDarkColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.expandableSplitter1.GripDarkColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.ItemText;
-            this.expandableSplitter1.GripLightColor = System.Drawing.Color.White;
+            this.expandableSplitter1.GripLightColor = System.Drawing.Color.FromArgb(((int)(((byte)(201)))), ((int)(((byte)(201)))), ((int)(((byte)(201)))));
             this.expandableSplitter1.GripLightColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.BarBackground;
-            this.expandableSplitter1.HotBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(127)))), ((int)(((byte)(127)))));
-            this.expandableSplitter1.HotBackColor2 = System.Drawing.Color.Empty;
+            this.expandableSplitter1.HotBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(252)))), ((int)(((byte)(151)))), ((int)(((byte)(61)))));
+            this.expandableSplitter1.HotBackColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(184)))), ((int)(((byte)(94)))));
             this.expandableSplitter1.HotBackColor2SchemePart = DevComponents.DotNetBar.eColorSchemePart.ItemPressedBackground2;
             this.expandableSplitter1.HotBackColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.ItemPressedBackground;
-            this.expandableSplitter1.HotExpandFillColor = System.Drawing.Color.Empty;
+            this.expandableSplitter1.HotExpandFillColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(49)))), ((int)(((byte)(49)))));
             this.expandableSplitter1.HotExpandFillColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
-            this.expandableSplitter1.HotExpandLineColor = System.Drawing.Color.FromArgb(((int)(((byte)(140)))), ((int)(((byte)(140)))), ((int)(((byte)(140)))));
+            this.expandableSplitter1.HotExpandLineColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.expandableSplitter1.HotExpandLineColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.ItemText;
-            this.expandableSplitter1.HotGripDarkColor = System.Drawing.Color.Empty;
+            this.expandableSplitter1.HotGripDarkColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(49)))), ((int)(((byte)(49)))));
             this.expandableSplitter1.HotGripDarkColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
-            this.expandableSplitter1.HotGripLightColor = System.Drawing.Color.White;
+            this.expandableSplitter1.HotGripLightColor = System.Drawing.Color.FromArgb(((int)(((byte)(201)))), ((int)(((byte)(201)))), ((int)(((byte)(201)))));
             this.expandableSplitter1.HotGripLightColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.BarBackground;
             this.expandableSplitter1.Location = new System.Drawing.Point(173, 0);
             this.expandableSplitter1.Margin = new System.Windows.Forms.Padding(4);
@@ -256,7 +256,7 @@
             this.SelectCombat.ItemHeight = 20;
             this.SelectCombat.Items.AddRange(new object[] {
             this.comboItem1});
-            this.SelectCombat.Location = new System.Drawing.Point(5, 153);
+            this.SelectCombat.Location = new System.Drawing.Point(5, 141);
             this.SelectCombat.Margin = new System.Windows.Forms.Padding(4);
             this.SelectCombat.Name = "SelectCombat";
             this.SelectCombat.Size = new System.Drawing.Size(163, 26);
@@ -508,6 +508,12 @@
             this.buttonItem6.Text = "外域-魔导师平台（开始）";
             this.buttonItem6.Click += new System.EventHandler(this.buttonItem6_Click);
             // 
+            // buttonItem7
+            // 
+            this.buttonItem7.Name = "buttonItem7";
+            this.buttonItem7.Text = "WLK-古达克（开始）";
+            this.buttonItem7.Click += new System.EventHandler(this.buttonItem7_Click);
+            // 
             // buttonX3
             // 
             this.buttonX3.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
@@ -530,7 +536,7 @@
             // 
             this.CBDebug.BackgroundStyle.Class = "";
             this.CBDebug.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.CBDebug.Font = new System.Drawing.Font("新宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.CBDebug.Font = new System.Drawing.Font("NSimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.CBDebug.Location = new System.Drawing.Point(348, 405);
             this.CBDebug.Margin = new System.Windows.Forms.Padding(4);
             this.CBDebug.Name = "CBDebug";
@@ -575,7 +581,7 @@
             // 
             this.CBTopMost.BackgroundStyle.Class = "";
             this.CBTopMost.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.CBTopMost.Font = new System.Drawing.Font("新宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.CBTopMost.Font = new System.Drawing.Font("NSimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.CBTopMost.Location = new System.Drawing.Point(348, 421);
             this.CBTopMost.Margin = new System.Windows.Forms.Padding(4);
             this.CBTopMost.Name = "CBTopMost";
@@ -879,7 +885,7 @@
             this.LogWin.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(223)))), ((int)(((byte)(234)))), ((int)(((byte)(246)))));
             this.LogWin.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.LogWin.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.LogWin.Font = new System.Drawing.Font("新宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.LogWin.Font = new System.Drawing.Font("NSimSun", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.LogWin.Location = new System.Drawing.Point(0, 0);
             this.LogWin.Margin = new System.Windows.Forms.Padding(4);
             this.LogWin.Name = "LogWin";
@@ -1262,7 +1268,7 @@
             // 
             this.labelX24.BackgroundStyle.Class = "";
             this.labelX24.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX24.Font = new System.Drawing.Font("新宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.labelX24.Font = new System.Drawing.Font("NSimSun", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.labelX24.Location = new System.Drawing.Point(4, 404);
             this.labelX24.Margin = new System.Windows.Forms.Padding(4);
             this.labelX24.Name = "labelX24";
@@ -1300,13 +1306,13 @@
             // 
             // ChatTBSendText
             // 
-            this.ChatTBSendText.BackColor = System.Drawing.Color.White;
+            this.ChatTBSendText.BackColor = System.Drawing.SystemColors.Control;
             // 
             // 
             // 
             this.ChatTBSendText.Border.Class = "TextBoxBorder";
             this.ChatTBSendText.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.ChatTBSendText.ForeColor = System.Drawing.Color.Black;
+            this.ChatTBSendText.ForeColor = System.Drawing.SystemColors.ControlText;
             this.ChatTBSendText.Location = new System.Drawing.Point(4, 372);
             this.ChatTBSendText.Margin = new System.Windows.Forms.Padding(4);
             this.ChatTBSendText.Name = "ChatTBSendText";
@@ -1356,24 +1362,18 @@
             this.StatsText.Name = "StatsText";
             this.StatsText.Size = new System.Drawing.Size(0, 17);
             // 
-            // buttonItem7
-            // 
-            this.buttonItem7.Name = "buttonItem7";
-            this.buttonItem7.Text = "WLK-古达克（开始）";
-            this.buttonItem7.Click += new System.EventHandler(this.buttonItem7_Click);
-            // 
             // Main
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.AutoValidate = System.Windows.Forms.AutoValidate.Disable;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(223)))), ((int)(((byte)(234)))), ((int)(((byte)(246)))));
             this.ClientSize = new System.Drawing.Size(826, 497);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.superTabControl5);
             this.Controls.Add(this.expandableSplitter1);
             this.Controls.Add(this.ControlSettings);
-            this.DoubleBuffered = true;
             this.EnableGlass = false;
-            this.Font = new System.Drawing.Font("新宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Font = new System.Drawing.Font("NSimSun", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;

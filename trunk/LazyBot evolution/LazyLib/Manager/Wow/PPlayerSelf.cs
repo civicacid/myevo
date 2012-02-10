@@ -415,20 +415,8 @@ namespace LazyLib.Wow
         {
             get
             {
-                string rtv = "";
-                switch (ZoneId)
-                {
-                    case 5034:
-                        rtv = "奥丹姆";
-                        break;
-                    case 616:
-                        rtv = "海加尔山";
-                        break;
-                    case 331:
-                        rtv = "灰谷";
-                        break;
-                }
-                return rtv;
+                if (!SPY.GetZoneNameByID.IsInit) SPY.GetZoneNameByID.InitMe();
+                return SPY.GetZoneNameByID.GetZoneText((int)ZoneId);
             }
         }
 

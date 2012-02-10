@@ -30,7 +30,7 @@ namespace LazyEvo.LFlyingEngine.Helpers
 {
     internal class Herb
     {
-        private static List<string> _herb=new List<string>();
+        private static List<string> _herb = new List<string>();
         private static string _herbXmlPath;
         public static bool HasLoaded = false;
 
@@ -60,7 +60,7 @@ namespace LazyEvo.LFlyingEngine.Helpers
                     break;
             }
             _herbXmlPath = string.Format("{0}\\Collect\\Herb_{1}.xml", FlyingEngine.OurDirectory, herbFile);
-            Logging.Write("药的文件路径是："+_herbXmlPath);
+            Logging.Write("药的文件路径是：" + _herbXmlPath);
             try
             {
                 if (File.Exists(_herbXmlPath))
@@ -79,6 +79,9 @@ namespace LazyEvo.LFlyingEngine.Helpers
                 }
                 else
                 {
+                    if (!Directory.Exists(FlyingEngine.OurDirectory + "\\Collect"))
+                        Directory.CreateDirectory(FlyingEngine.OurDirectory + "\\Collect");
+                    File.CreateText(_herbXmlPath);
                     Logging.Write(LogType.Warning, "Could not find the file {0}", _herbXmlPath);
                 }
             }

@@ -423,20 +423,28 @@ namespace LazyEvo.Plugins
             }
         }
 
-                private void button9_Click_1(object sender, EventArgs e)
+        private void button9_Click_1(object sender, EventArgs e)
         {
-            if (SpyLogin.initme("48"))
-            {
-                SpyLogin.start();
-                while (!SpyLogin.IsOK) Thread.Sleep(1000);
-            }
 
-            if (SpyCJ.initme())
-            {
-                SpyCJ.start();
-                Thread.Sleep(5000);
-                Logging.Write("现在的运行状态是："+(SpyCJ.RUNNING?"正常":"不正常"));
-            }
+            //if (SpyLogin.initme("16"))
+            //{
+            //    SpyLogin.start();
+            //    while (!SpyLogin.IsOK) Thread.Sleep(1000);
+            //}
+
+            //if (SpyCJ.initme())
+            //{
+            //    SpyCJ.start();
+            //    Thread.Sleep(5000);
+            //    Logging.Write("现在的运行状态是：" + (SpyCJ.RUNNING ? "正常" : "不正常"));
+            //}
+
+            SpySchdule.startScanDB();
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            SpySchdule.stopScanDB();
         }
 
     }
