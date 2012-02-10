@@ -52,11 +52,11 @@
             this.BeCombatDistance = new DevComponents.Editors.IntegerInput();
             this.labelX21 = new DevComponents.DotNetBar.LabelX();
             this.BeTabs = new DevComponents.DotNetBar.SuperTabControl();
-            this.superTabControlPanel5 = new DevComponents.DotNetBar.SuperTabControlPanel();
-            this.BePrePullRules = new DevComponents.AdvTree.AdvTree();
-            this.nodeConnector5 = new DevComponents.AdvTree.NodeConnector();
-            this.elementStyle5 = new DevComponents.DotNetBar.ElementStyle();
-            this.TabPrePull = new DevComponents.DotNetBar.SuperTabItem();
+            this.superTabControlPanel2 = new DevComponents.DotNetBar.SuperTabControlPanel();
+            this.BeComRules = new DevComponents.AdvTree.AdvTree();
+            this.nodeConnector1 = new DevComponents.AdvTree.NodeConnector();
+            this.elementStyle1 = new DevComponents.DotNetBar.ElementStyle();
+            this.TabCombat = new DevComponents.DotNetBar.SuperTabItem();
             this.superTabControlPanel3 = new DevComponents.DotNetBar.SuperTabControlPanel();
             this.BeBuffRules = new DevComponents.AdvTree.AdvTree();
             this.nodeConnector2 = new DevComponents.AdvTree.NodeConnector();
@@ -67,16 +67,16 @@
             this.nodeConnector4 = new DevComponents.AdvTree.NodeConnector();
             this.elementStyle4 = new DevComponents.DotNetBar.ElementStyle();
             this.TabRest = new DevComponents.DotNetBar.SuperTabItem();
-            this.superTabControlPanel2 = new DevComponents.DotNetBar.SuperTabControlPanel();
-            this.BeComRules = new DevComponents.AdvTree.AdvTree();
-            this.nodeConnector1 = new DevComponents.AdvTree.NodeConnector();
-            this.elementStyle1 = new DevComponents.DotNetBar.ElementStyle();
-            this.TabCombat = new DevComponents.DotNetBar.SuperTabItem();
             this.superTabControlPanel1 = new DevComponents.DotNetBar.SuperTabControlPanel();
             this.BePullRules = new DevComponents.AdvTree.AdvTree();
             this.nodeConnector3 = new DevComponents.AdvTree.NodeConnector();
             this.elementStyle3 = new DevComponents.DotNetBar.ElementStyle();
             this.TabPull = new DevComponents.DotNetBar.SuperTabItem();
+            this.superTabControlPanel5 = new DevComponents.DotNetBar.SuperTabControlPanel();
+            this.BePrePullRules = new DevComponents.AdvTree.AdvTree();
+            this.nodeConnector5 = new DevComponents.AdvTree.NodeConnector();
+            this.elementStyle5 = new DevComponents.DotNetBar.ElementStyle();
+            this.TabPrePull = new DevComponents.DotNetBar.SuperTabItem();
             this.labelItem3 = new DevComponents.DotNetBar.LabelItem();
             this.BeSaveBeheavior = new DevComponents.DotNetBar.ButtonItem();
             this.BeBarRuleModifier = new DevComponents.DotNetBar.Bar();
@@ -95,22 +95,23 @@
             ((System.ComponentModel.ISupportInitialize)(this.BeCombatDistance)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.BeTabs)).BeginInit();
             this.BeTabs.SuspendLayout();
-            this.superTabControlPanel5.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.BePrePullRules)).BeginInit();
+            this.superTabControlPanel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.BeComRules)).BeginInit();
             this.superTabControlPanel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.BeBuffRules)).BeginInit();
             this.superTabControlPanel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.BeRestRules)).BeginInit();
-            this.superTabControlPanel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.BeComRules)).BeginInit();
             this.superTabControlPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.BePullRules)).BeginInit();
+            this.superTabControlPanel5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.BePrePullRules)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.BeBarRuleModifier)).BeginInit();
             this.SuspendLayout();
             // 
             // styleManager1
             // 
             this.styleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Windows7Blue;
+            this.styleManager1.MetroColorParameters = new DevComponents.DotNetBar.Metro.ColorTables.MetroColorGeneratorParameters(System.Drawing.Color.White, System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(163)))), ((int)(((byte)(26))))));
             // 
             // groupPanel4
             // 
@@ -167,9 +168,9 @@
             // 
             this.BtnAllowScripts.BackgroundStyle.Class = "";
             this.BtnAllowScripts.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.BtnAllowScripts.Location = new System.Drawing.Point(425, 59);
+            this.BtnAllowScripts.Location = new System.Drawing.Point(413, 59);
             this.BtnAllowScripts.Name = "BtnAllowScripts";
-            this.BtnAllowScripts.Size = new System.Drawing.Size(92, 23);
+            this.BtnAllowScripts.Size = new System.Drawing.Size(101, 23);
             this.BtnAllowScripts.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.BtnAllowScripts.TabIndex = 10;
             this.BtnAllowScripts.Text = "Allow scripts";
@@ -181,7 +182,7 @@
             this.BtnBehaviorGenerator.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
             this.BtnBehaviorGenerator.Location = new System.Drawing.Point(2, 59);
             this.BtnBehaviorGenerator.Name = "BtnBehaviorGenerator";
-            this.BtnBehaviorGenerator.Size = new System.Drawing.Size(103, 27);
+            this.BtnBehaviorGenerator.Size = new System.Drawing.Size(132, 27);
             this.BtnBehaviorGenerator.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.BtnBehaviorGenerator.TabIndex = 78;
             this.BtnBehaviorGenerator.Text = "Behavior generator";
@@ -193,13 +194,13 @@
             this.SelectEngine.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.SelectEngine.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.SelectEngine.FormattingEnabled = true;
-            this.SelectEngine.ItemHeight = 14;
+            this.SelectEngine.ItemHeight = 15;
             this.SelectEngine.Items.AddRange(new object[] {
             this.Deathknight,
             this.Paladin});
-            this.SelectEngine.Location = new System.Drawing.Point(111, 63);
+            this.SelectEngine.Location = new System.Drawing.Point(140, 63);
             this.SelectEngine.Name = "SelectEngine";
-            this.SelectEngine.Size = new System.Drawing.Size(150, 20);
+            this.SelectEngine.Size = new System.Drawing.Size(150, 21);
             this.SelectEngine.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.SelectEngine.TabIndex = 77;
             // 
@@ -217,10 +218,10 @@
             this.BeTBSelectBehavior.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.BeTBSelectBehavior.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.BeTBSelectBehavior.FormattingEnabled = true;
-            this.BeTBSelectBehavior.ItemHeight = 14;
-            this.BeTBSelectBehavior.Location = new System.Drawing.Point(111, 34);
+            this.BeTBSelectBehavior.ItemHeight = 15;
+            this.BeTBSelectBehavior.Location = new System.Drawing.Point(121, 34);
             this.BeTBSelectBehavior.Name = "BeTBSelectBehavior";
-            this.BeTBSelectBehavior.Size = new System.Drawing.Size(406, 20);
+            this.BeTBSelectBehavior.Size = new System.Drawing.Size(396, 21);
             this.BeTBSelectBehavior.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.BeTBSelectBehavior.TabIndex = 47;
             this.BeTBSelectBehavior.SelectedIndexChanged += new System.EventHandler(this.BeTbSelectBehaviorSelectedIndexChanged);
@@ -235,7 +236,7 @@
             this.labelX20.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX20.Location = new System.Drawing.Point(3, 32);
             this.labelX20.Name = "labelX20";
-            this.labelX20.Size = new System.Drawing.Size(82, 23);
+            this.labelX20.Size = new System.Drawing.Size(112, 23);
             this.labelX20.TabIndex = 2;
             this.labelX20.Text = "Select Behavior:";
             // 
@@ -246,9 +247,9 @@
             // 
             this.BeTBNewBehavior.Border.Class = "TextBoxBorder";
             this.BeTBNewBehavior.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.BeTBNewBehavior.Location = new System.Drawing.Point(111, 6);
+            this.BeTBNewBehavior.Location = new System.Drawing.Point(121, 6);
             this.BeTBNewBehavior.Name = "BeTBNewBehavior";
-            this.BeTBNewBehavior.Size = new System.Drawing.Size(406, 20);
+            this.BeTBNewBehavior.Size = new System.Drawing.Size(396, 21);
             this.BeTBNewBehavior.TabIndex = 1;
             this.BeTBNewBehavior.Text = "Enter name and press return to create new behavior.";
             this.BeTBNewBehavior.Click += new System.EventHandler(this.BeTbNewBehaviorClick);
@@ -264,14 +265,13 @@
             this.labelX18.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX18.Location = new System.Drawing.Point(3, 3);
             this.labelX18.Name = "labelX18";
-            this.labelX18.Size = new System.Drawing.Size(91, 23);
+            this.labelX18.Size = new System.Drawing.Size(112, 23);
             this.labelX18.TabIndex = 0;
             this.labelX18.Text = "Create Behavior:";
             // 
             // BeGMisc
             // 
             this.BeGMisc.BackColor = System.Drawing.Color.Transparent;
-            this.BeGMisc.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.BeGMisc.CanvasColor = System.Drawing.SystemColors.Control;
             this.BeGMisc.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
             this.BeGMisc.Controls.Add(this.BeGlobalCooldown);
@@ -329,10 +329,10 @@
             this.BeGlobalCooldown.BackgroundStyle.Class = "DateTimeInputBackground";
             this.BeGlobalCooldown.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.BeGlobalCooldown.ButtonFreeText.Shortcut = DevComponents.DotNetBar.eShortcut.F2;
-            this.BeGlobalCooldown.Location = new System.Drawing.Point(410, 37);
+            this.BeGlobalCooldown.Location = new System.Drawing.Point(444, 37);
             this.BeGlobalCooldown.Name = "BeGlobalCooldown";
             this.BeGlobalCooldown.ShowUpDown = true;
-            this.BeGlobalCooldown.Size = new System.Drawing.Size(64, 20);
+            this.BeGlobalCooldown.Size = new System.Drawing.Size(64, 21);
             this.BeGlobalCooldown.TabIndex = 9;
             this.BeGlobalCooldown.Value = 2000;
             // 
@@ -343,9 +343,9 @@
             // 
             this.labelX25.BackgroundStyle.Class = "";
             this.labelX25.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX25.Location = new System.Drawing.Point(316, 32);
+            this.labelX25.Location = new System.Drawing.Point(325, 34);
             this.labelX25.Name = "labelX25";
-            this.labelX25.Size = new System.Drawing.Size(91, 27);
+            this.labelX25.Size = new System.Drawing.Size(108, 27);
             this.labelX25.TabIndex = 8;
             this.labelX25.Text = "Global cooldown:";
             // 
@@ -357,10 +357,10 @@
             this.BePrePullDistance.BackgroundStyle.Class = "DateTimeInputBackground";
             this.BePrePullDistance.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.BePrePullDistance.ButtonFreeText.Shortcut = DevComponents.DotNetBar.eShortcut.F2;
-            this.BePrePullDistance.Location = new System.Drawing.Point(99, 11);
+            this.BePrePullDistance.Location = new System.Drawing.Point(130, 8);
             this.BePrePullDistance.Name = "BePrePullDistance";
             this.BePrePullDistance.ShowUpDown = true;
-            this.BePrePullDistance.Size = new System.Drawing.Size(64, 20);
+            this.BePrePullDistance.Size = new System.Drawing.Size(42, 21);
             this.BePrePullDistance.TabIndex = 7;
             this.BePrePullDistance.Value = 25;
             // 
@@ -371,9 +371,9 @@
             // 
             this.labelX23.BackgroundStyle.Class = "";
             this.labelX23.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX23.Location = new System.Drawing.Point(6, 6);
+            this.labelX23.Location = new System.Drawing.Point(6, 5);
             this.labelX23.Name = "labelX23";
-            this.labelX23.Size = new System.Drawing.Size(91, 27);
+            this.labelX23.Size = new System.Drawing.Size(128, 27);
             this.labelX23.TabIndex = 6;
             this.labelX23.Text = "Pre-Pull distance:";
             // 
@@ -385,10 +385,10 @@
             this.BePullDistance.BackgroundStyle.Class = "DateTimeInputBackground";
             this.BePullDistance.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.BePullDistance.ButtonFreeText.Shortcut = DevComponents.DotNetBar.eShortcut.F2;
-            this.BePullDistance.Location = new System.Drawing.Point(246, 11);
+            this.BePullDistance.Location = new System.Drawing.Point(275, 8);
             this.BePullDistance.Name = "BePullDistance";
             this.BePullDistance.ShowUpDown = true;
-            this.BePullDistance.Size = new System.Drawing.Size(64, 20);
+            this.BePullDistance.Size = new System.Drawing.Size(45, 21);
             this.BePullDistance.TabIndex = 5;
             this.BePullDistance.Value = 25;
             // 
@@ -399,7 +399,7 @@
             // 
             this.labelX22.BackgroundStyle.Class = "";
             this.labelX22.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX22.Location = new System.Drawing.Point(170, 6);
+            this.labelX22.Location = new System.Drawing.Point(178, 5);
             this.labelX22.Name = "labelX22";
             this.labelX22.Size = new System.Drawing.Size(91, 27);
             this.labelX22.TabIndex = 4;
@@ -426,7 +426,7 @@
             // 
             this.BeEnableAutoAttack.BackgroundStyle.Class = "";
             this.BeEnableAutoAttack.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.BeEnableAutoAttack.Location = new System.Drawing.Point(3, 32);
+            this.BeEnableAutoAttack.Location = new System.Drawing.Point(3, 36);
             this.BeEnableAutoAttack.Name = "BeEnableAutoAttack";
             this.BeEnableAutoAttack.Size = new System.Drawing.Size(155, 23);
             this.BeEnableAutoAttack.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -441,10 +441,10 @@
             this.BeCombatDistance.BackgroundStyle.Class = "DateTimeInputBackground";
             this.BeCombatDistance.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.BeCombatDistance.ButtonFreeText.Shortcut = DevComponents.DotNetBar.eShortcut.F2;
-            this.BeCombatDistance.Location = new System.Drawing.Point(410, 11);
+            this.BeCombatDistance.Location = new System.Drawing.Point(445, 8);
             this.BeCombatDistance.Name = "BeCombatDistance";
             this.BeCombatDistance.ShowUpDown = true;
-            this.BeCombatDistance.Size = new System.Drawing.Size(64, 20);
+            this.BeCombatDistance.Size = new System.Drawing.Size(64, 21);
             this.BeCombatDistance.TabIndex = 1;
             this.BeCombatDistance.Value = 25;
             // 
@@ -455,9 +455,9 @@
             // 
             this.labelX21.BackgroundStyle.Class = "";
             this.labelX21.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX21.Location = new System.Drawing.Point(316, 6);
+            this.labelX21.Location = new System.Drawing.Point(326, 5);
             this.labelX21.Name = "labelX21";
-            this.labelX21.Size = new System.Drawing.Size(91, 27);
+            this.labelX21.Size = new System.Drawing.Size(108, 27);
             this.labelX21.TabIndex = 0;
             this.labelX21.Text = "Combat distance:";
             // 
@@ -480,9 +480,9 @@
             this.BeTabs.ControlBox.MenuBox,
             this.BeTabs.ControlBox.CloseBox});
             this.BeTabs.Controls.Add(this.superTabControlPanel5);
+            this.BeTabs.Controls.Add(this.superTabControlPanel2);
             this.BeTabs.Controls.Add(this.superTabControlPanel3);
             this.BeTabs.Controls.Add(this.superTabControlPanel4);
-            this.BeTabs.Controls.Add(this.superTabControlPanel2);
             this.BeTabs.Controls.Add(this.superTabControlPanel1);
             this.BeTabs.Location = new System.Drawing.Point(3, 103);
             this.BeTabs.Name = "BeTabs";
@@ -501,58 +501,57 @@
             this.labelItem3,
             this.BeSaveBeheavior});
             // 
-            // superTabControlPanel5
+            // superTabControlPanel2
             // 
-            this.superTabControlPanel5.Controls.Add(this.BePrePullRules);
-            this.superTabControlPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.superTabControlPanel5.Location = new System.Drawing.Point(0, 26);
-            this.superTabControlPanel5.Name = "superTabControlPanel5";
-            this.superTabControlPanel5.Size = new System.Drawing.Size(532, 281);
-            this.superTabControlPanel5.TabIndex = 0;
-            this.superTabControlPanel5.TabItem = this.TabPrePull;
+            this.superTabControlPanel2.Controls.Add(this.BeComRules);
+            this.superTabControlPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.superTabControlPanel2.Location = new System.Drawing.Point(0, 0);
+            this.superTabControlPanel2.Name = "superTabControlPanel2";
+            this.superTabControlPanel2.Size = new System.Drawing.Size(532, 307);
+            this.superTabControlPanel2.TabIndex = 0;
+            this.superTabControlPanel2.TabItem = this.TabCombat;
             // 
-            // BePrePullRules
+            // BeComRules
             // 
-            this.BePrePullRules.AccessibleRole = System.Windows.Forms.AccessibleRole.Outline;
-            this.BePrePullRules.AllowDrop = true;
-            this.BePrePullRules.BackColor = System.Drawing.SystemColors.Window;
+            this.BeComRules.AccessibleRole = System.Windows.Forms.AccessibleRole.Outline;
+            this.BeComRules.AllowDrop = true;
+            this.BeComRules.BackColor = System.Drawing.SystemColors.Window;
             // 
             // 
             // 
-            this.BePrePullRules.BackgroundStyle.Class = "TreeBorderKey";
-            this.BePrePullRules.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.BePrePullRules.Dock = System.Windows.Forms.DockStyle.Top;
-            //this.BePrePullRules.LicenseKey = "F962CEC7-CD8F-4911-A9E9-CAB39962FC1F";
-            this.BePrePullRules.Location = new System.Drawing.Point(0, 0);
-            this.BePrePullRules.Name = "BePrePullRules";
-            this.BePrePullRules.NodesConnector = this.nodeConnector5;
-            this.BePrePullRules.NodeStyle = this.elementStyle5;
-            this.BePrePullRules.PathSeparator = ";";
-            this.BePrePullRules.Size = new System.Drawing.Size(532, 278);
-            this.BePrePullRules.Styles.Add(this.elementStyle5);
-            this.BePrePullRules.TabIndex = 2;
-            this.BePrePullRules.Text = "advTree1";
-            this.BePrePullRules.NodeDragFeedback += new DevComponents.AdvTree.TreeDragFeedbackEventHander(this.BePrePullRules_NodeDragFeedback);
-            this.BePrePullRules.NodeClick += new DevComponents.AdvTree.TreeNodeMouseEventHandler(this.BePrePullRulesNodeClick);
-            this.BePrePullRules.NodeDoubleClick += new DevComponents.AdvTree.TreeNodeMouseEventHandler(this.BePrePullRulesNodeDoubleClick);
+            this.BeComRules.BackgroundStyle.Class = "TreeBorderKey";
+            this.BeComRules.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.BeComRules.Dock = System.Windows.Forms.DockStyle.Top;
+            this.BeComRules.Location = new System.Drawing.Point(0, 0);
+            this.BeComRules.Name = "BeComRules";
+            this.BeComRules.NodesConnector = this.nodeConnector1;
+            this.BeComRules.NodeStyle = this.elementStyle1;
+            this.BeComRules.PathSeparator = ";";
+            this.BeComRules.Size = new System.Drawing.Size(532, 278);
+            this.BeComRules.Styles.Add(this.elementStyle1);
+            this.BeComRules.TabIndex = 0;
+            this.BeComRules.Text = "advTree1";
+            this.BeComRules.NodeDragFeedback += new DevComponents.AdvTree.TreeDragFeedbackEventHander(this.BeComRules_NodeDragFeedback);
+            this.BeComRules.NodeClick += new DevComponents.AdvTree.TreeNodeMouseEventHandler(this.BeComRulesNodeClick);
+            this.BeComRules.NodeDoubleClick += new DevComponents.AdvTree.TreeNodeMouseEventHandler(this.BeComRulesNodeDoubleClick);
             // 
-            // nodeConnector5
+            // nodeConnector1
             // 
-            this.nodeConnector5.LineColor = System.Drawing.SystemColors.ControlText;
+            this.nodeConnector1.LineColor = System.Drawing.SystemColors.ControlText;
             // 
-            // elementStyle5
+            // elementStyle1
             // 
-            this.elementStyle5.Class = "";
-            this.elementStyle5.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.elementStyle5.Name = "elementStyle5";
-            this.elementStyle5.TextColor = System.Drawing.SystemColors.ControlText;
+            this.elementStyle1.Class = "";
+            this.elementStyle1.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.elementStyle1.Name = "elementStyle1";
+            this.elementStyle1.TextColor = System.Drawing.SystemColors.ControlText;
             // 
-            // TabPrePull
+            // TabCombat
             // 
-            this.TabPrePull.AttachedControl = this.superTabControlPanel5;
-            this.TabPrePull.GlobalItem = false;
-            this.TabPrePull.Name = "TabPrePull";
-            this.TabPrePull.Text = "Pre-Pull";
+            this.TabCombat.AttachedControl = this.superTabControlPanel2;
+            this.TabCombat.GlobalItem = false;
+            this.TabCombat.Name = "TabCombat";
+            this.TabCombat.Text = "Combat";
             // 
             // superTabControlPanel3
             // 
@@ -575,7 +574,6 @@
             this.BeBuffRules.BackgroundStyle.Class = "TreeBorderKey";
             this.BeBuffRules.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.BeBuffRules.Dock = System.Windows.Forms.DockStyle.Top;
-            //this.BeBuffRules.LicenseKey = "F962CEC7-CD8F-4911-A9E9-CAB39962FC1F";
             this.BeBuffRules.Location = new System.Drawing.Point(0, 0);
             this.BeBuffRules.Name = "BeBuffRules";
             this.BeBuffRules.NodesConnector = this.nodeConnector2;
@@ -628,7 +626,6 @@
             this.BeRestRules.BackgroundStyle.Class = "TreeBorderKey";
             this.BeRestRules.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.BeRestRules.Dock = System.Windows.Forms.DockStyle.Top;
-            //this.BeRestRules.LicenseKey = "F962CEC7-CD8F-4911-A9E9-CAB39962FC1F";
             this.BeRestRules.Location = new System.Drawing.Point(0, 0);
             this.BeRestRules.Name = "BeRestRules";
             this.BeRestRules.NodesConnector = this.nodeConnector4;
@@ -660,59 +657,6 @@
             this.TabRest.Name = "TabRest";
             this.TabRest.Text = "Rest";
             // 
-            // superTabControlPanel2
-            // 
-            this.superTabControlPanel2.Controls.Add(this.BeComRules);
-            this.superTabControlPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.superTabControlPanel2.Location = new System.Drawing.Point(0, 0);
-            this.superTabControlPanel2.Name = "superTabControlPanel2";
-            this.superTabControlPanel2.Size = new System.Drawing.Size(532, 307);
-            this.superTabControlPanel2.TabIndex = 0;
-            this.superTabControlPanel2.TabItem = this.TabCombat;
-            // 
-            // BeComRules
-            // 
-            this.BeComRules.AccessibleRole = System.Windows.Forms.AccessibleRole.Outline;
-            this.BeComRules.AllowDrop = true;
-            this.BeComRules.BackColor = System.Drawing.SystemColors.Window;
-            // 
-            // 
-            // 
-            this.BeComRules.BackgroundStyle.Class = "TreeBorderKey";
-            this.BeComRules.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.BeComRules.Dock = System.Windows.Forms.DockStyle.Top;
-            //this.BeComRules.LicenseKey = "F962CEC7-CD8F-4911-A9E9-CAB39962FC1F";
-            this.BeComRules.Location = new System.Drawing.Point(0, 0);
-            this.BeComRules.Name = "BeComRules";
-            this.BeComRules.NodesConnector = this.nodeConnector1;
-            this.BeComRules.NodeStyle = this.elementStyle1;
-            this.BeComRules.PathSeparator = ";";
-            this.BeComRules.Size = new System.Drawing.Size(532, 278);
-            this.BeComRules.Styles.Add(this.elementStyle1);
-            this.BeComRules.TabIndex = 0;
-            this.BeComRules.Text = "advTree1";
-            this.BeComRules.NodeDragFeedback += new DevComponents.AdvTree.TreeDragFeedbackEventHander(this.BeComRules_NodeDragFeedback);
-            this.BeComRules.NodeClick += new DevComponents.AdvTree.TreeNodeMouseEventHandler(this.BeComRulesNodeClick);
-            this.BeComRules.NodeDoubleClick += new DevComponents.AdvTree.TreeNodeMouseEventHandler(this.BeComRulesNodeDoubleClick);
-            // 
-            // nodeConnector1
-            // 
-            this.nodeConnector1.LineColor = System.Drawing.SystemColors.ControlText;
-            // 
-            // elementStyle1
-            // 
-            this.elementStyle1.Class = "";
-            this.elementStyle1.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.elementStyle1.Name = "elementStyle1";
-            this.elementStyle1.TextColor = System.Drawing.SystemColors.ControlText;
-            // 
-            // TabCombat
-            // 
-            this.TabCombat.AttachedControl = this.superTabControlPanel2;
-            this.TabCombat.GlobalItem = false;
-            this.TabCombat.Name = "TabCombat";
-            this.TabCombat.Text = "Combat";
-            // 
             // superTabControlPanel1
             // 
             this.superTabControlPanel1.Controls.Add(this.BePullRules);
@@ -734,7 +678,6 @@
             this.BePullRules.BackgroundStyle.Class = "TreeBorderKey";
             this.BePullRules.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.BePullRules.Dock = System.Windows.Forms.DockStyle.Top;
-            //this.BePullRules.LicenseKey = "F962CEC7-CD8F-4911-A9E9-CAB39962FC1F";
             this.BePullRules.Location = new System.Drawing.Point(0, 0);
             this.BePullRules.Name = "BePullRules";
             this.BePullRules.NodesConnector = this.nodeConnector3;
@@ -765,6 +708,58 @@
             this.TabPull.GlobalItem = false;
             this.TabPull.Name = "TabPull";
             this.TabPull.Text = "Pull";
+            // 
+            // superTabControlPanel5
+            // 
+            this.superTabControlPanel5.Controls.Add(this.BePrePullRules);
+            this.superTabControlPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.superTabControlPanel5.Location = new System.Drawing.Point(0, 26);
+            this.superTabControlPanel5.Name = "superTabControlPanel5";
+            this.superTabControlPanel5.Size = new System.Drawing.Size(532, 281);
+            this.superTabControlPanel5.TabIndex = 0;
+            this.superTabControlPanel5.TabItem = this.TabPrePull;
+            // 
+            // BePrePullRules
+            // 
+            this.BePrePullRules.AccessibleRole = System.Windows.Forms.AccessibleRole.Outline;
+            this.BePrePullRules.AllowDrop = true;
+            this.BePrePullRules.BackColor = System.Drawing.SystemColors.Window;
+            // 
+            // 
+            // 
+            this.BePrePullRules.BackgroundStyle.Class = "TreeBorderKey";
+            this.BePrePullRules.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.BePrePullRules.Dock = System.Windows.Forms.DockStyle.Top;
+            this.BePrePullRules.Location = new System.Drawing.Point(0, 0);
+            this.BePrePullRules.Name = "BePrePullRules";
+            this.BePrePullRules.NodesConnector = this.nodeConnector5;
+            this.BePrePullRules.NodeStyle = this.elementStyle5;
+            this.BePrePullRules.PathSeparator = ";";
+            this.BePrePullRules.Size = new System.Drawing.Size(532, 278);
+            this.BePrePullRules.Styles.Add(this.elementStyle5);
+            this.BePrePullRules.TabIndex = 2;
+            this.BePrePullRules.Text = "advTree1";
+            this.BePrePullRules.NodeDragFeedback += new DevComponents.AdvTree.TreeDragFeedbackEventHander(this.BePrePullRules_NodeDragFeedback);
+            this.BePrePullRules.NodeClick += new DevComponents.AdvTree.TreeNodeMouseEventHandler(this.BePrePullRulesNodeClick);
+            this.BePrePullRules.NodeDoubleClick += new DevComponents.AdvTree.TreeNodeMouseEventHandler(this.BePrePullRulesNodeDoubleClick);
+            // 
+            // nodeConnector5
+            // 
+            this.nodeConnector5.LineColor = System.Drawing.SystemColors.ControlText;
+            // 
+            // elementStyle5
+            // 
+            this.elementStyle5.Class = "";
+            this.elementStyle5.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.elementStyle5.Name = "elementStyle5";
+            this.elementStyle5.TextColor = System.Drawing.SystemColors.ControlText;
+            // 
+            // TabPrePull
+            // 
+            this.TabPrePull.AttachedControl = this.superTabControlPanel5;
+            this.TabPrePull.GlobalItem = false;
+            this.TabPrePull.Name = "TabPrePull";
+            this.TabPrePull.Text = "Pre-Pull";
             // 
             // labelItem3
             // 
@@ -837,15 +832,16 @@
             // 
             // BehaviorForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.AutoSize = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(223)))), ((int)(((byte)(233)))), ((int)(((byte)(245)))));
             this.ClientSize = new System.Drawing.Size(540, 569);
             this.Controls.Add(this.groupPanel4);
             this.Controls.Add(this.BeGMisc);
             this.Controls.Add(this.BeTabs);
             this.Controls.Add(this.BeBarRuleModifier);
-            this.DoubleBuffered = true;
+            this.Font = new System.Drawing.Font("NSimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "BehaviorForm";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.BehaviorFormFormClosing);
             this.Load += new System.EventHandler(this.BehaviorFormLoad);
@@ -857,16 +853,16 @@
             ((System.ComponentModel.ISupportInitialize)(this.BeCombatDistance)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.BeTabs)).EndInit();
             this.BeTabs.ResumeLayout(false);
-            this.superTabControlPanel5.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.BePrePullRules)).EndInit();
+            this.superTabControlPanel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.BeComRules)).EndInit();
             this.superTabControlPanel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.BeBuffRules)).EndInit();
             this.superTabControlPanel4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.BeRestRules)).EndInit();
-            this.superTabControlPanel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.BeComRules)).EndInit();
             this.superTabControlPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.BePullRules)).EndInit();
+            this.superTabControlPanel5.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.BePrePullRules)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.BeBarRuleModifier)).EndInit();
             this.ResumeLayout(false);
 

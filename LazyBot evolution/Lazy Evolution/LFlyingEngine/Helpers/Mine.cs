@@ -30,7 +30,7 @@ namespace LazyEvo.LFlyingEngine.Helpers
 {
     internal static class Mine
     {
-        private static List<string> _mine= new List<string>();
+        private static List<string> _mine = new List<string>();
         private static string _mineXmlPath;
         public static bool HasLoaded = false;
 
@@ -78,6 +78,9 @@ namespace LazyEvo.LFlyingEngine.Helpers
                 }
                 else
                 {
+                    if (!Directory.Exists(FlyingEngine.OurDirectory + "\\Collect"))
+                        Directory.CreateDirectory(FlyingEngine.OurDirectory + "\\Collect");
+                    File.CreateText(_mineXmlPath);
                     Logging.Write(LogType.Warning, "Could not find the file {0}", _mineXmlPath);
                 }
             }

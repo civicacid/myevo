@@ -43,6 +43,7 @@
             // styleManager1
             // 
             this.styleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Windows7Blue;
+            this.styleManager1.MetroColorParameters = new DevComponents.DotNetBar.Metro.ColorTables.MetroColorGeneratorParameters(System.Drawing.Color.White, System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(163)))), ((int)(((byte)(26))))));
             // 
             // groupPanel6
             // 
@@ -52,9 +53,9 @@
             this.groupPanel6.Controls.Add(this.BCancel);
             this.groupPanel6.Controls.Add(this.TBRuleName);
             this.groupPanel6.Controls.Add(this.labelX7);
-            this.groupPanel6.Location = new System.Drawing.Point(10, 381);
+            this.groupPanel6.Location = new System.Drawing.Point(10, 352);
             this.groupPanel6.Name = "groupPanel6";
-            this.groupPanel6.Size = new System.Drawing.Size(596, 27);
+            this.groupPanel6.Size = new System.Drawing.Size(596, 25);
             // 
             // 
             // 
@@ -92,9 +93,9 @@
             // 
             this.BtnSave.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.BtnSave.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.BtnSave.Location = new System.Drawing.Point(501, 0);
+            this.BtnSave.Location = new System.Drawing.Point(506, 0);
             this.BtnSave.Name = "BtnSave";
-            this.BtnSave.Size = new System.Drawing.Size(75, 21);
+            this.BtnSave.Size = new System.Drawing.Size(75, 19);
             this.BtnSave.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.BtnSave.TabIndex = 61;
             this.BtnSave.Text = "Save";
@@ -104,9 +105,9 @@
             // 
             this.BCancel.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.BCancel.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.BCancel.Location = new System.Drawing.Point(411, 0);
+            this.BCancel.Location = new System.Drawing.Point(416, 0);
             this.BCancel.Name = "BCancel";
-            this.BCancel.Size = new System.Drawing.Size(75, 21);
+            this.BCancel.Size = new System.Drawing.Size(75, 19);
             this.BCancel.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.BCancel.TabIndex = 60;
             this.BCancel.Text = "Cancel";
@@ -119,9 +120,9 @@
             // 
             this.TBRuleName.Border.Class = "TextBoxBorder";
             this.TBRuleName.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.TBRuleName.Location = new System.Drawing.Point(132, 1);
+            this.TBRuleName.Location = new System.Drawing.Point(102, 0);
             this.TBRuleName.Name = "TBRuleName";
-            this.TBRuleName.Size = new System.Drawing.Size(273, 20);
+            this.TBRuleName.Size = new System.Drawing.Size(308, 21);
             this.TBRuleName.TabIndex = 58;
             // 
             // labelX7
@@ -132,34 +133,31 @@
             // 
             this.labelX7.BackgroundStyle.Class = "";
             this.labelX7.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX7.Location = new System.Drawing.Point(3, 0);
+            this.labelX7.Location = new System.Drawing.Point(8, -1);
             this.labelX7.Name = "labelX7";
-            this.labelX7.Size = new System.Drawing.Size(104, 23);
+            this.labelX7.Size = new System.Drawing.Size(104, 21);
             this.labelX7.TabIndex = 57;
             this.labelX7.Text = "<b>Name of rule:</b>";
             // 
             // TBScript
             // 
             this.TBScript.AcceptsTab = true;
-            this.TBScript.Location = new System.Drawing.Point(10, 13);
+            this.TBScript.Location = new System.Drawing.Point(10, 12);
             this.TBScript.Name = "TBScript";
-            this.TBScript.Size = new System.Drawing.Size(596, 362);
+            this.TBScript.Size = new System.Drawing.Size(596, 334);
             this.TBScript.TabIndex = 12;
             this.TBScript.Text = "";
             // 
-            // superTooltip1
-            // 
-            //this.superTooltip1.LicenseKey = "F962CEC7-CD8F-4911-A9E9-CAB39962FC1F";
-            // 
             // ScriptEditor
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(223)))), ((int)(((byte)(233)))), ((int)(((byte)(245)))));
-            this.ClientSize = new System.Drawing.Size(617, 452);
+            this.ClientSize = new System.Drawing.Size(609, 392);
             this.ControlBox = false;
             this.Controls.Add(this.TBScript);
             this.Controls.Add(this.groupPanel6);
+            this.Font = new System.Drawing.Font("NSimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "ScriptEditor";
             this.Text = "ScriptEditor";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ScriptEditor_FormClosing);

@@ -92,7 +92,7 @@ namespace LazyEvo.LFlyingEngine.Activity
                 if (!jumped && modifiedPos.DistanceToSelf2D > 20 && !ObjectManager.MyPlayer.IsFlying &&
                     ObjectManager.MyPlayer.IsMounted && !ObjectManager.MyPlayer.InVashjir)
                 {
-                    Logging.Write("Running on the ground, lets jump");
+                    Logging.Write("正在地面上跑，飞起来");
                     FlyingEngine.Navigator.Stop();
                     MoveHelper.Jump(1000);
                     FlyingEngine.Navigator.Start();
@@ -139,7 +139,7 @@ namespace LazyEvo.LFlyingEngine.Activity
                 }
                 if (FindNode.GetLocation(harvest).DistanceToSelf > 10)
                 {
-                    Logging.Write("Could not get to the node");
+                    Logging.Write("距离矿/草太远，放弃");
                     return false;
                 }
                 if (!DismountAndHarvest(harvest, TimeOut))
@@ -170,13 +170,13 @@ namespace LazyEvo.LFlyingEngine.Activity
                     unit.Location.DistanceFrom(harvest.Location) < 30 && unit.IsElite &&
                     unit.Reaction == Reaction.Hostile).Count() != 0)
             {
-                Logging.Write("Elite at node, not landing");
+                Logging.Write("周围有精英怪，就不落地了");
                 FlyingBlackList.Blacklist(harvest, 120, true);
                 return false;
             }
             if (Convert.ToInt32(FlyingSettings.MaxUnits) < mobs)
             {
-                Logging.Write("To many units at node.");
+                Logging.Write("周围怪太多，这个点被加入黑名单");
                 FlyingBlackList.Blacklist(harvest, 120, true);
                 return false;
             }
@@ -466,7 +466,7 @@ namespace LazyEvo.LFlyingEngine.Activity
             }
             if (CheckFight(harvest))
             {
-                ToldAboutNode.TellAbout("we are in combat", harvest);
+                ToldAboutNode.TellAbout("正在战斗状态", harvest);
                 return false;
             }
             timeOut.Reset();
@@ -474,19 +474,19 @@ namespace LazyEvo.LFlyingEngine.Activity
             {
                 if (CheckFight(harvest))
                 {
-                    ToldAboutNode.TellAbout("we are in combat", harvest);
+                    ToldAboutNode.TellAbout("正在战斗状态", harvest);
                     return false;
                 }
                 Thread.Sleep(100);
             }
             if (CheckFight(harvest))
             {
-                ToldAboutNode.TellAbout("we are in combat", harvest);
+                ToldAboutNode.TellAbout("正在战斗状态", harvest);
                 return false;
             }
             if (Langs.SkillToLow(ObjectManager.MyPlayer.RedMessage))
             {
-                Logging.Write("Skill to low");
+                Logging.Write("技能太低");
                 HelperFunctions.ResetRedMessage();
                 if (FindNode.IsMine(harvest) || FindNode.IsHerb(harvest))
                 {
