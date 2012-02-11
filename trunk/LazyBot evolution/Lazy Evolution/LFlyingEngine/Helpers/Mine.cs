@@ -107,7 +107,8 @@ namespace LazyEvo.LFlyingEngine.Helpers
 
         public static void AddMine(string name)
         {
-            _mine.Add(name);
+            if (!_mine.Contains(name))
+                _mine.Add(name);
         }
 
         public static void Clear()

@@ -130,6 +130,7 @@ namespace LazyEvo.PVEBehavior.Behavior.Conditions
                     case BuffConditionEnum.DoesNotHave:
                         if (ValueType.Equals(BuffValueEnum.Name))
                         {
+                            Logging.Write(Value);
                             if (HasBuffByName(target, Value))
                                 return false;
                         }

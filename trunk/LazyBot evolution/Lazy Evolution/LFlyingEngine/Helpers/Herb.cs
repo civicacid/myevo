@@ -107,7 +107,8 @@ namespace LazyEvo.LFlyingEngine.Helpers
 
         public static void AddHerb(string name)
         {
-            _herb.Add(name);
+            if (!_herb.Contains(name))
+                _herb.Add(name);
         }
 
         public static void Clear()

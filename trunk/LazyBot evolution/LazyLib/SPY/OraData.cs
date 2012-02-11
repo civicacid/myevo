@@ -55,13 +55,13 @@ namespace LazyLib.SPY
             try
             {
                 if (!isConnected) OraConnect();
-                OracleCommand cmd = new OracleCommand(sql, conn);
+                OracleCommand cmd = new OracleCommand(sql.Replace("'","''"), conn);
                 int rtv = cmd.ExecuteNonQuery();
                 return true;
             }
             catch (Exception ex)
             {
-                Logging.Write(ex.ToString());
+                Logging.Write(string.Format("执行SQL语句出现错误，语句是：[{0}]\r\n",sql)+ex.ToString());
                 return false;
             }
         }
@@ -72,7 +72,7 @@ namespace LazyLib.SPY
             try
             {
                 if (!isConnected) OraConnect();
-                OracleDataAdapter oda = new OracleDataAdapter(sql, conn);
+                OracleDataAdapter oda = new OracleDataAdapter(sql.Replace("'","''"), conn);
                 oda.Fill(dt);
                 return dt;
             }
