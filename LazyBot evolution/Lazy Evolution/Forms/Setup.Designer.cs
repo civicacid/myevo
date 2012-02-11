@@ -2202,7 +2202,7 @@
             // 
             // styleManager1
             // 
-            this.styleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007VistaGlass;
+            this.styleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2010Black;
             this.styleManager1.MetroColorParameters = new DevComponents.DotNetBar.Metro.ColorTables.MetroColorGeneratorParameters(System.Drawing.Color.White, System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(163)))), ((int)(((byte)(26))))));
             // 
             // superTabControl2
@@ -2223,8 +2223,8 @@
             this.superTabControl2.ControlBox.SubItems.AddRange(new DevComponents.DotNetBar.BaseItem[] {
             this.superTabControl2.ControlBox.MenuBox,
             this.superTabControl2.ControlBox.CloseBox});
-            this.superTabControl2.Controls.Add(this.superTabControlPanel10);
             this.superTabControl2.Controls.Add(this.superTabControlPanel4);
+            this.superTabControl2.Controls.Add(this.superTabControlPanel10);
             this.superTabControl2.Controls.Add(this.superTabControlPanel9);
             this.superTabControl2.Controls.Add(this.superTabControlPanel1);
             this.superTabControl2.Controls.Add(this.superTabControlPanel7);
@@ -2260,9 +2260,9 @@
             this.superTabControlPanel10.Controls.Add(groupBox2);
             this.superTabControlPanel10.Controls.Add(groupBox1);
             this.superTabControlPanel10.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.superTabControlPanel10.Location = new System.Drawing.Point(0, 24);
+            this.superTabControlPanel10.Location = new System.Drawing.Point(0, 0);
             this.superTabControlPanel10.Name = "superTabControlPanel10";
-            this.superTabControlPanel10.Size = new System.Drawing.Size(618, 375);
+            this.superTabControlPanel10.Size = new System.Drawing.Size(618, 399);
             this.superTabControlPanel10.TabIndex = 0;
             this.superTabControlPanel10.TabItem = this.superTabItem8;
             // 
