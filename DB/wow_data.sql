@@ -138,6 +138,7 @@ insert into fight_file (roll_type,file_name) values ('骑士','骑士.xml');
 insert into map_file (map_name,file_name,mine_list,herb_list) values ('奥丹姆','奥丹姆.xml','源质矿$富源质矿$燃铁矿脉$','鞭尾草');
 insert into map_file (map_name,file_name,mine_list,herb_list) values ('地狱火半岛','地狱火半岛.xml','魔铁矿脉$精金矿脉$富精金矿脉','魔草$梦露花$山鼠草$');
 insert into map_file (map_name,file_name,mine_list,herb_list) values ('泰罗卡森林','泰罗卡森林.xml','魔铁矿脉$精金矿脉$富精金矿脉','魔草$虚空花$邪雾草$噩梦藤$');
+insert into map_file (map_name,file_name,mine_list,herb_list) values ('西部荒野','奥丹姆.xml','源质矿$富源质矿$燃铁矿脉$','鞭尾草');
 -----------------------------------------------------------------------------------------------------------------------------------
 
 /**********************************/

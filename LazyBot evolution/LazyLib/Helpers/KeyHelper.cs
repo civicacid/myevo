@@ -246,7 +246,7 @@ namespace LazyLib.Helpers
                 KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.VK_LCONTROL);
                 KeyLowHelper.PressKey(MicrosoftVirtualKeys.Delete);
                 KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.Delete);
-                Thread.Sleep(50);  // 修改成50，从200，想快点
+                Thread.Sleep(200);  // 修改成50，从200，想快点
             }
             else
             {
@@ -262,7 +262,7 @@ namespace LazyLib.Helpers
             KeyLowHelper.SendCtrlV();
             Thread.Sleep(100);
             KeyLowHelper.SendEnter();
-            Thread.Sleep(100);  // 修改成100，从1000，想快点
+            Thread.Sleep(1000);  // 修改成100，从1000，想快点
         }
 
         public static void ChatboxSendText(String text)
@@ -275,7 +275,7 @@ namespace LazyLib.Helpers
                 KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.VK_LCONTROL);
                 KeyLowHelper.PressKey(MicrosoftVirtualKeys.Delete);
                 KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.Delete);
-                Thread.Sleep(50);  // 修改成50，从200，想快点
+                Thread.Sleep(200);  // 修改成50，从200，想快点
             }
             else
             {
@@ -287,7 +287,7 @@ namespace LazyLib.Helpers
                 }
             }
             SendTextNow(text);
-            Thread.Sleep(100);  // 修改成100，从1000，想快点
+            Thread.Sleep(1000);  // 修改成100，从1000，想快点
             KeyLowHelper.SendEnter();
         }
 

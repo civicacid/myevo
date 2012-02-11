@@ -156,7 +156,7 @@ namespace LazyLib
                         {
                             string log = LogQueue.Dequeue();
                             tw.WriteLine(log);
-                            if (LazySettings.WriteLazyLog) SpyDB.WriteLazyLog(log);
+                            //if (LazySettings.WriteLazyLog) SpyDB.WriteLazyLog(log);
                         }
                         if (!((bool) blocking))
                         {

@@ -583,7 +583,7 @@ namespace LazyEvo.Plugins
             {
                 Thread.Sleep(100);
             }
-            
+
             IsOK = true;
             //stop();
         }
@@ -1147,8 +1147,18 @@ namespace LazyEvo.Plugins
             {
                 Thread.Sleep(100);
             }
+
+            int ReTry = 0;
             Frame InfoFrame = InterfaceHelper.GetFrameByName("frmData");
-            if (InfoFrame == null) return ItemCount;
+            while (true)
+            {
+                if (ReTry > 4) return ItemCount;
+                if (InfoFrame != null) { break; }
+                Thread.Sleep(100);
+                ReTry++;
+                InfoFrame = InterfaceHelper.GetFrameByName("frmData");
+            }
+
             string info = InfoFrame.GetChildObject("frmDataText").GetInfoText;
             if (string.IsNullOrWhiteSpace(info)) return ItemCount;
             string[] split = info.Split(SPLIT_CHAR);
@@ -1261,7 +1271,7 @@ namespace LazyEvo.Plugins
             CreationMap = SpyDB.GetCreationMap_ZBJG();
 
             /* 生成制作列表，需要综合挂货人库存、挂货清单、当前角色可以做什么，综合考虑  */
-            if (CreationList !=null) CreationList.Clear();
+            if (CreationList != null) CreationList.Clear();
             foreach (KeyValuePair<string, int> kv in SpyDB.GetAHLessItem())
             {
                 if (CreationMap.ContainsKey(kv.Key)) CreationList.Add(kv.Key, kv.Value);
@@ -1527,7 +1537,7 @@ namespace LazyEvo.Plugins
                 }
                 _thread.Start();
                 Logging.Write("分解矿 开始了。。。。。");
-                
+
             }
         }
 
