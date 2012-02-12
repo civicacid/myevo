@@ -24,7 +24,7 @@ namespace LazyLib.SPY
                 if (s.Contains(","))
                 {
                     int id = Convert.ToInt32(s.Split(',')[0]);
-                    string name = s.Split('=')[1].Replace("\n", "").Replace("\r", "");
+                    string name = s.Split(',')[1].Replace("\n", "").Replace("\r", "");
                     if (!ZoneMap.ContainsKey(id))
                         ZoneMap.Add(id, name);
                 }
