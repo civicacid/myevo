@@ -55,7 +55,7 @@ namespace LazyLib.SPY
             try
             {
                 if (!isConnected) OraConnect();
-                OracleCommand cmd = new OracleCommand(sql.Replace("'","''"), conn);
+                OracleCommand cmd = new OracleCommand(sql, conn);
                 int rtv = cmd.ExecuteNonQuery();
                 return true;
             }
@@ -72,7 +72,7 @@ namespace LazyLib.SPY
             try
             {
                 if (!isConnected) OraConnect();
-                OracleDataAdapter oda = new OracleDataAdapter(sql.Replace("'","''"), conn);
+                OracleDataAdapter oda = new OracleDataAdapter(sql, conn);
                 oda.Fill(dt);
                 return dt;
             }

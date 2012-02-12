@@ -218,7 +218,7 @@ namespace LazyLib.SPY
         {
             if (string.IsNullOrWhiteSpace(LogType)) return;
             if (string.IsNullOrWhiteSpace(LogText)) return;
-            OraData.execSQLCmd(string.Format("insert into wowlog (logtype,logtext) values ('{0}','{1}')", LogType, LogText));
+            OraData.execSQLCmd(string.Format("insert into wowlog (logtype,logtext) values ('{0}','{1}')", LogType.Replace("'", "''"), LogText.Replace("'", "''")));
         }
 
         /// <summary>
@@ -236,7 +236,7 @@ namespace LazyLib.SPY
             else 
                 role_name = ObjectManager.MyPlayer.Name;
 
-            OraData.execSQLCmd(string.Format("insert into lazylog (char_name,logtext) values ('{0}','{1}')", role_name, LogText));
+            OraData.execSQLCmd(string.Format("insert into lazylog (char_name,logtext) values ('{0}','{1}')", role_name, LogText.Replace("'", "''")));
         }
 
         public static void SaveAhInfo(string seller, string item, int prize)
