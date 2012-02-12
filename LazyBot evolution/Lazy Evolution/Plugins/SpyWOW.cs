@@ -1448,6 +1448,204 @@ namespace LazyEvo.Plugins
         }
     }
 
+    /// <summary>
+    /// 珠宝加工——分解
+    /// 通过珠宝加工，把石头转化为戒指项链之类，然后分解，需要插件支持。
+    /// </summary>
+    public static class SpyZBJG_FJ
+    {
+        public static Dictionary<string, int> CreationList = new Dictionary<string, int>();                 //制作列表(产品：数量)
+        public static Dictionary<string, string> CreationMap;               //对照关系(产品：原料)
+        public static Dictionary<string, string> MailList;                  //发货列表
+        public static DBLogger logger = new DBLogger("珠宝加工-分解");
+        private static Thread _thread;
+
+        public static bool RUNNING = false;
+
+        public static bool initme()
+        {
+            logger.clear();
+            MailList = SpyDB.GetMailList();
+            CreationMap = SpyDB.GetCreationMap_ZBJG();
+
+            /* 生成制作列表，需要综合挂货人库存、挂货清单、当前角色可以做什么，综合考虑  */
+            if (CreationList != null) CreationList.Clear();
+            foreach (KeyValuePair<string, int> kv in SpyDB.GetAHLessItem())
+            {
+                if (CreationMap.ContainsKey(kv.Key)) CreationList.Add(kv.Key, kv.Value);
+            }
+            if (CreationList.Keys.Count == 0)
+            {
+                Logging.Write("没有待制作物品，有可能是货物充足");
+                return false;
+            }
+
+            BarMapper.MapBars();
+            KeyHelper.LoadKeys();
+
+            return true;
+        }
+
+        public static void start()
+        {
+            if (_thread == null || !_thread.IsAlive)
+            {
+                _thread = new Thread(GoGo);
+                _thread.Name = "ZBJG";
+                _thread.IsBackground = true;
+                // 设置线程状态为单线程
+                try
+                {
+                    _thread.TrySetApartmentState(ApartmentState.STA);
+                }
+                catch (Exception ex)
+                {
+                    Logging.Write("启动失败，线程设置出现错误，原因是：" + ex.ToString());
+                    return;
+                }
+                _thread.Start();
+                Logging.Write("珠宝加工开始了。。。。。");
+                RUNNING = true;
+            }
+        }
+
+        public static void stop()
+        {
+            if (_thread == null) return;
+            if (_thread.IsAlive)
+            {
+                _thread.Abort();
+                _thread = null;
+            }
+        }
+
+        private static void GoGo()
+        {
+            DoAction();
+            logger.output();
+            RUNNING = false;
+        }
+
+        private static void DoAction()
+        {
+            // 打开邮箱
+            if (!MailManager.TargetMailBox())
+            {
+                logger.Add("任务附近没有邮箱，失败啊。。。");
+                return;
+            }
+
+            int CountJump = 0;
+            foreach (KeyValuePair<string, int> Creation in CreationList)
+            {
+                string ToDoWhat = Creation.Key;
+                int ToDoCount = Creation.Value;
+                Dictionary<string, string> subMailList = new Dictionary<string, string>();
+                subMailList.Add(ToDoWhat, MailList[ToDoWhat]);
+
+                if (!SpyFrame.lua_SetDispCountItemName(CreationMap[ToDoWhat]))
+                {
+                    logger.Add(string.Format("在执行SetDispCountItemName时出错，需要制作{0}的原料{1}", ToDoWhat, CreationMap[ToDoWhat]));
+                    return;
+                }
+                Thread.Sleep(1000);
+                Dictionary<string, int> ItemCount = SpyFrame.GetDispCountItemCount();
+                if (ItemCount["BAG"] == 0 && ItemCount["MAIL"] == 0)
+                {
+                    logger.Add(string.Format("在邮箱和背包中都没有找到{0}的原料{1}，跳过这个", ToDoWhat, CreationMap[ToDoWhat]));
+                    continue;
+                }
+                int GetItemFromMail = 0;
+                if (ItemCount["BAG"] + ItemCount["MAIL"] > ToDoCount)           //原料足够
+                {
+                    if (ItemCount["BAG"] > ToDoCount)
+                        GetItemFromMail = 0;
+                    else
+                        GetItemFromMail = ToDoCount - ItemCount["BAG"];
+                }
+                else                                                            //原料不够
+                {
+                    GetItemFromMail = ItemCount["MAIL"];
+                }
+
+                if (Inventory.FreeBagSlots < 3)
+                {
+                    logger.Add(string.Format("背包空间应该大于3，否则无法进行"));
+                    return;
+                }
+
+                int HasDone = 0;
+                while (HasDone < ToDoCount)
+                {
+                    // 包剩余空间少于2，就开始邮寄
+                    if (Inventory.FreeBagSlots <= 2)
+                    {
+                        // 发邮件
+                        logger.Add("发邮件");
+                        if (!SpyTradeSkill.SendMain(subMailList, logger)) return;
+                    }
+                    ItemCount = SpyFrame.GetDispCountItemCount();
+                    if (ItemCount["BAG"] == 0 && ItemCount["MAIL"] == 0) break;
+                    // 当前包有没有原料，有就做，没有就拿，拿的时候判断包空间，如果空间足够，就一次拿完
+                    if (ItemCount["BAG"] > 0)
+                    {
+                        // 打开界面
+                        bool ZB_frame;
+                        try
+                        {
+                            ZB_frame = InterfaceHelper.GetFrameByName("TradeSkillFrame").IsVisible;
+                        }
+                        catch
+                        {
+                            ZB_frame = false;
+                        }
+
+                        if (!ZB_frame)
+                        {
+                            BarSpell gg = BarMapper.GetSpellByName("珠宝加工");
+                            gg.CastSpell();
+                        }
+                        // 做东西
+                        if (!SpyTradeSkill.DoItems(ToDoWhat))
+                        {
+                            logger.Add(string.Format("做{0}时出现错误", ToDoWhat));
+                            return;
+                        }
+                        Thread.Sleep(100);
+                        while (ObjectManager.MyPlayer.IsCasting)
+                        {
+                            Thread.Sleep(100);
+                        }
+                        HasDone += 1;
+                        CountJump++;
+                        if (CountJump == 10)
+                        {
+                            // jump一下，防止AFK
+                            CountJump = 0;
+                            logger.Add("jump一下，防止AFK");
+                            KeyHelper.SendKey("Space");
+                            Thread.Sleep(5000);
+                        }
+                    }
+                    else
+                    {
+                        logger.Add(string.Format("从邮箱里面拿{0}的原料{1}", ToDoWhat, CreationMap[ToDoWhat]));
+                        int GetItemCount = 0;
+                        GetItemCount = ((Inventory.FreeBagSlots - 3) * 20 - HasDone > 0 ? ToDoCount - HasDone : (Inventory.FreeBagSlots - 3) * 20);
+                        if (!SpyFrame.lua_GetMAILAsItem(CreationMap[ToDoWhat], GetItemCount, 0))
+                        {
+                            logger.Add(string.Format("从邮箱里面拿{0}的原料{1}失败", ToDoWhat, CreationMap[ToDoWhat]));
+                            return;
+                        }
+                    }
+                }
+                // 发邮件
+                logger.Add(string.Format("东西做完，发邮件"));
+                if (!SpyTradeSkill.SendMain(subMailList, logger)) return;
+            }
+        }
+    }
+
     // 研磨
     public static class SpyYM
     {

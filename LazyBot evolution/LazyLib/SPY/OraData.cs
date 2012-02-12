@@ -3,17 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using System.Threading;
 using Oracle.DataAccess.Client;
 using Oracle.DataAccess.Types;
 using System.Data;
 
 namespace LazyLib.SPY
 {
-    public class OraData
+    public static class OraData
     {
         private static OracleConnection conn;
         private static bool isConnected;
         private static string connString = "Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=192.168.26.170)(PORT=1521))(CONNECT_DATA=(SID=elmp)));User Id=wow;Password=wow123;";
+        private static Thread _thread;
 
         public static void SetIP(string ipaddr, string sid)
         {
@@ -30,6 +32,7 @@ namespace LazyLib.SPY
                 conn = new OracleConnection(connString);
                 conn.Open();
                 isConnected = true;
+                KeepConntion();
             }
             catch (Exception ex)
             {
@@ -50,6 +53,49 @@ namespace LazyLib.SPY
                 Logging.Write(ex.ToString());
             }
         }
+
+        /// <summary>
+        /// 通过线程每隔一点时间刷数据库，保持连接
+        /// </summary>
+        public static void KeepConntion()
+        {
+            _thread = new Thread(LoopDual);
+            _thread.Name = "KeepOracleConnection";
+            _thread.IsBackground = true;
+            // 设置线程状态为单线程
+            try
+            {
+                _thread.TrySetApartmentState(ApartmentState.STA);
+            }
+            catch (Exception ex)
+            {
+                Logging.Write("KeepConntion 启动失败，线程设置出现错误，原因是：" + ex.ToString());
+                return;
+            }
+            _thread.Start();
+        }
+
+        public static void LoopDual()
+        {
+            while (true)
+            {
+                try
+                {
+                    if (!isConnected) conn.Open();
+                    OracleCommand cmd = new OracleCommand("select 1 from dual", conn);
+                    isConnected = true;
+                }
+                catch
+                {
+                    isConnected = false;
+                    Thread.Sleep(2000);
+                    continue;
+                }
+
+                Thread.Sleep(60000);
+            }
+        }
+
         public static bool execSQLCmd(string sql)
         {
             try
