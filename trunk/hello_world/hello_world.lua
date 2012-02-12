@@ -9,6 +9,7 @@
 -- 获取执行结果                                 function SendResult(iNext)                                      返回值中包含TAG_NEXT_PAGE时，需要读取下一页，否则不需要
 -- 商业技能中做物品                             function TradeSkillDO(astrName)                                 无返回（获取到SendSuccData内容表示成功）
 -- 收全部的信                                   function GetAllMailDoor()                                       无返回（获取到SendSuccData内容表示成功）
+-- 珠宝加工+分解（找出来绿色的装备的名字）      function FindGreenEquip(astrGemName)                            返回装备名字
 
 -- 在frame上实时显示物品在邮箱和背包中的数量    function DispItemCount(astrItemName)
 -- 获得背包中指定物品的数量                     function getXXcountInBag(asItemName)
@@ -1552,4 +1553,35 @@ function GetAllMail:Single()
             break
         end
     end
+end
+
+--------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------        珠宝加工+分解（找出来绿色的装备的名字）      ----------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------
+
+function FindGreenEquip(astrGemName)
+    SendBeginData()
+
+    if astrGemName == nil then
+        SendErrData("物品参数为空")
+        NormalPrint("********** 物品参数为空 **********")
+        return
+    end
+    
+    local bag, slot, item, itemname
+    for bag = 0,4 do
+        for slot = 1,GetContainerNumSlots(bag) do
+            item = select(7,GetContainerItemInfo(bag,slot))
+            if (item) then
+                itemname = (select(1,GetItemInfo(item)))
+                if (string.find(itemname, astrItemName)) then
+                    if ((select(3,GetItemInfo(item))) == 2) then
+                        SendData(itemname)
+                        return 
+                    end
+                end
+            end
+        end
+    end
+    return "NONE"
 end
