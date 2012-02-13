@@ -934,7 +934,7 @@ function SendItemByName(astrReceiver, astrName)
 end
 
 -- 满包才邮寄
-function SendItemByNameFull(astrReceiver, astrName, aiSize)
+function SendItemByNameFull(astrReceiver, astrName)
     local liBagID, liSlotID, lstrLink, lstrItemName, liMaxStack, liNowCount
 
     SendBeginData()
@@ -964,8 +964,9 @@ function SendItemByNameFull(astrReceiver, astrName, aiSize)
             liNowStack = (select(2, GetContainerItemInfo(liBagID, liSlotID)))
             if (lstrLink) then
                 lstrItemName = (select(1, GetItemInfo(lstrLink)))
+                liMaxStack = (select(8, GetItemInfo(lstrLink)))
                 if (lstrItemName) then
-                    if lstrItemName == astrName and liNowStack == aiSize then
+                    if lstrItemName == astrName and liNowStack == liMaxStack then
                         if AddMailPackage(astrReceiver, liBagID, liSlotID) ~= 0 then
                             SendErrData("收信人参数为空")
                             NormalPrint("********** 收信人参数为空 **********")

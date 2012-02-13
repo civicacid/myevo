@@ -22,6 +22,7 @@ using LazyLib.FSM;
 using LazyLib.Helpers;
 using LazyLib.Helpers.Vendor;
 using LazyLib.Wow;
+using LazyEvo.Plugins;
 
 namespace LazyEvo.LFlyingEngine.States
 {
@@ -83,7 +84,11 @@ namespace LazyEvo.LFlyingEngine.States
             if (ApproachPosFlying.Approach(_npc.Location, 12))
             {
                 MoveHelper.MoveToLoc(_npc.Location, 5);
-                VendorManager.DoSell(_npc);
+                //VendorManager.DoSell(_npc);
+
+                // 改用插件
+                SpyFrame.ExecSimpleLua("/script SellJunk:Sell()");
+
             }
             FlyingBlackList.Blacklist(_npc, 200, true);
             Logging.Write("[Vendor]Vendor done");

@@ -41,12 +41,12 @@ namespace LazyEvo.LFlyingEngine.States
                 if (Inventory.FreeBagSlots <= Convert.ToInt32(LazySettings.FreeBackspace) && LazySettings.ShouldVendor &&
                     !ToTown.ToTownEnabled)
                 {
-                    Logging.Write("Inventory full, we are now in to town mode");
+                    Logging.Write("背包满，进入回城模式");
                     ToTown.SetToTown(true);
                 }
                 if (ObjectManager.MyPlayer.ShouldRepair && LazySettings.ShouldRepair && !ToTown.ToTownEnabled)
                 {
-                    Logging.Write("One or more items broken, we are now in to town mode");
+                    Logging.Write("装备红，回城！！");
                     ToTown.SetToTown(true);
                 }
                 return !Mount.IsMounted();

@@ -15,12 +15,15 @@ This file is part of LazyBot - Copyright (C) 2011 Arutha
     along with LazyBot.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+using System.Collections.Generic;
 using LazyEvo.LFlyingEngine.Activity;
 using LazyLib;
 using LazyLib.FSM;
 using LazyLib.Helpers;
 using LazyLib.Helpers.Mail;
 using LazyLib.Wow;
+using LazyLib.SPY;
+using LazyEvo.Plugins;
 
 namespace LazyEvo.LFlyingEngine.States
 {
@@ -79,12 +82,26 @@ namespace LazyEvo.LFlyingEngine.States
 
         public override void DoWork()
         {
-            Logging.Write("Found a mailbox, lets do something");
+            Logging.Write("找到一个邮箱，整点什么。。。。。");
             FlyingEngine.Navigator.Stop();
             if (ApproachPosFlying.Approach(_mailbox.Location, 12))
             {
                 MoveHelper.MoveToLoc(_mailbox.Location, 5);
-                MailManager.DoMail();
+                //MailManager.DoMail();
+
+                // 改成使用插件邮寄
+                MailManager.TargetMailBox();
+                Dictionary<string, string> MailList = SpyDB.GetMailList();
+                if (MailList.Count > 0)
+                {
+                    DBLogger logger = new DBLogger("挖矿时的邮寄");
+                    SpyTradeSkill.SendMain(MailList, logger, true);
+                }
+                else
+                {
+                    Logging.Write("获取邮寄列表时，获得的列表内容为空");
+                }
+
             }
             ToTown.ToTownDoMail = true;
             _mailTimeout.Reset();

@@ -44,6 +44,9 @@ insert into wowchar(acc_id,char_id,char_name,server,acc_list,char_idx) values ((
 insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','源质矿石','Welcomex');
 insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','燃铁矿石','Welcomex');
 insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','黑曜石矿','Welcomex');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','鞭尾草','爱贝贝熊');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','暮光茉莉','爱贝贝熊');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','心灵之花','爱贝贝熊');
                                                        
 insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','地狱炎石','最初的联盟');
 insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','琥珀晶石','最初的联盟');
@@ -52,13 +55,13 @@ insert into maillist (server,sender_char_name,item_name,receiver_char_name) valu
 insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','梦境翡翠','Welcomex');
 insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','暗烬黄玉','Welcomex');
                                                        
-insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','泽菲蓝晶石','最初的联盟');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','泽菲蓝晶石','爱贝贝熊');
 insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','碧玉','最初的联盟');
 insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','阿里锡黄晶','最初的联盟');
 insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','红玉髓','爱贝贝熊');
 insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','夜之石','爱贝贝熊');
 insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','桂榴石','爱贝贝熊');
-                                                       
+
 insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','娴熟之暗烬黄玉',   '收矿啊');
 insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','机敏暗烬黄玉',     '收矿啊');
 insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','铭文暗烬黄玉',     '收矿啊');
@@ -78,6 +81,12 @@ insert into maillist (server,sender_char_name,item_name,receiver_char_name) valu
 
 insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','催眠之尘', '碰友');
 insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','强效天界精华', '碰友');
+
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','动燃空气','伤人无数');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','动燃生命','杀贝贝熊');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','动燃之火','伤人无数');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','动燃之水','伤人无数');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','动燃之土','伤人无数');
 -----------------------------------------------------------------------------------------------------------------------------------
 
 /**********************************/
