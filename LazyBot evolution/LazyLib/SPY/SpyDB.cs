@@ -172,7 +172,7 @@ namespace LazyLib.SPY
         public static DataTable GetCreationMap(int sk)
         {
             //商业技能(1-珠宝，2-铭文，3-锻造，4-炼金，5-裁缝，6-附魔)'
-            string sql = string.Format("select item_name,need_item_name1,need_item_name2 from charcreation where char_name='{0}' and tradeskill={1}", ObjectManager.MyPlayer.Name, sk);
+            string sql = string.Format("select item_name,need_item_name1,need_count1,need_item_name2,need_count2,disenchant from charcreation where char_name='{0}' and tradeskill={1}", ObjectManager.MyPlayer.Name, sk);
             DataTable dt = OraData.execSQL(sql);
             if (dt.Columns.Count == 0)
             {

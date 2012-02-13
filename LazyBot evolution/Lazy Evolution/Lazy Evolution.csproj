@@ -286,12 +286,6 @@
     <Compile Include="Plugins\RotationPlugin\RotatorStatus.Designer.cs">
       <DependentUpon>RotatorStatus.cs</DependentUpon>
     </Compile>
-    <Compile Include="Plugins\SpyForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Plugins\SpyForm.Designer.cs">
-      <DependentUpon>SpyForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Plugins\SpyWOW.cs" />
     <Compile Include="Plugins\testForm.cs">
       <SubType>Form</SubType>
@@ -446,9 +440,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Plugins\RotationPlugin\RotatorStatus.resx">
       <DependentUpon>RotatorStatus.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Plugins\SpyForm.resx">
-      <DependentUpon>SpyForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Plugins\testForm.resx">
       <DependentUpon>testForm.cs</DependentUpon>

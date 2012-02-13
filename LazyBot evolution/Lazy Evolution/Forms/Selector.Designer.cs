@@ -46,7 +46,7 @@
             this.groupPanel1.Controls.Add(this.SelectProcess);
             this.groupPanel1.Location = new System.Drawing.Point(3, 4);
             this.groupPanel1.Name = "groupPanel1";
-            this.groupPanel1.Size = new System.Drawing.Size(290, 104);
+            this.groupPanel1.Size = new System.Drawing.Size(290, 113);
             // 
             // 
             // 
@@ -86,24 +86,23 @@
             this.SelectProcess.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.SelectProcess.Dock = System.Windows.Forms.DockStyle.Fill;
             this.SelectProcess.FormattingEnabled = true;
-            this.SelectProcess.ItemHeight = 12;
             this.SelectProcess.Location = new System.Drawing.Point(0, 0);
             this.SelectProcess.Name = "SelectProcess";
-            this.SelectProcess.Size = new System.Drawing.Size(284, 98);
+            this.SelectProcess.Size = new System.Drawing.Size(284, 107);
             this.SelectProcess.TabIndex = 0;
             // 
             // styleManager1
             // 
-            this.styleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Windows7Blue;
+            this.styleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Blue;
             this.styleManager1.MetroColorParameters = new DevComponents.DotNetBar.Metro.ColorTables.MetroColorGeneratorParameters(System.Drawing.Color.White, System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(163)))), ((int)(((byte)(26))))));
             // 
             // BtnAttach
             // 
             this.BtnAttach.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.BtnAttach.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.BtnAttach.Location = new System.Drawing.Point(3, 112);
+            this.BtnAttach.Location = new System.Drawing.Point(3, 121);
             this.BtnAttach.Name = "BtnAttach";
-            this.BtnAttach.Size = new System.Drawing.Size(184, 20);
+            this.BtnAttach.Size = new System.Drawing.Size(184, 22);
             this.BtnAttach.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.BtnAttach.TabIndex = 1;
             this.BtnAttach.Text = "Attach";
@@ -113,9 +112,9 @@
             // 
             this.BtnRefresh.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.BtnRefresh.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.BtnRefresh.Location = new System.Drawing.Point(193, 112);
+            this.BtnRefresh.Location = new System.Drawing.Point(193, 121);
             this.BtnRefresh.Name = "BtnRefresh";
-            this.BtnRefresh.Size = new System.Drawing.Size(98, 20);
+            this.BtnRefresh.Size = new System.Drawing.Size(98, 22);
             this.BtnRefresh.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.BtnRefresh.TabIndex = 2;
             this.BtnRefresh.Text = "Refresh";
@@ -123,17 +122,16 @@
             // 
             // Selector
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(223)))), ((int)(((byte)(233)))), ((int)(((byte)(245)))));
-            this.ClientSize = new System.Drawing.Size(296, 134);
+            this.ClientSize = new System.Drawing.Size(304, 157);
             this.Controls.Add(this.BtnRefresh);
             this.Controls.Add(this.BtnAttach);
             this.Controls.Add(this.groupPanel1);
-            this.DoubleBuffered = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MaximumSize = new System.Drawing.Size(312, 172);
-            this.MinimumSize = new System.Drawing.Size(312, 172);
+            this.MaximumSize = new System.Drawing.Size(312, 184);
+            this.MinimumSize = new System.Drawing.Size(312, 184);
             this.Name = "Selector";
             this.Text = "Select process";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Selector_FormClosing);

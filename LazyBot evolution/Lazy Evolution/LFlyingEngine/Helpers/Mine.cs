@@ -37,6 +37,7 @@ namespace LazyEvo.LFlyingEngine.Helpers
         public static List<string> Load()
         {
             if (HasLoaded) return _mine;
+            _mine.Clear();
             string mineFile;
             switch (LazySettings.Language)
             {

@@ -37,6 +37,7 @@ namespace LazyEvo.LFlyingEngine.Helpers
         public static void Load()
         {
             if (HasLoaded) return;
+            _herb.Clear();
             string herbFile;
             switch (LazySettings.Language)
             {
