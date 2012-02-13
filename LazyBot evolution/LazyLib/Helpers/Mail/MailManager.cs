@@ -294,6 +294,7 @@ namespace LazyLib.Helpers.Mail
                     node.Location.Face();
                     Thread.Sleep(100);
                     node.Interact(false);
+                    Thread.Sleep(1000);
                     if (!MailFrame.Open)
                     {
                         node.Interact(false);

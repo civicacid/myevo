@@ -781,8 +781,25 @@ namespace LazyEvo.Plugins
             return inbox;
         }
 
-        // 给人发邮件
+        /// <summary>
+        /// 发邮件
+        /// </summary>
+        /// <param name="receiver">收件人</param>
+        /// <param name="itemname">物品名称</param>
+        /// <returns></returns>
         public static bool lua_SendItemByName(string receiver, string itemname)
+        {
+            return lua_SendItemByName(receiver, itemname, false);
+        }
+
+        /// <summary>
+        /// 发邮件
+        /// </summary>
+        /// <param name="receiver">收件人</param>
+        /// <param name="itemname">物品名称</param>
+        /// <param name="FullStack">是否满包才邮寄</param>
+        /// <returns></returns>
+        public static bool lua_SendItemByName(string receiver, string itemname, bool FullStack)
         {
             if (!MailFrame.Open)
             {
@@ -804,7 +821,15 @@ namespace LazyEvo.Plugins
             KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.Escape);
             Thread.Sleep(500);
             if (MailFrame.CurrentTabIsSendMail) MailFrame.ClickInboxTab();
-            if (!ExecSimpleLua(string.Format("/script SendItemByName(\"{0}\",\"{1}\")", receiver, itemname))) return false;
+            if (FullStack)
+            {
+                if (!ExecSimpleLua(string.Format("/script SendItemByNameFull(\"{0}\",\"{1}\")", receiver, itemname))) return false;
+            }
+            else
+            {
+                if (!ExecSimpleLua(string.Format("/script SendItemByName(\"{0}\",\"{1}\")", receiver, itemname))) return false;
+            }
+
             MailFrame.ClickInboxTab();
             return true;
         }
@@ -1075,6 +1100,11 @@ namespace LazyEvo.Plugins
     {
         public static bool SendMain(Dictionary<string, string> MailList, DBLogger logger)
         {
+            return SendMain(MailList, logger, false);
+        }
+
+        public static bool SendMain(Dictionary<string, string> MailList, DBLogger logger,Boolean FullStack)
+        {
             if (MailList.Count == 0)
             {
                 logger.Add("邮件列表为空");
@@ -1097,7 +1127,7 @@ namespace LazyEvo.Plugins
                 logger.Add(string.Format("开始发送{0}到{1}", mail.Key, mail.Value));
                 if (bag.ContainsKey(mail.Key))
                 {
-                    if (!SpyFrame.lua_SendItemByName(mail.Value, mail.Key))
+                    if (!SpyFrame.lua_SendItemByName(mail.Value, mail.Key, FullStack))
                     {
                         logger.Add(string.Format("发{0}给{1}，失败了", mail.Value, mail.Key));
                         return false;
@@ -1417,7 +1447,7 @@ namespace LazyEvo.Plugins
                             TurnDoCount = (int)Math.Ceiling(Convert.ToDouble(PJItemCount["BAG"]) / NeedItemCount);
                         else
                             TurnDoCount = (int)Math.Ceiling(Convert.ToDouble(ItemCount["BAG"]) / NeedGemCount);
-                        
+
                         // 开始做
                         for (int loop = 0; loop < TurnDoCount; loop++)
                         {
