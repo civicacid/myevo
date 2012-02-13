@@ -1576,14 +1576,14 @@ function FindGreenEquip(astrGemName)
             item = select(7,GetContainerItemInfo(bag,slot))
             if (item) then
                 itemname = (select(1,GetItemInfo(item)))
-                if (string.find(itemname, astrItemName)) then
+                if (string.find(itemname, astrGemName)) then
                     if ((select(3,GetItemInfo(item))) == 2) then
-                        SendData(itemname)
+                        SendData(bag .. "$" ..slot)
                         return 
                     end
                 end
             end
         end
     end
-    return "NONE"
+    SendData("NONE")
 end

@@ -984,7 +984,7 @@ namespace LazyEvo.Plugins
         }
 
         /// <summary>
-        /// 获取背包中与宝石相关联的戒指或者项链的名称
+        /// 获取背包中与宝石相关联的戒指或者项链的背包位置(bag$slot)
         /// </summary>
         /// <param name="GemName">宝石名称</param>
         /// <returns></returns>
@@ -1015,7 +1015,7 @@ namespace LazyEvo.Plugins
         public static bool lua_DisenchantItem(string ItemName)
         {
             if (!ExecSimpleLua("/cast 分解")) return false;
-            if (!ExecSimpleLua(string.Format("/use {0}", ItemName))) return false;
+            if (!ExecSimpleLua(string.Format("/use {0} {1}", ItemName.Split('$')[0], ItemName.Split('$')[1]))) return false;
             return true;
         }
 
@@ -1103,7 +1103,7 @@ namespace LazyEvo.Plugins
             return SendMain(MailList, logger, false);
         }
 
-        public static bool SendMain(Dictionary<string, string> MailList, DBLogger logger,Boolean FullStack)
+        public static bool SendMain(Dictionary<string, string> MailList, DBLogger logger, Boolean FullStack)
         {
             if (MailList.Count == 0)
             {
@@ -1465,21 +1465,28 @@ namespace LazyEvo.Plugins
 
                             // 分解
                             // 获取最近完成的绿色物品名称
-                            string ItemName = SpyFrame.lua_GetGemItemName(ToDoWhat);
-                            if (string.IsNullOrWhiteSpace(ItemName))
+                            string pos = SpyFrame.lua_GetGemItemName(ToDoWhat);
+                            if (string.IsNullOrWhiteSpace(pos))
                             {
                                 logger.Add(string.Format("获取{0}宝石的完成物名称时出现错误", ToDoWhat));
                                 return;
                             }
                             // 分解物品
-                            if (!ItemName.Equals("NONE"))
+                            if (!pos.Equals("NONE"))
                             {
-                                if (!SpyFrame.lua_DisenchantItem(ItemName))
+                                if (!SpyFrame.lua_DisenchantItem(pos))
                                 {
-                                    logger.Add(string.Format("分解{0}时出现错误", ItemName));
+                                    logger.Add(string.Format("分解{0}时出现错误", pos));
                                     return;
                                 }
                             }
+
+                            Thread.Sleep(100);
+                            while (ObjectManager.MyPlayer.IsCasting)
+                            {
+                                Thread.Sleep(100);
+                            }
+
                             // 聚合物品
                             SpyFrame.ExecSimpleLua("/use 次级天界精华");
 
@@ -1590,6 +1597,7 @@ namespace LazyEvo.Plugins
             RUNNING = true;
 
             Logging.Write("获取邮寄列表");
+            if (MailList != null) MailList.Clear();
             MailList = SpyDB.GetMailList();
             if (MailList.Count == 0)
             {
