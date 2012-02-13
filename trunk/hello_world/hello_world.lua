@@ -546,6 +546,7 @@ end
 --------------------------------      拿取邮箱中指定名称的物品      ------------------------------------------
 --------------------------------------------------------------------------------------------------------------------------
 function GetMAILAsItem(astrItemName, aiCount)
+    -- aiCount为堆数量
     local liInboxCount, liLoop, iLoopNext, lstrItemName, liMaxCount
     local liItemStackCount
 

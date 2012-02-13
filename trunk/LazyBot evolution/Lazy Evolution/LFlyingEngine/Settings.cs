@@ -129,9 +129,12 @@ namespace LazyEvo.LFlyingEngine
         {
             var add = new Node(name);
             add.Tag = name;
-            ListMineItems.BeginUpdate();
-            ListMineItems.Nodes.Add(add);
-            ListMineItems.EndUpdate();
+            if (ListMineItems.Nodes.Find(name, true).Length == 0)
+            {
+                ListMineItems.BeginUpdate();
+                ListMineItems.Nodes.Add(add);
+                ListMineItems.EndUpdate();
+            }
         }
 
         private void LoadHerbList()
@@ -232,9 +235,12 @@ namespace LazyEvo.LFlyingEngine
         {
             var add = new Node(name);
             add.Tag = name;
-            ListHerbItems.BeginUpdate();
-            ListHerbItems.Nodes.Add(add);
-            ListHerbItems.EndUpdate();
+            if (!ListHerbItems.Nodes.Contains(add))
+            {
+                ListHerbItems.BeginUpdate();
+                ListHerbItems.Nodes.Add(add);
+                ListHerbItems.EndUpdate();
+            }
         }
 
         private void BtnAddSchool_Click(object sender, EventArgs e)

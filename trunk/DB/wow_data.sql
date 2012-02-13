@@ -75,6 +75,9 @@ insert into maillist (server,sender_char_name,item_name,receiver_char_name) valu
 insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','纯净恶魔之眼',     '收矿啊');
 insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','统御恶魔之眼',     '收矿啊');
 insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','防御者的恶魔之眼', '收矿啊');
+
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','催眠之尘', '碰友');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','强效天界精华', '碰友');
 -----------------------------------------------------------------------------------------------------------------------------------
 
 /**********************************/
@@ -86,22 +89,28 @@ insert into mine_fj (item_name) values ('黑曜石矿');
 
 /**********************************/
 /***********    角色制作物品列表     *************/
-insert into charcreation (char_name,tradeskill,item_name,need_item_name1,need_item_name2) values ('Welcomex',1,'娴熟之暗烬黄玉', '暗烬黄玉',null);
-insert into charcreation (char_name,tradeskill,item_name,need_item_name1,need_item_name2) values ('Welcomex',1,'机敏暗烬黄玉'  , '暗烬黄玉',null);
-insert into charcreation (char_name,tradeskill,item_name,need_item_name1,need_item_name2) values ('Welcomex',1,'铭文暗烬黄玉'  , '暗烬黄玉',null);
-insert into charcreation (char_name,tradeskill,item_name,need_item_name1,need_item_name2) values ('Welcomex',1,'华丽梦境翡翠'  , '梦境翡翠',null);
-insert into charcreation (char_name,tradeskill,item_name,need_item_name1,need_item_name2) values ('Welcomex',1,'禅悟之梦境翡翠', '梦境翡翠',null);
-insert into charcreation (char_name,tradeskill,item_name,need_item_name1,need_item_name2) values ('Welcomex',1,'火花海洋青玉'  , '海洋青玉',null);
-insert into charcreation (char_name,tradeskill,item_name,need_item_name1,need_item_name2) values ('Welcomex',1,'致密海洋青玉'  , '海洋青玉',null);
-insert into charcreation (char_name,tradeskill,item_name,need_item_name1,need_item_name2) values ('最初的联盟',1,'朴素地狱炎石',     '地狱炎石',null);
-insert into charcreation (char_name,tradeskill,item_name,need_item_name1,need_item_name2) values ('最初的联盟',1,'精致地狱炎石',     '地狱炎石',null);
-insert into charcreation (char_name,tradeskill,item_name,need_item_name1,need_item_name2) values ('最初的联盟',1,'闪光地狱炎石',     '地狱炎石',null);
-insert into charcreation (char_name,tradeskill,item_name,need_item_name1,need_item_name2) values ('最初的联盟',1,'闪耀地狱炎石',     '地狱炎石',null);
-insert into charcreation (char_name,tradeskill,item_name,need_item_name1,need_item_name2) values ('最初的联盟',1,'纯净恶魔之眼',     '恶魔之眼',null);
-insert into charcreation (char_name,tradeskill,item_name,need_item_name1,need_item_name2) values ('最初的联盟',1,'统御恶魔之眼',     '恶魔之眼',null);
-insert into charcreation (char_name,tradeskill,item_name,need_item_name1,need_item_name2) values ('最初的联盟',1,'防御者的恶魔之眼', '恶魔之眼',null);
-insert into charcreation (char_name,tradeskill,item_name,need_item_name1,need_item_name2) values ('最初的联盟',1,'圆润琥珀晶石',     '琥珀晶石',null);
-insert into charcreation (char_name,tradeskill,item_name,need_item_name1,need_item_name2) values ('最初的联盟',1,'秘法琥珀晶石',     '琥珀晶石',null);
+insert into charcreation (char_name,tradeskill,item_name,need_item_name1) values ('Welcomex',1,  '娴熟之暗烬黄玉',   '暗烬黄玉');
+insert into charcreation (char_name,tradeskill,item_name,need_item_name1) values ('Welcomex',1,  '机敏暗烬黄玉'  ,   '暗烬黄玉');
+insert into charcreation (char_name,tradeskill,item_name,need_item_name1) values ('Welcomex',1,  '铭文暗烬黄玉'  ,   '暗烬黄玉');
+insert into charcreation (char_name,tradeskill,item_name,need_item_name1) values ('Welcomex',1,  '华丽梦境翡翠'  ,   '梦境翡翠');
+insert into charcreation (char_name,tradeskill,item_name,need_item_name1) values ('Welcomex',1,  '禅悟之梦境翡翠',   '梦境翡翠');
+insert into charcreation (char_name,tradeskill,item_name,need_item_name1) values ('Welcomex',1,  '火花海洋青玉'  ,   '海洋青玉');
+insert into charcreation (char_name,tradeskill,item_name,need_item_name1) values ('Welcomex',1,  '致密海洋青玉'  ,   '海洋青玉');
+insert into charcreation (char_name,tradeskill,item_name,need_item_name1) values ('最初的联盟',1,'朴素地狱炎石',     '地狱炎石');
+insert into charcreation (char_name,tradeskill,item_name,need_item_name1) values ('最初的联盟',1,'精致地狱炎石',     '地狱炎石');
+insert into charcreation (char_name,tradeskill,item_name,need_item_name1) values ('最初的联盟',1,'闪光地狱炎石',     '地狱炎石');
+insert into charcreation (char_name,tradeskill,item_name,need_item_name1) values ('最初的联盟',1,'闪耀地狱炎石',     '地狱炎石');
+insert into charcreation (char_name,tradeskill,item_name,need_item_name1) values ('最初的联盟',1,'纯净恶魔之眼',     '恶魔之眼');
+insert into charcreation (char_name,tradeskill,item_name,need_item_name1) values ('最初的联盟',1,'统御恶魔之眼',     '恶魔之眼');
+insert into charcreation (char_name,tradeskill,item_name,need_item_name1) values ('最初的联盟',1,'防御者的恶魔之眼', '恶魔之眼');
+insert into charcreation (char_name,tradeskill,item_name,need_item_name1) values ('最初的联盟',1,'圆润琥珀晶石',     '琥珀晶石');
+insert into charcreation (char_name,tradeskill,item_name,need_item_name1) values ('最初的联盟',1,'秘法琥珀晶石',     '琥珀晶石');
+
+insert into charcreation (char_name,tradeskill,item_name,need_item_name1,need_count1,need_item_name2,need_count2,disenchant) 
+                  values ('最初的联盟',1,'碧玉指环','碧玉',1,'珠宝师的底座',1,1);
+insert into charcreation (char_name,tradeskill,item_name,need_item_name1,need_count1,need_item_name2,need_count2,disenchant) 
+                  values ('最初的联盟',1,'阿里锡黄晶坠饰','阿里锡黄晶',2,'珠宝师的底座',1,1);
+
 
 -----------------------------------------------------------------------------------------------------------------------------------
 
