@@ -66,9 +66,10 @@ comment on table ahdata is 'ah扫描数据';
 create table charcreation (
    char_name           varchar(98)                       not null ,
    tradeskill          number(1)                         not null ,
-   item_name           varchar(98)                       not null ,
-   need_item_name1     varchar(98)                       not null ,
-   need_item_name2     varchar(98)                       null ,
+   item_name           varchar(98)                       not null ,        -- 做成物品名称
+   need_item_name1     varchar(98)                       not null ,        -- 原料一
+   need_item_name2     varchar(98)                       null ,            -- 原料二
+   disenchant          number(1)                         null ,            -- 是否分解
    constraint pk_charcreation primary key (char_name,tradeskill,item_name)
 );
 comment on table charcreation is '人物能做什么，包括技能和可以制造什么';
