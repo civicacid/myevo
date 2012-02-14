@@ -593,7 +593,10 @@ function GetMAILAsItem(astrItemName, aiCount)
     -- 确定是否有符合条件的物品
     if table.getn(MailBoxGetItemNew.TblMailID) > 0 then
         MailBoxGetItemDoorNew()
+        return
     end
+
+    SendSuccData()
 
 end
 
