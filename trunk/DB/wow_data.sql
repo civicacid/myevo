@@ -156,7 +156,8 @@ insert into fight_file (roll_type,file_name) values ('骑士','骑士.xml');
 insert into map_file (map_name,file_name,mine_list,herb_list) values ('奥丹姆','奥丹姆.xml','源质矿$富源质矿$燃铁矿脉$','鞭尾草');
 insert into map_file (map_name,file_name,mine_list,herb_list) values ('地狱火半岛','地狱火半岛.xml','魔铁矿脉$精金矿脉$富精金矿脉','魔草$梦露花$山鼠草$');
 insert into map_file (map_name,file_name,mine_list,herb_list) values ('泰罗卡森林','泰罗卡森林.xml','魔铁矿脉$精金矿脉$富精金矿脉','魔草$虚空花$邪雾草$噩梦藤$');
-insert into map_file (map_name,file_name,mine_list,herb_list) values ('西部荒野','奥丹姆.xml','源质矿$富源质矿$燃铁矿脉$','鞭尾草');
+insert into map_file (map_name,file_name,mine_list,herb_list) values ('海加尔山','海加尔山.xml','黑曜石碎块','燃烬草');
+insert into map_file (map_name,file_name,mine_list,herb_list) values ('嚎风峡湾','嚎风峡湾.xml','钴矿脉$富钴矿脉','虎百合$金苜蓿$');
 -----------------------------------------------------------------------------------------------------------------------------------
 
 /**********************************/
@@ -164,7 +165,9 @@ insert into map_file (map_name,file_name,mine_list,herb_list) values ('西部荒野'
 insert into autologin (starttime, runtime, char_id, char_name, dowhat, machineid, everyday)
                values (to_date('2012-2-10 15:11','yyyy-mm-dd hh24:mi'), 0, 23, 'Welcomex', 'FJKS', '1', 0);
 insert into autologin (starttime, runtime, char_id, char_name, dowhat, machineid, everyday)
-               values (to_date('2012-2-10 15:02','yyyy-mm-dd hh24:mi'), 0, 22, '最初的联盟', 'ZBJG', '1', 0);
+               values (to_date('2012-2-15 6:00','yyyy-mm-dd hh24:mi'), 90, 53, '矿一', 'CJ', '1', 0);
+insert into autologin (starttime, runtime, char_id, char_name, dowhat, machineid, everyday)
+               values (to_date('2012-2-15 7:45','yyyy-mm-dd hh24:mi'), 90, 54, '矿二', 'CJ', '1', 0);
 -----------------------------------------------------------------------------------------------------------------------------------
 
 insert into WOWZONE (Z_ID, Z_NAME) values ('4922', '暮光高地');

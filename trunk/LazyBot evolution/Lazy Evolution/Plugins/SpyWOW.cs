@@ -481,9 +481,9 @@ namespace LazyEvo.Plugins
 
         public static bool initme(string _aname, string _apass, string _realname, string _charidx, string _alist)
         {
+            IsOK = false;
             LazySettings.LoadSettings();
             WOWPath = LazySettings.WOWPath;
-            IsOK = false;
 
             if (string.IsNullOrWhiteSpace(_aname))
             {
@@ -1201,8 +1201,11 @@ namespace LazyEvo.Plugins
         public static bool initme()
         {
             logger.clear();
+            if (MailList != null) MailList.Clear();
             MailList = SpyDB.GetMailList();
+            if (CreationMap != null) CreationMap.Clear();
             CreationMap = SpyDB.GetCreationMap_ZBJG();
+            if (CreationMapDT != null) CreationMapDT.Clear();
             CreationMapDT = SpyDB.GetCreationMap(1);
 
             /* 生成制作列表，需要综合挂货人库存、挂货清单、当前角色可以做什么，综合考虑  */
@@ -1490,7 +1493,7 @@ namespace LazyEvo.Plugins
                             // 聚合物品
                             SpyFrame.ExecSimpleLua("/use 次级天界精华");
 
-                            HasDone += 1;
+                            HasDone++;
                             CountJump++;
                             if (CountJump == 10)
                             {
@@ -1500,6 +1503,7 @@ namespace LazyEvo.Plugins
                                 KeyHelper.SendKey("Space");
                                 Thread.Sleep(5000);
                             }
+
                             // 包剩余空间少于4，就开始邮寄
                             if (Inventory.FreeBagSlots <= 4)
                             {
@@ -1508,6 +1512,9 @@ namespace LazyEvo.Plugins
                                 if (!SpyTradeSkill.SendMain(MailList, logger)) return;
                             }
                         }
+
+                        // 做完了，就跳出循环
+                        if (HasDone == ToDoCount) break;
 
                         // 判断哪一个消耗完毕，就拿那个
                         if (ItemCount["BAG"] > PJItemCount["BAG"])
@@ -1606,6 +1613,7 @@ namespace LazyEvo.Plugins
                 return false;
             }
             Logging.Write("获取分解列表");
+            if (Mines != null) Mines.Clear();
             Mines = SpyDB.GetMineList();
             if (Mines.Count == 0)
             {
@@ -1777,6 +1785,29 @@ namespace LazyEvo.Plugins
 
         private static Thread _thread;
 
+        public static bool initme()
+        {
+            // 设置拍卖师的名称
+            if (string.IsNullOrWhiteSpace(LazySettings.AHer))
+            {
+                logger.Add("没有设置拍卖师");
+                return false;
+            }
+            AHerName = LazySettings.AHer;
+
+            // 从数据库表读取拍卖列表(ahitem)
+            if (Items != null) Items.Clear();
+            Items = SpyDB.GetAHList();
+            if (Items.Rows.Count > 0)
+            {
+                BarMapper.MapBars();
+                KeyHelper.LoadKeys();
+                return true;
+            }
+
+            return false;
+        }
+
         public static void start()
         {
             if (Items == null || Items.Columns.Count == 0)
@@ -1812,27 +1843,6 @@ namespace LazyEvo.Plugins
                 _thread.Abort();
                 _thread = null;
             }
-        }
-        public static bool initme()
-        {
-            // 设置拍卖师的名称
-            if (string.IsNullOrWhiteSpace(LazySettings.AHer))
-            {
-                logger.Add("没有设置拍卖师");
-                return false;
-            }
-            AHerName = LazySettings.AHer;
-
-            // 从数据库表读取拍卖列表(ahitem)
-            Items = SpyDB.GetAHList();
-            if (Items.Rows.Count > 0)
-            {
-                BarMapper.MapBars();
-                KeyHelper.LoadKeys();
-                return true;
-            }
-
-            return false;
         }
 
         public static void gogo()
@@ -1980,7 +1990,10 @@ namespace LazyEvo.Plugins
                 }
                 Thread.Sleep(500);
                 Dictionary<string, int> ItemCount = SpyFrame.GetDispCountItemCount();
-                if (ItemCount["BAG"] == 0) continue;
+                if (ItemCount["BAG"] == 0) {
+                    logger.Add("背包里面没有物品：" + ahitem);
+                    continue; 
+                }
 
                 // 扫描最低价格
                 logger.Add(string.Format("扫描物品[{0}]的最低价格", ahitem));
@@ -3030,6 +3043,12 @@ namespace LazyEvo.Plugins
                             if (SpyMineAndMail.RUNNING) return;
                             break;
                         case "CJ":
+                            if (!LazyLib.FSM.Engine.Running)
+                            {
+                                SpyDB.WriteLog("计划任务", string.Format("出现状况，自动关闭外挂。角色ID：{0}，任务描述：{1}，持续时间：{2}", char_id, DoWhat, RunMiniute.ToString()));
+                                JobStatus = EnumJobStatus.Work_OK;
+                                return;
+                            }
                             if (SpyCJ.RUNNING) return;
                             break;
                     }
