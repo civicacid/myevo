@@ -611,13 +611,34 @@ namespace LazyEvo.Plugins
             {
                 Thread.Sleep(100);
             }
+
+            int ReTry = 0;
             Frame InfoFrame = InterfaceHelper.GetFrameByName("frmTest");
-            if (InfoFrame == null)
+            while (InfoFrame == null)
             {
-                Logging.Write("没有启动插件？？？");
-                return null;
+                InfoFrame = InterfaceHelper.GetFrameByName("frmTest");
+                ReTry++;
+                if (ReTry > 10)
+                {
+                    Logging.Write("没有启动插件？？？");
+                    return null;
+                }
+                Thread.Sleep(100);
             }
+
             string info = InfoFrame.GetChildObject("frmTestText").GetInfoText;
+            ReTry = 0;
+            while (info == null)
+            {
+                info = InfoFrame.GetChildObject("frmTestText").GetInfoText;
+                ReTry++;
+                if (ReTry > 10)
+                {
+                    Logging.Write("没有启动插件？？？");
+                    return null;
+                }
+                Thread.Sleep(100);
+            }
             return info;
         }
 
@@ -831,6 +852,40 @@ namespace LazyEvo.Plugins
             }
 
             MailFrame.ClickInboxTab();
+            return true;
+        }
+
+        /// <summary>
+        /// 珠宝加工专用，把蓝色物品发送到指定收件人
+        /// </summary>
+        /// <param name="receiver">收件人</param>
+        /// <param name="itemname">物品名称</param>
+        /// <returns></returns>
+        public static bool lua_SendBlueItemByName(string receiver, string itemname)
+        {
+            if (!MailFrame.Open)
+            {
+                Logging.Write("邮箱没开！！！");
+                return false;
+            }
+            MailFrame.ClickInboxTab();
+            Thread.Sleep(500);
+            MailFrame.ClickSendMailTab();
+            Thread.Sleep(500);
+            while (true)
+            {
+                if (MailFrame.CurrentTabIsSendMail) break;
+                MailFrame.ClickSendMailTab();
+                Thread.Sleep(500);
+            }
+            Thread.Sleep(500);
+            KeyLowHelper.PressKey(MicrosoftVirtualKeys.Escape);
+            KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.Escape);
+            Thread.Sleep(500);
+            if (MailFrame.CurrentTabIsSendMail) MailFrame.ClickInboxTab();
+
+            if (!ExecSimpleLua(string.Format("/script SendBlueItemByName(\"{0}\",\"{1}\")", receiver, itemname))) return false;
+
             return true;
         }
 
@@ -1141,7 +1196,7 @@ namespace LazyEvo.Plugins
             return true;
         }
 
-        public static bool SendZBJGBlueItem(string KeyString,DBLogger logger)
+        public static bool SendZBJGBlueItem(string KeyString, DBLogger logger)
         {
             if (string.IsNullOrWhiteSpace(KeyString))
             {
@@ -1150,24 +1205,17 @@ namespace LazyEvo.Plugins
             }
 
             string receiver = SpyDB.GetParam("2");
-            if 
-
-            logger.Add("开始发送邮件");
-            foreach (KeyValuePair<string, string> mail in MailList)
+            if (string.IsNullOrWhiteSpace(receiver))
             {
-                logger.Add(string.Format("开始发送{0}到{1}", mail.Key, mail.Value));
-                if (bag.ContainsKey(mail.Key))
-                {
-                    if (!SpyFrame.lua_SendItemByName(mail.Value, mail.Key, FullStack))
-                    {
-                        logger.Add(string.Format("发{0}给{1}，失败了", mail.Value, mail.Key));
-                        return false;
-                    }
-                }
-                else
-                {
-                    logger.Add(string.Format("背包中没有{0}", mail.Key));
-                }
+                logger.Add("收件人为空");
+                return true;
+            }
+
+            logger.Add(string.Format("开始发送名称中包含{0}的蓝色物品到{1}", KeyString, receiver));
+            if (!SpyFrame.lua_SendBlueItemByName(receiver, KeyString))
+            {
+                logger.Add(string.Format("发{0}给{1}，失败了", KeyString, receiver));
+                return false;
             }
             return true;
         }
@@ -1541,6 +1589,7 @@ namespace LazyEvo.Plugins
                                 // 发邮件
                                 logger.Add("发邮件");
                                 if (!SpyTradeSkill.SendMain(MailList, logger)) return;
+                                if (!SpyTradeSkill.SendZBJGBlueItem(ToDoWhat,logger)) return;
 
                                 // 邮寄之后，继续检查剩余空间
                                 if (Inventory.FreeBagSlots <= 4)
@@ -1594,6 +1643,7 @@ namespace LazyEvo.Plugins
                 // 发邮件
                 logger.Add(string.Format("东西做完，发邮件"));
                 if (!SpyTradeSkill.SendMain(MailList, logger)) return;
+                if (!SpyTradeSkill.SendZBJGBlueItem(ToDoWhat, logger)) return;
             }
         }
     }
@@ -2028,9 +2078,10 @@ namespace LazyEvo.Plugins
                 }
                 Thread.Sleep(500);
                 Dictionary<string, int> ItemCount = SpyFrame.GetDispCountItemCount();
-                if (ItemCount["BAG"] == 0) {
+                if (ItemCount["BAG"] == 0)
+                {
                     logger.Add("背包里面没有物品：" + ahitem);
-                    continue; 
+                    continue;
                 }
 
                 // 扫描最低价格
