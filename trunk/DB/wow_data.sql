@@ -167,8 +167,49 @@ insert into autologin (starttime, runtime, char_id, char_name, dowhat, machineid
 insert into autologin (starttime, runtime, char_id, char_name, dowhat, machineid, everyday)
                values (to_date('2012-2-15 6:00','yyyy-mm-dd hh24:mi'), 90, 53, '矿一', 'CJ', '1', 0);
 insert into autologin (starttime, runtime, char_id, char_name, dowhat, machineid, everyday)
-               values (to_date('2012-2-15 7:45','yyyy-mm-dd hh24:mi'), 90, 54, '矿二', 'CJ', '1', 0);
+               values (to_date('2012-2-15 9:00','yyyy-mm-dd hh24:mi'), 0, 99, '收矿啊', 'AH', '1', 0);
+insert into autologin (starttime, runtime, char_id, char_name, dowhat, machineid, everyday)
+               values (to_date('2012-2-15 9:31','yyyy-mm-dd hh24:mi'), 60, 54, '甯寗翯', 'CJ', '1', 0);
+insert into autologin (starttime, runtime, char_id, char_name, dowhat, machineid, everyday)
+               values (to_date('2012-2-15 10:35','yyyy-mm-dd hh24:mi'), 60, 53, '奡寗燊', 'CJ', '1', 0);
+insert into autologin (starttime, runtime, char_id, char_name, dowhat, machineid, everyday)
+               values (to_date('2012-2-15 13:00','yyyy-mm-dd hh24:mi'), 0, 99, '收矿啊', 'AH', '1', 0);
+insert into autologin (starttime, runtime, char_id, char_name, dowhat, machineid, everyday)
+               values (to_date('2012-2-15 14:00','yyyy-mm-dd hh24:mi'), 0, 97, '最初的联盟', 'ZBJG', '1', 0);
+insert into autologin (starttime, runtime, char_id, char_name, dowhat, machineid, everyday)
+               values (to_date('2012-2-15 17:35','yyyy-mm-dd hh24:mi'), 60, 48, '亣眔龘', 'CJ', '1', 0);
+insert into autologin (starttime, runtime, char_id, char_name, dowhat, machineid, everyday)
+               values (to_date('2012-2-15 19:00','yyyy-mm-dd hh24:mi'), 0, 98, 'Welcomex', 'FJKS', '1', 0);
+insert into autologin (starttime, runtime, char_id, char_name, dowhat, machineid, everyday)
+               values (to_date('2012-2-15 19:35','yyyy-mm-dd hh24:mi'), 0, 98, 'Welcomex', 'ZBJG', '1', 0);
+
 -----------------------------------------------------------------------------------------------------------------------------------
+   CHAR_ID CHAR_NAME
+---------- ---------------------------------------------------------------------
+        48 亣眔龘
+        49 鹤鹤六号
+        50 卖东西的公主
+        51 HUHUHU
+        52 鹤鹤四号
+        53 奡寗燊
+        54 甯寗翯
+        55 掱淼麤
+        56 曌檙芻
+        65 爱贝贝熊
+        66 杀贝贝熊
+        97 最初的联盟
+        98 Welcomex
+        99 收矿啊
+       100 碰友
+       101 七只梅
+       102 Other
+       103 Spyman
+       104 Onedisk
+       105 Tyutone
+       106 伤人无数
+       107 哗哗的银子
+
+
 
 insert into WOWZONE (Z_ID, Z_NAME) values ('4922', '暮光高地');
 insert into WOWZONE (Z_ID, Z_NAME) values ('4815', '柯尔普萨之森');
