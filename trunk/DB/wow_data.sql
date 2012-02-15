@@ -1,5 +1,5 @@
 insert into LazyParameters (bh,nr,ms) values ('1','Y','是否将lazy的日志写入数据库(Y/N)');
-insert into LazyParameters (bh,nr,ms) values ('2','Y','珠宝加工制作的蓝色物品邮寄对象');
+insert into LazyParameters (bh,nr,ms) values ('2','碰友','珠宝加工制作的蓝色物品邮寄对象');
 
 /**********************************/
 /***********    角色信息     *************/
@@ -158,7 +158,10 @@ insert into map_file (map_name,file_name,mine_list,herb_list) values ('奥丹姆','
 insert into map_file (map_name,file_name,mine_list,herb_list) values ('地狱火半岛','地狱火半岛.xml','魔铁矿脉$精金矿脉$富精金矿脉','魔草$梦露花$山鼠草$');
 insert into map_file (map_name,file_name,mine_list,herb_list) values ('泰罗卡森林','泰罗卡森林.xml','魔铁矿脉$精金矿脉$富精金矿脉','魔草$虚空花$邪雾草$噩梦藤$');
 insert into map_file (map_name,file_name,mine_list,herb_list) values ('海加尔山','海加尔山.xml','黑曜石碎块','燃烬草');
-insert into map_file (map_name,file_name,mine_list,herb_list) values ('嚎风峡湾','嚎风峡湾.xml','钴矿脉$富钴矿脉','虎百合$金苜蓿$');
+insert into map_file (map_name,file_name,mine_list,herb_list) values ('嚎风峡湾','嚎风峡湾.xml','钴矿脉$富钴矿脉','卷丹$金苜蓿$');
+insert into map_file (map_name,file_name,mine_list,herb_list) values ('索拉查盆地','索拉查盆地.xml','萨隆邪铁矿脉$富萨隆邪铁矿脉','蛇信草$虎百合$卷丹');
+insert into map_file (map_name,file_name,mine_list,herb_list) values ('西部荒野','西部荒野.xml','铜矿$锡矿$银矿','宁神花$银叶草$地根草$石南草$跌打草');
+
 -----------------------------------------------------------------------------------------------------------------------------------
 
 /**********************************/
@@ -183,6 +186,14 @@ insert into autologin (starttime, runtime, char_id, char_name, dowhat, machineid
                values (to_date('2012-2-15 19:00','yyyy-mm-dd hh24:mi'), 0, 98, 'Welcomex', 'FJKS', '1', 0);
 insert into autologin (starttime, runtime, char_id, char_name, dowhat, machineid, everyday)
                values (to_date('2012-2-15 19:35','yyyy-mm-dd hh24:mi'), 0, 98, 'Welcomex', 'ZBJG', '1', 0);
+insert into autologin (starttime, runtime, char_id, char_name, dowhat, machineid, everyday)
+               values (to_date('2012-2-15 22:55','yyyy-mm-dd hh24:mi'), 120, 53, '奡寗燊', 'CJ', '2', 0);
+insert into autologin (starttime, runtime, char_id, char_name, dowhat, machineid, everyday)
+               values (to_date('2012-2-15 23:30','yyyy-mm-dd hh24:mi'), 120, 55, '甯寗翯', 'CJ', '3', 0);
+insert into autologin (starttime, runtime, char_id, char_name, dowhat, machineid, everyday)
+               values (to_date('2012-2-15 23:45','yyyy-mm-dd hh24:mi'), 120, 54, '甯寗翯', 'CJ', '4', 0);
+
+delete autologin where runtime=120 and char_id=54
 
 -----------------------------------------------------------------------------------------------------------------------------------
    CHAR_ID CHAR_NAME
