@@ -165,13 +165,13 @@ comment on table lazylog is '日志';
 -- -----------------------------------------------------
 -- table LazyParameters 配置
 -- -----------------------------------------------------
-create table LazyParameters (
+create table lazyparameters (
    bh                     varchar(100)                        not null,
    ms                     varchar(100)                        not null,
-   nr                       varchar(1000)                       not null,
+   nr                     varchar(1000)                       not null,
    constraint pk_param primary key (bh)
 );
-comment on table LazyParameters is '配置参数';
+comment on table lazyparameters is '配置参数';
 
 
 -- -----------------------------------------------------

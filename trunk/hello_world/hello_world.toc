@@ -5,11 +5,12 @@
 ## Dependencies:
 ## SavedVariables: HelloWorldDB
 
-hello_world.xml
-
+Libs\LibStub\LibStub.lua
 Libs\AceAddon-3.0\AceAddon-3.0.lua
 Libs\AceAddon-3.0\AceAddon-3.0.xml
 Libs\AceDB-3.0\AceDB-3.0.lua
 Libs\AceDB-3.0\AceDB-3.0.xml
-Libs\AceTimer-3.0\\AceTimer-3.0.lua
-Libs\AceTimer-3.0\\AceTimer-3.0.xml
+Libs\AceTimer-3.0\AceTimer-3.0.lua
+Libs\AceTimer-3.0\AceTimer-3.0.xml
+
+hello_world.xml
