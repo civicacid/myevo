@@ -14,7 +14,7 @@ This file is part of LazyBot - Copyright (C) 2011 Arutha
     You should have received a copy of the GNU General Public License
     along with LazyBot.  If not, see <http://www.gnu.org/licenses/>.
 */
-
+using System.Threading;
 using LazyEvo.LFlyingEngine.Activity;
 using LazyEvo.LFlyingEngine.Helpers;
 using LazyLib;
@@ -83,11 +83,25 @@ namespace LazyEvo.LFlyingEngine.States
             FlyingEngine.Navigator.Stop();
             if (ApproachPosFlying.Approach(_npc.Location, 12))
             {
-                MoveHelper.MoveToLoc(_npc.Location, 5);
+                MoveHelper.MoveToLoc(_npc.Location, 3);
                 //VendorManager.DoSell(_npc);
 
-                // 改用插件
+                while (!ObjectManager.MyPlayer.Target.Name.Equals(_npc.Name))
+                {
+                    // 目标选择NPC
+                    KeyHelper.SendLuaOverChat("/target " + _npc.Name);
+                    Thread.Sleep(500);
+                }
+
+                _npc.Interact();
+                Thread.Sleep(500);
+
+                // 卖东西
                 SpyFrame.ExecSimpleLua("/script SellJunk:Sell()");
+                Thread.Sleep(500);
+
+                // 修理
+                SpyFrame.ExecSimpleLua("/click MerchantRepairAllButton");
 
             }
             FlyingBlackList.Blacklist(_npc, 200, true);

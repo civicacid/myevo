@@ -1,5 +1,6 @@
 -- 发送指定名称物品                             function SendItemByName(astrReceiver, astrName)                 无返回（获取到SendSuccData内容表示成功）
--- 满包邮寄                                     function SendItemByNameFull(astrReceiver, astrName, aiSize)     无返回（获取到SendSuccData内容表示成功）
+-- 满包邮寄                                     function SendItemByNameFull(astrReceiver, astrName)             无返回（获取到SendSuccData内容表示成功）
+-- 按照关键字邮寄蓝色珠宝加工物品               function SendBlueItemByName(astrReceiver, astrGemName)          无返回（获取到SendSuccData内容表示成功）
 -- 拿取邮箱中指定名称的物品                     function GetMAILAsItem(astrItemName, aiCount)                   无返回（获取到SendSuccData内容表示成功）
 -- 指定数量的物品                               function GetMAILAsItemFull(astrItemName, aiCount, aiSize)       无返回（获取到SendSuccData内容表示成功）
 -- 拍卖场查询功能                               function AHSearchDoor(astrItemName, aiprint)                    返回最小价格和seller
@@ -652,6 +653,8 @@ function GetMAILAsItemFull(astrItemName, aiCount, aiSize)
     -- 确定是否有符合条件的物品
     if table.getn(MailBoxGetItemNew.TblMailID) > 0 then
         MailBoxGetItemDoorNew()
+    else
+        SendSuccData()
     end
 
 end
@@ -680,7 +683,7 @@ function SendMailDoor()
     -- 检查待发送清单列表
     if table.getn(SendMailTo.Group) == 0 then
         NormalPrint("******** 邮包是空的 ********")
-        SendErrData("邮包是空的")
+        SendSuccData()
         return
     end
 
@@ -983,6 +986,54 @@ function SendItemByNameFull(astrReceiver, astrName)
 
     -- 显示邮包情况
     -- DispMailPackage()
+
+    -- 发送邮件
+    SendMailDoor()
+
+end
+
+-- 按照关键字邮寄蓝色珠宝加工物品
+function SendBlueItemByName(astrReceiver, astrGemName)
+    local liBagID, liSlotID, lstrLink, lstrItemName, liMaxStack, liNowCount
+
+    SendBeginData()
+    if astrGemName == nil then
+        SendErrData("宝石名称参数为空")
+        NormalPrint("********** 宝石名称参数为空 **********")
+        return
+    end
+    
+    if astrReceiver == nil then
+        SendErrData("收信人参数为空")
+        NormalPrint("********** 收信人参数为空 **********")
+        return
+    end
+    
+    -- 清空邮包table
+    if CleanMailPackage() ~= 0 then
+        SendErrData("清空邮包table")
+        NormalPrint("********** 清空邮包table出错 **********")
+        return
+    end
+
+    -- 生成邮包列表
+    for liBagID = 0, 4 do
+        for liSlotID = 1, GetContainerNumSlots(liBagID) do
+            lstrLink = (select(7, GetContainerItemInfo(liBagID, liSlotID)))
+            if (lstrLink) then
+                lstrItemName = (select(1, GetItemInfo(lstrLink)))
+                if (lstrItemName) then
+                    if (string.find(lstrItemName, astrGemName)) and ((select(3,GetItemInfo(lstrItemName))) == 3) then
+                        if AddMailPackage(astrReceiver, liBagID, liSlotID) ~= 0 then
+                            SendErrData("收信人参数为空")
+                            NormalPrint("********** 收信人参数为空 **********")
+                            return
+                        end
+                    end
+                end
+            end
+        end
+    end
 
     -- 发送邮件
     SendMailDoor()

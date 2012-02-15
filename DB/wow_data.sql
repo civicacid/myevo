@@ -1,4 +1,5 @@
 insert into LazyParameters (bh,nr,ms) values ('1','Y','是否将lazy的日志写入数据库(Y/N)');
+insert into LazyParameters (bh,nr,ms) values ('2','Y','珠宝加工制作的蓝色物品邮寄对象');
 
 /**********************************/
 /***********    角色信息     *************/

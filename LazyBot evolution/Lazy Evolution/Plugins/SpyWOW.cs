@@ -1141,6 +1141,37 @@ namespace LazyEvo.Plugins
             return true;
         }
 
+        public static bool SendZBJGBlueItem(string KeyString,DBLogger logger)
+        {
+            if (string.IsNullOrWhiteSpace(KeyString))
+            {
+                logger.Add("关键字为空");
+                return true;
+            }
+
+            string receiver = SpyDB.GetParam("2");
+            if 
+
+            logger.Add("开始发送邮件");
+            foreach (KeyValuePair<string, string> mail in MailList)
+            {
+                logger.Add(string.Format("开始发送{0}到{1}", mail.Key, mail.Value));
+                if (bag.ContainsKey(mail.Key))
+                {
+                    if (!SpyFrame.lua_SendItemByName(mail.Value, mail.Key, FullStack))
+                    {
+                        logger.Add(string.Format("发{0}给{1}，失败了", mail.Value, mail.Key));
+                        return false;
+                    }
+                }
+                else
+                {
+                    logger.Add(string.Format("背包中没有{0}", mail.Key));
+                }
+            }
+            return true;
+        }
+
         public static bool DoItems(string item)
         {
             return SpyFrame.lua_TradeSkillDO(item);
@@ -1510,6 +1541,13 @@ namespace LazyEvo.Plugins
                                 // 发邮件
                                 logger.Add("发邮件");
                                 if (!SpyTradeSkill.SendMain(MailList, logger)) return;
+
+                                // 邮寄之后，继续检查剩余空间
+                                if (Inventory.FreeBagSlots <= 4)
+                                {
+                                    logger.Add("邮寄完之后，背包里面至少应该有4格空余，否则无法进行");
+                                    return;
+                                }
                             }
                         }
 

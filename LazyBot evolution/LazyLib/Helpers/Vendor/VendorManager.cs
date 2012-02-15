@@ -84,12 +84,13 @@ namespace LazyLib.Helpers.Vendor
                     vendor.Interact(false);
                     Thread.Sleep(1000);
                 }
-                MouseHelper.Hook();
-                MailManager.OpenAllBags();
+
+                //MouseHelper.Hook();
+                //MailManager.OpenAllBags();
                 if (LazySettings.ShouldVendor)
                 {
                     Logging.Write("[Vendor]Going to sell items");
-                    Sell();
+                    //Sell();
                 }
                 if (LazySettings.ShouldRepair)
                 {
