@@ -167,7 +167,30 @@ insert into map_file (map_name,file_name,mine_list,herb_list) values ('西部荒野'
 /**********************************/
 /***********    计划任务     *************/
 insert into autologin (starttime, runtime, char_id, char_name, dowhat, machineid, everyday)
-               values (to_date('2012-2-10 15:11','yyyy-mm-dd hh24:mi'), 0, 23, 'Welcomex', 'FJKS', '1', 0);
+               values (to_date('2012-2-16 8:00','yyyy-mm-dd hh24:mi'), 0, (select char_id from wowchar where char_name='Welcomex'), 'Welcomex', 'FJKS', '1', 1);
+insert into autologin (starttime, runtime, char_id, char_name, dowhat, machineid, everyday)
+               values (to_date('2012-2-16 8:20','yyyy-mm-dd hh24:mi'), 0, (select char_id from wowchar where char_name='Welcomex'), 'Welcomex', 'ZBJG', '1', 1);
+insert into autologin (starttime, runtime, char_id, char_name, dowhat, machineid, everyday)
+               values (to_date('2012-2-16 8:40','yyyy-mm-dd hh24:mi'), 0, (select char_id from wowchar where char_name='最初的联盟'), '最初的联盟', 'ZBJG', '1', 1);
+insert into autologin (starttime, runtime, char_id, char_name, dowhat, machineid, everyday)
+               values (to_date('2012-2-16 9:00','yyyy-mm-dd hh24:mi'), 0, (select char_id from wowchar where char_name='收矿啊'), '收矿啊', 'AH', '1', 1);
+insert into autologin (starttime, runtime, char_id, char_name, dowhat, machineid, everyday)
+               values (to_date('2012-2-16 9:30','yyyy-mm-dd hh24:mi'), 120, (select char_id from wowchar where char_name='亣眔龘'), '亣眔龘', 'CJ', '1', 1);
+insert into autologin (starttime, runtime, char_id, char_name, dowhat, machineid, everyday)
+               values (to_date('2012-2-16 12:00','yyyy-mm-dd hh24:mi'), 0, (select char_id from wowchar where char_name='收矿啊'), '收矿啊', 'AH', '1', 1);
+insert into autologin (starttime, runtime, char_id, char_name, dowhat, machineid, everyday)
+               values (to_date('2012-2-16 17:30','yyyy-mm-dd hh24:mi'), 0, (select char_id from wowchar where char_name='收矿啊'), '收矿啊', 'AH', '1', 1);
+insert into autologin (starttime, runtime, char_id, char_name, dowhat, machineid, everyday)
+               values (to_date('2012-2-16 22:30','yyyy-mm-dd hh24:mi'), 0, (select char_id from wowchar where char_name='收矿啊'), '收矿啊', 'AH', '1', 1);
+insert into autologin (starttime, runtime, char_id, char_name, dowhat, machineid, everyday)
+               values (to_date('2012-2-16 13:00','yyyy-mm-dd hh24:mi'), 120, (select char_id from wowchar where char_name='奡寗燊'), '奡寗燊', 'CJ', '1', 1);
+insert into autologin (starttime, runtime, char_id, char_name, dowhat, machineid, everyday)
+               values (to_date('2012-2-16 15:30','yyyy-mm-dd hh24:mi'), 120, (select char_id from wowchar where char_name='甯寗翯'), '甯寗翯', 'CJ', '1', 1);
+insert into autologin (starttime, runtime, char_id, char_name, dowhat, machineid, everyday)
+               values (to_date('2012-2-16 18:00','yyyy-mm-dd hh24:mi'), 120, (select char_id from wowchar where char_name='掱淼麤'), '掱淼麤', 'CJ', '1', 1);
+insert into autologin (starttime, runtime, char_id, char_name, dowhat, machineid, everyday)
+               values (to_date('2012-2-16 23:00','yyyy-mm-dd hh24:mi'), 120, (select char_id from wowchar where char_name='曌檙芻'), '曌檙芻', 'CJ', '1', 1);
+
 insert into autologin (starttime, runtime, char_id, char_name, dowhat, machineid, everyday)
                values (to_date('2012-2-15 6:00','yyyy-mm-dd hh24:mi'), 90, 53, '矿一', 'CJ', '1', 0);
 insert into autologin (starttime, runtime, char_id, char_name, dowhat, machineid, everyday)
