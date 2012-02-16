@@ -613,8 +613,9 @@ namespace LazyEvo.Plugins
             }
 
             int ReTry = 0;
-            Frame InfoFrame = InterfaceHelper.GetFrameByName("frmTest");
-            while (InfoFrame == null)
+            Frame InfoFrame = new Frame(0);
+            InfoFrame = InterfaceHelper.GetFrameByName("frmTest");
+            while (InfoFrame.BaseAddress == 0)
             {
                 InfoFrame = InterfaceHelper.GetFrameByName("frmTest");
                 ReTry++;
