@@ -244,6 +244,20 @@ delete autologin where runtime=120 and char_id=54
        106 伤人无数
        107 哗哗的银子
 
+Message: 未将对象引用设置到对象的实例。
+Inner exception: 
+Source: Lazy Evolution
+Stack trace:    在 LazyEvo.Plugins.SpyFrame.GetInfoFromFrame() 位置 C:\Develop\SVN\myevo\LazyBot evolution\Lazy Evolution\Plugins\SpyWOW.cs:行号 617
+   在 LazyEvo.Plugins.SpyFrame.ExecSimpleLua(String LuaCmd) 位置 C:\Develop\SVN\myevo\LazyBot evolution\Lazy Evolution\Plugins\SpyWOW.cs:行号 1082
+   在 LazyEvo.Plugins.SpyZBJG.DoAction() 位置 C:\Develop\SVN\myevo\LazyBot evolution\Lazy Evolution\Plugins\SpyWOW.cs:行号 1396
+   在 LazyEvo.Plugins.SpyZBJG.GoGo() 位置 C:\Develop\SVN\myevo\LazyBot evolution\Lazy Evolution\Plugins\SpyWOW.cs:行号 1353
+   在 System.Threading.ThreadHelper.ThreadStart_Context(Object state)
+   在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean ignoreSyncCtx)
+   在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
+   在 System.Threading.ThreadHelper.ThreadStart()
+Target site: System.String GetInfoFromFrame()
+Data: System.Collections.ListDictionaryInternal
+Link: 
 
 
 insert into WOWZONE (Z_ID, Z_NAME) values ('4922', '暮光高地');
