@@ -238,6 +238,8 @@ namespace LazyLib.SPY
                 oCmd.ExecuteNonQuery();
 
                 transaction.Commit();
+                sr.Close();
+                mapfs.Close();
 
             }
             catch (Exception ex)
