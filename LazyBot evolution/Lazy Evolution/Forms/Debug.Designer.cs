@@ -67,6 +67,7 @@
             // styleManager1
             // 
             this.styleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Windows7Blue;
+            this.styleManager1.MetroColorParameters = new DevComponents.DotNetBar.Metro.ColorTables.MetroColorGeneratorParameters(System.Drawing.Color.White, System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(163)))), ((int)(((byte)(26))))));
             // 
             // superTabControl1
             // 
@@ -110,9 +111,9 @@
             this.superTabControlPanel2.Controls.Add(this.labelX7);
             this.superTabControlPanel2.Controls.Add(this.UIBtnDump);
             this.superTabControlPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.superTabControlPanel2.Location = new System.Drawing.Point(0, 25);
+            this.superTabControlPanel2.Location = new System.Drawing.Point(0, 26);
             this.superTabControlPanel2.Name = "superTabControlPanel2";
-            this.superTabControlPanel2.Size = new System.Drawing.Size(633, 549);
+            this.superTabControlPanel2.Size = new System.Drawing.Size(633, 548);
             this.superTabControlPanel2.TabIndex = 0;
             this.superTabControlPanel2.TabItem = this.superTabItem2;
             // 
@@ -157,7 +158,7 @@
             this.DebugTBUIName.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.DebugTBUIName.Location = new System.Drawing.Point(12, 35);
             this.DebugTBUIName.Name = "DebugTBUIName";
-            this.DebugTBUIName.Size = new System.Drawing.Size(128, 20);
+            this.DebugTBUIName.Size = new System.Drawing.Size(128, 21);
             this.DebugTBUIName.TabIndex = 8;
             // 
             // labelX7
@@ -199,9 +200,9 @@
             this.superTabControlPanel1.Controls.Add(this.listView2);
             this.superTabControlPanel1.Controls.Add(this.listView1);
             this.superTabControlPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.superTabControlPanel1.Location = new System.Drawing.Point(0, 25);
+            this.superTabControlPanel1.Location = new System.Drawing.Point(0, 26);
             this.superTabControlPanel1.Name = "superTabControlPanel1";
-            this.superTabControlPanel1.Size = new System.Drawing.Size(633, 549);
+            this.superTabControlPanel1.Size = new System.Drawing.Size(633, 548);
             this.superTabControlPanel1.TabIndex = 1;
             this.superTabControlPanel1.TabItem = this.superTabItem1;
             // 
@@ -227,7 +228,6 @@
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(223)))), ((int)(((byte)(234)))), ((int)(((byte)(246)))));
             this.ClientSize = new System.Drawing.Size(633, 574);
             this.Controls.Add(this.superTabControl1);
-            this.DoubleBuffered = true;
             this.Name = "Debug";
             this.Load += new System.EventHandler(this.Debug_Load);
             ((System.ComponentModel.ISupportInitialize)(this.superTabControl1)).EndInit();

@@ -604,43 +604,45 @@ namespace LazyEvo.Plugins
         private const string LUA_SUCCESS_STRING = "Success";
         private const char SPLIT_CHAR = '$';
 
+        private static Frame frmTest = new Frame(0);
+        private static Frame frmData = new Frame(0);
+        private static Frame frmMailData = new Frame(0);
+
+        public static bool initme()
+        {
+            frmTest = new Frame(0);
+            frmData = new Frame(0);
+            frmMailData = new Frame(0);
+
+            Frame frmTemp;
+            int RetryCount = 0;
+            while (frmTest.BaseAddress == 0 || frmData.BaseAddress == 0 || frmMailData.BaseAddress == 0)
+            {
+                try
+                {
+                    frmTemp = InterfaceHelper.GetFrameByName("frmTest");
+                    frmTest = frmTemp.GetChildObject("frmTestText");
+
+                    frmTemp = InterfaceHelper.GetFrameByName("frmData");
+                    frmData = frmTemp.GetChildObject("frmDataText");
+
+                    frmTemp = InterfaceHelper.GetFrameByName("frmMailData");
+                    frmMailData = frmTemp.GetChildObject("frmMailDataText");
+                }
+                catch
+                {
+                }
+                RetryCount++;
+                if (RetryCount > 10) return false;
+                Thread.Sleep(1000);
+            }
+            return true;
+        }
+
         // 获取消息框文字
         public static string GetInfoFromFrame()
         {
-            while (InterfaceHelper.GetFrames.Count == 0)
-            {
-                Thread.Sleep(100);
-            }
-
-            int ReTry = 0;
-            Frame InfoFrame = new Frame(0);
-            InfoFrame = InterfaceHelper.GetFrameByName("frmTest");
-            while (InfoFrame.BaseAddress == 0)
-            {
-                InfoFrame = InterfaceHelper.GetFrameByName("frmTest");
-                ReTry++;
-                if (ReTry > 10)
-                {
-                    Logging.Write("没有启动插件？？？");
-                    return null;
-                }
-                Thread.Sleep(100);
-            }
-
-            string info = InfoFrame.GetChildObject("frmTestText").GetInfoText;
-            ReTry = 0;
-            while (info == null)
-            {
-                info = InfoFrame.GetChildObject("frmTestText").GetInfoText;
-                ReTry++;
-                if (ReTry > 10)
-                {
-                    Logging.Write("没有启动插件？？？");
-                    return null;
-                }
-                Thread.Sleep(100);
-            }
-            return info;
+            return frmTest.GetInfoText;
         }
 
         // 获取返回值内容
@@ -940,13 +942,12 @@ namespace LazyEvo.Plugins
             while (GetInfoFromFrame() == LUA_RUNNING_STRING)
             {
                 // 看看是否所有邮件都取完
-                Frame MailInfoFrame = InterfaceHelper.GetFrameByName("frmMailData");
-                if (MailInfoFrame == null)
+                string info = frmMailData.GetInfoText;
+                if (string.IsNullOrWhiteSpace(info))
                 {
-                    Logging.Write("插件没有打开");
-                    return;
+                    Logging.Write("读取frmMailData.GetInfoText信息返回空字符");
+                    continue;
                 }
-                string info = MailInfoFrame.GetChildObject("frmMailDataText").GetInfoText;
                 if (Convert.ToInt32(info) == 0) MailFrame.Close();
                 if (ServerMail.IsReady)
                 {
@@ -995,7 +996,6 @@ namespace LazyEvo.Plugins
                 Logging.Write("获取信息错误");
                 return result;
             }
-
 
             if (!string.IsNullOrWhiteSpace(rtv))
             {
@@ -1080,6 +1080,7 @@ namespace LazyEvo.Plugins
         {
             // 发送取结果的命令
             KeyHelper.SendLuaOverChat(LuaCmd);
+            Thread.Sleep(100);
             while (GetInfoFromFrame() == LUA_RUNNING_STRING)
             {
                 Thread.Sleep(10);
@@ -1107,48 +1108,29 @@ namespace LazyEvo.Plugins
             return ExecSimpleLua(string.Format("/script TradeSkillDO(\"{0}\")", ItemName));
         }
 
-        public static bool OpenProfession(string pName)
-        {
-            while (InterfaceHelper.GetFrames.Count == 0)
-            {
-                Thread.Sleep(100);
-            }
-            Frame InfoFrame = InterfaceHelper.GetFrameByName("SpellbookMicroButton");
-            InfoFrame.LeftClick();
-            Thread.Sleep(500);
-            InfoFrame = InterfaceHelper.GetFrameByName("SpellBookFrameTabButton2");
-            InfoFrame.LeftClick();
-            Thread.Sleep(500);
-            return true;
-        }
-
         public static Dictionary<string, int> GetDispCountItemCount()
         {
             Dictionary<string, int> ItemCount = new Dictionary<string, int>();
             ItemCount.Add("BAG", 0);
             ItemCount.Add("MAIL", 0);
-            while (InterfaceHelper.GetFrames.Count == 0)
+            try
             {
-                Thread.Sleep(100);
+                string info = frmData.GetInfoText;
+                if (string.IsNullOrWhiteSpace(info))
+                {
+                    Logging.Write("GetDispCountItemCount 错误：读取frmData.GetInfoText时，返回空串");
+                    return ItemCount;
+                }
+                string[] split = info.Split(SPLIT_CHAR);
+                ItemCount["BAG"] = Convert.ToInt32(split[0]);        //背包
+                ItemCount["MAIL"] = Convert.ToInt32(split[1]);        //邮件
+                return ItemCount;
             }
-
-            int ReTry = 0;
-            Frame InfoFrame = InterfaceHelper.GetFrameByName("frmData");
-            while (true)
+            catch (Exception e)
             {
-                if (ReTry > 4) return ItemCount;
-                if (InfoFrame != null) { break; }
-                Thread.Sleep(100);
-                ReTry++;
-                InfoFrame = InterfaceHelper.GetFrameByName("frmData");
+                Logging.Write("GetDispCountItemCount 错误：： " + e.ToString());
+                return ItemCount;
             }
-
-            string info = InfoFrame.GetChildObject("frmDataText").GetInfoText;
-            if (string.IsNullOrWhiteSpace(info)) return ItemCount;
-            string[] split = info.Split(SPLIT_CHAR);
-            ItemCount["BAG"] = Convert.ToInt32(split[0]);        //背包
-            ItemCount["MAIL"] = Convert.ToInt32(split[1]);        //邮件
-            return ItemCount;
         }
     }
 
@@ -1161,10 +1143,12 @@ namespace LazyEvo.Plugins
 
         public static bool SendMain(Dictionary<string, string> MailList, DBLogger logger, Boolean FullStack)
         {
-            if (MailList.Count == 0)
+            // 每次都从数据库读一次邮件列表
+            Dictionary<string, string> _mail = SpyDB.GetMailList();
+            if (_mail.Count == 0)
             {
-                logger.Add("邮件列表为空");
-                return true;
+                logger.Add("数据库获取邮件列表失败");
+                return false;
             }
             Dictionary<string, int> bag = SpyFrame.lua_GetBagInfo();
             if (bag.Count == 0)
@@ -1178,7 +1162,7 @@ namespace LazyEvo.Plugins
             Thread.Sleep(5000);
 
             logger.Add("开始发送邮件");
-            foreach (KeyValuePair<string, string> mail in MailList)
+            foreach (KeyValuePair<string, string> mail in _mail)
             {
                 logger.Add(string.Format("开始发送{0}到{1}", mail.Key, mail.Value));
                 if (bag.ContainsKey(mail.Key))
@@ -1191,7 +1175,7 @@ namespace LazyEvo.Plugins
                 }
                 else
                 {
-                    logger.Add(string.Format("背包中没有{0}", mail.Key));
+                    //logger.Add(string.Format("背包中没有{0}", mail.Key));
                 }
             }
             return true;
@@ -1242,6 +1226,7 @@ namespace LazyEvo.Plugins
 
         public void Add(string msg)
         {
+            Logging.Write(msg);
             logger.Add(msg);
         }
 
@@ -1280,6 +1265,11 @@ namespace LazyEvo.Plugins
 
         public static bool initme()
         {
+            if (!SpyFrame.initme())
+            {
+                Logging.Write("Frame 信息框体初始化失败，不能继续");
+                return false;
+            }
             logger.clear();
             if (MailList != null) MailList.Clear();
             MailList = SpyDB.GetMailList();
@@ -1652,30 +1642,192 @@ namespace LazyEvo.Plugins
     // 研磨
     public static class SpyYM
     {
-        public static void test()
+        // 需要确定研磨的物品，从数据库获得
+        // 知道研磨的技能名称、2种药水名称、卡牌名称
+        // 暂时全部做成卡牌，不考虑别的了
+
+        // 流程： 先魔草，然后看看有多少原料，之后按照拍卖需求计算需要多少羊皮纸，然后去统一购买
+        // 这里制作有一个优先级
+    }
+
+    /// <summary>
+    /// 炼金转化
+    /// </summary>
+    public static class SpyLJZH
+    {
+        // 数据库保存转化目标，需要原料，以及是否有CD（有CD，一天执行一次）
+        // 按照列表先做有CD的，然后再做没有的。这期间要在邮箱和背包中找是否有材料，没有就跳过，主要缺一样就跳过
+        // 炼金转化列表是每个人都不一样的
+
+        private static DataTable GoodsList;                         // 制作清单
+        public static DBLogger logger = new DBLogger("炼金转化");
+        private static Thread _thread;
+        public static bool RUNNING;
+
+        public static bool initme()
         {
-            int CountJump = 0;
-            while (true)
+            RUNNING = true;
+            logger.clear();
+
+            if (!SpyFrame.initme())
             {
-                if (Inventory.FreeBagSlots < 3) return;
-                CountJump++;
-                if (CountJump == 10)
+                logger.Add("Frame 信息框体初始化失败，不能继续");
+                RUNNING = false;
+                return false;
+            }
+
+            // 获取制作清单
+
+            Logging.Write("进行外挂初始化--动作条初始化");
+            BarMapper.MapBars();
+            Logging.Write("进行外挂初始化--按键初始化");
+            KeyHelper.LoadKeys();
+
+            return true;
+        }
+
+        public static void start()
+        {
+            if (_thread == null || !_thread.IsAlive)
+            {
+                _thread = new Thread(GoGo);
+                _thread.Name = "炼金转化";
+                _thread.IsBackground = true;
+                // 设置线程状态为单线程
+                try
                 {
-                    KeyLowHelper.PressKey(MicrosoftVirtualKeys.Space);
-                    KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.Space);
-                    CountJump = 0;
-                    Thread.Sleep(4000);
+                    _thread.TrySetApartmentState(ApartmentState.STA);
                 }
-                KeyLowHelper.PressKey(MicrosoftVirtualKeys.key4);
-                KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.key4);
-                Thread.Sleep(1000);
-                while (ObjectManager.MyPlayer.IsCasting)
+                catch (Exception ex)
                 {
-                    Thread.Sleep(100);
+                    Logging.Write("启动失败，线程设置出现错误，原因是：" + ex.ToString());
+                    RUNNING = false;
+                    return;
                 }
-                Thread.Sleep(1000);
+                _thread.Start();
+                Logging.Write(_thread.Name + " 开始了。。。。。");
+
             }
         }
+
+        public static void stop()
+        {
+            if (_thread == null) return;
+            if (_thread.IsAlive)
+            {
+                _thread.Abort();
+                _thread = null;
+            }
+        }
+
+        public static void GoGo()
+        {
+            DoAction();
+            logger.output();
+            SpyData.SaveInfo_Bag();
+            RUNNING = false;
+        }
+
+        public static void DoAction()
+        {
+            // 打开邮箱
+            if (!MailManager.TargetMailBox())
+            {
+                logger.Add("任务附近没有邮箱，失败啊。。。");
+                return;
+            }
+
+            int CountJump = 0;
+            // 遍历制作列表
+            foreach (DataRow _goods in GoodsList.Rows)
+            {
+                // 这里在出列表的时候，就按照CD物品优先来做
+                // 找到原料(原料按照 Item$Count#Item$Count# 格式保存)
+                bool HasAllItem = false;
+                string[] Items = _goods["UsedItem"].ToString().Split('#');
+                for (int iLoop = 0; iLoop < Items.Length; iLoop++)
+                {
+                }
+
+                    if (!SpyFrame.lua_SetDispCountItemName(DoingMine))
+                    {
+                        logger.Add("在执行SetDispCountItemName时出错，矿：" + DoingMine);
+                        return;
+                    }
+                Thread.Sleep(1000);
+                Dictionary<string, int> MineCount = SpyFrame.GetDispCountItemCount();
+                /** 检查背包里面有没有矿，有就炸，没有再查邮箱，从邮箱拿，直到没有矿 **/
+                if (MineCount["BAG"] == 0 && MineCount["MAIL"] == 0)
+                {
+                    logger.Add("包里面没有(或者是都炸完了)  " + DoingMine);
+                    continue;
+                }
+                while (MineCount["BAG"] > 0 || MineCount["MAIL"] > 0)
+                {
+                    // 邮箱里面有矿，取矿出来
+                    if (MineCount["MAIL"] > 0)
+                    {
+                        logger.Add("从邮箱里面拿  " + DoingMine);
+                        if (!SpyFrame.lua_GetMAILAsItem(DoingMine, 100000, 20))
+                        {
+                            logger.Add("从邮箱里面拿  " + DoingMine + " 失败");
+                            return;
+                        }
+                    }
+
+                    Thread.Sleep(1000);
+                    MineCount = SpyFrame.GetDispCountItemCount();
+
+                    // 分解矿，直到包空间小于1和背包里面没有矿
+                    while (MineCount["BAG"] > 0 && Inventory.FreeBagSlots > 1)
+                    {
+                        CountJump++;
+                        if (CountJump == 10)
+                        {
+                            // jump一下，防止AFK
+                            CountJump = 0;
+                            logger.Add("jump一下，防止AFK");
+                            KeyLowHelper.PressKey(MicrosoftVirtualKeys.Space);
+                            KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.Space);
+                            Thread.Sleep(5000);
+                        }
+                        // 分解石头 , 分解宏要放在4这个上面
+                        logger.Add("炸矿");
+                        KeyLowHelper.PressKey(MicrosoftVirtualKeys.key4);
+                        KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.key4);
+                        Thread.Sleep(500);
+                        while (ObjectManager.MyPlayer.IsCasting)
+                        {
+                            Thread.Sleep(100);
+                        }
+                        // 等待2秒，取分解的东西到背包
+                        Thread.Sleep(2000);
+                        MineCount = SpyFrame.GetDispCountItemCount();
+                    }
+
+                    // 当包里面还有矿的时候，可能是背包满了，这时候启动邮寄
+                    if (Inventory.FreeBagSlots <= 1)
+                    {
+                        // 发邮件
+                        logger.Add("发邮件");
+                        if (!SpyTradeSkill.SendMain(MailList, logger)) return;
+                    }
+                    Thread.Sleep(1000);
+                    MineCount = SpyFrame.GetDispCountItemCount();
+
+                    // 邮寄完，背包还是满，就退出
+                    if (Inventory.FreeBagSlots <= 1)
+                    {
+                        logger.Add("邮寄完，背包还是满");
+                        return;
+                    }
+                }
+            }
+            logger.Add("矿都处理完了，发邮件");
+            if (!SpyTradeSkill.SendMain(MailList, logger)) return;
+            return;
+        }
+
     }
 
     // 分解矿+邮寄
@@ -1692,6 +1844,12 @@ namespace LazyEvo.Plugins
         {
             RUNNING = true;
 
+            if (!SpyFrame.initme())
+            {
+                Logging.Write("Frame 信息框体初始化失败，不能继续");
+                RUNNING = false;
+                return false;
+            }
             Logging.Write("获取邮寄列表");
             if (MailList != null) MailList.Clear();
             MailList = SpyDB.GetMailList();
@@ -1883,6 +2041,12 @@ namespace LazyEvo.Plugins
                 return false;
             }
             AHerName = LazySettings.AHer;
+
+            if (!SpyFrame.initme())
+            {
+                Logging.Write("Frame 信息框体初始化失败，不能继续");
+                return false;
+            }
 
             // 从数据库表读取拍卖列表(ahitem)
             if (Items != null) Items.Clear();

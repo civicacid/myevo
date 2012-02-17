@@ -33,6 +33,7 @@ namespace LazyLib.Helpers
         private static Dictionary<String, Frame> _allFrames = new Dictionary<String, Frame>();
         private static Thread _updateThread;
         private static readonly object Locker = new object();
+        private static Dictionary<String, Frame> spyFrames = new Dictionary<String, Frame>();
 
         public static Int32 WindowWidth
         {
@@ -124,21 +125,29 @@ namespace LazyLib.Helpers
         /// </summary>
         public static void ReloadFrames()
         {
-            var allFrames = new Dictionary<String, Frame>();
-            var @base = Memory.ReadRelative<uint>((uint)Pointers.UiFrame.FrameBase);
-            var currentFrame = Memory.Read<uint>(@base + (uint)Pointers.UiFrame.FirstFrame);
-            while (currentFrame != 0)
+            try
             {
-                var f = new Frame(currentFrame);
-                if (!allFrames.ContainsKey(f.GetName))
-                    allFrames.Add(f.GetName, f);
-                currentFrame = Memory.Read<uint>(currentFrame + Memory.Read<uint>(@base + (uint)Pointers.UiFrame.NextFrame) + 4);
-                //Thread.Sleep(1);
+                var allFrames = new Dictionary<String, Frame>();
+                var @base = Memory.ReadRelative<uint>((uint)Pointers.UiFrame.FrameBase);
+                var currentFrame = Memory.Read<uint>(@base + (uint)Pointers.UiFrame.FirstFrame);
+                while (currentFrame != 0)
+                {
+                    var f = new Frame(currentFrame);
+                    if (!allFrames.ContainsKey(f.GetName))
+                        allFrames.Add(f.GetName, f);
+                    currentFrame = Memory.Read<uint>(currentFrame + Memory.Read<uint>(@base + (uint)Pointers.UiFrame.NextFrame) + 4);
+                    //Thread.Sleep(1);
+                }
+                lock (Locker)
+                {
+                    _allFrames = allFrames;
+                }
             }
-            lock (Locker)
+            catch (Exception e)
             {
-                _allFrames = allFrames;
+                Logging.Write("ReloadFrames出现错误: " + e);
             }
+
         }
 
         /// <summary>
