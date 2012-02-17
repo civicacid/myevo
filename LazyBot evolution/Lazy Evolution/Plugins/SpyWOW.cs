@@ -1590,7 +1590,7 @@ namespace LazyEvo.Plugins
                                 // 发邮件
                                 logger.Add("发邮件");
                                 if (!SpyTradeSkill.SendMain(MailList, logger)) return;
-                                if (!SpyTradeSkill.SendZBJGBlueItem(ToDoWhat,logger)) return;
+                                if (!SpyTradeSkill.SendZBJGBlueItem(ToDoWhat, logger)) return;
 
                                 // 邮寄之后，继续检查剩余空间
                                 if (Inventory.FreeBagSlots <= 4)
@@ -2946,8 +2946,8 @@ namespace LazyEvo.Plugins
         static string DoWhat;
         static DateTime StatusStartTime;
 
-        const int RUN_OUT_MIN_LOGIN = 5;
-        const int RUN_OUT_MIN_WORK = 15;
+        static int RUN_OUT_MIN_LOGIN = 20;
+        static int RUN_OUT_MIN_WORK = 5;
 
         enum EnumJobStatus
         {
@@ -2960,6 +2960,18 @@ namespace LazyEvo.Plugins
         }
         static EnumJobStatus JobStatus;
 
+        public static bool initme()
+        {
+            string rtv = SpyDB.GetParam("3");
+            if (string.IsNullOrWhiteSpace(rtv)) RUN_OUT_MIN_WORK = 20;
+            RUN_OUT_MIN_WORK = Convert.ToInt32(rtv);
+
+            rtv = SpyDB.GetParam("4");
+            if (string.IsNullOrWhiteSpace(rtv)) RUN_OUT_MIN_LOGIN = 5;
+            RUN_OUT_MIN_LOGIN = Convert.ToInt32(rtv);
+
+            return true;
+        }
         public static void startScanDB()
         {
             if (_thread == null || !_thread.IsAlive)
