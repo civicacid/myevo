@@ -1,5 +1,7 @@
 insert into LazyParameters (bh,nr,ms) values ('1','Y','是否将lazy的日志写入数据库(Y/N)');
 insert into LazyParameters (bh,nr,ms) values ('2','碰友','珠宝加工制作的蓝色物品邮寄对象');
+insert into LazyParameters (bh,nr,ms) values ('3','20','自动工作超时时间（分钟）');
+insert into LazyParameters (bh,nr,ms) values ('4','5','自动登录超时时间（分钟）');
 
 /**********************************/
 /***********    角色信息     *************/
@@ -48,6 +50,20 @@ insert into maillist (server,sender_char_name,item_name,receiver_char_name) valu
 insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','鞭尾草','爱贝贝熊');
 insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','暮光茉莉','爱贝贝熊');
 insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','心灵之花','爱贝贝熊');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','燃烬草','爱贝贝熊');
+
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','铜矿','tyutone');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','锡矿','tyutone');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','银矿','tyutone');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','铁矿石','tyutone');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','石南草','spyman');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','魔皇草','spyman');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','跌打草','spyman');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','金棘草','spyman');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','枯叶草','spyman');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','活根草','spyman');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','魔皇草','spyman');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','野钢花','spyman');
                                                        
 insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','地狱炎石','最初的联盟');
 insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','琥珀晶石','最初的联盟');
@@ -161,6 +177,7 @@ insert into map_file (map_name,file_name,mine_list,herb_list) values ('海加尔山'
 insert into map_file (map_name,file_name,mine_list,herb_list) values ('嚎风峡湾','嚎风峡湾.xml','钴矿脉$富钴矿脉','卷丹$金苜蓿$');
 insert into map_file (map_name,file_name,mine_list,herb_list) values ('索拉查盆地','索拉查盆地.xml','萨隆邪铁矿脉$富萨隆邪铁矿脉','蛇信草$虎百合$卷丹');
 insert into map_file (map_name,file_name,mine_list,herb_list) values ('西部荒野','西部荒野.xml','铜矿$锡矿$银矿','宁神花$银叶草$地根草$石南草$跌打草');
+insert into map_file (map_name,file_name,mine_list,herb_list) values ('北荆棘谷','北荆棘谷.xml','锡矿$银矿$铁矿石','石南草$跌打草$魔皇草$金棘草$枯叶草$活根草$魔皇草$野钢花');
 
 -----------------------------------------------------------------------------------------------------------------------------------
 
@@ -443,3 +460,4 @@ insert into WOWZONE (Z_ID, Z_NAME) values ('1657', '达纳苏斯');
 insert into WOWZONE (Z_ID, Z_NAME) values ('3524', '秘蓝岛');
 insert into WOWZONE (Z_ID, Z_NAME) values ('3557', '埃索达');
 insert into WOWZONE (Z_ID, Z_NAME) values ('5695', '安其拉：堕落王国');
+
