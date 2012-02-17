@@ -105,6 +105,7 @@ namespace LazyLib.Helpers
         {
             get { return Memory.ReadUtf8(Memory.Read<uint>(BaseAddress + (uint)Pointers.UiFrame.LabelText), 8100); }
         }
+
         public string GetEditBoxText
         {
             get { return Memory.ReadUtf8(Memory.Read<uint>(BaseAddress + (uint)Pointers.UiFrame.EditBoxText), byte.MaxValue); }
