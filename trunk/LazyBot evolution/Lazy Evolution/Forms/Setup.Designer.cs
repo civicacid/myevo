@@ -254,6 +254,13 @@
             this.SetupCBSoundFollow = new DevComponents.DotNetBar.Controls.CheckBoxX();
             this.styleManager1 = new DevComponents.DotNetBar.StyleManager(this.components);
             this.superTabControl2 = new DevComponents.DotNetBar.SuperTabControl();
+            this.superTabControlPanel7 = new DevComponents.DotNetBar.SuperTabControlPanel();
+            this.groupPanel7 = new DevComponents.DotNetBar.Controls.GroupPanel();
+            this.labelX12 = new DevComponents.DotNetBar.LabelX();
+            this.SetupTBLogOutOnFollow = new DevComponents.Editors.IntegerInput();
+            this.SetupCBLogoutOnFollow = new DevComponents.DotNetBar.Controls.CheckBoxX();
+            this.groupPanel6 = new DevComponents.DotNetBar.Controls.GroupPanel();
+            this.superTabItem7 = new DevComponents.DotNetBar.SuperTabItem();
             this.superTabControlPanel4 = new DevComponents.DotNetBar.SuperTabControlPanel();
             this.labelX55 = new DevComponents.DotNetBar.LabelX();
             this.labelX57 = new DevComponents.DotNetBar.LabelX();
@@ -311,13 +318,6 @@
             this.superTabControlPanel1 = new DevComponents.DotNetBar.SuperTabControlPanel();
             this.PluginsList = new System.Windows.Forms.CheckedListBox();
             this.superTabItem1 = new DevComponents.DotNetBar.SuperTabItem();
-            this.superTabControlPanel7 = new DevComponents.DotNetBar.SuperTabControlPanel();
-            this.groupPanel7 = new DevComponents.DotNetBar.Controls.GroupPanel();
-            this.labelX12 = new DevComponents.DotNetBar.LabelX();
-            this.SetupTBLogOutOnFollow = new DevComponents.Editors.IntegerInput();
-            this.SetupCBLogoutOnFollow = new DevComponents.DotNetBar.Controls.CheckBoxX();
-            this.groupPanel6 = new DevComponents.DotNetBar.Controls.GroupPanel();
-            this.superTabItem7 = new DevComponents.DotNetBar.SuperTabItem();
             this.superTabControlPanel6 = new DevComponents.DotNetBar.SuperTabControlPanel();
             this.labelX38 = new DevComponents.DotNetBar.LabelX();
             this.SetupCBRelogEnableRelogger = new DevComponents.DotNetBar.Controls.CheckBoxX();
@@ -436,16 +436,16 @@
             ((System.ComponentModel.ISupportInitialize)(this.SetupTBStopAfter)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.superTabControl2)).BeginInit();
             this.superTabControl2.SuspendLayout();
+            this.superTabControlPanel7.SuspendLayout();
+            this.groupPanel7.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.SetupTBLogOutOnFollow)).BeginInit();
+            this.groupPanel6.SuspendLayout();
             this.superTabControlPanel4.SuspendLayout();
             this.groupPanel10.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Latency)).BeginInit();
             this.superTabControlPanel10.SuspendLayout();
             this.superTabControlPanel9.SuspendLayout();
             this.superTabControlPanel1.SuspendLayout();
-            this.superTabControlPanel7.SuspendLayout();
-            this.groupPanel7.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.SetupTBLogOutOnFollow)).BeginInit();
-            this.groupPanel6.SuspendLayout();
             this.superTabControlPanel6.SuspendLayout();
             this.SetupRelogLoginData.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SetupIIRelogLogAccount)).BeginInit();
@@ -474,7 +474,7 @@
             groupBox1.Controls.Add(this.btnDownloadFight);
             groupBox1.Controls.Add(this.btnUploadFight);
             groupBox1.Controls.Add(this.btnRefreshFight);
-            groupBox1.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            groupBox1.Font = new System.Drawing.Font("Microsoft YaHei", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             groupBox1.Location = new System.Drawing.Point(12, 13);
             groupBox1.Name = "groupBox1";
             groupBox1.Size = new System.Drawing.Size(594, 161);
@@ -504,7 +504,7 @@
             // 
             this.txtFightFile.Border.Class = "TextBoxBorder";
             this.txtFightFile.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.txtFightFile.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.txtFightFile.Font = new System.Drawing.Font("Microsoft YaHei", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.txtFightFile.Location = new System.Drawing.Point(112, 71);
             this.txtFightFile.Margin = new System.Windows.Forms.Padding(2);
             this.txtFightFile.Name = "txtFightFile";
@@ -516,7 +516,7 @@
             this.comboBoxFight.DisplayMember = "Text";
             this.comboBoxFight.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.comboBoxFight.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxFight.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.comboBoxFight.Font = new System.Drawing.Font("Microsoft YaHei", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.comboBoxFight.FormattingEnabled = true;
             this.comboBoxFight.ItemHeight = 20;
             this.comboBoxFight.Location = new System.Drawing.Point(35, 30);
@@ -530,7 +530,7 @@
             // 
             this.btnSelectFight.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.btnSelectFight.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnSelectFight.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnSelectFight.Font = new System.Drawing.Font("Microsoft YaHei", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnSelectFight.Location = new System.Drawing.Point(491, 71);
             this.btnSelectFight.Margin = new System.Windows.Forms.Padding(2);
             this.btnSelectFight.Name = "btnSelectFight";
@@ -544,7 +544,7 @@
             // 
             this.btnDownloadFight.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.btnDownloadFight.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnDownloadFight.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnDownloadFight.Font = new System.Drawing.Font("Microsoft YaHei", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnDownloadFight.Location = new System.Drawing.Point(509, 121);
             this.btnDownloadFight.Margin = new System.Windows.Forms.Padding(2);
             this.btnDownloadFight.Name = "btnDownloadFight";
@@ -558,7 +558,7 @@
             // 
             this.btnUploadFight.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.btnUploadFight.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnUploadFight.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnUploadFight.Font = new System.Drawing.Font("Microsoft YaHei", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnUploadFight.Location = new System.Drawing.Point(445, 121);
             this.btnUploadFight.Margin = new System.Windows.Forms.Padding(2);
             this.btnUploadFight.Name = "btnUploadFight";
@@ -572,7 +572,7 @@
             // 
             this.btnRefreshFight.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.btnRefreshFight.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnRefreshFight.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnRefreshFight.Font = new System.Drawing.Font("Microsoft YaHei", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnRefreshFight.Location = new System.Drawing.Point(238, 30);
             this.btnRefreshFight.Margin = new System.Windows.Forms.Padding(2);
             this.btnRefreshFight.Name = "btnRefreshFight";
@@ -592,7 +592,7 @@
             groupBox2.Controls.Add(this.btnDownloadMap);
             groupBox2.Controls.Add(this.btnUploadMap);
             groupBox2.Controls.Add(this.btnRefreshMap);
-            groupBox2.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            groupBox2.Font = new System.Drawing.Font("Microsoft YaHei", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             groupBox2.Location = new System.Drawing.Point(12, 193);
             groupBox2.Name = "groupBox2";
             groupBox2.Size = new System.Drawing.Size(594, 161);
@@ -622,7 +622,7 @@
             // 
             this.txtMapFile.Border.Class = "TextBoxBorder";
             this.txtMapFile.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.txtMapFile.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.txtMapFile.Font = new System.Drawing.Font("Microsoft YaHei", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.txtMapFile.Location = new System.Drawing.Point(112, 71);
             this.txtMapFile.Margin = new System.Windows.Forms.Padding(2);
             this.txtMapFile.Name = "txtMapFile";
@@ -634,7 +634,7 @@
             this.comboBoxMap.DisplayMember = "Text";
             this.comboBoxMap.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.comboBoxMap.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxMap.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.comboBoxMap.Font = new System.Drawing.Font("Microsoft YaHei", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.comboBoxMap.FormattingEnabled = true;
             this.comboBoxMap.ItemHeight = 20;
             this.comboBoxMap.Location = new System.Drawing.Point(35, 30);
@@ -648,7 +648,7 @@
             // 
             this.btnSelectMap.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.btnSelectMap.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnSelectMap.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnSelectMap.Font = new System.Drawing.Font("Microsoft YaHei", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnSelectMap.Location = new System.Drawing.Point(491, 71);
             this.btnSelectMap.Margin = new System.Windows.Forms.Padding(2);
             this.btnSelectMap.Name = "btnSelectMap";
@@ -662,7 +662,7 @@
             // 
             this.btnDownloadMap.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.btnDownloadMap.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnDownloadMap.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnDownloadMap.Font = new System.Drawing.Font("Microsoft YaHei", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnDownloadMap.Location = new System.Drawing.Point(509, 121);
             this.btnDownloadMap.Margin = new System.Windows.Forms.Padding(2);
             this.btnDownloadMap.Name = "btnDownloadMap";
@@ -676,7 +676,7 @@
             // 
             this.btnUploadMap.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.btnUploadMap.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnUploadMap.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnUploadMap.Font = new System.Drawing.Font("Microsoft YaHei", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnUploadMap.Location = new System.Drawing.Point(445, 121);
             this.btnUploadMap.Margin = new System.Windows.Forms.Padding(2);
             this.btnUploadMap.Name = "btnUploadMap";
@@ -690,7 +690,7 @@
             // 
             this.btnRefreshMap.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.btnRefreshMap.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnRefreshMap.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnRefreshMap.Font = new System.Drawing.Font("Microsoft YaHei", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnRefreshMap.Location = new System.Drawing.Point(238, 30);
             this.btnRefreshMap.Margin = new System.Windows.Forms.Padding(2);
             this.btnRefreshMap.Name = "btnRefreshMap";
@@ -1869,7 +1869,7 @@
             // 
             this.labelX20.BackgroundStyle.Class = "";
             this.labelX20.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX20.Font = new System.Drawing.Font("新宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.labelX20.Font = new System.Drawing.Font("NSimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.labelX20.Location = new System.Drawing.Point(5, 4);
             this.labelX20.Margin = new System.Windows.Forms.Padding(2);
             this.labelX20.Name = "labelX20";
@@ -2223,8 +2223,8 @@
             this.superTabControl2.ControlBox.SubItems.AddRange(new DevComponents.DotNetBar.BaseItem[] {
             this.superTabControl2.ControlBox.MenuBox,
             this.superTabControl2.ControlBox.CloseBox});
-            this.superTabControl2.Controls.Add(this.superTabControlPanel7);
             this.superTabControl2.Controls.Add(this.superTabControlPanel4);
+            this.superTabControl2.Controls.Add(this.superTabControlPanel7);
             this.superTabControl2.Controls.Add(this.superTabControlPanel10);
             this.superTabControl2.Controls.Add(this.superTabControlPanel9);
             this.superTabControl2.Controls.Add(this.superTabControlPanel1);
@@ -2254,6 +2254,174 @@
             this.superTabItem8});
             this.superTabControl2.TabStyle = DevComponents.DotNetBar.eSuperTabStyle.WinMediaPlayer12;
             this.superTabControl2.Text = "Grinder settings";
+            // 
+            // superTabControlPanel7
+            // 
+            this.superTabControlPanel7.Controls.Add(this.groupPanel7);
+            this.superTabControlPanel7.Controls.Add(this.groupPanel6);
+            this.superTabControlPanel7.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.superTabControlPanel7.Location = new System.Drawing.Point(0, 0);
+            this.superTabControlPanel7.Margin = new System.Windows.Forms.Padding(2);
+            this.superTabControlPanel7.Name = "superTabControlPanel7";
+            this.superTabControlPanel7.Size = new System.Drawing.Size(618, 399);
+            this.superTabControlPanel7.TabIndex = 0;
+            this.superTabControlPanel7.TabItem = this.superTabItem7;
+            this.superTabControlPanel7.ThemeAware = true;
+            // 
+            // groupPanel7
+            // 
+            this.groupPanel7.BackColor = System.Drawing.Color.Transparent;
+            this.groupPanel7.CanvasColor = System.Drawing.SystemColors.Control;
+            this.groupPanel7.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
+            this.groupPanel7.Controls.Add(this.labelX12);
+            this.groupPanel7.Controls.Add(this.SetupTBLogOutOnFollow);
+            this.groupPanel7.Controls.Add(this.SetupCBLogoutOnFollow);
+            this.groupPanel7.Controls.Add(this.SetupCBSoundFollow);
+            this.groupPanel7.Controls.Add(this.labelX48);
+            this.groupPanel7.Controls.Add(this.SetupTBStopAfter);
+            this.groupPanel7.Controls.Add(this.SetupCBSoundWhisper);
+            this.groupPanel7.Controls.Add(this.SetupCBShutdown);
+            this.groupPanel7.Controls.Add(this.SetupCBSoundStop);
+            this.groupPanel7.Controls.Add(this.SetupCBStopAfter);
+            this.groupPanel7.Location = new System.Drawing.Point(6, 135);
+            this.groupPanel7.Margin = new System.Windows.Forms.Padding(2);
+            this.groupPanel7.Name = "groupPanel7";
+            this.groupPanel7.Size = new System.Drawing.Size(505, 182);
+            // 
+            // 
+            // 
+            this.groupPanel7.Style.BackColor2SchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground2;
+            this.groupPanel7.Style.BackColorGradientAngle = 90;
+            this.groupPanel7.Style.BackColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
+            this.groupPanel7.Style.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel7.Style.BorderBottomWidth = 1;
+            this.groupPanel7.Style.BorderColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
+            this.groupPanel7.Style.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel7.Style.BorderLeftWidth = 1;
+            this.groupPanel7.Style.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel7.Style.BorderRightWidth = 1;
+            this.groupPanel7.Style.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel7.Style.BorderTopWidth = 1;
+            this.groupPanel7.Style.Class = "";
+            this.groupPanel7.Style.CornerDiameter = 4;
+            this.groupPanel7.Style.CornerType = DevComponents.DotNetBar.eCornerType.Rounded;
+            this.groupPanel7.Style.TextAlignment = DevComponents.DotNetBar.eStyleTextAlignment.Center;
+            this.groupPanel7.Style.TextColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelText;
+            this.groupPanel7.Style.TextLineAlignment = DevComponents.DotNetBar.eStyleTextAlignment.Near;
+            // 
+            // 
+            // 
+            this.groupPanel7.StyleMouseDown.Class = "";
+            this.groupPanel7.StyleMouseDown.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            // 
+            // 
+            // 
+            this.groupPanel7.StyleMouseOver.Class = "";
+            this.groupPanel7.StyleMouseOver.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.groupPanel7.TabIndex = 173;
+            this.groupPanel7.Text = "Anti detection";
+            // 
+            // labelX12
+            // 
+            this.labelX12.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX12.BackgroundStyle.Class = "";
+            this.labelX12.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX12.Location = new System.Drawing.Point(396, 25);
+            this.labelX12.Margin = new System.Windows.Forms.Padding(2);
+            this.labelX12.Name = "labelX12";
+            this.labelX12.Size = new System.Drawing.Size(86, 23);
+            this.labelX12.TabIndex = 172;
+            this.labelX12.Text = "minuttes";
+            // 
+            // SetupTBLogOutOnFollow
+            // 
+            // 
+            // 
+            // 
+            this.SetupTBLogOutOnFollow.BackgroundStyle.Class = "DateTimeInputBackground";
+            this.SetupTBLogOutOnFollow.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.SetupTBLogOutOnFollow.ButtonFreeText.Shortcut = DevComponents.DotNetBar.eShortcut.F2;
+            this.SetupTBLogOutOnFollow.Location = new System.Drawing.Point(299, 25);
+            this.SetupTBLogOutOnFollow.Margin = new System.Windows.Forms.Padding(2);
+            this.SetupTBLogOutOnFollow.Name = "SetupTBLogOutOnFollow";
+            this.SetupTBLogOutOnFollow.ShowUpDown = true;
+            this.SetupTBLogOutOnFollow.Size = new System.Drawing.Size(93, 23);
+            this.SetupTBLogOutOnFollow.TabIndex = 171;
+            // 
+            // SetupCBLogoutOnFollow
+            // 
+            this.SetupCBLogoutOnFollow.AutoSize = true;
+            this.SetupCBLogoutOnFollow.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.SetupCBLogoutOnFollow.BackgroundStyle.Class = "";
+            this.SetupCBLogoutOnFollow.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.SetupCBLogoutOnFollow.Location = new System.Drawing.Point(2, 26);
+            this.SetupCBLogoutOnFollow.Margin = new System.Windows.Forms.Padding(2);
+            this.SetupCBLogoutOnFollow.Name = "SetupCBLogoutOnFollow";
+            this.SetupCBLogoutOnFollow.Size = new System.Drawing.Size(143, 18);
+            this.SetupCBLogoutOnFollow.TabIndex = 170;
+            this.SetupCBLogoutOnFollow.Text = "Logout on follow";
+            // 
+            // groupPanel6
+            // 
+            this.groupPanel6.BackColor = System.Drawing.Color.Transparent;
+            this.groupPanel6.CanvasColor = System.Drawing.SystemColors.Control;
+            this.groupPanel6.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
+            this.groupPanel6.Controls.Add(this.CombatCBEat);
+            this.groupPanel6.Controls.Add(this.label12);
+            this.groupPanel6.Controls.Add(this.label11);
+            this.groupPanel6.Controls.Add(this.CombatTBDrinkAt);
+            this.groupPanel6.Controls.Add(this.CombatCBDrink);
+            this.groupPanel6.Controls.Add(this.CombatTBEatAt);
+            this.groupPanel6.Location = new System.Drawing.Point(5, 7);
+            this.groupPanel6.Margin = new System.Windows.Forms.Padding(2);
+            this.groupPanel6.Name = "groupPanel6";
+            this.groupPanel6.Size = new System.Drawing.Size(505, 124);
+            // 
+            // 
+            // 
+            this.groupPanel6.Style.BackColor2SchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground2;
+            this.groupPanel6.Style.BackColorGradientAngle = 90;
+            this.groupPanel6.Style.BackColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
+            this.groupPanel6.Style.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel6.Style.BorderBottomWidth = 1;
+            this.groupPanel6.Style.BorderColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
+            this.groupPanel6.Style.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel6.Style.BorderLeftWidth = 1;
+            this.groupPanel6.Style.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel6.Style.BorderRightWidth = 1;
+            this.groupPanel6.Style.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel6.Style.BorderTopWidth = 1;
+            this.groupPanel6.Style.Class = "";
+            this.groupPanel6.Style.CornerDiameter = 4;
+            this.groupPanel6.Style.CornerType = DevComponents.DotNetBar.eCornerType.Rounded;
+            this.groupPanel6.Style.TextAlignment = DevComponents.DotNetBar.eStyleTextAlignment.Center;
+            this.groupPanel6.Style.TextColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelText;
+            this.groupPanel6.Style.TextLineAlignment = DevComponents.DotNetBar.eStyleTextAlignment.Near;
+            // 
+            // 
+            // 
+            this.groupPanel6.StyleMouseDown.Class = "";
+            this.groupPanel6.StyleMouseDown.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            // 
+            // 
+            // 
+            this.groupPanel6.StyleMouseOver.Class = "";
+            this.groupPanel6.StyleMouseOver.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.groupPanel6.TabIndex = 172;
+            this.groupPanel6.Text = "Resting";
+            // 
+            // superTabItem7
+            // 
+            this.superTabItem7.AttachedControl = this.superTabControlPanel7;
+            this.superTabItem7.GlobalItem = false;
+            this.superTabItem7.Name = "superTabItem7";
+            this.superTabItem7.Text = "限值";
             // 
             // superTabControlPanel4
             // 
@@ -2783,7 +2951,7 @@
             // 
             this.labelX51.BackgroundStyle.Class = "";
             this.labelX51.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX51.Font = new System.Drawing.Font("新宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.labelX51.Font = new System.Drawing.Font("NSimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.labelX51.Location = new System.Drawing.Point(40, 276);
             this.labelX51.Margin = new System.Windows.Forms.Padding(2);
             this.labelX51.Name = "labelX51";
@@ -3054,174 +3222,6 @@
             this.superTabItem1.GlobalItem = false;
             this.superTabItem1.Name = "superTabItem1";
             this.superTabItem1.Text = "扩展功能";
-            // 
-            // superTabControlPanel7
-            // 
-            this.superTabControlPanel7.Controls.Add(this.groupPanel7);
-            this.superTabControlPanel7.Controls.Add(this.groupPanel6);
-            this.superTabControlPanel7.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.superTabControlPanel7.Location = new System.Drawing.Point(0, 24);
-            this.superTabControlPanel7.Margin = new System.Windows.Forms.Padding(2);
-            this.superTabControlPanel7.Name = "superTabControlPanel7";
-            this.superTabControlPanel7.Size = new System.Drawing.Size(618, 375);
-            this.superTabControlPanel7.TabIndex = 0;
-            this.superTabControlPanel7.TabItem = this.superTabItem7;
-            this.superTabControlPanel7.ThemeAware = true;
-            // 
-            // groupPanel7
-            // 
-            this.groupPanel7.BackColor = System.Drawing.Color.Transparent;
-            this.groupPanel7.CanvasColor = System.Drawing.SystemColors.Control;
-            this.groupPanel7.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
-            this.groupPanel7.Controls.Add(this.labelX12);
-            this.groupPanel7.Controls.Add(this.SetupTBLogOutOnFollow);
-            this.groupPanel7.Controls.Add(this.SetupCBLogoutOnFollow);
-            this.groupPanel7.Controls.Add(this.SetupCBSoundFollow);
-            this.groupPanel7.Controls.Add(this.labelX48);
-            this.groupPanel7.Controls.Add(this.SetupTBStopAfter);
-            this.groupPanel7.Controls.Add(this.SetupCBSoundWhisper);
-            this.groupPanel7.Controls.Add(this.SetupCBShutdown);
-            this.groupPanel7.Controls.Add(this.SetupCBSoundStop);
-            this.groupPanel7.Controls.Add(this.SetupCBStopAfter);
-            this.groupPanel7.Location = new System.Drawing.Point(6, 135);
-            this.groupPanel7.Margin = new System.Windows.Forms.Padding(2);
-            this.groupPanel7.Name = "groupPanel7";
-            this.groupPanel7.Size = new System.Drawing.Size(505, 182);
-            // 
-            // 
-            // 
-            this.groupPanel7.Style.BackColor2SchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground2;
-            this.groupPanel7.Style.BackColorGradientAngle = 90;
-            this.groupPanel7.Style.BackColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
-            this.groupPanel7.Style.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel7.Style.BorderBottomWidth = 1;
-            this.groupPanel7.Style.BorderColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
-            this.groupPanel7.Style.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel7.Style.BorderLeftWidth = 1;
-            this.groupPanel7.Style.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel7.Style.BorderRightWidth = 1;
-            this.groupPanel7.Style.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel7.Style.BorderTopWidth = 1;
-            this.groupPanel7.Style.Class = "";
-            this.groupPanel7.Style.CornerDiameter = 4;
-            this.groupPanel7.Style.CornerType = DevComponents.DotNetBar.eCornerType.Rounded;
-            this.groupPanel7.Style.TextAlignment = DevComponents.DotNetBar.eStyleTextAlignment.Center;
-            this.groupPanel7.Style.TextColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelText;
-            this.groupPanel7.Style.TextLineAlignment = DevComponents.DotNetBar.eStyleTextAlignment.Near;
-            // 
-            // 
-            // 
-            this.groupPanel7.StyleMouseDown.Class = "";
-            this.groupPanel7.StyleMouseDown.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            // 
-            // 
-            // 
-            this.groupPanel7.StyleMouseOver.Class = "";
-            this.groupPanel7.StyleMouseOver.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.groupPanel7.TabIndex = 173;
-            this.groupPanel7.Text = "Anti detection";
-            // 
-            // labelX12
-            // 
-            this.labelX12.BackColor = System.Drawing.Color.Transparent;
-            // 
-            // 
-            // 
-            this.labelX12.BackgroundStyle.Class = "";
-            this.labelX12.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX12.Location = new System.Drawing.Point(396, 25);
-            this.labelX12.Margin = new System.Windows.Forms.Padding(2);
-            this.labelX12.Name = "labelX12";
-            this.labelX12.Size = new System.Drawing.Size(86, 23);
-            this.labelX12.TabIndex = 172;
-            this.labelX12.Text = "minuttes";
-            // 
-            // SetupTBLogOutOnFollow
-            // 
-            // 
-            // 
-            // 
-            this.SetupTBLogOutOnFollow.BackgroundStyle.Class = "DateTimeInputBackground";
-            this.SetupTBLogOutOnFollow.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.SetupTBLogOutOnFollow.ButtonFreeText.Shortcut = DevComponents.DotNetBar.eShortcut.F2;
-            this.SetupTBLogOutOnFollow.Location = new System.Drawing.Point(299, 25);
-            this.SetupTBLogOutOnFollow.Margin = new System.Windows.Forms.Padding(2);
-            this.SetupTBLogOutOnFollow.Name = "SetupTBLogOutOnFollow";
-            this.SetupTBLogOutOnFollow.ShowUpDown = true;
-            this.SetupTBLogOutOnFollow.Size = new System.Drawing.Size(93, 23);
-            this.SetupTBLogOutOnFollow.TabIndex = 171;
-            // 
-            // SetupCBLogoutOnFollow
-            // 
-            this.SetupCBLogoutOnFollow.AutoSize = true;
-            this.SetupCBLogoutOnFollow.BackColor = System.Drawing.Color.Transparent;
-            // 
-            // 
-            // 
-            this.SetupCBLogoutOnFollow.BackgroundStyle.Class = "";
-            this.SetupCBLogoutOnFollow.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.SetupCBLogoutOnFollow.Location = new System.Drawing.Point(2, 26);
-            this.SetupCBLogoutOnFollow.Margin = new System.Windows.Forms.Padding(2);
-            this.SetupCBLogoutOnFollow.Name = "SetupCBLogoutOnFollow";
-            this.SetupCBLogoutOnFollow.Size = new System.Drawing.Size(143, 18);
-            this.SetupCBLogoutOnFollow.TabIndex = 170;
-            this.SetupCBLogoutOnFollow.Text = "Logout on follow";
-            // 
-            // groupPanel6
-            // 
-            this.groupPanel6.BackColor = System.Drawing.Color.Transparent;
-            this.groupPanel6.CanvasColor = System.Drawing.SystemColors.Control;
-            this.groupPanel6.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
-            this.groupPanel6.Controls.Add(this.CombatCBEat);
-            this.groupPanel6.Controls.Add(this.label12);
-            this.groupPanel6.Controls.Add(this.label11);
-            this.groupPanel6.Controls.Add(this.CombatTBDrinkAt);
-            this.groupPanel6.Controls.Add(this.CombatCBDrink);
-            this.groupPanel6.Controls.Add(this.CombatTBEatAt);
-            this.groupPanel6.Location = new System.Drawing.Point(5, 7);
-            this.groupPanel6.Margin = new System.Windows.Forms.Padding(2);
-            this.groupPanel6.Name = "groupPanel6";
-            this.groupPanel6.Size = new System.Drawing.Size(505, 124);
-            // 
-            // 
-            // 
-            this.groupPanel6.Style.BackColor2SchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground2;
-            this.groupPanel6.Style.BackColorGradientAngle = 90;
-            this.groupPanel6.Style.BackColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
-            this.groupPanel6.Style.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel6.Style.BorderBottomWidth = 1;
-            this.groupPanel6.Style.BorderColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
-            this.groupPanel6.Style.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel6.Style.BorderLeftWidth = 1;
-            this.groupPanel6.Style.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel6.Style.BorderRightWidth = 1;
-            this.groupPanel6.Style.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel6.Style.BorderTopWidth = 1;
-            this.groupPanel6.Style.Class = "";
-            this.groupPanel6.Style.CornerDiameter = 4;
-            this.groupPanel6.Style.CornerType = DevComponents.DotNetBar.eCornerType.Rounded;
-            this.groupPanel6.Style.TextAlignment = DevComponents.DotNetBar.eStyleTextAlignment.Center;
-            this.groupPanel6.Style.TextColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelText;
-            this.groupPanel6.Style.TextLineAlignment = DevComponents.DotNetBar.eStyleTextAlignment.Near;
-            // 
-            // 
-            // 
-            this.groupPanel6.StyleMouseDown.Class = "";
-            this.groupPanel6.StyleMouseDown.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            // 
-            // 
-            // 
-            this.groupPanel6.StyleMouseOver.Class = "";
-            this.groupPanel6.StyleMouseOver.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.groupPanel6.TabIndex = 172;
-            this.groupPanel6.Text = "Resting";
-            // 
-            // superTabItem7
-            // 
-            this.superTabItem7.AttachedControl = this.superTabControlPanel7;
-            this.superTabItem7.GlobalItem = false;
-            this.superTabItem7.Name = "superTabItem7";
-            this.superTabItem7.Text = "限值";
             // 
             // superTabControlPanel6
             // 
@@ -3532,7 +3532,7 @@
             // 
             this.labelX28.BackgroundStyle.Class = "";
             this.labelX28.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX28.Font = new System.Drawing.Font("新宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.labelX28.Font = new System.Drawing.Font("NSimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.labelX28.Location = new System.Drawing.Point(2, 2);
             this.labelX28.Margin = new System.Windows.Forms.Padding(2);
             this.labelX28.Name = "labelX28";
@@ -4618,8 +4618,7 @@
             this.ClientSize = new System.Drawing.Size(618, 433);
             this.Controls.Add(this.buttonX1);
             this.Controls.Add(this.superTabControl2);
-            this.DoubleBuffered = true;
-            this.Font = new System.Drawing.Font("新宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Font = new System.Drawing.Font("NSimSun", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Setup";
@@ -4634,6 +4633,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.superTabControl2)).EndInit();
             this.superTabControl2.ResumeLayout(false);
             this.superTabControl2.PerformLayout();
+            this.superTabControlPanel7.ResumeLayout(false);
+            this.groupPanel7.ResumeLayout(false);
+            this.groupPanel7.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.SetupTBLogOutOnFollow)).EndInit();
+            this.groupPanel6.ResumeLayout(false);
+            this.groupPanel6.PerformLayout();
             this.superTabControlPanel4.ResumeLayout(false);
             this.superTabControlPanel4.PerformLayout();
             this.groupPanel10.ResumeLayout(false);
@@ -4642,12 +4647,6 @@
             this.superTabControlPanel9.ResumeLayout(false);
             this.superTabControlPanel9.PerformLayout();
             this.superTabControlPanel1.ResumeLayout(false);
-            this.superTabControlPanel7.ResumeLayout(false);
-            this.groupPanel7.ResumeLayout(false);
-            this.groupPanel7.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.SetupTBLogOutOnFollow)).EndInit();
-            this.groupPanel6.ResumeLayout(false);
-            this.groupPanel6.PerformLayout();
             this.superTabControlPanel6.ResumeLayout(false);
             this.SetupRelogLoginData.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.SetupIIRelogLogAccount)).EndInit();
