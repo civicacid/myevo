@@ -417,11 +417,15 @@ namespace LazyLib.Helpers
                 lpBuffer = Marshal.AllocHGlobal(nSize);
 
                 iBytesRead = ReadRawMemory(hProcess, dwAddress, lpBuffer, nSize);
-                if (iBytesRead != nSize)
-                    throw new Exception("ReadProcessMemory error in ReadBytes");
-
-                baRet = new byte[iBytesRead];
-                Marshal.Copy(lpBuffer, baRet, 0, iBytesRead);
+                if (iBytesRead == nSize)
+                {
+                    baRet = new byte[iBytesRead];
+                    Marshal.Copy(lpBuffer, baRet, 0, iBytesRead);
+                }
+                else
+                {
+                    return null;
+                }
             }
             catch
             {
