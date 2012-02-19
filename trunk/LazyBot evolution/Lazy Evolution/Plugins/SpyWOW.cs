@@ -1138,10 +1138,10 @@ namespace LazyEvo.Plugins
     {
         public static bool SendMain(Dictionary<string, string> MailList, DBLogger logger)
         {
-            return SendMain(MailList, logger, false);
+            return SendMain(logger, false);
         }
 
-        public static bool SendMain(Dictionary<string, string> MailList, DBLogger logger, Boolean FullStack)
+        public static bool SendMain(DBLogger logger, Boolean FullStack)
         {
             // 每次都从数据库读一次邮件列表
             Dictionary<string, string> _mail = SpyDB.GetMailList();
@@ -1653,182 +1653,243 @@ namespace LazyEvo.Plugins
     /// <summary>
     /// 炼金转化
     /// </summary>
-    public static class SpyLJZH
-    {
-        // 数据库保存转化目标，需要原料，以及是否有CD（有CD，一天执行一次）
-        // 按照列表先做有CD的，然后再做没有的。这期间要在邮箱和背包中找是否有材料，没有就跳过，主要缺一样就跳过
-        // 炼金转化列表是每个人都不一样的
+    //public static class SpyLJZH
+    //{
+    //    // 数据库保存转化目标，需要原料，以及是否有CD（有CD，一天执行一次）
+    //    // 按照列表先做有CD的，然后再做没有的。这期间要在邮箱和背包中找是否有材料，没有就跳过，主要缺一样就跳过
+    //    // 炼金转化列表是每个人都不一样的
 
-        private static DataTable GoodsList;                         // 制作清单
-        public static DBLogger logger = new DBLogger("炼金转化");
-        private static Thread _thread;
-        public static bool RUNNING;
+    //    private static DataTable GoodsList;                         // 制作清单
+    //    public static DBLogger logger = new DBLogger("炼金转化");
+    //    private static Thread _thread;
+    //    public static bool RUNNING;
 
-        public static bool initme()
-        {
-            RUNNING = true;
-            logger.clear();
+    //    public static bool initme()
+    //    {
+    //        RUNNING = true;
+    //        logger.clear();
 
-            if (!SpyFrame.initme())
-            {
-                logger.Add("Frame 信息框体初始化失败，不能继续");
-                RUNNING = false;
-                return false;
-            }
+    //        if (!SpyFrame.initme())
+    //        {
+    //            logger.Add("Frame 信息框体初始化失败，不能继续");
+    //            RUNNING = false;
+    //            return false;
+    //        }
 
-            // 获取制作清单
+    //        // 获取制作清单
 
-            Logging.Write("进行外挂初始化--动作条初始化");
-            BarMapper.MapBars();
-            Logging.Write("进行外挂初始化--按键初始化");
-            KeyHelper.LoadKeys();
+    //        Logging.Write("进行外挂初始化--动作条初始化");
+    //        BarMapper.MapBars();
+    //        Logging.Write("进行外挂初始化--按键初始化");
+    //        KeyHelper.LoadKeys();
 
-            return true;
-        }
+    //        return true;
+    //    }
 
-        public static void start()
-        {
-            if (_thread == null || !_thread.IsAlive)
-            {
-                _thread = new Thread(GoGo);
-                _thread.Name = "炼金转化";
-                _thread.IsBackground = true;
-                // 设置线程状态为单线程
-                try
-                {
-                    _thread.TrySetApartmentState(ApartmentState.STA);
-                }
-                catch (Exception ex)
-                {
-                    Logging.Write("启动失败，线程设置出现错误，原因是：" + ex.ToString());
-                    RUNNING = false;
-                    return;
-                }
-                _thread.Start();
-                Logging.Write(_thread.Name + " 开始了。。。。。");
+    //    public static void start()
+    //    {
+    //        if (_thread == null || !_thread.IsAlive)
+    //        {
+    //            _thread = new Thread(GoGo);
+    //            _thread.Name = "炼金转化";
+    //            _thread.IsBackground = true;
+    //            // 设置线程状态为单线程
+    //            try
+    //            {
+    //                _thread.TrySetApartmentState(ApartmentState.STA);
+    //            }
+    //            catch (Exception ex)
+    //            {
+    //                Logging.Write("启动失败，线程设置出现错误，原因是：" + ex.ToString());
+    //                RUNNING = false;
+    //                return;
+    //            }
+    //            _thread.Start();
+    //            Logging.Write(_thread.Name + " 开始了。。。。。");
 
-            }
-        }
+    //        }
+    //    }
 
-        public static void stop()
-        {
-            if (_thread == null) return;
-            if (_thread.IsAlive)
-            {
-                _thread.Abort();
-                _thread = null;
-            }
-        }
+    //    public static void stop()
+    //    {
+    //        if (_thread == null) return;
+    //        if (_thread.IsAlive)
+    //        {
+    //            _thread.Abort();
+    //            _thread = null;
+    //        }
+    //    }
 
-        public static void GoGo()
-        {
-            DoAction();
-            logger.output();
-            SpyData.SaveInfo_Bag();
-            RUNNING = false;
-        }
+    //    public static void GoGo()
+    //    {
+    //        DoAction();
+    //        logger.output();
+    //        SpyData.SaveInfo_Bag();
+    //        RUNNING = false;
+    //    }
 
-        public static void DoAction()
-        {
-            // 打开邮箱
-            if (!MailManager.TargetMailBox())
-            {
-                logger.Add("任务附近没有邮箱，失败啊。。。");
-                return;
-            }
+    //    public static void DoAction()
+    //    {
+    //        // 打开邮箱
+    //        if (!MailManager.TargetMailBox())
+    //        {
+    //            logger.Add("任务附近没有邮箱，失败啊。。。");
+    //            return;
+    //        }
 
-            int CountJump = 0;
-            // 遍历制作列表
-            foreach (DataRow _goods in GoodsList.Rows)
-            {
-                // 这里在出列表的时候，就按照CD物品优先来做
-                // 找到原料(原料按照 Item$Count#Item$Count# 格式保存)
-                bool HasAllItem = false;
-                string[] Items = _goods["UsedItem"].ToString().Split('#');
-                for (int iLoop = 0; iLoop < Items.Length; iLoop++)
-                {
-                }
+    //        int CountJump = 0;
+    //        // 遍历制作列表
+    //        foreach (DataRow _goods in GoodsList.Rows)
+    //        {
+    //            // 这里在出列表的时候，就按照CD物品优先来做
+    //            // 找到原料(原料按照 Item$Count#Item$Count# 格式保存)
+    //            bool HasAllItem = true;
+    //            string ToDoItem = _goods["ItemName"].ToString();
+    //            int ToDoCount = 100000;      // 求制作的最大数量，这个要看哪种原料最少，按照最少的做
+    //            string[] ItemsDesc = _goods["NeedItem"].ToString().Split('#');
+    //            Dictionary<string, int> NeedItem = new Dictionary<string, int>();
+    //            Dictionary<string, int> NeedItemInBag = new Dictionary<string, int>();
+    //            Dictionary<string, int> NeedIteminMail = new Dictionary<string, int>();
+    //            for (int iLoop = 0; iLoop < ItemsDesc.Length; iLoop++)
+    //            {
+    //                string[] Items = ItemsDesc[iLoop].Split('$');
+    //                // 查找背包或者邮箱中是否有
+    //                if (!SpyFrame.lua_SetDispCountItemName(Items[0]))
+    //                {
+    //                    logger.Add("在执行SetDispCountItemName时出错，需要的原料：" + Items[0]);
+    //                    return;
+    //                }
+    //                Thread.Sleep(1000);
+    //                Dictionary<string, int> ItemsInBagAndMail = SpyFrame.GetDispCountItemCount();
+    //                if (ItemsInBagAndMail["BAG"] + ItemsInBagAndMail["MAIL"] < Convert.ToInt32(Items[1]))
+    //                {
+    //                    HasAllItem = false;
+    //                    break;
+    //                }
 
-                    if (!SpyFrame.lua_SetDispCountItemName(DoingMine))
-                    {
-                        logger.Add("在执行SetDispCountItemName时出错，矿：" + DoingMine);
-                        return;
-                    }
-                Thread.Sleep(1000);
-                Dictionary<string, int> MineCount = SpyFrame.GetDispCountItemCount();
-                /** 检查背包里面有没有矿，有就炸，没有再查邮箱，从邮箱拿，直到没有矿 **/
-                if (MineCount["BAG"] == 0 && MineCount["MAIL"] == 0)
-                {
-                    logger.Add("包里面没有(或者是都炸完了)  " + DoingMine);
-                    continue;
-                }
-                while (MineCount["BAG"] > 0 || MineCount["MAIL"] > 0)
-                {
-                    // 邮箱里面有矿，取矿出来
-                    if (MineCount["MAIL"] > 0)
-                    {
-                        logger.Add("从邮箱里面拿  " + DoingMine);
-                        if (!SpyFrame.lua_GetMAILAsItem(DoingMine, 100000, 20))
-                        {
-                            logger.Add("从邮箱里面拿  " + DoingMine + " 失败");
-                            return;
-                        }
-                    }
+    //                NeedItem.Add((Items[0]), Convert.ToInt32(Items[1]));
+    //                NeedItemInBag.Add((Items[0]), ItemsInBagAndMail["BAG"]);
+    //                NeedIteminMail.Add((Items[0]), ItemsInBagAndMail["MAIL"]);
 
-                    Thread.Sleep(1000);
-                    MineCount = SpyFrame.GetDispCountItemCount();
+    //                if ((ItemsInBagAndMail["BAG"] + ItemsInBagAndMail["MAIL"]) / Convert.ToInt32(Items[1]) < ToDoCount)
+    //                    ToDoCount = (ItemsInBagAndMail["BAG"] + ItemsInBagAndMail["MAIL"]) / Convert.ToInt32(Items[1]);
+    //            }
 
-                    // 分解矿，直到包空间小于1和背包里面没有矿
-                    while (MineCount["BAG"] > 0 && Inventory.FreeBagSlots > 1)
-                    {
-                        CountJump++;
-                        if (CountJump == 10)
-                        {
-                            // jump一下，防止AFK
-                            CountJump = 0;
-                            logger.Add("jump一下，防止AFK");
-                            KeyLowHelper.PressKey(MicrosoftVirtualKeys.Space);
-                            KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.Space);
-                            Thread.Sleep(5000);
-                        }
-                        // 分解石头 , 分解宏要放在4这个上面
-                        logger.Add("炸矿");
-                        KeyLowHelper.PressKey(MicrosoftVirtualKeys.key4);
-                        KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.key4);
-                        Thread.Sleep(500);
-                        while (ObjectManager.MyPlayer.IsCasting)
-                        {
-                            Thread.Sleep(100);
-                        }
-                        // 等待2秒，取分解的东西到背包
-                        Thread.Sleep(2000);
-                        MineCount = SpyFrame.GetDispCountItemCount();
-                    }
+    //            // 货物全，就做
+    //            if (HasAllItem)
+    //            {
+    //                int HasDone = 0;
+    //                while (true)
+    //                {
+    //                    if (Inventory.FreeBagSlots <= 4)
+    //                    {
+    //                        SpyTradeSkill.SendMain(logger, false);
+    //                        if (Inventory.FreeBagSlots <= 4)
+    //                        {
+    //                            logger.Add("背包空间只有四个，不能继续");
+    //                            return;
+    //                        }
+    //                    }
 
-                    // 当包里面还有矿的时候，可能是背包满了，这时候启动邮寄
-                    if (Inventory.FreeBagSlots <= 1)
-                    {
-                        // 发邮件
-                        logger.Add("发邮件");
-                        if (!SpyTradeSkill.SendMain(MailList, logger)) return;
-                    }
-                    Thread.Sleep(1000);
-                    MineCount = SpyFrame.GetDispCountItemCount();
+    //                    // 做东西
 
-                    // 邮寄完，背包还是满，就退出
-                    if (Inventory.FreeBagSlots <= 1)
-                    {
-                        logger.Add("邮寄完，背包还是满");
-                        return;
-                    }
-                }
-            }
-            logger.Add("矿都处理完了，发邮件");
-            if (!SpyTradeSkill.SendMain(MailList, logger)) return;
-            return;
-        }
+    //                    CountJump++;
+    //                    if (CountJump == 10)
+    //                    {
+    //                        // jump一下，防止AFK
+    //                        CountJump = 0;
+    //                        logger.Add("jump一下，防止AFK");
+    //                        KeyLowHelper.PressKey(MicrosoftVirtualKeys.Space);
+    //                        KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.Space);
+    //                        Thread.Sleep(5000);
+    //                    }
 
-    }
+    //                    HasDone++;
+    //                    if (HasDone == ToDoCount) break;
+    //                }
+    //            }
+    //            SpyTradeSkill.SendMain(logger, false);
+
+    //            if (!SpyFrame.lua_SetDispCountItemName(DoingMine))
+    //            {
+    //                logger.Add("在执行SetDispCountItemName时出错，矿：" + DoingMine);
+    //                return;
+    //            }
+    //            Thread.Sleep(1000);
+    //            Dictionary<string, int> MineCount = SpyFrame.GetDispCountItemCount();
+    //            /** 检查背包里面有没有矿，有就炸，没有再查邮箱，从邮箱拿，直到没有矿 **/
+    //            if (MineCount["BAG"] == 0 && MineCount["MAIL"] == 0)
+    //            {
+    //                logger.Add("包里面没有(或者是都炸完了)  " + DoingMine);
+    //                continue;
+    //            }
+    //            while (MineCount["BAG"] > 0 || MineCount["MAIL"] > 0)
+    //            {
+    //                // 邮箱里面有矿，取矿出来
+    //                if (MineCount["MAIL"] > 0)
+    //                {
+    //                    logger.Add("从邮箱里面拿  " + DoingMine);
+    //                    if (!SpyFrame.lua_GetMAILAsItem(DoingMine, 100000, 20))
+    //                    {
+    //                        logger.Add("从邮箱里面拿  " + DoingMine + " 失败");
+    //                        return;
+    //                    }
+    //                }
+
+    //                Thread.Sleep(1000);
+    //                MineCount = SpyFrame.GetDispCountItemCount();
+
+    //                // 分解矿，直到包空间小于1和背包里面没有矿
+    //                while (MineCount["BAG"] > 0 && Inventory.FreeBagSlots > 1)
+    //                {
+    //                    CountJump++;
+    //                    if (CountJump == 10)
+    //                    {
+    //                        // jump一下，防止AFK
+    //                        CountJump = 0;
+    //                        logger.Add("jump一下，防止AFK");
+    //                        KeyLowHelper.PressKey(MicrosoftVirtualKeys.Space);
+    //                        KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.Space);
+    //                        Thread.Sleep(5000);
+    //                    }
+    //                    // 分解石头 , 分解宏要放在4这个上面
+    //                    logger.Add("炸矿");
+    //                    KeyLowHelper.PressKey(MicrosoftVirtualKeys.key4);
+    //                    KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.key4);
+    //                    Thread.Sleep(500);
+    //                    while (ObjectManager.MyPlayer.IsCasting)
+    //                    {
+    //                        Thread.Sleep(100);
+    //                    }
+    //                    // 等待2秒，取分解的东西到背包
+    //                    Thread.Sleep(2000);
+    //                    MineCount = SpyFrame.GetDispCountItemCount();
+    //                }
+
+    //                // 当包里面还有矿的时候，可能是背包满了，这时候启动邮寄
+    //                if (Inventory.FreeBagSlots <= 1)
+    //                {
+    //                    // 发邮件
+    //                    logger.Add("发邮件");
+    //                    if (!SpyTradeSkill.SendMain(MailList, logger)) return;
+    //                }
+    //                Thread.Sleep(1000);
+    //                MineCount = SpyFrame.GetDispCountItemCount();
+
+    //                // 邮寄完，背包还是满，就退出
+    //                if (Inventory.FreeBagSlots <= 1)
+    //                {
+    //                    logger.Add("邮寄完，背包还是满");
+    //                    return;
+    //                }
+    //            }
+    //        }
+    //        logger.Add("矿都处理完了，发邮件");
+    //        if (!SpyTradeSkill.SendMain(MailList, logger)) return;
+    //        return;
+    //    }
+
+    //}
 
     // 分解矿+邮寄
     public static class SpyMineAndMail

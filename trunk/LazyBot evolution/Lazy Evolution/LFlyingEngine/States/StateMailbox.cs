@@ -86,20 +86,15 @@ namespace LazyEvo.LFlyingEngine.States
             FlyingEngine.Navigator.Stop();
             if (ApproachPosFlying.Approach(_mailbox.Location, 12))
             {
+                
                 MoveHelper.MoveToLoc(_mailbox.Location, 5);
                 //MailManager.DoMail();
 
                 // 改成使用插件邮寄
-                MailManager.TargetMailBox();
-                Dictionary<string, string> MailList = SpyDB.GetMailList();
-                if (MailList.Count > 0)
+                if (MailManager.TargetMailBox())
                 {
                     DBLogger logger = new DBLogger("挖矿时的邮寄");
-                    SpyTradeSkill.SendMain(MailList, logger, true);
-                }
-                else
-                {
-                    Logging.Write("获取邮寄列表时，获得的列表内容为空");
+                    SpyTradeSkill.SendMain(logger, true);
                 }
 
             }
