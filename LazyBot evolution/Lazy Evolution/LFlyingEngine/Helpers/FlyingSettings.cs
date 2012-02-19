@@ -61,10 +61,10 @@ namespace LazyEvo.LFlyingEngine.Helpers
             string executableDirectoryName = executableFileInfo.DirectoryName;
             OurDirectory = executableDirectoryName;
             var pIniManager = new IniManager(OurDirectory + SettingsName);
-            Herb = pIniManager.GetBoolean("Flying", "Herb", false);
-            Mine = pIniManager.GetBoolean("Flying", "Mine", false);
+            Herb = pIniManager.GetBoolean("Flying", "Herb", true);
+            Mine = pIniManager.GetBoolean("Flying", "Mine", true);
             ApproachModifier = (float) Convert.ToDouble(pIniManager.GetString("Flying", "ApproachModifier", "0"));
-            MaxUnits = pIniManager.GetString("Flying", "MaxUnits", "3");
+            MaxUnits = pIniManager.GetString("Flying", "MaxUnits", "2");
             StopOnDeath = pIniManager.GetBoolean("Flying", "StopOnDeath", false);
             StopHarvestWithPlayerAround = pIniManager.GetBoolean("Flying", "StopHarvest", true);
             AvoidPlayers = pIniManager.GetBoolean("Flying", "AvoidPlayers", true);
@@ -74,10 +74,10 @@ namespace LazyEvo.LFlyingEngine.Helpers
             FindCorpse = pIniManager.GetBoolean("Flying", "FindCorpse", true);
             WaitForLoot = pIniManager.GetBoolean("Flying", "WaitForLoot", true);
             WaitForRessSick = pIniManager.GetBoolean("Flying", "WaitForRessSick", false);
-            FlyingMountBar = pIniManager.GetString("Flying", "FlyingMountBar", "0");
-            FlyingMountKey = pIniManager.GetString("Flying", "FlyingMountKey", "0");
+            FlyingMountBar = pIniManager.GetString("Flying", "FlyingMountBar", "2");
+            FlyingMountKey = pIniManager.GetString("Flying", "FlyingMountKey", "2");
             Profile = pIniManager.GetString("Flying", "Profile", string.Empty);
-            DruidAvoidCombat = pIniManager.GetBoolean("Flying", "DruidAvoidCombat", false);
+            DruidAvoidCombat = pIniManager.GetBoolean("Flying", "DruidAvoidCombat", true);
             Fish = pIniManager.GetBoolean("Flying", "Fish", false);
             Lure = pIniManager.GetBoolean("Flying", "Lure", false);
             SendKeyOnStartCombat = pIniManager.GetBoolean("Flying", "SendKeyOnStartCombat", false);
