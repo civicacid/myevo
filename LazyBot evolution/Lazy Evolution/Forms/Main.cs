@@ -1159,41 +1159,17 @@ namespace LazyEvo.Forms
             //Logging.Write("fff");
         }
 
-        SpyWOW nn = new SpyWOW();
         private void buttonX3_Click(object sender, EventArgs e)
         {
             if (buttonX3.Text.Equals("开始计划"))
             {
-                if (string.IsNullOrEmpty(LazySettings.WOWPath)
-                    || string.IsNullOrEmpty(LazySettings.WOWAccName)
-                    || string.IsNullOrEmpty(LazySettings.WOWAccPass)
-                    //|| string.IsNullOrEmpty(LazySettings.WOWCharList)  角色列表可以不用
-                    || string.IsNullOrEmpty(LazySettings.WOWCharIdx)
-                    || string.IsNullOrEmpty(LazySettings.WOWServer)
-                    || string.IsNullOrEmpty(LazySettings.StartHour)
-                    || string.IsNullOrEmpty(LazySettings.StartMin)
-                    || string.IsNullOrEmpty(LazySettings.StopHour)
-                    || string.IsNullOrEmpty(LazySettings.StopMin)
-                    || string.IsNullOrEmpty(LazySettings.FightFile)
-                    || string.IsNullOrEmpty(LazySettings.MapFile))
-                {
-                    Logging.Write("配置文件中，有空项，补全！");
-                    return;
-                }
-                nn.StartHour = Convert.ToInt32(LazySettings.StartHour);
-                nn.StartMin = Convert.ToInt32(LazySettings.StartMin);
-                nn.StopHour = Convert.ToInt32(LazySettings.StopHour);
-                nn.StopMin = Convert.ToInt32(LazySettings.StopMin);
-
                 buttonX3.Text = "结束计划";
-                Logging.Write("计划开始。。。。。。。");
-                nn.StartProc();
+                SpySchdule.startScanDB();
             }
             else
             {
                 buttonX3.Text = "开始计划";
-                Logging.Write("计划结束!!!!!!!!");
-                nn.StopProc();
+                SpySchdule.stopScanDB();
             }
         }
 

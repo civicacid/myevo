@@ -38,7 +38,7 @@ namespace LazyLib.LazyRadar
 
         private const string SettingsName = "\\Settings\\lazy_radars.ini";
         private static string OurDirectory;
-        private readonly Color _colorMe = Color.Pink;
+        private readonly Color _colorMe = Color.Gold;
         private readonly Dictionary<string, bool> _itemsShouldDraw = new Dictionary<string, bool>();
         private readonly List<IDrawItem> _itemsToDraw = new List<IDrawItem>();
         private readonly object _locker = new object();

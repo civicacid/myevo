@@ -102,7 +102,6 @@
             this.ControlSettings.Items.AddRange(new DevComponents.DotNetBar.BaseItem[] {
             this.CBTopMost});
             this.ControlSettings.LayoutOrientation = DevComponents.DotNetBar.eOrientation.Vertical;
-            //this.ControlSettings.LicenseKey = "F962CEC7-CD8F-4911-A9E9-CAB39962FC1F";
             this.ControlSettings.Location = new System.Drawing.Point(0, 0);
             this.ControlSettings.Name = "ControlSettings";
             this.ControlSettings.Size = new System.Drawing.Size(108, 271);
@@ -120,11 +119,10 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(223)))), ((int)(((byte)(233)))), ((int)(((byte)(245)))));
+            this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(501, 271);
             this.Controls.Add(this.expandableSplitter1);
             this.Controls.Add(this.ControlSettings);
-            this.DoubleBuffered = true;
             this.Name = "RadarForm";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MapControlFormClosed);
             this.Load += new System.EventHandler(this.MapControlLoad);

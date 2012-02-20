@@ -344,5 +344,21 @@ namespace LazyLib.SPY
             return result;
         }
 
+        public static DataTable GetLianJin()
+        {
+            DataTable dt;
+            string sql = string.Format("select itemname,needitem,havecd from lianjin where itemname in (select itemname from char_lianjin where char_name = '{0}') order by havecd desc", ObjectManager.MyPlayer.Name);
+            try
+            {
+                dt = OraData.execSQL(sql);
+            }
+            catch (Exception ex)
+            {
+                Logging.Write("GetLianJin Error: " + ex.ToString());
+                return null;
+            }
+            return dt;
+        }
+
     }
 }

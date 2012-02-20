@@ -37,12 +37,6 @@ namespace LazyEvo.Plugins
         {
             SpyMineAndMail.initme();
             SpyMineAndMail.start();
-            //while (true)
-            //{
-            //    Thread.Sleep(1000);
-            //    if (!SpyMineAndMail.RUNNING) break;
-            //}
-            MessageBox.Show("OK");
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -420,30 +414,6 @@ namespace LazyEvo.Plugins
             }
         }
 
-        private void button9_Click_1(object sender, EventArgs e)
-        {
-
-            //if (SpyLogin.initme("16"))
-            //{
-            //    SpyLogin.start();
-            //    while (!SpyLogin.IsOK) Thread.Sleep(1000);
-            //}
-
-            //if (SpyCJ.initme())
-            //{
-            //    SpyCJ.start();
-            //    Thread.Sleep(5000);
-            //    Logging.Write("现在的运行状态是：" + (SpyCJ.RUNNING ? "正常" : "不正常"));
-            //}
-
-            SpySchdule.startScanDB();
-        }
-
-        private void button10_Click(object sender, EventArgs e)
-        {
-            SpySchdule.stopScanDB();
-        }
-
         private void button11_Click(object sender, EventArgs e)
         {
             BarMapper.MapBars();
@@ -457,6 +427,12 @@ namespace LazyEvo.Plugins
                 }
                 SpyTradeSkill.SendMain(logger, true);
             }
+        }
+
+        private void button12_Click(object sender, EventArgs e)
+        {
+            if (SpyLJZH.initme())
+                SpyLJZH.start();
         }
 
     }
