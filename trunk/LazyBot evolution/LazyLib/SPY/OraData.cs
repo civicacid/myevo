@@ -12,9 +12,9 @@ namespace LazyLib.SPY
 {
     public static class OraData
     {
-        private static OracleConnection conn;
+        private static OracleConnection conn = new OracleConnection();
         private static bool isConnected;
-        private static string connString = "Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=192.168.26.170)(PORT=1521))(CONNECT_DATA=(SID=elmp)));User Id=wow;Password=wow123;";
+        private static string connString = "";
         private static Thread _thread;
 
         public static void SetIP(string ipaddr, string sid)
@@ -29,7 +29,8 @@ namespace LazyLib.SPY
             SetIP(LazySettings.DBIP, LazySettings.DBSid);
             try
             {
-                conn = new OracleConnection(connString);
+                conn.ConnectionString = connString;
+                Thread.Sleep(1000); // 莫名其妙 的错误
                 conn.Open();
                 isConnected = true;
                 KeepConntion();
@@ -101,7 +102,8 @@ namespace LazyLib.SPY
         {
             try
             {
-                if (!isConnected || conn.State == ConnectionState.Closed || conn.State == ConnectionState.Broken) OraConnect();
+                if (!isConnected || conn.State == ConnectionState.Closed || conn.State == ConnectionState.Broken)
+                    OraConnect();
                 OracleCommand cmd = new OracleCommand();
                 cmd.Connection = conn;
                 cmd.CommandText = sql;
@@ -120,7 +122,8 @@ namespace LazyLib.SPY
             DataTable dt = new DataTable();
             try
             {
-                if (!isConnected || conn.State == ConnectionState.Closed || conn.State == ConnectionState.Broken) OraConnect();
+                if (!isConnected || conn.State == ConnectionState.Closed || conn.State == ConnectionState.Broken) 
+                    OraConnect();
                 OracleDataAdapter oda = new OracleDataAdapter(sql, conn);
                 oda.Fill(dt);
                 return dt;
@@ -137,7 +140,7 @@ namespace LazyLib.SPY
         /// </summary>
         public static bool GetFileFromDB(int file_type, string Name, string Path)
         {
-            Logging.Write("[[["+Name+"]]]]");
+            Logging.Write("[[[" + Name + "]]]]");
             Logging.Write(Path);
             FileStream mapfs;
             bool HasRecord = false;

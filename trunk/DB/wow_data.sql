@@ -237,6 +237,7 @@ insert into map_file (map_name,file_name,mine_list,herb_list) values ('西部荒野'
 insert into map_file (map_name,file_name,mine_list,herb_list) values ('北荆棘谷','北荆棘谷.xml','锡矿$银矿$铁矿石','石南草$跌打草$魔皇草$金棘草$枯叶草$活根草$魔皇草$野钢花');
 insert into map_file (map_name,file_name,mine_list,herb_list) values ('荒芜之地','荒芜之地.xml','金矿石$秘银矿脉$真银矿脉','火焰花$龙齿草$太阳草$梦叶草$黄金参$盲目草');
 insert into map_file (map_name,file_name,mine_list,herb_list) values ('悲伤沼泽','悲伤沼泽.xml','瑟银矿脉$富瑟银矿$真银矿脉','梦露花$哀伤苔$山鼠草$梦叶草$黄金参$盲目草$紫莲花');
+insert into map_file (map_name,file_name,mine_list,herb_list) values ('深岩之洲','深岩之洲.xml','黑曜石碎块$巨型黑曜石石板$源质矿$富源质矿$燃铁矿脉$','心灵之花');
 
 -----------------------------------------------------------------------------------------------------------------------------------
 

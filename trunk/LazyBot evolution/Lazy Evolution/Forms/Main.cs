@@ -186,8 +186,7 @@ namespace LazyEvo.Forms
             foreach (string loadedPlugin in PluginCompiler.LoadedPlugins)
             {
                 var item = new ButtonItem(PluginCompiler.Assemblys[loadedPlugin].GetName(),
-                                          PluginCompiler.Assemblys[loadedPlugin].GetName())
-                               {Tag = loadedPlugin};
+                                          PluginCompiler.Assemblys[loadedPlugin].GetName()) { Tag = loadedPlugin };
                 item.Click += ShowPluginSettings;
                 _buttons.Add(item);
                 AddToControlSettings(item);
@@ -792,7 +791,7 @@ namespace LazyEvo.Forms
             {
                 LazySettings.SelectedCombat = SelectCombat.Text;
                 LazySettings.SaveSettings();
-                var cs = (CustomClass) SelectCombat.SelectedItem;
+                var cs = (CustomClass)SelectCombat.SelectedItem;
                 CombatEngine = ClassCompiler.Assemblys[cs.AssemblyName];
             }
         }
@@ -833,7 +832,7 @@ namespace LazyEvo.Forms
         {
             if (SelectEngine.SelectedIndex != -1)
             {
-                var cs = (CustomEngine) SelectEngine.SelectedItem;
+                var cs = (CustomEngine)SelectEngine.SelectedItem;
                 LazySettings.SelectedEngine = SelectEngine.Text;
                 LazySettings.SaveSettings();
                 EngineHandler = EngineCompiler.Assemblys[cs.AssemblyName];
@@ -862,7 +861,7 @@ namespace LazyEvo.Forms
 
         private void ShowPluginSettings(object sender, EventArgs e)
         {
-            var item = (ButtonItem) sender;
+            var item = (ButtonItem)sender;
             if (PluginCompiler.LoadedPlugins.Contains(item.Tag.ToString()))
             {
                 PluginCompiler.Assemblys[item.Tag.ToString()].Settings();
@@ -1163,8 +1162,11 @@ namespace LazyEvo.Forms
         {
             if (buttonX3.Text.Equals("开始计划"))
             {
-                buttonX3.Text = "结束计划";
-                SpySchdule.startScanDB();
+                if (SpySchdule.initme())
+                {
+                    buttonX3.Text = "结束计划";
+                    SpySchdule.startScanDB();
+                }
             }
             else
             {

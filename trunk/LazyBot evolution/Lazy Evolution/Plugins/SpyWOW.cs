@@ -2946,8 +2946,8 @@ namespace LazyEvo.Plugins
         static string DoWhat;
         static DateTime StatusStartTime;
 
-        static int RUN_OUT_MIN_LOGIN = 20;
-        static int RUN_OUT_MIN_WORK = 5;
+        static int RUN_OUT_MIN_LOGIN = 5;
+        static int RUN_OUT_MIN_WORK = 20;
 
         enum EnumJobStatus
         {
