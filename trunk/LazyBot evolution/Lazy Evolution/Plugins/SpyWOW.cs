@@ -25,317 +25,11 @@ using LazyLib.SPY;
 
 namespace LazyEvo.Plugins
 {
-    public class SpyWOW
-    {
-        private Thread _AutoLogin;
-        public bool AutoRunning;
-
-        private Thread _RunCheck;
-        public bool RunCheck;
-
-        public bool Success;
-        private Process WOWProc;
-
-        enum ProcStatus
-        {
-            Start,
-            Logining,
-            Login_OK,
-            Login_Fail,
-            Working,
-            Wait_Command,
-            Stop
-        };
-        private ProcStatus ps;
-        public int StartHour;
-        public int StartMin;
-        public int StopHour;
-        public int StopMin;
-
-        public void StartProc()
-        {
-            if (_RunCheck == null || !_RunCheck.IsAlive)
-            {
-                _RunCheck = new Thread(ProcCheck);
-                //_RunCheck.Name = "AutoLogin";
-                _RunCheck.IsBackground = true;
-
-                // 设置线程状态为单线程
-                try
-                {
-                    _RunCheck.TrySetApartmentState(ApartmentState.STA);
-                }
-                catch (Exception ex)
-                {
-                    Logging.Write("启动失败，线程设置出现错误，原因是：" + ex.ToString());
-                    return;
-                }
-
-                _RunCheck.Start();
-                ps = ProcStatus.Start;
-            }
-        }
-
-        public void StopProc()
-        {
-            //AutoRunning = false;
-            _RunCheck.Abort();
-            _RunCheck = null;
-        }
-
-        public void ProcCheck()
-        {
-            int iHour;
-            int iMin;
-            bool shutdown = false;
-
-            //Ticker ff = new Ticker(10000);
-
-            while (true)
-            {
-                //if (ff.IsReady)
-                //{
-                //    ff.Reset();
-                if (LazyLib.FSM.Engine.Running) ps = ProcStatus.Working;
-
-                Thread.Sleep(10000);
-
-                iHour = System.DateTime.Now.Hour;
-                iMin = System.DateTime.Now.Minute;
-
-                if (iHour == StartHour && iMin == StartMin && ps == ProcStatus.Start)
-                {
-                    Logging.Write("开始登录");
-                    ps = ProcStatus.Logining;
-                    WOWProc = null;
-                    StartAuto();
-                }
-                // 检查登录情况
-                if (iHour == StartHour && iMin == StartMin + 10 && ps == ProcStatus.Logining)
-                {
-                    Logging.Write("自动登录没有完成，需要强行关闭客户端");
-                    StopAuto();
-
-                    LazyHelpers.StopAll("自动登录没有完成，需要强行关闭客户端");
-                    Thread.Sleep(1000);
-                    try
-                    {
-                        WOWProc.Kill();
-                    }
-                    catch { };
-                    // 自动登录失败，就不继续角色了
-                    ps = ProcStatus.Login_Fail;
-                    StopProc();
-
-                }
-
-                // 登录完成，读取地图和角色文件也完成，启动Bot
-                if (ps == ProcStatus.Login_OK)
-                {
-                    Thread.Sleep(1000);
-                    LazyHelpers.StartBotting();
-                    ps = ProcStatus.Working;
-                }
-
-                // 自动停止发生后，关闭WOW
-                if (ps == ProcStatus.Working && !LazyLib.FSM.Engine.Running)
-                {
-                    Logging.Write("自动停止发生后，关闭WOW");
-                    if (WOWProc != null)
-                    {
-                        try
-                        {
-                            WOWProc.Kill();
-                        }
-                        catch { };
-                    }
-                    ps = ProcStatus.Start;
-                }
-
-                // 时间到了，Kill Process
-                if (iHour == StopHour && iMin == StopMin && ps == ProcStatus.Working)
-                {
-                    Logging.Write("时间到，设置关闭标志");
-                    shutdown = true;
-                }
-
-                if (shutdown)
-                {
-                    if (LazyEvo.Forms.Helpers.LazyForms.MainForm.Text.ToLower().Equals("navigating"))
-                    {
-                        LazyHelpers.StopAll("时间到了，Kill Process");
-                        SpyDB.SaveInfo_Bag(SpyFrame.lua_GetBagInfo());
-                        Thread.Sleep(1000);
-                        if (WOWProc != null)
-                        {
-                            try
-                            {
-                                WOWProc.Kill();
-                            }
-                            catch { };
-                        }
-                        ps = ProcStatus.Start;
-                        shutdown = false;
-                    }
-                }
-
-                //}
-            }
-        }
-
-        public void StartAuto()
-        {
-            if (_AutoLogin == null || !_AutoLogin.IsAlive)
-            {
-                _AutoLogin = new Thread(AutoLogin);
-                _AutoLogin.Name = "AutoLogin";
-                _AutoLogin.IsBackground = true;
-                SetParaByINI();
-                _AutoLogin.Start();
-            }
-        }
-
-        public void StopAuto()
-        {
-            if (_AutoLogin.IsAlive)
-            {
-                AutoRunning = false;
-                _AutoLogin.Abort();
-                _AutoLogin = null;
-            }
-        }
-
-        private string WOWPath;
-        private string AccountName;
-        private string AccountPass;
-        private string RealmName;
-        private string CharIdx;
-        private string AccountList;
-
-        private void SetParaByINI()
-        {
-            WOWPath = LazySettings.WOWPath;
-            AccountName = LazySettings.WOWAccName;
-            AccountPass = LazySettings.WOWAccPass;
-            RealmName = LazySettings.WOWServer;
-            CharIdx = LazySettings.WOWCharIdx;
-            AccountList = LazySettings.WOWCharList;
-        }
-
-        private void AutoLogin()
-        {
-            string Accountloginloginbutton = "AccountLoginLoginButton";
-            string Accountloginpasswordedit = "AccountLoginPasswordEdit";
-            string Charselectenterworldbutton = "CharSelectEnterWorldButton";
-
-            int RetryCount = 0;
-            const int MAX_RETRY_COUNT = 5;
-
-            AutoRunning = true;
-            Success = false;
-
-            if (!WTFFile.ChangeWTF(WOWPath, AccountName, RealmName, CharIdx, AccountList))
-            {
-                Logging.Write("修改WTF文件时，发生错误！！" + "\r\n" + WTFFile.errMsg);
-                StopAuto();
-                return;
-            }
-
-            if (!RunWOW.RunWow(WOWPath))
-            {
-                Logging.Write("不能成功运行WOW！！" + "\r\n" + RunWOW.errMsg);
-                StopAuto();
-                return;
-            }
-            Thread.Sleep(5000);
-
-            Process[] _wowProc = Process.GetProcessesByName("Wow");
-
-            while (_wowProc.Length <= 0)
-            {
-                RetryCount += 1;
-                if (RetryCount > MAX_RETRY_COUNT) break;
-
-                Thread.Sleep(5000);
-            }
-
-            if (!Memory.OpenProcess(_wowProc[0].Id))
-            {
-                Logging.Write("不能访问WOW进程！！");
-                StopAuto();
-                return;
-            }
-
-            WOWProc = _wowProc[0];
-
-            InterfaceHelper.ReloadFrames();
-            while (InterfaceHelper.GetFrames.Count <= 5)
-            {
-                Thread.Sleep(5000);
-                InterfaceHelper.ReloadFrames();
-            }
-
-            InterfaceHelper.GetFrameByName(Accountloginpasswordedit).LeftClick();
-            Thread.Sleep(1000);
-            InterfaceHelper.GetFrameByName(Accountloginpasswordedit).SetEditBoxText(AccountPass);
-            Thread.Sleep(1500);
-            InterfaceHelper.GetFrameByName(Accountloginloginbutton).LeftClick();
-            Thread.Sleep(10000);
-            InterfaceHelper.GetFrameByName(Charselectenterworldbutton).LeftClick();
-            Thread.Sleep(7000);
-            while (!ObjectManager.InGame)
-            {
-                Thread.Sleep(1000);
-            }
-
-            ObjectManager.Initialize(_wowProc[0].Id);
-
-            var executableFileInfo = new FileInfo(Application.ExecutablePath);
-            string executableDirectoryName = executableFileInfo.DirectoryName;
-            string ourDirectory = executableDirectoryName;
-
-            //调用Profile
-            FlyingProfile hh = new FlyingProfile();
-            hh.LoadFile(LazySettings.MapFile);
-            FlyingEngine.CurrentProfile = hh;
-
-            //调用Behavior
-            var pIniManager = new IniManager(ourDirectory + PveBehaviorSettings.SettingsName);
-            pIniManager.IniWriteValue("Config", "LoadedBeharvior", LazySettings.FightFile);
-
-            Success = true;
-            ps = ProcStatus.Login_OK;
-            Logging.Write("Login OK!!");
-            ObjectManager.MyPlayer.Account = AccountName;
-            StopAuto();
-            return;
-        }
-
-        public class RunWOW
-        {
-            public static String errMsg;
-
-            public static bool RunWow(String WOWPath)
-            {
-                if (String.IsNullOrEmpty(WOWPath))
-                {
-                    errMsg = "WOWPath is null";
-                    return false;
-                }
-
-                String exeFilePath = WOWPath + "\\Wow.exe";
-                Process process = new Process();
-                process.StartInfo.FileName = exeFilePath;
-                process.Start();
-                process.WaitForInputIdle();
-                return true;
-            }
-        }
-    }
-
-    // 采集类启动
-    // 按照当前角色类型获取战斗文件
-    // 按照当前角色所在区域，获取地图文件和采集清单
+    /// <summary>
+    /// 采集类启动
+    /// 按照当前角色类型获取战斗文件
+    /// 按照当前角色所在区域，获取地图文件和采集清单
+    /// </summary>
     public static class SpyCJ
     {
         public static bool RUNNING;
@@ -453,6 +147,9 @@ namespace LazyEvo.Plugins
         }
     }
 
+    /// <summary>
+    /// 自动登录
+    /// </summary>
     public static class SpyLogin
     {
         private static string WOWPath;
@@ -598,6 +295,9 @@ namespace LazyEvo.Plugins
         }
     }
 
+    /// <summary>
+    /// 框架类
+    /// </summary>
     public class SpyFrame
     {
         private const string LUA_RUNNING_STRING = "Begin";
@@ -1206,9 +906,94 @@ namespace LazyEvo.Plugins
             return true;
         }
 
+        /// <summary>
+        /// 商业技能——制作物品
+        /// </summary>
+        /// <param name="item">物品名称</param>
+        /// <returns></returns>
         public static bool DoItems(string item)
         {
-            return SpyFrame.lua_TradeSkillDO(item);
+            bool IsDoing = false;
+            if (!SpyFrame.lua_TradeSkillDO(item))
+            {
+                return IsDoing;
+            }
+            Thread.Sleep(500);
+            int RetryCount = 0;
+            while (ObjectManager.MyPlayer.IsCasting && RetryCount < 5)
+            {
+                RetryCount++;
+                Thread.Sleep(500);
+            }
+            if (RetryCount < 5) IsDoing = true;
+            return IsDoing;
+        }
+
+        /// <summary>
+        /// 商业技能枚举
+        /// </summary>
+        public enum TradeSkills
+        {
+            /// <summary>
+            /// 珠宝
+            /// </summary>
+            ZhuBao,
+            LianJin,
+            FuMo,
+            CaiFeng,
+            DuanZao,
+            RongLian
+        }
+        /// <summary>
+        /// 打开技能窗口
+        /// </summary>
+        public static bool OpenTradeSkillWindow(TradeSkills SkillWin)
+        {
+            bool IsOpenSkillFrame = false;
+            int RetryCount = 0;
+            while (!IsOpenSkillFrame && RetryCount < 5)
+            {
+                try
+                {
+                    IsOpenSkillFrame = InterfaceHelper.GetFrameByName("TradeSkillFrame").IsVisible;
+                }
+                catch
+                {
+                    IsOpenSkillFrame = false;
+                }
+
+                if (!IsOpenSkillFrame)
+                {
+                    string SkillName = "";
+                    switch (SkillWin)
+                    {
+                        case TradeSkills.CaiFeng:
+                            SkillName = "裁缝";
+                            break;
+                        case TradeSkills.DuanZao:
+                            SkillName = "锻造";
+                            break;
+                        case TradeSkills.FuMo:
+                            SkillName = "附魔";
+                            break;
+                        case TradeSkills.LianJin:
+                            SkillName = "炼金";
+                            break;
+                        case TradeSkills.RongLian:
+                            SkillName = "";
+                            break;
+                        case TradeSkills.ZhuBao:
+                            SkillName = "珠宝加工";
+                            break;
+                    }
+                    BarSpell gg = BarMapper.GetSpellByName(SkillName);
+                    gg.CastSpell();
+                }
+                RetryCount++;
+                Thread.Sleep(500);
+            }
+            // 判断技能窗口有没有开，没开就开开
+            return IsOpenSkillFrame;
         }
     }
 
@@ -1654,245 +1439,234 @@ namespace LazyEvo.Plugins
     /// <summary>
     /// 炼金转化
     /// </summary>
-    //public static class SpyLJZH
-    //{
-    //    // 数据库保存转化目标，需要原料，以及是否有CD（有CD，一天执行一次）
-    //    // 按照列表先做有CD的，然后再做没有的。这期间要在邮箱和背包中找是否有材料，没有就跳过，主要缺一样就跳过
-    //    // 炼金转化列表是每个人都不一样的
+    public static class SpyLJZH
+    {
+        // 数据库保存转化目标，需要原料，以及是否有CD（有CD，一天执行一次）
+        // 按照列表先做有CD的，然后再做没有的。这期间要在邮箱和背包中找是否有材料，没有就跳过，主要缺一样就跳过
+        // 炼金转化列表是每个人都不一样的
 
-    //    private static DataTable GoodsList;                         // 制作清单
-    //    public static DBLogger logger = new DBLogger("炼金转化");
-    //    private static Thread _thread;
-    //    public static bool RUNNING;
+        private static DataTable GoodsList;                         // 制作清单
+        public static DBLogger logger = new DBLogger("炼金转化");
+        private static Thread _thread;
+        public static bool RUNNING;
 
-    //    public static bool initme()
-    //    {
-    //        RUNNING = true;
-    //        logger.clear();
+        public static bool initme()
+        {
+            RUNNING = true;
+            logger.clear();
 
-    //        if (!SpyFrame.initme())
-    //        {
-    //            logger.Add("Frame 信息框体初始化失败，不能继续");
-    //            RUNNING = false;
-    //            return false;
-    //        }
+            if (!SpyFrame.initme())
+            {
+                logger.Add("Frame 信息框体初始化失败，不能继续");
+                RUNNING = false;
+                return false;
+            }
 
-    //        // 获取制作清单
+            // 获取制作清单
+            GoodsList = SpyDB.GetLianJin();
+            if (GoodsList == null)
+            {
+                logger.Add("获取制作清单失败，不能继续");
+                RUNNING = false;
+                return false;
+            }
+            if (GoodsList.Rows.Count == 0)
+            {
+                logger.Add("该人物对应的制作清单为空，不能继续");
+                RUNNING = false;
+                return false;
+            }
 
-    //        Logging.Write("进行外挂初始化--动作条初始化");
-    //        BarMapper.MapBars();
-    //        Logging.Write("进行外挂初始化--按键初始化");
-    //        KeyHelper.LoadKeys();
+            Logging.Write("进行外挂初始化--动作条初始化");
+            BarMapper.MapBars();
+            Logging.Write("进行外挂初始化--按键初始化");
+            KeyHelper.LoadKeys();
 
-    //        return true;
-    //    }
+            return true;
+        }
 
-    //    public static void start()
-    //    {
-    //        if (_thread == null || !_thread.IsAlive)
-    //        {
-    //            _thread = new Thread(GoGo);
-    //            _thread.Name = "炼金转化";
-    //            _thread.IsBackground = true;
-    //            // 设置线程状态为单线程
-    //            try
-    //            {
-    //                _thread.TrySetApartmentState(ApartmentState.STA);
-    //            }
-    //            catch (Exception ex)
-    //            {
-    //                Logging.Write("启动失败，线程设置出现错误，原因是：" + ex.ToString());
-    //                RUNNING = false;
-    //                return;
-    //            }
-    //            _thread.Start();
-    //            Logging.Write(_thread.Name + " 开始了。。。。。");
+        public static void start()
+        {
+            if (_thread == null || !_thread.IsAlive)
+            {
+                _thread = new Thread(GoGo);
+                _thread.Name = "炼金转化";
+                _thread.IsBackground = true;
+                // 设置线程状态为单线程
+                try
+                {
+                    _thread.TrySetApartmentState(ApartmentState.STA);
+                }
+                catch (Exception ex)
+                {
+                    Logging.Write("启动失败，线程设置出现错误，原因是：" + ex.ToString());
+                    RUNNING = false;
+                    return;
+                }
+                _thread.Start();
+                Logging.Write(_thread.Name + " 开始了。。。。。");
 
-    //        }
-    //    }
+            }
+        }
 
-    //    public static void stop()
-    //    {
-    //        if (_thread == null) return;
-    //        if (_thread.IsAlive)
-    //        {
-    //            _thread.Abort();
-    //            _thread = null;
-    //        }
-    //    }
+        public static void stop()
+        {
+            if (_thread == null) return;
+            if (_thread.IsAlive)
+            {
+                _thread.Abort();
+                _thread = null;
+            }
+        }
 
-    //    public static void GoGo()
-    //    {
-    //        DoAction();
-    //        logger.output();
-    //        SpyData.SaveInfo_Bag();
-    //        RUNNING = false;
-    //    }
+        public static void GoGo()
+        {
+            DoAction();
+            logger.output();
+            SpyData.SaveInfo_Bag();
+            RUNNING = false;
+        }
 
-    //    public static void DoAction()
-    //    {
-    //        // 打开邮箱
-    //        if (!MailManager.TargetMailBox())
-    //        {
-    //            logger.Add("任务附近没有邮箱，失败啊。。。");
-    //            return;
-    //        }
+        public static void DoAction()
+        {
+            // 打开邮箱
+            if (!MailManager.TargetMailBox())
+            {
+                logger.Add("任务附近没有邮箱，失败啊。。。");
+                return;
+            }
 
-    //        int CountJump = 0;
-    //        // 遍历制作列表
-    //        foreach (DataRow _goods in GoodsList.Rows)
-    //        {
-    //            // 这里在出列表的时候，就按照CD物品优先来做
-    //            // 找到原料(原料按照 Item$Count#Item$Count# 格式保存)
-    //            bool HasAllItem = true;
-    //            string ToDoItem = _goods["ItemName"].ToString();
-    //            int ToDoCount = 100000;      // 求制作的最大数量，这个要看哪种原料最少，按照最少的做
-    //            string[] ItemsDesc = _goods["NeedItem"].ToString().Split('#');
-    //            Dictionary<string, int> NeedItem = new Dictionary<string, int>();
-    //            Dictionary<string, int> NeedItemInBag = new Dictionary<string, int>();
-    //            Dictionary<string, int> NeedIteminMail = new Dictionary<string, int>();
-    //            for (int iLoop = 0; iLoop < ItemsDesc.Length; iLoop++)
-    //            {
-    //                string[] Items = ItemsDesc[iLoop].Split('$');
-    //                // 查找背包或者邮箱中是否有
-    //                if (!SpyFrame.lua_SetDispCountItemName(Items[0]))
-    //                {
-    //                    logger.Add("在执行SetDispCountItemName时出错，需要的原料：" + Items[0]);
-    //                    return;
-    //                }
-    //                Thread.Sleep(1000);
-    //                Dictionary<string, int> ItemsInBagAndMail = SpyFrame.GetDispCountItemCount();
-    //                if (ItemsInBagAndMail["BAG"] + ItemsInBagAndMail["MAIL"] < Convert.ToInt32(Items[1]))
-    //                {
-    //                    HasAllItem = false;
-    //                    break;
-    //                }
+            // 打开技能窗口
+            if (!SpyTradeSkill.OpenTradeSkillWindow(SpyTradeSkill.TradeSkills.LianJin))
+            {
+                logger.Add("没有打开技能窗口，失败啊。。。");
+                return;
+            }
 
-    //                NeedItem.Add((Items[0]), Convert.ToInt32(Items[1]));
-    //                NeedItemInBag.Add((Items[0]), ItemsInBagAndMail["BAG"]);
-    //                NeedIteminMail.Add((Items[0]), ItemsInBagAndMail["MAIL"]);
+            int CountJump = 0;
+            // 遍历制作列表
+            foreach (DataRow _goods in GoodsList.Rows)
+            {
+                // 这里在出列表的时候，就按照CD物品优先来做
+                // 找到原料(原料按照 Item$Count#Item$Count# 格式保存)
+                bool HasAllItem = true;
+                string ToDoItem = _goods["ItemName"].ToString();
+                int ToDoCount = 100000;      // 求制作的最大数量，这个要看哪种原料最少，按照最少的做
+                string[] ItemsDesc = _goods["NeedItem"].ToString().Split('#');
+                Dictionary<string, int> NeedItem = new Dictionary<string, int>();           //原料表和需求
+                Dictionary<string, int> NeedItemInBag = new Dictionary<string, int>();      //原料在背包中的数量
+                Dictionary<string, int> NeedIteminMail = new Dictionary<string, int>();     //原料在邮箱中的数量 
+                for (int iLoop = 0; iLoop < ItemsDesc.Length; iLoop++)
+                {
+                    string[] Items = ItemsDesc[iLoop].Split('$');
 
-    //                if ((ItemsInBagAndMail["BAG"] + ItemsInBagAndMail["MAIL"]) / Convert.ToInt32(Items[1]) < ToDoCount)
-    //                    ToDoCount = (ItemsInBagAndMail["BAG"] + ItemsInBagAndMail["MAIL"]) / Convert.ToInt32(Items[1]);
-    //            }
+                    // 记录原料表
+                    if (!NeedItem.ContainsKey(Items[0]))
+                        NeedItem.Add((Items[0]), Convert.ToInt32(Items[1]));
 
-    //            // 货物全，就做
-    //            if (HasAllItem)
-    //            {
-    //                int HasDone = 0;
-    //                while (true)
-    //                {
-    //                    if (Inventory.FreeBagSlots <= 4)
-    //                    {
-    //                        SpyTradeSkill.SendMain(logger, false);
-    //                        if (Inventory.FreeBagSlots <= 4)
-    //                        {
-    //                            logger.Add("背包空间只有四个，不能继续");
-    //                            return;
-    //                        }
-    //                    }
+                    // 查找背包或者邮箱中是否有
+                    if (!SpyFrame.lua_SetDispCountItemName(Items[0]))
+                    {
+                        logger.Add("在执行SetDispCountItemName时出错，需要的原料：" + Items[0]);
+                        return;
+                    }
 
-    //                    // 做东西
+                    Thread.Sleep(1000);
 
-    //                    CountJump++;
-    //                    if (CountJump == 10)
-    //                    {
-    //                        // jump一下，防止AFK
-    //                        CountJump = 0;
-    //                        logger.Add("jump一下，防止AFK");
-    //                        KeyLowHelper.PressKey(MicrosoftVirtualKeys.Space);
-    //                        KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.Space);
-    //                        Thread.Sleep(5000);
-    //                    }
+                    // 记录物品数量
+                    Dictionary<string, int> ItemsInBagAndMail = SpyFrame.GetDispCountItemCount();
+                    NeedItemInBag.Add((Items[0]), ItemsInBagAndMail["BAG"]);
+                    NeedIteminMail.Add((Items[0]), ItemsInBagAndMail["MAIL"]);
 
-    //                    HasDone++;
-    //                    if (HasDone == ToDoCount) break;
-    //                }
-    //            }
-    //            SpyTradeSkill.SendMain(logger, false);
+                    //看看原料够不够
+                    if (ItemsInBagAndMail["BAG"] + ItemsInBagAndMail["MAIL"] < Convert.ToInt32(Items[1]))
+                    {
+                        HasAllItem = false;
+                        break;
+                    }
 
-    //            if (!SpyFrame.lua_SetDispCountItemName(DoingMine))
-    //            {
-    //                logger.Add("在执行SetDispCountItemName时出错，矿：" + DoingMine);
-    //                return;
-    //            }
-    //            Thread.Sleep(1000);
-    //            Dictionary<string, int> MineCount = SpyFrame.GetDispCountItemCount();
-    //            /** 检查背包里面有没有矿，有就炸，没有再查邮箱，从邮箱拿，直到没有矿 **/
-    //            if (MineCount["BAG"] == 0 && MineCount["MAIL"] == 0)
-    //            {
-    //                logger.Add("包里面没有(或者是都炸完了)  " + DoingMine);
-    //                continue;
-    //            }
-    //            while (MineCount["BAG"] > 0 || MineCount["MAIL"] > 0)
-    //            {
-    //                // 邮箱里面有矿，取矿出来
-    //                if (MineCount["MAIL"] > 0)
-    //                {
-    //                    logger.Add("从邮箱里面拿  " + DoingMine);
-    //                    if (!SpyFrame.lua_GetMAILAsItem(DoingMine, 100000, 20))
-    //                    {
-    //                        logger.Add("从邮箱里面拿  " + DoingMine + " 失败");
-    //                        return;
-    //                    }
-    //                }
+                    // 计算能够完成的数量，找木桶的短板
+                    int CanDoCount = (ItemsInBagAndMail["BAG"] + ItemsInBagAndMail["MAIL"]) / Convert.ToInt32(Items[1]);
+                    if (CanDoCount < ToDoCount)
+                        ToDoCount = CanDoCount;
+                }
 
-    //                Thread.Sleep(1000);
-    //                MineCount = SpyFrame.GetDispCountItemCount();
+                // 货物全，就做
+                if (HasAllItem)
+                {
+                    int HasDone = 0;
 
-    //                // 分解矿，直到包空间小于1和背包里面没有矿
-    //                while (MineCount["BAG"] > 0 && Inventory.FreeBagSlots > 1)
-    //                {
-    //                    CountJump++;
-    //                    if (CountJump == 10)
-    //                    {
-    //                        // jump一下，防止AFK
-    //                        CountJump = 0;
-    //                        logger.Add("jump一下，防止AFK");
-    //                        KeyLowHelper.PressKey(MicrosoftVirtualKeys.Space);
-    //                        KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.Space);
-    //                        Thread.Sleep(5000);
-    //                    }
-    //                    // 分解石头 , 分解宏要放在4这个上面
-    //                    logger.Add("炸矿");
-    //                    KeyLowHelper.PressKey(MicrosoftVirtualKeys.key4);
-    //                    KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.key4);
-    //                    Thread.Sleep(500);
-    //                    while (ObjectManager.MyPlayer.IsCasting)
-    //                    {
-    //                        Thread.Sleep(100);
-    //                    }
-    //                    // 等待2秒，取分解的东西到背包
-    //                    Thread.Sleep(2000);
-    //                    MineCount = SpyFrame.GetDispCountItemCount();
-    //                }
+                    // 判断是否有CD，有的话，设置todo为1
+                    if (Convert.ToInt32(_goods["havecd"]) == 1) ToDoCount = 1;
 
-    //                // 当包里面还有矿的时候，可能是背包满了，这时候启动邮寄
-    //                if (Inventory.FreeBagSlots <= 1)
-    //                {
-    //                    // 发邮件
-    //                    logger.Add("发邮件");
-    //                    if (!SpyTradeSkill.SendMain(MailList, logger)) return;
-    //                }
-    //                Thread.Sleep(1000);
-    //                MineCount = SpyFrame.GetDispCountItemCount();
+                    while (true)
+                    {
+                        if (Inventory.FreeBagSlots <= 4)
+                        {
+                            SpyTradeSkill.SendMain(logger, false);
+                            if (Inventory.FreeBagSlots <= 4)
+                            {
+                                logger.Add("背包空间只有四个，不能继续");
+                                return;
+                            }
+                        }
 
-    //                // 邮寄完，背包还是满，就退出
-    //                if (Inventory.FreeBagSlots <= 1)
-    //                {
-    //                    logger.Add("邮寄完，背包还是满");
-    //                    return;
-    //                }
-    //            }
-    //        }
-    //        logger.Add("矿都处理完了，发邮件");
-    //        if (!SpyTradeSkill.SendMain(MailList, logger)) return;
-    //        return;
-    //    }
+                        // 做东西
+                        if (!SpyTradeSkill.DoItems(ToDoItem))
+                        {
+                            logger.Add("做物品失败");
+                            return;
+                        }
 
-    //}
+                        CountJump++;
+                        if (CountJump == 10)
+                        {
+                            // jump一下，防止AFK
+                            CountJump = 0;
+                            logger.Add("jump一下，防止AFK");
+                            KeyLowHelper.PressKey(MicrosoftVirtualKeys.Space);
+                            KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.Space);
+                            Thread.Sleep(5000);
+                        }
 
-    // 分解矿+邮寄
+                        // 针对原料的处理。修改库存原料表，根据库存情况从邮箱获取物品
+                        foreach (KeyValuePair<string, int> Item in NeedItem)
+                        {
+                            NeedItemInBag[Item.Key] = NeedItemInBag[Item.Key] - Item.Value;
+                            while (NeedItemInBag[Item.Key] < Item.Value)
+                            {
+                                // 从邮箱拿货，一次拿一堆（如果需要的原料大于一堆，这里会出错）
+                                if (!SpyFrame.lua_GetMAILAsItem(Item.Key, 1))
+                                {
+                                    logger.Add("从邮箱里面拿  " + Item.Key + " 失败");
+                                    return;
+                                }
+
+                                Thread.Sleep(1000);
+
+                                // 然后重新记录物品数量
+                                Dictionary<string, int> ItemsInBagAndMail = SpyFrame.GetDispCountItemCount();
+                                NeedItemInBag[Item.Key] = ItemsInBagAndMail["BAG"];
+                                NeedIteminMail[Item.Key] = ItemsInBagAndMail["MAIL"];
+
+                            }
+                        }
+
+                        HasDone++;
+                        if (HasDone == ToDoCount) break;
+                    }
+                }
+                SpyTradeSkill.SendMain(logger, false);
+            }
+            return;
+        }
+
+    }
+
+
+    /// <summary>
+    /// 分解矿
+    /// </summary>
     public static class SpyMineAndMail
     {
         public static List<string> Mines;                                 //待分解清单
@@ -3332,6 +3106,9 @@ namespace LazyEvo.Plugins
                         case "CJ":
                             if (SpyCJ.initme()) SpyCJ.start();
                             break;
+                        case "LJ":
+                            if (SpyLJZH.initme()) SpyLJZH.start();
+                            break;
                     }
                     SpyDB.WriteLog("计划任务", string.Format("任务开始工作，角色ID：{0}，任务描述：{1}，持续时间：{2}", char_id, DoWhat, RunMiniute.ToString()));
                     StatusStartTime = DateTime.Now;
@@ -3378,6 +3155,15 @@ namespace LazyEvo.Plugins
                                 return;
                             }
                             if (SpyCJ.RUNNING) return;
+                            break;
+                        case "LJ":
+                            if (string.Format("{0:yyyy-MM-dd HH:mm}", StatusStartTime.AddMinutes(RUN_OUT_MIN_WORK)).Equals(string.Format("{0:yyyy-MM-dd HH:mm}", DateTime.Now)))
+                            {
+                                SpyDB.WriteLog("计划任务", string.Format("任务工作超时，角色ID：{0}，任务描述：{1}，持续时间：{2}", char_id, DoWhat, RunMiniute.ToString()));
+                                JobStatus = EnumJobStatus.Work_OK;
+                                return;
+                            }
+                            if (SpyLJZH.RUNNING) return;
                             break;
                     }
 

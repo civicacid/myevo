@@ -98,7 +98,7 @@ create table autologin (
    runtime                    number(8)          default 0 null,           -- 持续时间，分钟
    char_id                    number(8)          not null,
    char_name                  varchar(98)        null,
-   dowhat                     varchar(200)       not null,                 -- CJ|ZBJG|AH|FJKS  (采集|珠宝加工|AH拍卖|分解矿石)
+   dowhat                     varchar(200)       not null,                 -- CJ|ZBJG|AH|FJKS|LJ  (采集|珠宝加工|AH拍卖|分解矿石|炼金)
    machineid                  varchar(200)       not null,                 -- 机器标示
    everyday                   number(1)          default 0 null,           -- 是否每天执行(1--是,0--否)
    primary key (machineid,starttime,char_name)
@@ -199,6 +199,35 @@ create table map_file (
 );
 create unique index uk_map_file on map_file(file_name);
 comment on table map_file is '地图文件';
+
+-- -----------------------------------------------------
+-- table LianJin  炼金制作清单
+-- -----------------------------------------------------
+create table lianjin (
+   itemname             varchar(100)                     not null,
+   needitem             varchar(1000)                    not null,
+   havecd               number(1)         default 0      not null,
+   constraint pk_lianjin primary key (itemname)
+);
+comment on table lianjin is '炼金制作清单';
+comment on column lianjin.itemname  is '物品名称';
+comment on column lianjin.needitem  is '原料表。按照 Item$Count#Item$Count# 格式保存';
+comment on column lianjin.havecd    is '是否有CD';
+
+-- -----------------------------------------------------
+-- table char_lianjin  人物炼金技能对应表
+-- -----------------------------------------------------
+create table char_lianjin (
+   server            varchar(100)                        not null,
+   char_name         varchar(100)                        not null,
+   lianjin_itemname  varchar(100)                        not null,
+   constraint pk_char_lj primary key (char_name,lianjin_itemname)
+)
+comment on table char_lianjin is '炼金制作清单';
+comment on column char_lianjin.server            is '服务器';
+comment on column char_lianjin.char_name         is '角色';
+comment on column char_lianjin.lianjin_itemname  is '可用技能';
+
 
 -- -----------------------------------------------------
 -- Sequence 公用序列

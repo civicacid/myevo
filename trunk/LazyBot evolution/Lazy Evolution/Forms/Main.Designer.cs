@@ -231,7 +231,7 @@
             this.SelectEngine.Items.AddRange(new object[] {
             this.comboItem330,
             this.comboItem331});
-            this.SelectEngine.Location = new System.Drawing.Point(5, 20);
+            this.SelectEngine.Location = new System.Drawing.Point(5, 23);
             this.SelectEngine.Margin = new System.Windows.Forms.Padding(4);
             this.SelectEngine.Name = "SelectEngine";
             this.SelectEngine.Size = new System.Drawing.Size(163, 26);
@@ -256,7 +256,7 @@
             this.SelectCombat.ItemHeight = 20;
             this.SelectCombat.Items.AddRange(new object[] {
             this.comboItem1});
-            this.SelectCombat.Location = new System.Drawing.Point(5, 141);
+            this.SelectCombat.Location = new System.Drawing.Point(5, 156);
             this.SelectCombat.Margin = new System.Windows.Forms.Padding(4);
             this.SelectCombat.Name = "SelectCombat";
             this.SelectCombat.Size = new System.Drawing.Size(163, 26);
@@ -271,7 +271,7 @@
             // labelItem1
             // 
             this.labelItem1.Name = "labelItem1";
-            this.labelItem1.Text = "<b>Engine:</b>";
+            this.labelItem1.Text = "<b>核心设置</b>";
             this.labelItem1.ThemeAware = true;
             // 
             // controlContainerItem2
@@ -286,28 +286,28 @@
             // 
             this.GeneralSettings.Name = "GeneralSettings";
             this.GeneralSettings.Shape = new DevComponents.DotNetBar.RoundRectangleShapeDescriptor(2);
-            this.GeneralSettings.Text = "General settings";
+            this.GeneralSettings.Text = "通用设置";
             this.GeneralSettings.ThemeAware = true;
             this.GeneralSettings.Click += new System.EventHandler(this.LazySettingsClick);
             // 
             // EngineSettings
             // 
             this.EngineSettings.Name = "EngineSettings";
-            this.EngineSettings.Text = "Engine settings";
+            this.EngineSettings.Text = "技能设置";
             this.EngineSettings.ThemeAware = true;
             this.EngineSettings.Click += new System.EventHandler(this.EngineSettings_Click);
             // 
             // BtnProfileSettings
             // 
             this.BtnProfileSettings.Name = "BtnProfileSettings";
-            this.BtnProfileSettings.Text = "Profile settings";
+            this.BtnProfileSettings.Text = "路点文件";
             this.BtnProfileSettings.ThemeAware = true;
             this.BtnProfileSettings.Click += new System.EventHandler(this.BtnProfileSettingsClick);
             // 
             // labelItem2
             // 
             this.labelItem2.Name = "labelItem2";
-            this.labelItem2.Text = "<b>Combat system:</b>";
+            this.labelItem2.Text = "<b>战斗系统</b>";
             this.labelItem2.ThemeAware = true;
             // 
             // controlContainerItem1
@@ -321,7 +321,7 @@
             // CombatSettings
             // 
             this.CombatSettings.Name = "CombatSettings";
-            this.CombatSettings.Text = "Combat settings";
+            this.CombatSettings.Text = "角色战斗";
             this.CombatSettings.ThemeAware = true;
             this.CombatSettings.Click += new System.EventHandler(this.CombatSettings_Click);
             // 
@@ -342,7 +342,7 @@
             // BtnOpenRadar
             // 
             this.BtnOpenRadar.Name = "BtnOpenRadar";
-            this.BtnOpenRadar.Text = "Open radar";
+            this.BtnOpenRadar.Text = "雷达";
             this.BtnOpenRadar.ThemeAware = true;
             this.BtnOpenRadar.Click += new System.EventHandler(this.BtnOpenRadarClick);
             // 
@@ -418,21 +418,23 @@
             // 
             // btnLogin
             // 
+            this.btnLogin.Font = new System.Drawing.Font("NSimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnLogin.Location = new System.Drawing.Point(545, 48);
             this.btnLogin.Name = "btnLogin";
             this.btnLogin.Size = new System.Drawing.Size(78, 25);
             this.btnLogin.TabIndex = 83;
-            this.btnLogin.Text = "Login";
+            this.btnLogin.Text = "登录";
             this.btnLogin.UseVisualStyleBackColor = true;
             this.btnLogin.Click += new System.EventHandler(this.btnLogin_Click);
             // 
             // btnRefresh
             // 
+            this.btnRefresh.Font = new System.Drawing.Font("NSimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnRefresh.Location = new System.Drawing.Point(455, 48);
             this.btnRefresh.Name = "btnRefresh";
             this.btnRefresh.Size = new System.Drawing.Size(78, 25);
             this.btnRefresh.TabIndex = 82;
-            this.btnRefresh.Text = "Refresh";
+            this.btnRefresh.Text = "获取角色";
             this.btnRefresh.UseVisualStyleBackColor = true;
             this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 

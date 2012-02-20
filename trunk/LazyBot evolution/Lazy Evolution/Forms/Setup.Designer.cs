@@ -254,13 +254,6 @@
             this.SetupCBSoundFollow = new DevComponents.DotNetBar.Controls.CheckBoxX();
             this.styleManager1 = new DevComponents.DotNetBar.StyleManager(this.components);
             this.superTabControl2 = new DevComponents.DotNetBar.SuperTabControl();
-            this.superTabControlPanel7 = new DevComponents.DotNetBar.SuperTabControlPanel();
-            this.groupPanel7 = new DevComponents.DotNetBar.Controls.GroupPanel();
-            this.labelX12 = new DevComponents.DotNetBar.LabelX();
-            this.SetupTBLogOutOnFollow = new DevComponents.Editors.IntegerInput();
-            this.SetupCBLogoutOnFollow = new DevComponents.DotNetBar.Controls.CheckBoxX();
-            this.groupPanel6 = new DevComponents.DotNetBar.Controls.GroupPanel();
-            this.superTabItem7 = new DevComponents.DotNetBar.SuperTabItem();
             this.superTabControlPanel4 = new DevComponents.DotNetBar.SuperTabControlPanel();
             this.labelX55 = new DevComponents.DotNetBar.LabelX();
             this.labelX57 = new DevComponents.DotNetBar.LabelX();
@@ -290,6 +283,13 @@
             this.labelX19 = new DevComponents.DotNetBar.LabelX();
             this.SetupUseHotkeys = new DevComponents.DotNetBar.Controls.CheckBoxX();
             this.superTabItem4 = new DevComponents.DotNetBar.SuperTabItem();
+            this.superTabControlPanel7 = new DevComponents.DotNetBar.SuperTabControlPanel();
+            this.groupPanel7 = new DevComponents.DotNetBar.Controls.GroupPanel();
+            this.labelX12 = new DevComponents.DotNetBar.LabelX();
+            this.SetupTBLogOutOnFollow = new DevComponents.Editors.IntegerInput();
+            this.SetupCBLogoutOnFollow = new DevComponents.DotNetBar.Controls.CheckBoxX();
+            this.groupPanel6 = new DevComponents.DotNetBar.Controls.GroupPanel();
+            this.superTabItem7 = new DevComponents.DotNetBar.SuperTabItem();
             this.superTabControlPanel10 = new DevComponents.DotNetBar.SuperTabControlPanel();
             this.superTabItem8 = new DevComponents.DotNetBar.SuperTabItem();
             this.superTabControlPanel9 = new DevComponents.DotNetBar.SuperTabControlPanel();
@@ -436,13 +436,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.SetupTBStopAfter)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.superTabControl2)).BeginInit();
             this.superTabControl2.SuspendLayout();
+            this.superTabControlPanel4.SuspendLayout();
+            this.groupPanel10.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Latency)).BeginInit();
             this.superTabControlPanel7.SuspendLayout();
             this.groupPanel7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SetupTBLogOutOnFollow)).BeginInit();
             this.groupPanel6.SuspendLayout();
-            this.superTabControlPanel4.SuspendLayout();
-            this.groupPanel10.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Latency)).BeginInit();
             this.superTabControlPanel10.SuspendLayout();
             this.superTabControlPanel9.SuspendLayout();
             this.superTabControlPanel1.SuspendLayout();
@@ -2255,174 +2255,6 @@
             this.superTabControl2.TabStyle = DevComponents.DotNetBar.eSuperTabStyle.WinMediaPlayer12;
             this.superTabControl2.Text = "Grinder settings";
             // 
-            // superTabControlPanel7
-            // 
-            this.superTabControlPanel7.Controls.Add(this.groupPanel7);
-            this.superTabControlPanel7.Controls.Add(this.groupPanel6);
-            this.superTabControlPanel7.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.superTabControlPanel7.Location = new System.Drawing.Point(0, 0);
-            this.superTabControlPanel7.Margin = new System.Windows.Forms.Padding(2);
-            this.superTabControlPanel7.Name = "superTabControlPanel7";
-            this.superTabControlPanel7.Size = new System.Drawing.Size(618, 399);
-            this.superTabControlPanel7.TabIndex = 0;
-            this.superTabControlPanel7.TabItem = this.superTabItem7;
-            this.superTabControlPanel7.ThemeAware = true;
-            // 
-            // groupPanel7
-            // 
-            this.groupPanel7.BackColor = System.Drawing.Color.Transparent;
-            this.groupPanel7.CanvasColor = System.Drawing.SystemColors.Control;
-            this.groupPanel7.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
-            this.groupPanel7.Controls.Add(this.labelX12);
-            this.groupPanel7.Controls.Add(this.SetupTBLogOutOnFollow);
-            this.groupPanel7.Controls.Add(this.SetupCBLogoutOnFollow);
-            this.groupPanel7.Controls.Add(this.SetupCBSoundFollow);
-            this.groupPanel7.Controls.Add(this.labelX48);
-            this.groupPanel7.Controls.Add(this.SetupTBStopAfter);
-            this.groupPanel7.Controls.Add(this.SetupCBSoundWhisper);
-            this.groupPanel7.Controls.Add(this.SetupCBShutdown);
-            this.groupPanel7.Controls.Add(this.SetupCBSoundStop);
-            this.groupPanel7.Controls.Add(this.SetupCBStopAfter);
-            this.groupPanel7.Location = new System.Drawing.Point(6, 135);
-            this.groupPanel7.Margin = new System.Windows.Forms.Padding(2);
-            this.groupPanel7.Name = "groupPanel7";
-            this.groupPanel7.Size = new System.Drawing.Size(505, 182);
-            // 
-            // 
-            // 
-            this.groupPanel7.Style.BackColor2SchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground2;
-            this.groupPanel7.Style.BackColorGradientAngle = 90;
-            this.groupPanel7.Style.BackColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
-            this.groupPanel7.Style.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel7.Style.BorderBottomWidth = 1;
-            this.groupPanel7.Style.BorderColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
-            this.groupPanel7.Style.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel7.Style.BorderLeftWidth = 1;
-            this.groupPanel7.Style.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel7.Style.BorderRightWidth = 1;
-            this.groupPanel7.Style.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel7.Style.BorderTopWidth = 1;
-            this.groupPanel7.Style.Class = "";
-            this.groupPanel7.Style.CornerDiameter = 4;
-            this.groupPanel7.Style.CornerType = DevComponents.DotNetBar.eCornerType.Rounded;
-            this.groupPanel7.Style.TextAlignment = DevComponents.DotNetBar.eStyleTextAlignment.Center;
-            this.groupPanel7.Style.TextColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelText;
-            this.groupPanel7.Style.TextLineAlignment = DevComponents.DotNetBar.eStyleTextAlignment.Near;
-            // 
-            // 
-            // 
-            this.groupPanel7.StyleMouseDown.Class = "";
-            this.groupPanel7.StyleMouseDown.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            // 
-            // 
-            // 
-            this.groupPanel7.StyleMouseOver.Class = "";
-            this.groupPanel7.StyleMouseOver.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.groupPanel7.TabIndex = 173;
-            this.groupPanel7.Text = "Anti detection";
-            // 
-            // labelX12
-            // 
-            this.labelX12.BackColor = System.Drawing.Color.Transparent;
-            // 
-            // 
-            // 
-            this.labelX12.BackgroundStyle.Class = "";
-            this.labelX12.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX12.Location = new System.Drawing.Point(396, 25);
-            this.labelX12.Margin = new System.Windows.Forms.Padding(2);
-            this.labelX12.Name = "labelX12";
-            this.labelX12.Size = new System.Drawing.Size(86, 23);
-            this.labelX12.TabIndex = 172;
-            this.labelX12.Text = "minuttes";
-            // 
-            // SetupTBLogOutOnFollow
-            // 
-            // 
-            // 
-            // 
-            this.SetupTBLogOutOnFollow.BackgroundStyle.Class = "DateTimeInputBackground";
-            this.SetupTBLogOutOnFollow.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.SetupTBLogOutOnFollow.ButtonFreeText.Shortcut = DevComponents.DotNetBar.eShortcut.F2;
-            this.SetupTBLogOutOnFollow.Location = new System.Drawing.Point(299, 25);
-            this.SetupTBLogOutOnFollow.Margin = new System.Windows.Forms.Padding(2);
-            this.SetupTBLogOutOnFollow.Name = "SetupTBLogOutOnFollow";
-            this.SetupTBLogOutOnFollow.ShowUpDown = true;
-            this.SetupTBLogOutOnFollow.Size = new System.Drawing.Size(93, 23);
-            this.SetupTBLogOutOnFollow.TabIndex = 171;
-            // 
-            // SetupCBLogoutOnFollow
-            // 
-            this.SetupCBLogoutOnFollow.AutoSize = true;
-            this.SetupCBLogoutOnFollow.BackColor = System.Drawing.Color.Transparent;
-            // 
-            // 
-            // 
-            this.SetupCBLogoutOnFollow.BackgroundStyle.Class = "";
-            this.SetupCBLogoutOnFollow.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.SetupCBLogoutOnFollow.Location = new System.Drawing.Point(2, 26);
-            this.SetupCBLogoutOnFollow.Margin = new System.Windows.Forms.Padding(2);
-            this.SetupCBLogoutOnFollow.Name = "SetupCBLogoutOnFollow";
-            this.SetupCBLogoutOnFollow.Size = new System.Drawing.Size(143, 18);
-            this.SetupCBLogoutOnFollow.TabIndex = 170;
-            this.SetupCBLogoutOnFollow.Text = "Logout on follow";
-            // 
-            // groupPanel6
-            // 
-            this.groupPanel6.BackColor = System.Drawing.Color.Transparent;
-            this.groupPanel6.CanvasColor = System.Drawing.SystemColors.Control;
-            this.groupPanel6.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
-            this.groupPanel6.Controls.Add(this.CombatCBEat);
-            this.groupPanel6.Controls.Add(this.label12);
-            this.groupPanel6.Controls.Add(this.label11);
-            this.groupPanel6.Controls.Add(this.CombatTBDrinkAt);
-            this.groupPanel6.Controls.Add(this.CombatCBDrink);
-            this.groupPanel6.Controls.Add(this.CombatTBEatAt);
-            this.groupPanel6.Location = new System.Drawing.Point(5, 7);
-            this.groupPanel6.Margin = new System.Windows.Forms.Padding(2);
-            this.groupPanel6.Name = "groupPanel6";
-            this.groupPanel6.Size = new System.Drawing.Size(505, 124);
-            // 
-            // 
-            // 
-            this.groupPanel6.Style.BackColor2SchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground2;
-            this.groupPanel6.Style.BackColorGradientAngle = 90;
-            this.groupPanel6.Style.BackColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
-            this.groupPanel6.Style.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel6.Style.BorderBottomWidth = 1;
-            this.groupPanel6.Style.BorderColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
-            this.groupPanel6.Style.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel6.Style.BorderLeftWidth = 1;
-            this.groupPanel6.Style.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel6.Style.BorderRightWidth = 1;
-            this.groupPanel6.Style.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel6.Style.BorderTopWidth = 1;
-            this.groupPanel6.Style.Class = "";
-            this.groupPanel6.Style.CornerDiameter = 4;
-            this.groupPanel6.Style.CornerType = DevComponents.DotNetBar.eCornerType.Rounded;
-            this.groupPanel6.Style.TextAlignment = DevComponents.DotNetBar.eStyleTextAlignment.Center;
-            this.groupPanel6.Style.TextColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelText;
-            this.groupPanel6.Style.TextLineAlignment = DevComponents.DotNetBar.eStyleTextAlignment.Near;
-            // 
-            // 
-            // 
-            this.groupPanel6.StyleMouseDown.Class = "";
-            this.groupPanel6.StyleMouseDown.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            // 
-            // 
-            // 
-            this.groupPanel6.StyleMouseOver.Class = "";
-            this.groupPanel6.StyleMouseOver.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.groupPanel6.TabIndex = 172;
-            this.groupPanel6.Text = "Resting";
-            // 
-            // superTabItem7
-            // 
-            this.superTabItem7.AttachedControl = this.superTabControlPanel7;
-            this.superTabItem7.GlobalItem = false;
-            this.superTabItem7.Name = "superTabItem7";
-            this.superTabItem7.Text = "限值";
-            // 
             // superTabControlPanel4
             // 
             this.superTabControlPanel4.Controls.Add(this.labelX55);
@@ -2831,6 +2663,174 @@
             this.superTabItem4.GlobalItem = false;
             this.superTabItem4.Name = "superTabItem4";
             this.superTabItem4.Text = "通用";
+            // 
+            // superTabControlPanel7
+            // 
+            this.superTabControlPanel7.Controls.Add(this.groupPanel7);
+            this.superTabControlPanel7.Controls.Add(this.groupPanel6);
+            this.superTabControlPanel7.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.superTabControlPanel7.Location = new System.Drawing.Point(0, 0);
+            this.superTabControlPanel7.Margin = new System.Windows.Forms.Padding(2);
+            this.superTabControlPanel7.Name = "superTabControlPanel7";
+            this.superTabControlPanel7.Size = new System.Drawing.Size(618, 399);
+            this.superTabControlPanel7.TabIndex = 0;
+            this.superTabControlPanel7.TabItem = this.superTabItem7;
+            this.superTabControlPanel7.ThemeAware = true;
+            // 
+            // groupPanel7
+            // 
+            this.groupPanel7.BackColor = System.Drawing.Color.Transparent;
+            this.groupPanel7.CanvasColor = System.Drawing.SystemColors.Control;
+            this.groupPanel7.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
+            this.groupPanel7.Controls.Add(this.labelX12);
+            this.groupPanel7.Controls.Add(this.SetupTBLogOutOnFollow);
+            this.groupPanel7.Controls.Add(this.SetupCBLogoutOnFollow);
+            this.groupPanel7.Controls.Add(this.SetupCBSoundFollow);
+            this.groupPanel7.Controls.Add(this.labelX48);
+            this.groupPanel7.Controls.Add(this.SetupTBStopAfter);
+            this.groupPanel7.Controls.Add(this.SetupCBSoundWhisper);
+            this.groupPanel7.Controls.Add(this.SetupCBShutdown);
+            this.groupPanel7.Controls.Add(this.SetupCBSoundStop);
+            this.groupPanel7.Controls.Add(this.SetupCBStopAfter);
+            this.groupPanel7.Location = new System.Drawing.Point(6, 135);
+            this.groupPanel7.Margin = new System.Windows.Forms.Padding(2);
+            this.groupPanel7.Name = "groupPanel7";
+            this.groupPanel7.Size = new System.Drawing.Size(505, 182);
+            // 
+            // 
+            // 
+            this.groupPanel7.Style.BackColor2SchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground2;
+            this.groupPanel7.Style.BackColorGradientAngle = 90;
+            this.groupPanel7.Style.BackColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
+            this.groupPanel7.Style.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel7.Style.BorderBottomWidth = 1;
+            this.groupPanel7.Style.BorderColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
+            this.groupPanel7.Style.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel7.Style.BorderLeftWidth = 1;
+            this.groupPanel7.Style.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel7.Style.BorderRightWidth = 1;
+            this.groupPanel7.Style.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel7.Style.BorderTopWidth = 1;
+            this.groupPanel7.Style.Class = "";
+            this.groupPanel7.Style.CornerDiameter = 4;
+            this.groupPanel7.Style.CornerType = DevComponents.DotNetBar.eCornerType.Rounded;
+            this.groupPanel7.Style.TextAlignment = DevComponents.DotNetBar.eStyleTextAlignment.Center;
+            this.groupPanel7.Style.TextColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelText;
+            this.groupPanel7.Style.TextLineAlignment = DevComponents.DotNetBar.eStyleTextAlignment.Near;
+            // 
+            // 
+            // 
+            this.groupPanel7.StyleMouseDown.Class = "";
+            this.groupPanel7.StyleMouseDown.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            // 
+            // 
+            // 
+            this.groupPanel7.StyleMouseOver.Class = "";
+            this.groupPanel7.StyleMouseOver.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.groupPanel7.TabIndex = 173;
+            this.groupPanel7.Text = "Anti detection";
+            // 
+            // labelX12
+            // 
+            this.labelX12.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX12.BackgroundStyle.Class = "";
+            this.labelX12.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX12.Location = new System.Drawing.Point(396, 25);
+            this.labelX12.Margin = new System.Windows.Forms.Padding(2);
+            this.labelX12.Name = "labelX12";
+            this.labelX12.Size = new System.Drawing.Size(86, 23);
+            this.labelX12.TabIndex = 172;
+            this.labelX12.Text = "minuttes";
+            // 
+            // SetupTBLogOutOnFollow
+            // 
+            // 
+            // 
+            // 
+            this.SetupTBLogOutOnFollow.BackgroundStyle.Class = "DateTimeInputBackground";
+            this.SetupTBLogOutOnFollow.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.SetupTBLogOutOnFollow.ButtonFreeText.Shortcut = DevComponents.DotNetBar.eShortcut.F2;
+            this.SetupTBLogOutOnFollow.Location = new System.Drawing.Point(299, 25);
+            this.SetupTBLogOutOnFollow.Margin = new System.Windows.Forms.Padding(2);
+            this.SetupTBLogOutOnFollow.Name = "SetupTBLogOutOnFollow";
+            this.SetupTBLogOutOnFollow.ShowUpDown = true;
+            this.SetupTBLogOutOnFollow.Size = new System.Drawing.Size(93, 23);
+            this.SetupTBLogOutOnFollow.TabIndex = 171;
+            // 
+            // SetupCBLogoutOnFollow
+            // 
+            this.SetupCBLogoutOnFollow.AutoSize = true;
+            this.SetupCBLogoutOnFollow.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.SetupCBLogoutOnFollow.BackgroundStyle.Class = "";
+            this.SetupCBLogoutOnFollow.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.SetupCBLogoutOnFollow.Location = new System.Drawing.Point(2, 26);
+            this.SetupCBLogoutOnFollow.Margin = new System.Windows.Forms.Padding(2);
+            this.SetupCBLogoutOnFollow.Name = "SetupCBLogoutOnFollow";
+            this.SetupCBLogoutOnFollow.Size = new System.Drawing.Size(143, 18);
+            this.SetupCBLogoutOnFollow.TabIndex = 170;
+            this.SetupCBLogoutOnFollow.Text = "Logout on follow";
+            // 
+            // groupPanel6
+            // 
+            this.groupPanel6.BackColor = System.Drawing.Color.Transparent;
+            this.groupPanel6.CanvasColor = System.Drawing.SystemColors.Control;
+            this.groupPanel6.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
+            this.groupPanel6.Controls.Add(this.CombatCBEat);
+            this.groupPanel6.Controls.Add(this.label12);
+            this.groupPanel6.Controls.Add(this.label11);
+            this.groupPanel6.Controls.Add(this.CombatTBDrinkAt);
+            this.groupPanel6.Controls.Add(this.CombatCBDrink);
+            this.groupPanel6.Controls.Add(this.CombatTBEatAt);
+            this.groupPanel6.Location = new System.Drawing.Point(5, 7);
+            this.groupPanel6.Margin = new System.Windows.Forms.Padding(2);
+            this.groupPanel6.Name = "groupPanel6";
+            this.groupPanel6.Size = new System.Drawing.Size(505, 124);
+            // 
+            // 
+            // 
+            this.groupPanel6.Style.BackColor2SchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground2;
+            this.groupPanel6.Style.BackColorGradientAngle = 90;
+            this.groupPanel6.Style.BackColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
+            this.groupPanel6.Style.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel6.Style.BorderBottomWidth = 1;
+            this.groupPanel6.Style.BorderColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
+            this.groupPanel6.Style.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel6.Style.BorderLeftWidth = 1;
+            this.groupPanel6.Style.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel6.Style.BorderRightWidth = 1;
+            this.groupPanel6.Style.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel6.Style.BorderTopWidth = 1;
+            this.groupPanel6.Style.Class = "";
+            this.groupPanel6.Style.CornerDiameter = 4;
+            this.groupPanel6.Style.CornerType = DevComponents.DotNetBar.eCornerType.Rounded;
+            this.groupPanel6.Style.TextAlignment = DevComponents.DotNetBar.eStyleTextAlignment.Center;
+            this.groupPanel6.Style.TextColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelText;
+            this.groupPanel6.Style.TextLineAlignment = DevComponents.DotNetBar.eStyleTextAlignment.Near;
+            // 
+            // 
+            // 
+            this.groupPanel6.StyleMouseDown.Class = "";
+            this.groupPanel6.StyleMouseDown.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            // 
+            // 
+            // 
+            this.groupPanel6.StyleMouseOver.Class = "";
+            this.groupPanel6.StyleMouseOver.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.groupPanel6.TabIndex = 172;
+            this.groupPanel6.Text = "Resting";
+            // 
+            // superTabItem7
+            // 
+            this.superTabItem7.AttachedControl = this.superTabControlPanel7;
+            this.superTabItem7.GlobalItem = false;
+            this.superTabItem7.Name = "superTabItem7";
+            this.superTabItem7.Text = "限值";
             // 
             // superTabControlPanel10
             // 
@@ -4633,16 +4633,16 @@
             ((System.ComponentModel.ISupportInitialize)(this.superTabControl2)).EndInit();
             this.superTabControl2.ResumeLayout(false);
             this.superTabControl2.PerformLayout();
+            this.superTabControlPanel4.ResumeLayout(false);
+            this.superTabControlPanel4.PerformLayout();
+            this.groupPanel10.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.Latency)).EndInit();
             this.superTabControlPanel7.ResumeLayout(false);
             this.groupPanel7.ResumeLayout(false);
             this.groupPanel7.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SetupTBLogOutOnFollow)).EndInit();
             this.groupPanel6.ResumeLayout(false);
             this.groupPanel6.PerformLayout();
-            this.superTabControlPanel4.ResumeLayout(false);
-            this.superTabControlPanel4.PerformLayout();
-            this.groupPanel10.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.Latency)).EndInit();
             this.superTabControlPanel10.ResumeLayout(false);
             this.superTabControlPanel9.ResumeLayout(false);
             this.superTabControlPanel9.PerformLayout();
