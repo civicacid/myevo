@@ -43,6 +43,7 @@
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.button9 = new System.Windows.Forms.Button();
             this.button10 = new System.Windows.Forms.Button();
+            this.button11 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Step)).BeginInit();
             this.SuspendLayout();
@@ -52,18 +53,18 @@
             this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.AllowUserToDeleteRows = false;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(2, 59);
+            this.dataGridView1.Location = new System.Drawing.Point(2, 54);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowTemplate.Height = 23;
-            this.dataGridView1.Size = new System.Drawing.Size(242, 395);
+            this.dataGridView1.Size = new System.Drawing.Size(242, 365);
             this.dataGridView1.TabIndex = 0;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(37, 30);
+            this.button1.Location = new System.Drawing.Point(37, 28);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.Size = new System.Drawing.Size(75, 21);
             this.button1.TabIndex = 1;
             this.button1.Text = "扫描背包";
             this.button1.UseVisualStyleBackColor = true;
@@ -71,9 +72,9 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(305, 12);
+            this.button4.Location = new System.Drawing.Point(305, 11);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(120, 26);
+            this.button4.Size = new System.Drawing.Size(120, 24);
             this.button4.TabIndex = 4;
             this.button4.Text = "分矿测试";
             this.button4.UseVisualStyleBackColor = true;
@@ -81,9 +82,9 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(304, 60);
+            this.button2.Location = new System.Drawing.Point(304, 55);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(131, 38);
+            this.button2.Size = new System.Drawing.Size(131, 35);
             this.button2.TabIndex = 5;
             this.button2.Text = "AH测试";
             this.button2.UseVisualStyleBackColor = true;
@@ -91,9 +92,9 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(269, 166);
+            this.button3.Location = new System.Drawing.Point(269, 153);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(130, 25);
+            this.button3.Size = new System.Drawing.Size(130, 23);
             this.button3.TabIndex = 6;
             this.button3.Text = "记录大号坐标";
             this.button3.UseVisualStyleBackColor = true;
@@ -101,9 +102,9 @@
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(269, 199);
+            this.button5.Location = new System.Drawing.Point(269, 184);
             this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(129, 23);
+            this.button5.Size = new System.Drawing.Size(129, 21);
             this.button5.TabIndex = 7;
             this.button5.Text = "记录当前坐标";
             this.button5.UseVisualStyleBackColor = true;
@@ -111,31 +112,31 @@
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(405, 127);
+            this.textBox1.Location = new System.Drawing.Point(405, 117);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(359, 204);
+            this.textBox1.Size = new System.Drawing.Size(359, 189);
             this.textBox1.TabIndex = 8;
             // 
             // txtLeader
             // 
-            this.txtLeader.Location = new System.Drawing.Point(286, 137);
+            this.txtLeader.Location = new System.Drawing.Point(286, 126);
             this.txtLeader.Name = "txtLeader";
             this.txtLeader.Size = new System.Drawing.Size(103, 21);
             this.txtLeader.TabIndex = 9;
             // 
             // Step
             // 
-            this.Step.Location = new System.Drawing.Point(269, 232);
+            this.Step.Location = new System.Drawing.Point(269, 214);
             this.Step.Name = "Step";
             this.Step.Size = new System.Drawing.Size(120, 21);
             this.Step.TabIndex = 11;
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(514, 22);
+            this.button6.Location = new System.Drawing.Point(514, 20);
             this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(113, 37);
+            this.button6.Size = new System.Drawing.Size(113, 34);
             this.button6.TabIndex = 12;
             this.button6.Text = "珠宝加工测试";
             this.button6.UseVisualStyleBackColor = true;
@@ -143,9 +144,9 @@
             // 
             // button7
             // 
-            this.button7.Location = new System.Drawing.Point(506, 70);
+            this.button7.Location = new System.Drawing.Point(506, 65);
             this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(120, 26);
+            this.button7.Size = new System.Drawing.Size(120, 24);
             this.button7.TabIndex = 16;
             this.button7.Text = "研磨";
             this.button7.UseVisualStyleBackColor = true;
@@ -153,9 +154,9 @@
             // 
             // button8
             // 
-            this.button8.Location = new System.Drawing.Point(656, 46);
+            this.button8.Location = new System.Drawing.Point(656, 42);
             this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(86, 39);
+            this.button8.Size = new System.Drawing.Size(86, 36);
             this.button8.TabIndex = 17;
             this.button8.Text = "艾卓";
             this.button8.UseVisualStyleBackColor = true;
@@ -163,16 +164,16 @@
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(269, 261);
+            this.textBox2.Location = new System.Drawing.Point(269, 241);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(117, 21);
             this.textBox2.TabIndex = 19;
             // 
             // button9
             // 
-            this.button9.Location = new System.Drawing.Point(303, 371);
+            this.button9.Location = new System.Drawing.Point(303, 342);
             this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(96, 39);
+            this.button9.Size = new System.Drawing.Size(96, 36);
             this.button9.TabIndex = 17;
             this.button9.Text = "开始";
             this.button9.UseVisualStyleBackColor = true;
@@ -180,19 +181,30 @@
             // 
             // button10
             // 
-            this.button10.Location = new System.Drawing.Point(405, 371);
+            this.button10.Location = new System.Drawing.Point(405, 342);
             this.button10.Name = "button10";
-            this.button10.Size = new System.Drawing.Size(96, 39);
+            this.button10.Size = new System.Drawing.Size(96, 36);
             this.button10.TabIndex = 17;
             this.button10.Text = "结束";
             this.button10.UseVisualStyleBackColor = true;
             this.button10.Click += new System.EventHandler(this.button10_Click);
             // 
+            // button11
+            // 
+            this.button11.Location = new System.Drawing.Point(561, 342);
+            this.button11.Name = "button11";
+            this.button11.Size = new System.Drawing.Size(95, 35);
+            this.button11.TabIndex = 20;
+            this.button11.Text = "button11";
+            this.button11.UseVisualStyleBackColor = true;
+            this.button11.Click += new System.EventHandler(this.button11_Click);
+            // 
             // testForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(776, 456);
+            this.ClientSize = new System.Drawing.Size(776, 421);
+            this.Controls.Add(this.button11);
             this.Controls.Add(this.textBox2);
             this.Controls.Add(this.button10);
             this.Controls.Add(this.button9);
@@ -234,5 +246,6 @@
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Button button9;
         private System.Windows.Forms.Button button10;
+        private System.Windows.Forms.Button button11;
     }
 }

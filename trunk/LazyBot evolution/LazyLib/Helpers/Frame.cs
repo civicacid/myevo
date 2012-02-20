@@ -93,7 +93,10 @@ namespace LazyLib.Helpers
 
         public string GetName
         {
-            get { return Memory.ReadUtf8(Memory.Read<uint>(BaseAddress + (uint)Pointers.UiFrame.Name), 132); }
+            get
+            {
+                return Memory.ReadUtf8(Memory.Read<uint>(BaseAddress + (uint)Pointers.UiFrame.Name), 132);
+            }
         }
 
         public string GetText

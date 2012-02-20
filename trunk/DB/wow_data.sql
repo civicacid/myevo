@@ -18,10 +18,10 @@ insert into wowaccount(acc_id,acc_name,acc_pass,status) values(seq_all.nextval,'
 insert into wowaccount(acc_id,acc_name,acc_pass,status) values(seq_all.nextval,'bbiiyourbag@163.com','jj33kk**ll111',1);
 
 insert into wowchar(acc_id,char_id,char_name,server,acc_list,char_idx) values ((select acc_id from wowaccount where acc_name = 'ctais2k@sina.cn'),seq_all.nextval,'亣眔龘','爱斯特纳','WoW1|!WoW2|',0);
-insert into wowchar(acc_id,char_id,char_name,server,acc_list,char_idx) values ((select acc_id from wowaccount where acc_name = 'spyman1802@hotmail.com'),seq_all.nextval,'鹤鹤六号','爱斯特纳','',0);
+insert into wowchar(acc_id,char_id,char_name,server,acc_list,char_idx) values ((select acc_id from wowaccount where acc_name = 'spyman1802@hotmail.com'),seq_all.nextval,'蓝装售卖','爱斯特纳','',0);
 insert into wowchar(acc_id,char_id,char_name,server,acc_list,char_idx) values ((select acc_id from wowaccount where acc_name = 'rubyfly9@gmail.com'),seq_all.nextval,'卖东西的公主','爱斯特纳','!WoW1|WoW2|',0);
 insert into wowchar(acc_id,char_id,char_name,server,acc_list,char_idx) values ((select acc_id from wowaccount where acc_name = 'rubyfly9@gmail.com'),seq_all.nextval,'HUHUHU','爱斯特纳','WoW1|!WoW2|',0);
-insert into wowchar(acc_id,char_id,char_name,server,acc_list,char_idx) values ((select acc_id from wowaccount where acc_name = 'nnoky123@gmail.com'),seq_all.nextval,'鹤鹤四号','爱斯特纳','',0);
+insert into wowchar(acc_id,char_id,char_name,server,acc_list,char_idx) values ((select acc_id from wowaccount where acc_name = 'nnoky123@gmail.com'),seq_all.nextval,'铭文学专家一','爱斯特纳','',0);
 insert into wowchar(acc_id,char_id,char_name,server,acc_list,char_idx) values ((select acc_id from wowaccount where acc_name = 'h3ufobio@163.com'),seq_all.nextval,'奡寗燊','爱斯特纳','',0);
 insert into wowchar(acc_id,char_id,char_name,server,acc_list,char_idx) values ((select acc_id from wowaccount where acc_name = 'gguioption@163.com'),seq_all.nextval,'甯寗翯','爱斯特纳','',0);
 insert into wowchar(acc_id,char_id,char_name,server,acc_list,char_idx) values ((select acc_id from wowaccount where acc_name = 'uiopiokio@163.com'),seq_all.nextval,'掱淼麤','爱斯特纳','',0);
@@ -48,22 +48,76 @@ insert into maillist (server,sender_char_name,item_name,receiver_char_name) valu
 insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','燃铁矿石','Welcomex');
 insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','黑曜石矿','Welcomex');
 insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','鞭尾草','爱贝贝熊');
+--update maillist set receiver_char_name='杀贝贝熊' where server='爱斯特纳' and sender_char_name= 'ALL' and item_name='鞭尾草'  and receiver_char_name='爱贝贝熊';
 insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','暮光茉莉','爱贝贝熊');
 insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','心灵之花','爱贝贝熊');
 insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','燃烬草','爱贝贝熊');
+--update maillist set receiver_char_name='杀贝贝熊' where server='爱斯特纳' and sender_char_name= 'ALL' and item_name='燃烬草'  and receiver_char_name='爱贝贝熊';
 
 insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','铜矿','tyutone');
 insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','锡矿','tyutone');
 insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','银矿','tyutone');
 insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','铁矿石','tyutone');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','锡矿石','tyutone');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','坚固的石头','tyutone');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','劣质的石头','tyutone');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','粗糙的石头','tyutone');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','秘银矿石','tyutone');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','瑟银矿石','tyutone');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','金矿石','tyutone');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','真银矿石','tyutone');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','瑟银矿石','tyutone');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','萨隆邪铁矿石','tyutone');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','魔铁矿石','tyutone');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','钴矿石','tyutone');
+
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','宁神花','spyman');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','银叶草','spyman');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','墓地苔','spyman');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','野钢花','spyman');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','荆棘藻','spyman');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','跌打草','spyman');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','雨燕草','spyman');
 insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','石南草','spyman');
 insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','魔皇草','spyman');
-insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','跌打草','spyman');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','雪莲花','spyman');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','巫妖花','spyman');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','冰棘草','spyman');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','蛇信草','spyman');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','卷丹','spyman');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','塔兰德拉的玫瑰','spyman');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','金苜蓿','spyman');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','魔莲花','spyman');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','虚空花','spyman');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','噩梦藤','spyman');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','法力蓟','spyman');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','梦魇草','spyman');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','远古苔','spyman');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','烈焰菇','spyman');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','邪雾草','spyman');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','血藤','spyman');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','黑莲花','spyman');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','泰罗果','spyman');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','魔草','spyman');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','梦露花','spyman');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','冰盖草','spyman');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','哀伤苔','spyman');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','山鼠草','spyman');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','梦叶草','spyman');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','黄金参','spyman');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','格罗姆之血','spyman');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','幽灵菇','spyman');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','盲目草','spyman');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','太阳草','spyman');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','阿尔萨斯之泪','spyman');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','紫莲花','spyman');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','火焰花','spyman');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','野葡萄藤','spyman');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','龙齿草','spyman');
+insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','卡德加的胡须','spyman');
 insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','金棘草','spyman');
 insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','枯叶草','spyman');
 insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','活根草','spyman');
-insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','魔皇草','spyman');
-insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','野钢花','spyman');
                                                        
 insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','地狱炎石','最初的联盟');
 insert into maillist (server,sender_char_name,item_name,receiver_char_name) values ('爱斯特纳','ALL','琥珀晶石','最初的联盟');
@@ -159,6 +213,9 @@ insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_
 insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','收矿啊','火花海洋青玉'  ,50000,1000000,8,1,20);
 insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','收矿啊','致密海洋青玉'  ,50000,1000000,8,1,20);
 
+insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','碰友','催眠之尘'  ,10000,100000,8,20,0);
+insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','碰友','强效天界精华'  ,400000,1000000,10,1,0);
+
 -----------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -178,6 +235,8 @@ insert into map_file (map_name,file_name,mine_list,herb_list) values ('嚎风峡湾'
 insert into map_file (map_name,file_name,mine_list,herb_list) values ('索拉查盆地','索拉查盆地.xml','萨隆邪铁矿脉$富萨隆邪铁矿脉','蛇信草$虎百合$卷丹');
 insert into map_file (map_name,file_name,mine_list,herb_list) values ('西部荒野','西部荒野.xml','铜矿$锡矿$银矿','宁神花$银叶草$地根草$石南草$跌打草');
 insert into map_file (map_name,file_name,mine_list,herb_list) values ('北荆棘谷','北荆棘谷.xml','锡矿$银矿$铁矿石','石南草$跌打草$魔皇草$金棘草$枯叶草$活根草$魔皇草$野钢花');
+insert into map_file (map_name,file_name,mine_list,herb_list) values ('荒芜之地','荒芜之地.xml','金矿石$秘银矿脉$真银矿脉','火焰花$龙齿草$太阳草$梦叶草$黄金参$盲目草');
+insert into map_file (map_name,file_name,mine_list,herb_list) values ('悲伤沼泽','悲伤沼泽.xml','瑟银矿脉$富瑟银矿$真银矿脉','梦露花$哀伤苔$山鼠草$梦叶草$黄金参$盲目草$紫莲花');
 
 -----------------------------------------------------------------------------------------------------------------------------------
 
@@ -460,4 +519,5 @@ insert into WOWZONE (Z_ID, Z_NAME) values ('1657', '达纳苏斯');
 insert into WOWZONE (Z_ID, Z_NAME) values ('3524', '秘蓝岛');
 insert into WOWZONE (Z_ID, Z_NAME) values ('3557', '埃索达');
 insert into WOWZONE (Z_ID, Z_NAME) values ('5695', '安其拉：堕落王国');
+
 

@@ -1222,9 +1222,9 @@ namespace LazyEvo.Forms
 
             SpyLogin.initme(result["AccountName"], result["AccountPass"], result["RealmName"], result["CharIdx"], result["AccountList"]);
             SpyLogin.start();
-            while (!SpyLogin.IsOK) { Thread.Sleep(100); };
+            //while (!SpyLogin.IsOK) { Thread.Sleep(100); };
             //MessageBox.Show("OKOK_____AUTO Login");
-            ObjectManager.Initialize(SpyLogin.WOW_P.Id);
+            //ObjectManager.Initialize(SpyLogin.WOW_P.Id);
         }
 
         private void buttonItem4_Click(object sender, EventArgs e)

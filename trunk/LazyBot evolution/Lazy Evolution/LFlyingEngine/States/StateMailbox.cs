@@ -93,8 +93,11 @@ namespace LazyEvo.LFlyingEngine.States
                 // 改成使用插件邮寄
                 if (MailManager.TargetMailBox())
                 {
-                    DBLogger logger = new DBLogger("挖矿时的邮寄");
-                    SpyTradeSkill.SendMain(logger, true);
+                    if (SpyFrame.initme())
+                    {
+                        DBLogger logger = new DBLogger("挖矿时的邮寄");
+                        SpyTradeSkill.SendMain(logger, true);
+                    }
                 }
 
             }
