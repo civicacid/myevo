@@ -93,15 +93,12 @@ namespace LazyEvo.Plugins
 
         private void button7_Click(object sender, EventArgs e)
         {
-            //SpyDB.SaveInfo_Bag(SpyFrame.lua_GetBagInfo());
-            Logging.Write("asdasd");
-            string ff = "";
             while (true)
             {
-                Thread.Sleep(500);
-                if (!ff.Equals(ObjectManager.MyPlayer.RedMessage))
-                    SpyDB.WriteLazyLog(ObjectManager.MyPlayer.RedMessage);
-                ff = ObjectManager.MyPlayer.RedMessage;
+                Thread.Sleep(100);
+                KeyLowHelper.PressKey(MicrosoftVirtualKeys.key4);
+                Thread.Sleep(12);
+                KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.key4);
             }
         }
 
@@ -445,6 +442,21 @@ namespace LazyEvo.Plugins
         private void button10_Click(object sender, EventArgs e)
         {
             SpySchdule.stopScanDB();
+        }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+            BarMapper.MapBars();
+            KeyHelper.LoadKeys();
+            if (MailManager.TargetMailBox())
+            {
+                DBLogger logger = new DBLogger("挖矿时的邮寄");
+                if (!SpyFrame.initme())
+                {
+                    logger.Add("初始化矿体失败");
+                }
+                SpyTradeSkill.SendMain(logger, true);
+            }
         }
 
     }

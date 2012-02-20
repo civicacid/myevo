@@ -130,18 +130,20 @@ namespace LazyLib.Helpers
                 var allFrames = new Dictionary<String, Frame>();
                 var @base = Memory.ReadRelative<uint>((uint)Pointers.UiFrame.FrameBase);
                 var currentFrame = Memory.Read<uint>(@base + (uint)Pointers.UiFrame.FirstFrame);
+                //Logging.Write("OKOKOK");
                 while (currentFrame != 0)
                 {
                     var f = new Frame(currentFrame);
                     if (!allFrames.ContainsKey(f.GetName))
                         allFrames.Add(f.GetName, f);
+
                     currentFrame = Memory.Read<uint>(currentFrame + Memory.Read<uint>(@base + (uint)Pointers.UiFrame.NextFrame) + 4);
                     //Thread.Sleep(1);
                 }
-                lock (Locker)
-                {
+                //lock (Locker)
+                //{
                     _allFrames = allFrames;
-                }
+                //}
             }
             catch (Exception e)
             {

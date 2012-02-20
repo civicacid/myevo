@@ -1164,9 +1164,10 @@ namespace LazyEvo.Plugins
             logger.Add("开始发送邮件");
             foreach (KeyValuePair<string, string> mail in _mail)
             {
-                logger.Add(string.Format("开始发送{0}到{1}", mail.Key, mail.Value));
+                //logger.Add(string.Format("开始发送{0}到{1}", mail.Key, mail.Value));
                 if (bag.ContainsKey(mail.Key))
                 {
+                    logger.Add(string.Format("开始发送{0}到{1}", mail.Key, mail.Value));
                     if (!SpyFrame.lua_SendItemByName(mail.Value, mail.Key, FullStack))
                     {
                         logger.Add(string.Format("发{0}给{1}，失败了", mail.Value, mail.Key));
