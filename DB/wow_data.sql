@@ -297,7 +297,7 @@ delete autologin where runtime=120 and char_id=54
 
 /**********************************/
 /***********    炼金制作清单     *************/
-insert into lianjin (itemname,needitem,havecd) values ('','',1)
+insert into lianjin (itemname,needitem,havecd) values ('琥珀晶石','',1)
 insert into lianjin (itemname,needitem,havecd) values ('','',0)
 -----------------------------------------------------------------------------------------------------------------------------------
 
