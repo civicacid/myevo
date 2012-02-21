@@ -589,6 +589,9 @@ function GetMAILAsItem(astrItemName, aiCount)
                 end
             end
         end
+        if liItemStackCount == aiCount then
+            break
+        end
     end
 
     -- 确定是否有符合条件的物品

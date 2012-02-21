@@ -977,7 +977,7 @@ namespace LazyEvo.Plugins
                             SkillName = "附魔";
                             break;
                         case TradeSkills.LianJin:
-                            SkillName = "炼金";
+                            SkillName = "炼金术";
                             break;
                         case TradeSkills.RongLian:
                             SkillName = "";
@@ -990,7 +990,7 @@ namespace LazyEvo.Plugins
                     gg.CastSpell();
                 }
                 RetryCount++;
-                Thread.Sleep(500);
+                Thread.Sleep(1000);
             }
             // 判断技能窗口有没有开，没开就开开
             return IsOpenSkillFrame;
@@ -1216,7 +1216,7 @@ namespace LazyEvo.Plugins
                             }
                             HasDone += 1;
                             CountJump++;
-                            if (CountJump == 10)
+                            if (CountJump == 20)
                             {
                                 // jump一下，防止AFK
                                 CountJump = 0;
@@ -1351,7 +1351,7 @@ namespace LazyEvo.Plugins
 
                             HasDone++;
                             CountJump++;
-                            if (CountJump == 10)
+                            if (CountJump == 20)
                             {
                                 // jump一下，防止AFK
                                 CountJump = 0;
@@ -1611,24 +1611,6 @@ namespace LazyEvo.Plugins
                             }
                         }
 
-                        // 做东西
-                        if (!SpyTradeSkill.DoItems(ToDoItem))
-                        {
-                            logger.Add("做物品失败");
-                            return;
-                        }
-
-                        CountJump++;
-                        if (CountJump == 10)
-                        {
-                            // jump一下，防止AFK
-                            CountJump = 0;
-                            logger.Add("jump一下，防止AFK");
-                            KeyLowHelper.PressKey(MicrosoftVirtualKeys.Space);
-                            KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.Space);
-                            Thread.Sleep(5000);
-                        }
-
                         // 针对原料的处理。修改库存原料表，根据库存情况从邮箱获取物品
                         foreach (KeyValuePair<string, int> Item in NeedItem)
                         {
@@ -1652,11 +1634,29 @@ namespace LazyEvo.Plugins
                             }
                         }
 
+                        // 做东西
+                        if (!SpyTradeSkill.DoItems(ToDoItem))
+                        {
+                            logger.Add("做物品失败");
+                            return;
+                        }
+
+                        CountJump++;
+                        if (CountJump == 20)
+                        {
+                            // jump一下，防止AFK
+                            CountJump = 0;
+                            logger.Add("jump一下，防止AFK");
+                            KeyLowHelper.PressKey(MicrosoftVirtualKeys.Space);
+                            KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.Space);
+                            Thread.Sleep(5000);
+                        }
+
                         HasDone++;
                         if (HasDone == ToDoCount) break;
                     }
+                    SpyTradeSkill.SendMain(logger, false);
                 }
-                SpyTradeSkill.SendMain(logger, false);
             }
             return;
         }
@@ -1801,7 +1801,7 @@ namespace LazyEvo.Plugins
                     while (MineCount["BAG"] > 0 && Inventory.FreeBagSlots > 1)
                     {
                         CountJump++;
-                        if (CountJump == 10)
+                        if (CountJump == 20)
                         {
                             // jump一下，防止AFK
                             CountJump = 0;
@@ -3120,7 +3120,7 @@ namespace LazyEvo.Plugins
                 case EnumJobStatus.Working:
                     switch (DoWhat)
                     {
-                        case "ZBJG":
+                        case "ZBJG":        //珠宝加工
                             if (string.Format("{0:yyyy-MM-dd HH:mm}", StatusStartTime.AddMinutes(RUN_OUT_MIN_WORK)).Equals(string.Format("{0:yyyy-MM-dd HH:mm}", DateTime.Now)))
                             {
                                 SpyDB.WriteLog("计划任务", string.Format("任务工作超时，角色ID：{0}，任务描述：{1}，持续时间：{2}", char_id, DoWhat, RunMiniute.ToString()));
@@ -3129,7 +3129,7 @@ namespace LazyEvo.Plugins
                             }
                             if (SpyZBJG.RUNNING) return;
                             break;
-                        case "AH":
+                        case "AH":          //AH拍卖
                             if (string.Format("{0:yyyy-MM-dd HH:mm}", StatusStartTime.AddMinutes(RUN_OUT_MIN_WORK)).Equals(string.Format("{0:yyyy-MM-dd HH:mm}", DateTime.Now)))
                             {
                                 SpyDB.WriteLog("计划任务", string.Format("任务工作超时，角色ID：{0}，任务描述：{1}，持续时间：{2}", char_id, DoWhat, RunMiniute.ToString()));
@@ -3138,7 +3138,7 @@ namespace LazyEvo.Plugins
                             }
                             if (SpyAH.RUNNING) return;
                             break;
-                        case "FJKS":
+                        case "FJKS":        //分解矿石
                             if (string.Format("{0:yyyy-MM-dd HH:mm}", StatusStartTime.AddMinutes(RUN_OUT_MIN_WORK)).Equals(string.Format("{0:yyyy-MM-dd HH:mm}", DateTime.Now)))
                             {
                                 SpyDB.WriteLog("计划任务", string.Format("任务工作超时，角色ID：{0}，任务描述：{1}，持续时间：{2}", char_id, DoWhat, RunMiniute.ToString()));
@@ -3147,7 +3147,7 @@ namespace LazyEvo.Plugins
                             }
                             if (SpyMineAndMail.RUNNING) return;
                             break;
-                        case "CJ":
+                        case "CJ":          //采集
                             if (!LazyLib.FSM.Engine.Running)
                             {
                                 SpyDB.WriteLog("计划任务", string.Format("出现状况，自动关闭外挂。角色ID：{0}，任务描述：{1}，持续时间：{2}", char_id, DoWhat, RunMiniute.ToString()));
@@ -3156,7 +3156,7 @@ namespace LazyEvo.Plugins
                             }
                             if (SpyCJ.RUNNING) return;
                             break;
-                        case "LJ":
+                        case "LJ":          //炼金
                             if (string.Format("{0:yyyy-MM-dd HH:mm}", StatusStartTime.AddMinutes(RUN_OUT_MIN_WORK)).Equals(string.Format("{0:yyyy-MM-dd HH:mm}", DateTime.Now)))
                             {
                                 SpyDB.WriteLog("计划任务", string.Format("任务工作超时，角色ID：{0}，任务描述：{1}，持续时间：{2}", char_id, DoWhat, RunMiniute.ToString()));
@@ -3173,6 +3173,9 @@ namespace LazyEvo.Plugins
 
                 case EnumJobStatus.Work_OK:
                     SpyDB.WriteLog("计划任务", string.Format("任务完结，角色ID：{0}，任务描述：{1}，持续时间：{2}", char_id, DoWhat, RunMiniute.ToString()));
+                    Thread.Sleep(5000);
+                    ObjectManager.Close();
+                    Thread.Sleep(5000);
                     SpyLogin.WOW_P.Kill();
                     JobRunning = false;
                     JobStatus = EnumJobStatus.Nothing;
