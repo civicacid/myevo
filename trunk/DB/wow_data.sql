@@ -1,5 +1,5 @@
 insert into LazyParameters (bh,nr,ms) values ('1','Y','是否将lazy的日志写入数据库(Y/N)');
-insert into LazyParameters (bh,nr,ms) values ('2','碰友','珠宝加工制作的蓝色物品邮寄对象');
+insert into LazyParameters (bh,nr,ms) values ('2','蓝装售卖','珠宝加工制作的蓝色物品邮寄对象');
 insert into LazyParameters (bh,nr,ms) values ('3','20','自动工作超时时间（分钟）');
 insert into LazyParameters (bh,nr,ms) values ('4','5','自动登录超时时间（分钟）');
 
@@ -297,13 +297,20 @@ delete autologin where runtime=120 and char_id=54
 
 /**********************************/
 /***********    炼金制作清单     *************/
-insert into lianjin (itemname,needitem,havecd) values ('琥珀晶石','',1)
-insert into lianjin (itemname,needitem,havecd) values ('','',0)
+insert into lianjin (itemname,needitem,havecd) values ('转化：琥珀晶石','阿里锡黄晶$3#鞭尾草$3',0);
+insert into lianjin (itemname,needitem,havecd) values ('转化：恶魔之眼','夜之石$3#暮光茉莉$3',0);
+insert into lianjin (itemname,needitem,havecd) values ('转化：地狱炎石','红玉髓$3#心灵之花$3',0);
+insert into lianjin (itemname,needitem,havecd) values ('转化：暗烬黄玉','桂榴石$3#燃烬草$3',0);
+insert into lianjin (itemname,needitem,havecd) values ('转化：海洋青玉','泽菲蓝晶石$3#艾萨拉雾菇$3',0);
+
 -----------------------------------------------------------------------------------------------------------------------------------
 
 /**********************************/
 /***********    炼金制作清单     *************/
-insert into char_lianjin (server,char_name,lianjin_itemname) values ('爱斯特纳','爱贝贝熊','')
+insert into char_lianjin (server,char_name,lianjin_itemname) values ('爱斯特纳','爱贝贝熊','转化：地狱炎石');
+insert into char_lianjin (server,char_name,lianjin_itemname) values ('爱斯特纳','爱贝贝熊','转化：暗烬黄玉');
+insert into char_lianjin (server,char_name,lianjin_itemname) values ('爱斯特纳','爱贝贝熊','转化：恶魔之眼');
+insert into char_lianjin (server,char_name,lianjin_itemname) values ('爱斯特纳','爱贝贝熊','转化：海洋青玉');
 -----------------------------------------------------------------------------------------------------------------------------------
 
 

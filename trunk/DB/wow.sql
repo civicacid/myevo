@@ -146,6 +146,7 @@ comment on table ahitem is '挂货';
 -- table wowlog 日志
 -- -----------------------------------------------------
 create table wowlog (
+   char_name                     varchar(100)                        not null,
    logtype                       varchar(100)                        not null,
    logtext                       varchar(1000)                       not null,
    logtime                       date              default sysdate   not null
@@ -222,7 +223,7 @@ create table char_lianjin (
    char_name         varchar(100)                        not null,
    lianjin_itemname  varchar(100)                        not null,
    constraint pk_char_lj primary key (char_name,lianjin_itemname)
-)
+);
 comment on table char_lianjin is '炼金制作清单';
 comment on column char_lianjin.server            is '服务器';
 comment on column char_lianjin.char_name         is '角色';

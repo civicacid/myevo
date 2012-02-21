@@ -218,7 +218,7 @@ namespace LazyLib.SPY
         {
             if (string.IsNullOrWhiteSpace(LogType)) return;
             if (string.IsNullOrWhiteSpace(LogText)) return;
-            OraData.execSQLCmd(string.Format("insert into wowlog (logtype,logtext) values ('{0}','{1}')", LogType.Replace("'", "''"), LogText.Replace("'", "''")));
+            OraData.execSQLCmd(string.Format("insert into wowlog (logtype,logtext,char_name) values ('{0}','{1}','{2}')", LogType.Replace("'", "''"), LogText.Replace("'", "''"),ObjectManager.MyPlayer.Name));
         }
 
         /// <summary>
@@ -347,7 +347,7 @@ namespace LazyLib.SPY
         public static DataTable GetLianJin()
         {
             DataTable dt;
-            string sql = string.Format("select itemname,needitem,havecd from lianjin where itemname in (select itemname from char_lianjin where char_name = '{0}') order by havecd desc", ObjectManager.MyPlayer.Name);
+            string sql = string.Format("select itemname,needitem,havecd from lianjin where itemname in (select lianjin_itemname from char_lianjin where char_name = '{0}') order by havecd desc", ObjectManager.MyPlayer.Name);
             try
             {
                 dt = OraData.execSQL(sql);
