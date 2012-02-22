@@ -2,6 +2,7 @@ insert into LazyParameters (bh,nr,ms) values ('1','Y','ÊÇ·ñ½«lazyµÄÈÕÖ¾Ğ´ÈëÊı¾İ¿
 insert into LazyParameters (bh,nr,ms) values ('2','À¶×°ÊÛÂô','Öé±¦¼Ó¹¤ÖÆ×÷µÄÀ¶É«ÎïÆ·ÓÊ¼Ä¶ÔÏó');
 insert into LazyParameters (bh,nr,ms) values ('3','20','×Ô¶¯¹¤×÷³¬Ê±Ê±¼ä£¨·ÖÖÓ£©');
 insert into LazyParameters (bh,nr,ms) values ('4','5','×Ô¶¯µÇÂ¼³¬Ê±Ê±¼ä£¨·ÖÖÓ£©');
+insert into LazyParameters (bh,nr,ms) values ('5','4','·ÀÖ¹ÔİÀë£¬¶à³¤Ê±¼äÌøÒ»´Î£¨·ÖÖÓ£©');
 
 /**********************************/
 /***********    ½ÇÉ«ĞÅÏ¢     *************/
@@ -297,21 +298,25 @@ delete autologin where runtime=120 and char_id=54
 
 /**********************************/
 /***********    Á¶½ğÖÆ×÷Çåµ¥     *************/
-insert into lianjin (itemname,needitem,havecd) values ('×ª»¯£ºçúçê¾§Ê¯','°¢ÀïÎı»Æ¾§$3#±ŞÎ²²İ$3',0);
-insert into lianjin (itemname,needitem,havecd) values ('×ª»¯£º¶ñÄ§Ö®ÑÛ','Ò¹Ö®Ê¯$3#Äº¹âÜÔÀò$3',0);
-insert into lianjin (itemname,needitem,havecd) values ('×ª»¯£ºµØÓüÑ×Ê¯','ºìÓñËè$3#ĞÄÁéÖ®»¨$3',0);
-insert into lianjin (itemname,needitem,havecd) values ('×ª»¯£º°µ½ı»ÆÓñ','¹ğÁñÊ¯$3#È¼½ı²İ$3',0);
-insert into lianjin (itemname,needitem,havecd) values ('×ª»¯£ºº£ÑóÇàÓñ','Ôó·ÆÀ¶¾§Ê¯$3#°¬ÈøÀ­Îí¹½$3',0);
+insert into lianjin (skill,itemname,needitem,havecd) values ('LJ','×ª»¯£ºçúçê¾§Ê¯','°¢ÀïÎı»Æ¾§$3#±ŞÎ²²İ$3',0);
+insert into lianjin (skill,itemname,needitem,havecd) values ('LJ','×ª»¯£º¶ñÄ§Ö®ÑÛ','Ò¹Ö®Ê¯$3#Äº¹âÜÔÀò$3',0);
+insert into lianjin (skill,itemname,needitem,havecd) values ('LJ','×ª»¯£ºµØÓüÑ×Ê¯','ºìÓñËè$3#ĞÄÁéÖ®»¨$3',0);
+insert into lianjin (skill,itemname,needitem,havecd) values ('LJ','×ª»¯£º°µ½ı»ÆÓñ','¹ğÁñÊ¯$3#È¼½ı²İ$3',0);
+insert into lianjin (skill,itemname,needitem,havecd) values ('LJ','×ª»¯£ºº£ÑóÇàÓñ','Ôó·ÆÀ¶¾§Ê¯$3#°¬ÈøÀ­Îí¹½$3',0);
+insert into lianjin (skill,itemname,needitem,havecd) values ('LJ','×ª»¯£ºÕæ½ğ','È¼¸Ö¶§$3#¶¯È¼»ğÑæ$10#¶¯È¼Ö®Ë®$10#¶¯È¼¿ÕÆø$10',1);
+insert into lianjin (skill,itemname,needitem,havecd) values ('LJ','×ª»¯£ºÉúÃüÔªËØ','¶¯È¼ÉúÃü$10',1);
 
 -----------------------------------------------------------------------------------------------------------------------------------
 
 /**********************************/
 /***********    Á¶½ğÖÆ×÷Çåµ¥     *************/
-insert into char_lianjin (server,char_name,lianjin_itemname) values ('°®Ë¹ÌØÄÉ','°®±´±´ĞÜ','×ª»¯£ºµØÓüÑ×Ê¯');
-insert into char_lianjin (server,char_name,lianjin_itemname) values ('°®Ë¹ÌØÄÉ','°®±´±´ĞÜ','×ª»¯£º°µ½ı»ÆÓñ');
-insert into char_lianjin (server,char_name,lianjin_itemname) values ('°®Ë¹ÌØÄÉ','°®±´±´ĞÜ','×ª»¯£º¶ñÄ§Ö®ÑÛ');
-insert into char_lianjin (server,char_name,lianjin_itemname) values ('°®Ë¹ÌØÄÉ','°®±´±´ĞÜ','×ª»¯£ºº£ÑóÇàÓñ');
+insert into char_lianjin (server,char_name,skill,lianjin_itemname,do_order,dischant,mail) values ('°®Ë¹ÌØÄÉ','°®±´±´ĞÜ','LJ','×ª»¯£ºµØÓüÑ×Ê¯',1,0,1);
+insert into char_lianjin (server,char_name,skill,lianjin_itemname,do_order,dischant,mail) values ('°®Ë¹ÌØÄÉ','°®±´±´ĞÜ','LJ','×ª»¯£º°µ½ı»ÆÓñ',2,0,1);
+insert into char_lianjin (server,char_name,skill,lianjin_itemname,do_order,dischant,mail) values ('°®Ë¹ÌØÄÉ','°®±´±´ĞÜ','LJ','×ª»¯£º¶ñÄ§Ö®ÑÛ',3,0,1);
+insert into char_lianjin (server,char_name,skill,lianjin_itemname,do_order,dischant,mail) values ('°®Ë¹ÌØÄÉ','°®±´±´ĞÜ','LJ','×ª»¯£ºº£ÑóÇàÓñ',4,0,1);
 -----------------------------------------------------------------------------------------------------------------------------------
+
+ [ÃúÎÄ: Ğ¡ĞÍµñÎÄÑĞ¾¿]
 
 
 -----------------------------------------------------------------------------------------------------------------------------------

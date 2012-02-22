@@ -431,7 +431,7 @@ namespace LazyEvo.Plugins
 
         private void button12_Click(object sender, EventArgs e)
         {
-            if (SpyLJZH.initme())
+            if (SpyLJZH.initme("LJ"))
                 SpyLJZH.start();
         }
 
