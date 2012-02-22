@@ -1142,20 +1142,15 @@ namespace LazyEvo.Plugins
             }
 
             // 打开界面
-            bool ZB_frame;
-            try
-            {
-                ZB_frame = InterfaceHelper.GetFrameByName("TradeSkillFrame").IsVisible;
-            }
-            catch
-            {
-                ZB_frame = false;
-            }
-
-            if (!ZB_frame)
+            if (SpyTradeSkill.OpenTradeSkillWindow(SpyTradeSkill.TradeSkills.ZhuBao))
             {
                 BarSpell gg = BarMapper.GetSpellByName("珠宝加工");
                 gg.CastSpell();
+            }
+            else
+            {
+                logger.Add("没有打开技能窗口，失败啊。。。");
+                return;
             }
 
             int CountJump = 0;
@@ -1167,7 +1162,7 @@ namespace LazyEvo.Plugins
                 Dictionary<string, int> PJItemCount = new Dictionary<string, int>();
                 int HasDone = 0;
 
-                if (ToDoCount > 0)
+                if (ToDoCount > 0)                  // 切石头
                 {
                     // 获得背包和邮箱中原石的数量
                     if (!SpyFrame.lua_SetDispCountItemName(CreationMap[ToDoWhat]))
@@ -1183,20 +1178,21 @@ namespace LazyEvo.Plugins
                         continue;
                     }
 
-                    if (Inventory.FreeBagSlots <= 4)
-                    {
-                        logger.Add(string.Format("背包里面至少应该有4格空余，否则无法进行"));
-                        return;
-                    }
-
                     while (HasDone < ToDoCount)
                     {
-                        // 包剩余空间少于2，就开始邮寄
+                        // 包剩余空间少于4，就开始邮寄
                         if (Inventory.FreeBagSlots <= 4)
                         {
-                            // 发邮件
-                            logger.Add("发邮件");
-                            if (!SpyTradeSkill.SendMain(MailList, logger)) return;
+                            if (!SpyTradeSkill.SendMain(logger, false))
+                            {
+                                logger.Add("邮寄失败，不能继续");
+                                return;
+                            }
+                            if (Inventory.FreeBagSlots <= 4)
+                            {
+                                logger.Add("邮寄完以后，背包空间只有四个，不能继续");
+                                return;
+                            }
                         }
                         ItemCount = SpyFrame.GetDispCountItemCount();
                         if (ItemCount["BAG"] == 0 && ItemCount["MAIL"] == 0) break;
@@ -1282,13 +1278,6 @@ namespace LazyEvo.Plugins
                         continue;
                     }
 
-                    // 判断背包空间
-                    if (Inventory.FreeBagSlots <= 4)
-                    {
-                        logger.Add(string.Format("背包里面至少应该有4格空余，否则无法进行"));
-                        return;
-                    }
-
                     // 确定制作数量
                     if (Math.Ceiling(Convert.ToDouble(ItemCount["BAG"] + ItemCount["MAIL"]) / NeedGemCount) > Math.Ceiling(Convert.ToDouble(PJItemCount["BAG"] + PJItemCount["MAIL"]) / NeedItemCount))
                     {
@@ -1310,6 +1299,22 @@ namespace LazyEvo.Plugins
                         // 开始做
                         for (int loop = 0; loop < TurnDoCount; loop++)
                         {
+                            // 包剩余空间少于4，就开始邮寄
+                            if (Inventory.FreeBagSlots <= 4)
+                            {
+                                // 发邮件
+                                logger.Add("发邮件");
+                                if (!SpyTradeSkill.SendMain(logger, false)) return;
+                                if (!SpyTradeSkill.SendZBJGBlueItem(ToDoWhat, logger)) return;
+
+                                // 邮寄之后，继续检查剩余空间
+                                if (Inventory.FreeBagSlots <= 4)
+                                {
+                                    logger.Add("邮寄完之后，背包里面至少应该有4格空余，否则无法进行");
+                                    return;
+                                }
+                            }
+
                             // 做东西
                             if (!SpyTradeSkill.DoItems(ToDoWhat))
                             {
@@ -1360,21 +1365,6 @@ namespace LazyEvo.Plugins
                                 Thread.Sleep(5000);
                             }
 
-                            // 包剩余空间少于4，就开始邮寄
-                            if (Inventory.FreeBagSlots <= 4)
-                            {
-                                // 发邮件
-                                logger.Add("发邮件");
-                                if (!SpyTradeSkill.SendMain(MailList, logger)) return;
-                                if (!SpyTradeSkill.SendZBJGBlueItem(ToDoWhat, logger)) return;
-
-                                // 邮寄之后，继续检查剩余空间
-                                if (Inventory.FreeBagSlots <= 4)
-                                {
-                                    logger.Add("邮寄完之后，背包里面至少应该有4格空余，否则无法进行");
-                                    return;
-                                }
-                            }
                         }
 
                         // 做完了，就跳出循环
@@ -1417,11 +1407,13 @@ namespace LazyEvo.Plugins
                         ItemCount = SpyFrame.GetDispCountItemCount();
                     }
                 }
-                // 发邮件
-                logger.Add(string.Format("东西做完，发邮件"));
-                if (!SpyTradeSkill.SendMain(MailList, logger)) return;
+                // 把蓝色物品发出去
                 if (!SpyTradeSkill.SendZBJGBlueItem(ToDoWhat, logger)) return;
             }
+            // 发邮件
+            logger.Add(string.Format("东西做完，发邮件"));
+            if (!SpyTradeSkill.SendMain(logger, false)) return;
+            
         }
     }
 
@@ -1434,6 +1426,28 @@ namespace LazyEvo.Plugins
 
         // 流程： 先魔草，然后看看有多少原料，之后按照拍卖需求计算需要多少羊皮纸，然后去统一购买
         // 这里制作有一个优先级
+
+        // 写死，快点出，赚钱。
+        // 分解清单从数据库
+        // 按照AH计算铭文需求，然后反算需要多少墨水、多少各种羊皮纸
+        
+        // 步骤：计算购物清单；研磨药草，当剩余空间到达指定数量时，停止研磨；
+        //       根据制作雕文种类进行循环，针对每一种雕文去购买材料，
+        //       循环，直到这种雕文全部完成
+        //       如果需要购买材料所占用的空间大于“剩余空间-4”时，（保留4格，为了将来购物2格，制作雕文1格，剩余1格考虑）
+        //       一组一组的购买墨水和羊皮纸，直到剩余空间=2，计算购买的物品数量，可以做几个雕文，留作后续循环用，
+        //       做雕文，直到做完，中间如果背包剩余空间=0，则邮寄雕文
+        
+        // 做完一种，就邮寄一批
+        // 这里需要这些数据：铭文制作列表、墨水兑换列表
+
+        /// <summary>
+        /// 计算购物清单 BuyItems<string, int>
+        /// </summary>
+        public static void CalcNeedItem()
+        {
+            
+        }
     }
 
     /// <summary>
@@ -1449,8 +1463,9 @@ namespace LazyEvo.Plugins
         public static DBLogger logger = new DBLogger("炼金转化");
         private static Thread _thread;
         public static bool RUNNING;
+        private static int AFK_Minutes;
 
-        public static bool initme()
+        public static bool initme(string Skill)
         {
             RUNNING = true;
             logger.clear();
@@ -1463,7 +1478,7 @@ namespace LazyEvo.Plugins
             }
 
             // 获取制作清单
-            GoodsList = SpyDB.GetLianJin();
+            GoodsList = SpyDB.GetLianJin(Skill);
             if (GoodsList == null)
             {
                 logger.Add("获取制作清单失败，不能继续");
@@ -1476,6 +1491,13 @@ namespace LazyEvo.Plugins
                 RUNNING = false;
                 return false;
             }
+
+            // 获取暂离时间
+            string rtv = SpyDB.GetParam("5");
+            if (string.IsNullOrWhiteSpace(rtv))
+                AFK_Minutes = 4;
+            else
+                AFK_Minutes = Convert.ToInt32(rtv);
 
             Logging.Write("进行外挂初始化--动作条初始化");
             BarMapper.MapBars();
@@ -1490,7 +1512,7 @@ namespace LazyEvo.Plugins
             if (_thread == null || !_thread.IsAlive)
             {
                 _thread = new Thread(GoGo);
-                _thread.Name = "炼金转化";
+                _thread.Name = "炼金转化/裁缝";
                 _thread.IsBackground = true;
                 // 设置线程状态为单线程
                 try
@@ -1543,7 +1565,8 @@ namespace LazyEvo.Plugins
                 return;
             }
 
-            int CountJump = 0;
+            Stopwatch jump = new Stopwatch();
+            jump.Start();
             // 遍历制作列表
             foreach (DataRow _goods in GoodsList.Rows)
             {
@@ -1603,10 +1626,19 @@ namespace LazyEvo.Plugins
                     {
                         if (Inventory.FreeBagSlots <= 4)
                         {
-                            SpyTradeSkill.SendMain(logger, false);
+                            if (Convert.ToInt32(_goods["mail"]) == 0)
+                            {
+                                logger.Add("背包满，不能继续");
+                                return;
+                            }
+                            if (!SpyTradeSkill.SendMain(logger, false))
+                            {
+                                logger.Add("邮寄失败，不能继续");
+                                return;
+                            }
                             if (Inventory.FreeBagSlots <= 4)
                             {
-                                logger.Add("背包空间只有四个，不能继续");
+                                logger.Add("邮寄完以后，背包空间只有四个，不能继续");
                                 return;
                             }
                         }
@@ -1641,21 +1673,27 @@ namespace LazyEvo.Plugins
                             return;
                         }
 
-                        CountJump++;
-                        if (CountJump == 20)
+                        if (jump.Elapsed.Minutes > AFK_Minutes)   // 通过系统参数获得反AFK的时间
                         {
                             // jump一下，防止AFK
-                            CountJump = 0;
-                            logger.Add("jump一下，防止AFK");
-                            KeyLowHelper.PressKey(MicrosoftVirtualKeys.Space);
-                            KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.Space);
-                            Thread.Sleep(5000);
+                            jump.Restart();
+                            KeyHelper.SendKey("space");
+                            Thread.Sleep(3000);
                         }
 
                         HasDone++;
                         if (HasDone == ToDoCount) break;
                     }
-                    SpyTradeSkill.SendMain(logger, false);
+
+                    // 完成一件作品，邮寄物品
+                    if (Convert.ToInt32(_goods["mail"]) == 1)
+                    {
+                        if (!SpyTradeSkill.SendMain(logger, false))
+                        {
+                            logger.Add("邮寄失败，不能继续");
+                            return;
+                        }
+                    }
                 }
             }
             return;
@@ -1784,10 +1822,10 @@ namespace LazyEvo.Plugins
                 while (MineCount["BAG"] > 0 || MineCount["MAIL"] > 0)
                 {
                     // 邮箱里面有矿，取矿出来
-                    if (MineCount["MAIL"] > 0)
+                    if (MineCount["MAIL"] > 0 && MineCount["BAG"] == 0)
                     {
                         logger.Add("从邮箱里面拿  " + DoingMine);
-                        if (!SpyFrame.lua_GetMAILAsItem(DoingMine, 100000, 20))
+                        if (!SpyFrame.lua_GetMAILAsItem(DoingMine, Inventory.FreeBagSlots - 12, 20))
                         {
                             logger.Add("从邮箱里面拿  " + DoingMine + " 失败");
                             return;
@@ -1805,15 +1843,18 @@ namespace LazyEvo.Plugins
                         {
                             // jump一下，防止AFK
                             CountJump = 0;
-                            logger.Add("jump一下，防止AFK");
+                            //logger.Add("jump一下，防止AFK");
                             KeyLowHelper.PressKey(MicrosoftVirtualKeys.Space);
                             KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.Space);
                             Thread.Sleep(5000);
                         }
                         // 分解石头 , 分解宏要放在4这个上面
-                        logger.Add("炸矿");
-                        KeyLowHelper.PressKey(MicrosoftVirtualKeys.key4);
-                        KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.key4);
+                        //logger.Add("炸矿");
+                        //KeyLowHelper.PressKey(MicrosoftVirtualKeys.key4);
+                        //KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.key4);
+                        SpyFrame.ExecSimpleLua("/cast 选矿");
+                        Thread.Sleep(1000);
+                        SpyFrame.ExecSimpleLua("/use " + DoingMine);
                         Thread.Sleep(500);
                         while (ObjectManager.MyPlayer.IsCasting)
                         {
@@ -1828,7 +1869,7 @@ namespace LazyEvo.Plugins
                     if (Inventory.FreeBagSlots <= 1)
                     {
                         // 发邮件
-                        logger.Add("发邮件");
+                        logger.Add("包满，发邮件");
                         if (!SpyTradeSkill.SendMain(MailList, logger)) return;
                     }
                     Thread.Sleep(1000);
@@ -3107,7 +3148,7 @@ namespace LazyEvo.Plugins
                             if (SpyCJ.initme()) SpyCJ.start();
                             break;
                         case "LJ":
-                            if (SpyLJZH.initme()) SpyLJZH.start();
+                            if (SpyLJZH.initme("LJ")) SpyLJZH.start();
                             break;
                     }
                     SpyDB.WriteLog("计划任务", string.Format("任务开始工作，角色ID：{0}，任务描述：{1}，持续时间：{2}", char_id, DoWhat, RunMiniute.ToString()));

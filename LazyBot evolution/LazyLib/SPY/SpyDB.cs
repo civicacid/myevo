@@ -218,7 +218,7 @@ namespace LazyLib.SPY
         {
             if (string.IsNullOrWhiteSpace(LogType)) return;
             if (string.IsNullOrWhiteSpace(LogText)) return;
-            OraData.execSQLCmd(string.Format("insert into wowlog (logtype,logtext,char_name) values ('{0}','{1}','{2}')", LogType.Replace("'", "''"), LogText.Replace("'", "''"),ObjectManager.MyPlayer.Name));
+            OraData.execSQLCmd(string.Format("insert into wowlog (logtype,logtext,char_name) values ('{0}','{1}','{2}')", LogType.Replace("'", "''"), LogText.Replace("'", "''"), ObjectManager.MyPlayer.Name));
         }
 
         /// <summary>
@@ -231,9 +231,9 @@ namespace LazyLib.SPY
             if (string.IsNullOrWhiteSpace(LogText)) return;
 
             string role_name = "";
-            if (string.IsNullOrWhiteSpace(ObjectManager.MyPlayer.Name)) 
-                role_name = "系统"; 
-            else 
+            if (string.IsNullOrWhiteSpace(ObjectManager.MyPlayer.Name))
+                role_name = "系统";
+            else
                 role_name = ObjectManager.MyPlayer.Name;
 
             OraData.execSQLCmd(string.Format("insert into lazylog (char_name,logtext) values ('{0}','{1}')", role_name, LogText.Replace("'", "''")));
@@ -344,10 +344,16 @@ namespace LazyLib.SPY
             return result;
         }
 
-        public static DataTable GetLianJin()
+        public static DataTable GetLianJin(string Skill)
         {
+            if (string.IsNullOrWhiteSpace(Skill))
+            {
+                Logging.Write("GetLianJin Error: 技能为空");
+                return null;
+            }
+
             DataTable dt;
-            string sql = string.Format("select itemname,needitem,havecd from lianjin where itemname in (select lianjin_itemname from char_lianjin where char_name = '{0}') order by havecd desc", ObjectManager.MyPlayer.Name);
+            string sql = string.Format("select itemname,do_order,dischant,mail,needitem,havecd from char_lianjin c,lianjin l where (c.skill=l.skill and c.lianjin_itemname=l.itemname) and char_name = '{0}' and skill = '{1}' order by do_order", ObjectManager.MyPlayer.Name, Skill);
             try
             {
                 dt = OraData.execSQL(sql);

@@ -205,9 +205,10 @@ comment on table map_file is '地图文件';
 -- table LianJin  炼金制作清单
 -- -----------------------------------------------------
 create table lianjin (
+   skill                varchar(10)                      not null,            -- 技能种类（炼金LJ、裁缝CF）
    itemname             varchar(100)                     not null,
    needitem             varchar(1000)                    not null,
-   havecd               number(1)         default 0      not null,
+   havecd               number(1)         default 0      not null,            -- 是否有CD
    constraint pk_lianjin primary key (itemname)
 );
 comment on table lianjin is '炼金制作清单';
@@ -219,15 +220,22 @@ comment on column lianjin.havecd    is '是否有CD';
 -- table char_lianjin  人物炼金技能对应表
 -- -----------------------------------------------------
 create table char_lianjin (
-   server            varchar(100)                        not null,
-   char_name         varchar(100)                        not null,
-   lianjin_itemname  varchar(100)                        not null,
+   server            varchar(100)                     not null,
+   char_name         varchar(100)                     not null,
+   skill             varchar(10)                      not null,            -- 技能种类（炼金LJ、裁缝CF）
+   lianjin_itemname  varchar(100)                     not null,
+   do_order          number(2)         default 0      not null,            -- 制作顺序
+   dischant          number(1)         default 0      not null,            -- 是否分解
+   mail              number(1)         default 0      not null,            -- 是否邮寄(0-不邮寄，1-邮寄)
    constraint pk_char_lj primary key (char_name,lianjin_itemname)
 );
 comment on table char_lianjin is '炼金制作清单';
 comment on column char_lianjin.server            is '服务器';
 comment on column char_lianjin.char_name         is '角色';
-comment on column char_lianjin.lianjin_itemname  is '可用技能';
+comment on column char_lianjin.lianjin_itemname  is '技能名称';
+comment on column char_lianjin.do_order          is '制作顺序';
+comment on column char_lianjin.dischant          is '是否分解';
+comment on column char_lianjin.mail              is '是否邮寄';
 
 
 -- -----------------------------------------------------
