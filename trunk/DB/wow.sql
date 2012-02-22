@@ -146,7 +146,8 @@ comment on table ahitem is 'π“ªı';
 -- table wowlog »’÷æ
 -- -----------------------------------------------------
 create table wowlog (
-   char_name                     varchar(100)                        not null,
+   char_name                     varchar(100)                        null,
+   machineid                     varchar(100)                        null,
    logtype                       varchar(100)                        not null,
    logtext                       varchar(1000)                       not null,
    logtime                       date              default sysdate   not null

@@ -147,6 +147,7 @@ namespace LazyLib.Helpers
             }
             catch (Exception e)
             {
+                if (!ObjectManager.InGame) StopUpdate();
                 Logging.Write("ReloadFrames出现错误: " + e);
             }
 
