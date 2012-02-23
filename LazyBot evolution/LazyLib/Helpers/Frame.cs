@@ -95,7 +95,8 @@ namespace LazyLib.Helpers
         {
             get
             {
-                return Memory.ReadUtf8(Memory.Read<uint>(BaseAddress + (uint)Pointers.UiFrame.Name), 132);
+                //return Memory.ReadUtf8(Memory.Read<uint>(BaseAddress + (uint)Pointers.UiFrame.Name), 132);
+                return Memory.ReadAsciiString(Memory.Read<uint>(BaseAddress + (uint)Pointers.UiFrame.Name), 132);
             }
         }
 
