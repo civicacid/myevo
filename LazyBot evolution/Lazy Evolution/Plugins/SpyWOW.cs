@@ -958,6 +958,7 @@ namespace LazyEvo.Plugins
             int RetryCount = 0;
             while (!IsOpenSkillFrame && RetryCount < 5)
             {
+                InterfaceHelper.ReloadFrames();
                 try
                 {
                     IsOpenSkillFrame = InterfaceHelper.GetFrameByName("TradeSkillFrame").IsVisible;
@@ -1147,12 +1148,7 @@ namespace LazyEvo.Plugins
             }
 
             // 打开界面
-            if (SpyTradeSkill.OpenTradeSkillWindow(SpyTradeSkill.TradeSkills.ZhuBao))
-            {
-                BarSpell gg = BarMapper.GetSpellByName("珠宝加工");
-                gg.CastSpell();
-            }
-            else
+            if (!SpyTradeSkill.OpenTradeSkillWindow(SpyTradeSkill.TradeSkills.ZhuBao))
             {
                 logger.Add("没有打开技能窗口，失败啊。。。");
                 return;
