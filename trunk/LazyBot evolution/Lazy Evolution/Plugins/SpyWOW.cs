@@ -320,20 +320,25 @@ namespace LazyEvo.Plugins
             {
                 try
                 {
+                    InterfaceHelper.ReloadFrames();
+                    Thread.Sleep(2000);
                     frmTemp = InterfaceHelper.GetFrameByName("frmTest");
                     frmTest = frmTemp.GetChildObject("frmTestText");
 
+                    //foreach ( )
                     frmTemp = InterfaceHelper.GetFrameByName("frmData");
                     frmData = frmTemp.GetChildObject("frmDataText");
 
                     frmTemp = InterfaceHelper.GetFrameByName("frmMailData");
                     frmMailData = frmTemp.GetChildObject("frmMailDataText");
                 }
-                catch
+                catch (Exception e)
                 {
+                    Logging.Write("SpyFrame.initme() Error:"+e);
                 }
                 RetryCount++;
-                if (RetryCount > 10) return false;
+                if (RetryCount > 10) 
+                    return false;
                 Thread.Sleep(1000);
             }
             return true;
@@ -1850,11 +1855,11 @@ namespace LazyEvo.Plugins
                         }
                         // 分解石头 , 分解宏要放在4这个上面
                         //logger.Add("炸矿");
-                        //KeyLowHelper.PressKey(MicrosoftVirtualKeys.key4);
-                        //KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.key4);
-                        SpyFrame.ExecSimpleLua("/cast 选矿");
-                        Thread.Sleep(1000);
-                        SpyFrame.ExecSimpleLua("/use " + DoingMine);
+                        KeyLowHelper.PressKey(MicrosoftVirtualKeys.key4);
+                        KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.key4);
+                        //SpyFrame.ExecSimpleLua("/cast 选矿");
+                        //Thread.Sleep(1000);
+                        //SpyFrame.ExecSimpleLua("/use " + DoingMine);
                         Thread.Sleep(500);
                         while (ObjectManager.MyPlayer.IsCasting)
                         {
