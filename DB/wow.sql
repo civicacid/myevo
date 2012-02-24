@@ -206,16 +206,19 @@ comment on table map_file is '地图文件';
 -- table LianJin  炼金制作清单
 -- -----------------------------------------------------
 create table lianjin (
-   skill                varchar(10)                      not null,            -- 技能种类（炼金LJ、裁缝CF）
+   skill                varchar(10)                      not null,            -- 技能种类（炼金LJ、裁缝CF、MW铭文）
    itemname             varchar(100)                     not null,
    needitem             varchar(1000)                    not null,
    havecd               number(1)         default 0      not null,            -- 是否有CD
+   memo                 varchar(1000)                    null,                -- 备注
    constraint pk_lianjin primary key (itemname)
 );
 comment on table lianjin is '炼金制作清单';
+comment on column lianjin.skill     is '商业技能（炼金LJ、裁缝CF、MW铭文）';
 comment on column lianjin.itemname  is '物品名称';
 comment on column lianjin.needitem  is '原料表。按照 Item$Count#Item$Count# 格式保存';
 comment on column lianjin.havecd    is '是否有CD';
+comment on column lianjin.memo      is '备注';
 
 -- -----------------------------------------------------
 -- table char_lianjin  人物炼金技能对应表
