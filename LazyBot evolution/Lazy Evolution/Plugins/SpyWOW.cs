@@ -22,6 +22,7 @@ using LazyEvo.Forms;
 using LazyLib.Helpers.Mail;
 using LazyLib.ActionBar;
 using LazyLib.SPY;
+using LazyEvo.Other;
 
 namespace LazyEvo.Plugins
 {
@@ -1644,11 +1645,10 @@ namespace LazyEvo.Plugins
                             }
                         }
 
-                        // 针对原料的处理。修改库存原料表，根据库存情况从邮箱获取物品
+                        // 先拿东西
                         foreach (KeyValuePair<string, int> Item in NeedItem)
                         {
-                            NeedItemInBag[Item.Key] = NeedItemInBag[Item.Key] - Item.Value;
-                            while (NeedItemInBag[Item.Key] < Item.Value)
+                            while (NeedItemInBag[Item.Key] < Item.Value && NeedIteminMail[Item.Key] > 0)
                             {
                                 // 从邮箱拿货，一次拿一堆（如果需要的原料大于一堆，这里会出错）
                                 if (!SpyFrame.lua_GetMAILAsItem(Item.Key, 1))
@@ -1660,6 +1660,11 @@ namespace LazyEvo.Plugins
                                 Thread.Sleep(1000);
 
                                 // 然后重新记录物品数量
+                                if (!SpyFrame.lua_SetDispCountItemName(Item.Key))
+                                {
+                                    logger.Add("在执行SetDispCountItemName时出错，需要的原料：" + Item.Key);
+                                    return;
+                                }
                                 Dictionary<string, int> ItemsInBagAndMail = SpyFrame.GetDispCountItemCount();
                                 NeedItemInBag[Item.Key] = ItemsInBagAndMail["BAG"];
                                 NeedIteminMail[Item.Key] = ItemsInBagAndMail["MAIL"];
@@ -1674,6 +1679,15 @@ namespace LazyEvo.Plugins
                             return;
                         }
 
+                        HasDone++;
+                        if (HasDone == ToDoCount) break;
+
+                        // 针对原料的处理。修改库存原料表，根据库存情况从邮箱获取物品
+                        foreach (KeyValuePair<string, int> Item in NeedItem)
+                        {
+                            NeedItemInBag[Item.Key] = NeedItemInBag[Item.Key] - Item.Value;
+                        }
+
                         if (jump.Elapsed.Minutes > AFK_Minutes)   // 通过系统参数获得反AFK的时间
                         {
                             // jump一下，防止AFK
@@ -1682,8 +1696,7 @@ namespace LazyEvo.Plugins
                             Thread.Sleep(3000);
                         }
 
-                        HasDone++;
-                        if (HasDone == ToDoCount) break;
+
                     }
 
                     // 完成一件作品，邮寄物品
@@ -3120,9 +3133,10 @@ namespace LazyEvo.Plugins
                         SpyDB.WriteLog("计划任务", string.Format("任务角色登录成功，角色ID：{0}，任务描述：{1}，持续时间：{2}", char_id, DoWhat, RunMiniute.ToString()));
 
                         Thread.Sleep(2000);
-                        if (!ObjectManager.Initialized) ObjectManager.Initialize(SpyLogin.WOW_P.Id);
+                        //ObjectManager.MakeReady();
+                        ObjectManager.Initialize(SpyLogin.WOW_P.Id);
+                        //Hook.DoHook();
                         Thread.Sleep(2000);
-
                         JobStatus = EnumJobStatus.login_OK;
                     }
                     if (string.Format("{0:yyyy-MM-dd HH:mm}", StatusStartTime.AddMinutes(RUN_OUT_MIN_LOGIN)).Equals(string.Format("{0:yyyy-MM-dd HH:mm}", DateTime.Now)))
@@ -3216,8 +3230,8 @@ namespace LazyEvo.Plugins
                 case EnumJobStatus.Work_OK:
                     SpyDB.WriteLog("计划任务", string.Format("任务完结，角色ID：{0}，任务描述：{1}，持续时间：{2}", char_id, DoWhat, RunMiniute.ToString()));
                     Thread.Sleep(5000);
-                    ObjectManager.Close();
-                    Thread.Sleep(5000);
+                    //ObjectManager.Close();
+                    //Thread.Sleep(5000);
                     SpyLogin.WOW_P.Kill();
                     JobRunning = false;
                     JobStatus = EnumJobStatus.Nothing;
