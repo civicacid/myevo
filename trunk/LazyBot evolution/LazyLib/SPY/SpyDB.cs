@@ -355,7 +355,7 @@ namespace LazyLib.SPY
             }
 
             DataTable dt;
-            string sql = string.Format("select itemname,do_order,dischant,mail,needitem,havecd from char_lianjin c,lianjin l where (c.skill=l.skill and c.lianjin_itemname=l.itemname) and char_name = '{0}' and skill = '{1}' order by do_order", ObjectManager.MyPlayer.Name, Skill);
+            string sql = string.Format("select itemname,do_order,dischant,mail,needitem,havecd from char_lianjin c,lianjin l where (c.skill=l.skill and c.lianjin_itemname=l.itemname) and char_name = '{0}' and c.skill = '{1}' order by do_order", ObjectManager.MyPlayer.Name, Skill);
             try
             {
                 dt = OraData.execSQL(sql);

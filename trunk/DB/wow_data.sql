@@ -34,7 +34,7 @@ insert into wowchar(acc_id,char_id,char_name,server,acc_list,char_idx) values ((
 insert into wowchar(acc_id,char_id,char_name,server,acc_list,char_idx) values ((select acc_id from wowaccount where acc_name = 'spyman1802@gmail.com'),seq_all.nextval,'Welcomex','爱斯特纳','SPYMAN1801|SPYMAN1802|!TYILOVEYH|WoW1|WoW2|',2);
 insert into wowchar(acc_id,char_id,char_name,server,acc_list,char_idx) values ((select acc_id from wowaccount where acc_name = 'spyman1802@gmail.com'),seq_all.nextval,'收矿啊','爱斯特纳','SPYMAN1801|SPYMAN1802|!TYILOVEYH|WoW1|WoW2|',3);
 insert into wowchar(acc_id,char_id,char_name,server,acc_list,char_idx) values ((select acc_id from wowaccount where acc_name = 'spyman1802@gmail.com'),seq_all.nextval,'碰友','爱斯特纳','SPYMAN1801|SPYMAN1802|!TYILOVEYH|WoW1|WoW2|',4);
-insert into wowchar(acc_id,char_id,char_name,server,acc_list,char_idx) values ((select acc_id from wowaccount where acc_name = 'spyman1802@gmail.com'),seq_all.nextval,'七只梅','爱斯特纳','SPYMAN1801|SPYMAN1802|!TYILOVEYH|WoW1|WoW2|',7);
+insert into wowchar(acc_id,char_id,char_name,server,acc_list,char_idx) values ((select acc_id from wowaccount where acc_name = 'spyman1802@gmail.com'),seq_all.nextval,'七枝梅','爱斯特纳','SPYMAN1801|SPYMAN1802|!TYILOVEYH|WoW1|WoW2|',7);
 insert into wowchar(acc_id,char_id,char_name,server,acc_list,char_idx) values ((select acc_id from wowaccount where acc_name = 'spyman1802@gmail.com'),seq_all.nextval,'Other','爱斯特纳','SPYMAN1801|!SPYMAN1802|TYILOVEYH|WoW1|WoW2|',0);
 insert into wowchar(acc_id,char_id,char_name,server,acc_list,char_idx) values ((select acc_id from wowaccount where acc_name = 'spyman1802@gmail.com'),seq_all.nextval,'Spyman','爱斯特纳','SPYMAN1801|!SPYMAN1802|TYILOVEYH|WoW1|WoW2|',1);
 insert into wowchar(acc_id,char_id,char_name,server,acc_list,char_idx) values ((select acc_id from wowaccount where acc_name = 'spyman1802@gmail.com'),seq_all.nextval,'Onedisk','爱斯特纳','SPYMAN1801|!SPYMAN1802|TYILOVEYH|WoW1|WoW2|',2);
@@ -217,6 +217,9 @@ insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_
 insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','碰友','催眠之尘'  ,10000,100000,8,20,0);
 insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','碰友','强效天界精华'  ,400000,1000000,10,1,0);
 
+insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','铭文学专家一','力量祝福雕文'  ,40000,1000000,1,1,0);
+insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','铭文学专家一','吸血鬼之血雕文'  ,40000,1000000,1,1,0);
+insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','铭文学专家一','唤醒雕文'  ,40000,1000000,1,1,0);
 -----------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -314,6 +317,7 @@ insert into char_lianjin (server,char_name,skill,lianjin_itemname,do_order,disch
 insert into char_lianjin (server,char_name,skill,lianjin_itemname,do_order,dischant,mail) values ('爱斯特纳','爱贝贝熊','LJ','转化：暗烬黄玉',2,0,1);
 insert into char_lianjin (server,char_name,skill,lianjin_itemname,do_order,dischant,mail) values ('爱斯特纳','爱贝贝熊','LJ','转化：恶魔之眼',3,0,1);
 insert into char_lianjin (server,char_name,skill,lianjin_itemname,do_order,dischant,mail) values ('爱斯特纳','爱贝贝熊','LJ','转化：海洋青玉',4,0,1);
+insert into char_lianjin (server,char_name,skill,lianjin_itemname,do_order,dischant,mail) values ('爱斯特纳','七枝梅','LJ','转化：生命元素',1,0,1);
 -----------------------------------------------------------------------------------------------------------------------------------
 
  [铭文: 小型雕文研究]

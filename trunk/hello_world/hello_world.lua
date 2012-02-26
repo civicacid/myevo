@@ -859,6 +859,7 @@ function SendMailMachine:Run()
         
         -- Send Mail
         ClearCursor()
+        SendMailNameEditBox:SetText(lstrReceiver)
         SendMail(lstrReceiver, "自动发信程序")
 
         -- Set Status
