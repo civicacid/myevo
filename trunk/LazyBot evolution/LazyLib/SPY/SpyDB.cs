@@ -220,6 +220,7 @@ namespace LazyLib.SPY
             if (string.IsNullOrWhiteSpace(LogText)) return;
             string char_name = ObjectManager.MyPlayer.Name;
             if (string.IsNullOrWhiteSpace(ObjectManager.MyPlayer.Name) || char_name.Contains("Error")) char_name = "系统";
+            Logging.Write(LogText);
             OraData.execSQLCmd(string.Format("insert into wowlog (logtype,logtext,char_name,machineid) values ('{0}','{1}','{2}','{3}')", LogType.Replace("'", "''"), LogText.Replace("'", "''"), char_name,LazySettings.MachineID));
         }
 

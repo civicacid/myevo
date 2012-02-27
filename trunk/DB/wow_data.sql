@@ -317,6 +317,7 @@ insert into char_lianjin (server,char_name,skill,lianjin_itemname,do_order,disch
 insert into char_lianjin (server,char_name,skill,lianjin_itemname,do_order,dischant,mail) values ('爱斯特纳','爱贝贝熊','LJ','转化：暗烬黄玉',2,0,1);
 insert into char_lianjin (server,char_name,skill,lianjin_itemname,do_order,dischant,mail) values ('爱斯特纳','爱贝贝熊','LJ','转化：恶魔之眼',3,0,1);
 insert into char_lianjin (server,char_name,skill,lianjin_itemname,do_order,dischant,mail) values ('爱斯特纳','爱贝贝熊','LJ','转化：海洋青玉',4,0,1);
+insert into char_lianjin (server,char_name,skill,lianjin_itemname,do_order,dischant,mail) values ('爱斯特纳','爱贝贝熊','LJ','转化：生命元素',0,0,0);
 insert into char_lianjin (server,char_name,skill,lianjin_itemname,do_order,dischant,mail) values ('爱斯特纳','七枝梅','LJ','转化：生命元素',1,0,1);
 -----------------------------------------------------------------------------------------------------------------------------------
 
