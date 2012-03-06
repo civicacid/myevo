@@ -1507,6 +1507,10 @@ function AHPostItemDoor(astrItemName, aiSingleItemPrice, aiItemStackSize, aiItem
     if ItemCount < aiItemStackSize * aiItemNumStack then
         aiItemNumStack = math.floor(ItemCount/aiItemStackSize)
     end
+    if ItemCount < aiItemStackSize then
+        aiItemNumStack = 1
+        aiItemStackSize = ItemCount
+    end
 
     -- 找到指定物品所在包、槽
     AHPostItem4.ItemBag, AHPostItem4.ItemSlot = SearchItem(astrItemName, 0)
@@ -1529,12 +1533,6 @@ function AHPostItemDoor(astrItemName, aiSingleItemPrice, aiItemStackSize, aiItem
         SendSuccData()
     end
 end
-
---function AHPostItem4FirstPost()
---    if HWstatus.AHPostItem == 10 then
-        --AHPostItem4.ItemLeftStack = AHPostItem4.PostItemNumStack
---    end
---end
 
 function AHPostItem4NextPost()
     if HWstatus.AHPostItem == 10 then
@@ -1582,7 +1580,7 @@ function GetAllMailMachine:Run()
         frmMailDataText:SetText((select(1, GetInboxNumItems())))
     end
     --GetAllMail.LeftMail = GetAllMail.LeftMail - 50
-    if MailCount <= 0 then
+    if MailCount <= 0 or IsMailBoxOpen() == 0 then
         GetAllMail:Stop()
     end
 end

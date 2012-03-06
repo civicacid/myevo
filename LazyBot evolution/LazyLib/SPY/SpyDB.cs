@@ -251,7 +251,7 @@ namespace LazyLib.SPY
 
         public static DataTable GetJob(string MachineID)
         {
-            string sql = string.Format("select runtime,char_id,dowhat from autologin where ((to_char(starttime,'hh24mi') = to_char(sysdate,'hh24mi') and everyday = 1) or to_char(starttime,'yyyymmddhh24mi') = to_char(sysdate,'yyyymmddhh24mi')) and machineid = '{0}'", MachineID);
+            string sql = string.Format("select runtime,char_id,char_name,dowhat from autologin where ((to_char(starttime,'hh24mi') = to_char(sysdate,'hh24mi') and everyday = 1) or to_char(starttime,'yyyymmddhh24mi') = to_char(sysdate,'yyyymmddhh24mi')) and machineid = '{0}'", MachineID);
             return OraData.execSQL(sql);
         }
 
