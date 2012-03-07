@@ -1,16 +1,4 @@
-## Interface: 40000
+## Interface: 40300
 ## Title: Hello World
-## Notes: The obligatory hello world script
-## OptionalDeps:  Ace3, LibSharedMedia-3.0, LibBossIDs-1.0, LibGraph-2.0, !ClassColors
-## Dependencies:
-## SavedVariables: HelloWorldDB
-
-Libs\LibStub\LibStub.lua
-Libs\AceAddon-3.0\AceAddon-3.0.lua
-Libs\AceAddon-3.0\AceAddon-3.0.xml
-Libs\AceDB-3.0\AceDB-3.0.lua
-Libs\AceDB-3.0\AceDB-3.0.xml
-Libs\AceTimer-3.0\AceTimer-3.0.lua
-Libs\AceTimer-3.0\AceTimer-3.0.xml
-
+## Notes: Welcome SPY
 hello_world.xml

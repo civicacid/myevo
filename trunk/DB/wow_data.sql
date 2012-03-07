@@ -174,9 +174,9 @@ insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_
 insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','铭文学专家一','吸血鬼之血雕文'  ,40000,1000000,1,1,0);
 insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','铭文学专家一','唤醒雕文'  ,40000,1000000,1,1,0);
 
-insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','铭文学专家四','坚固的石头' ,40000,1000000,10,20,0);
-insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','铭文学专家四','劣质的石头' ,40000,1000000,10,20,0);
-insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','铭文学专家四','粗糙的石头' ,40000,1000000,10,20,0);
+insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','铭文学专家四','坚固的石头' ,400,10000,10,20,0);
+insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','铭文学专家四','劣质的石头' ,400,10000,10,20,0);
+insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','铭文学专家四','粗糙的石头' ,400,10000,10,20,0);
 
 insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','蓝装售卖','基岩之碧玉指环' ,400000,1200000,2,1,0);
 
