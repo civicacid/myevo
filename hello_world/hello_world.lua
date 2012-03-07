@@ -98,8 +98,6 @@ AHSearch.printOut = 0                                  -- 是否打印结果，0
 
 AHSearch.SearchResult.MAX_RETRY_COUNT = 5                   -- 查询后，收集结果时，没有人名，最多重试次数
 AHSearch.SearchResult.GET_RESULT_LOOP_TIME = 0.5            -- 收集结果，循环检查时间（秒）
-AHSearch.SearchResult.BETWEEN_EVENT_GAP_TIME = 100          -- 两次事件间隔时间（毫秒），当小于这个时间，视为还没有结束查询
-AHSearch.SearchResult.WAIT_TIME = 1                         -- 结束查询后，等待多长时间，处理查询结果
 
 AHSearch.SearchResult.ItemName = {}
 AHSearch.SearchResult.ItemCount = {}
@@ -110,11 +108,8 @@ AHSearch.SearchResult.ItemSellerName = {}
 AHSearch.SearchResult.MinEachPrice = 0          -- 最低价格
 AHSearch.SearchResult.MinPriceSeller = ""       -- 最低价格对应的销售者
 AHSearch.SearchResult.count = 0                 -- 计数器，用来累加有完全符合名称的物品数量
-AHSearch.SearchResult.PassItems = 0             -- 已经检查过是否有名字的ITEM数量
-AHSearch.SearchResult.TotalItems = 0            -- 共有多少ITEM需要检查
 AHSearch.SearchResult.NowPage = 0               -- 当前正在扫描那一页
-AHSearch.SearchResult.Waiting = 0               -- 等待状态
-AHSearch.SearchResult.LastFire = 0              -- 最后一次时间触发的时间
+AHSearch.SearchResult.NowRecordingPage = -1     -- 当前正在记录的那一页
 AHSearch.SearchResult.RetryCount = 0            -- 不出名字，重新刷新的次数
 
 function AHSearchDoor(astrItemName, aiprint)
@@ -176,44 +171,19 @@ function AHSearchItem:Start()
     AHSearch.SearchResult.MinEachPrice = 0          -- 最低价格
     AHSearch.SearchResult.MinPriceSeller = ""       -- 最低价格对应的销售者
     AHSearch.SearchResult.count = 0                 -- 计数器，用来累加有完全符合名称的物品数量
-    AHSearch.SearchResult.PassItems = 0             -- 已经检查过是否有名字的ITEM数量
-    AHSearch.SearchResult.TotalItems = 0            -- 共有多少ITEM需要检查
     AHSearch.SearchResult.NowPage = 0               -- 当前正在扫描那一页
+    AHSearch.SearchResult.NowRecordingPage = -1     -- 当前正在记录的那一页
     AHSearch.SearchResult.Waiting = 0               -- 等待状态
-    AHSearch.SearchResult.LastFire = 0              -- 最后一次时间触发的时间
     AHSearch.SearchResult.RetryCount = 0            -- 不出名字，重新刷新的次数
 
-    QueryAuctionItems(AHSearch.SearchItem, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-    AHSearch.SearchResult.Waiting = 1
-    HWstatus.AHSearch = 2
+    QueryAuctionItems(AHSearch.SearchItem, 0, 0, 0, 0, 0, nil, 0, 0, 0)
 
     AHSearch.ResultHandle = AHSearchItem:ScheduleRepeatingTimer("Run", AHSearch.SearchResult.GET_RESULT_LOOP_TIME)
 
 end
 
-function AHSearchItem:Stop()
-    AHSearchItem:CancelTimer(AHSearch.ResultHandle,true)
-    HWstatus.AHSearch = 0
-    if AHSearch.printOut == 1 then
-        AHSearchItem:printOut()
-    end
-
-    -- 显示查询结果，只显示最低价格和上货人
-    SendData(AHSearch.SearchResult.MinPriceSeller .. "#" .. AHSearch.SearchResult.MinEachPrice .. "#")
-    --AHSearch.Handle = wipe(AHSearch.Handle)
-end
-
-function AHSearchItem:Fail()
-    if AHSearch.ResultHandle ~= nil and AHSearch.ResultHandle ~= "" then
-        AHSearchItem:CancelTimer(AHSearch.ResultHandle,true)
-    end
-
-    HWstatus.AHSearch = -1
-    SendErrData("执行错误")
-end
-
 function AHSearchItem:Run()
-    --print("........")
+    --print("Run......")
     local liTotal
     local liLoop, lstrSellerName
 
@@ -223,113 +193,36 @@ function AHSearchItem:Run()
         return
     end
 
-    print("run....")
-
-    if AHSearch.SearchResult.Waiting == 1 then
+    if HWstatus.AHSearch == 1 then
         return
     end
 
     if HWstatus.AHSearch == 2 then
         --print("HWstatus.AHSearch == 2")
-        liPageCount, liTotal = GetNumAuctionItems("list")
-        if liTotal == nil then
-            -- 查询无结果
-            --print("查询无结果")
-            HWstatus.AHSearch = 1
-            return
-        end
-
-        -- 看看是不是名字都有了
-        for liLoop = 1, liPageCount do
-            lstrSellerName = (select(13,GetAuctionItemInfo("list", liLoop)))
-            if lstrSellerName == nil then
-        -- print("没出来，记录重试次数")
-                -- 没出来，记录重试次数
-                AHSearch.SearchResult.RetryCount = AHSearch.SearchResult.RetryCount + 1
-                if AHSearch.SearchResult.RetryCount <= AHSearch.SearchResult.MAX_RETRY_COUNT then
-                    return
-                end
-                -- 超过次数，就重新来过
-                AHSearchItem:CancelTimer(AHSearch.ResultHandle,true)
-                HWstatus.AHSearch = 10
-                AHSearchItem:Start()
-                return
-            end
-        --print(lstrSellerName)
-        end
-
-        -- 写入内容
-        AHSearchItem:RecordItem(liPageCount)
-
-        -- 记录有多少页扫描过
-        AHSearch.SearchResult.PassItems = liPageCount
-        AHSearch.SearchResult.TotalItems = liTotal
-
 
         -- 发出下一页的查询指令
-        AHSearch.SearchResult.NowPage = 1
-        QueryAuctionItems(AHSearch.SearchItem, 0, 0, 0, 0, 0, AHSearch.SearchResult.NowPage, 0, 0, 0)
-        AHSearch.SearchResult.Waiting = 1
-
-        -- 让他进入“状态三”
-        HWstatus.AHSearch = 3
-        return
+        if (select(1,CanSendAuctionQuery("list"))) == 1 then
+            print("发出下一页的查询指令")
+            AHSearch.SearchResult.NowPage = AHSearch.SearchResult.NowPage + 1
+            QueryAuctionItems(AHSearch.SearchItem, 0, 0, 0, 0, 0, AHSearch.SearchResult.NowPage, 0, 0, 0)
+            -- 继续等待查询返回结果
+            HWstatus.AHSearch = 1
+            AHSearch.SearchResult.NowRecordingPage = -1
+            AHSearch.SearchResult.RetryCount = 0
+        end
     end
 
     if HWstatus.AHSearch == 3 then
-        liPageCount, liTotal = GetNumAuctionItems("list")
-        --print(liPageCount)
-        if liPageCount == nil or liTotal == nil or liPageCount<=0 then
-            -- 查询无结果，表示查询结束，开始处理查询结果
+        -- 发出下一页的查询指令
+        if (select(1,CanSendAuctionQuery("list"))) == 1 then
+            print("发出重新查询指令")
+            QueryAuctionItems(AHSearch.SearchItem, 0, 0, 0, 0, 0, AHSearch.SearchResult.NowPage, 0, 0, 0)
+            -- 继续等待查询返回结果
             HWstatus.AHSearch = 1
-            return
+            AHSearch.SearchResult.NowRecordingPage = -1
         end
-        -- 看看是不是名字都有了
-        for liLoop = 1, liPageCount do
-            lstrSellerName = (select(13, GetAuctionItemInfo("list", liLoop)))
-            if lstrSellerName == nil then
-                -- 没出来，记录重试次数
-                AHSearch.SearchResult.RetryCount = AHSearch.SearchResult.RetryCount + 1
-                if AHSearch.SearchResult.RetryCount <= AHSearch.SearchResult.MAX_RETRY_COUNT then
-                    return
-                end
-                -- 超过次数，就重新来过
-                AHSearchItem:CancelTimer(AHSearch.ResultHandle,true)
-                HWstatus.AHSearch = 10
-                AHSearchItem:Start()
-                return
-            end
-        end
-
-        -- 记录信息
-        AHSearchItem:RecordItem(liPageCount)
-
-        -- 下一页准备
-        AHSearch.SearchResult.PassItems = AHSearch.SearchResult.PassItems + liPageCount
-
-        --print(AHSearch.SearchResult.PassItems)
-        --print(AHSearch.SearchResult.TotalItems)
-        --print(AHSearch.SearchResult.NowPage)
-        -- 看看是不是最后一页
-        if AHSearch.SearchResult.PassItems >= AHSearch.SearchResult.TotalItems then
-            -- 最后一页，冷静下来，状态置为1
-            HWstatus.AHSearch = 1
-            return
-        end
-
-        -- 发出下一页的查询
-        AHSearch.SearchResult.NowPage = AHSearch.SearchResult.NowPage + 1
-        QueryAuctionItems(AHSearch.SearchItem, 0, 0, 0, 0, 0, AHSearch.SearchResult.NowPage, 0, 0, 0)
-        AHSearch.SearchResult.Waiting = 1
-
-        return
-
     end
 
-    if HWstatus.AHSearch == 1 then
-        AHSearchItem:Stop()
-        return
-    end
 end
 
 function AHSearchItem:printOut()
@@ -341,15 +234,40 @@ function AHSearchItem:printOut()
     end
 end
 
+function AHSearchItem:Stop()
+    AHSearchItem:CancelTimer(AHSearch.ResultHandle,true)
+    HWstatus.AHSearch = 0
+    --if AHSearch.printOut == 1 then
+        print("共" .. table.getn(AHSearch.SearchResult.ItemName) .. "件物品")
+        --AHSearchItem:printOut()
+    --end
+
+    -- 显示查询结果，只显示最低价格和上货人
+    SendData(AHSearch.SearchResult.MinPriceSeller .. "#" .. AHSearch.SearchResult.MinEachPrice .. "#")
+    --AHSearch.Handle = wipe(AHSearch.Handle)
+end
+
+function AHSearchItem:Fail()
+    if AHSearch.ResultHandle ~= nil and AHSearch.ResultHandle ~= "" then
+        AHSearchItem:CancelTimer(AHSearch.ResultHandle,true)
+    end
+
+    HWstatus.AHSearch = 0
+    SendErrData("执行错误")
+end
+
 function AHSearchItem:RecordItem(aiPageCount)
     local lstrItemName, liItemCount, liBuyoutPrice, lstrSellerName
     local liLoop
     for liLoop = 1, aiPageCount do
         lstrItemName = (select(1, GetAuctionItemInfo("list", liLoop)))
-    liItemCount = (select(3, GetAuctionItemInfo("list", liLoop)))
-    liBuyoutPrice = (select(10, GetAuctionItemInfo("list", liLoop)))
-    lstrSellerName = (select(13, GetAuctionItemInfo("list", liLoop)))
-    -- , _, liItemCount, _, _, _, _, _, liBuyoutPrice, _, _, lstrSellerName = GetAuctionItemInfo("list", liLoop)
+        liItemCount = (select(3, GetAuctionItemInfo("list", liLoop)))
+        liBuyoutPrice = (select(10, GetAuctionItemInfo("list", liLoop)))
+        lstrSellerName = (select(13, GetAuctionItemInfo("list", liLoop)))
+        if not lstrSellerName then
+            lstrSellerName = "[无名者]"
+            print(lstrSellerName)
+        end
         if AHSearch.SearchItem == lstrItemName then
             AHSearch.SearchResult.count = AHSearch.SearchResult.count + 1
             AHSearch.SearchResult.ItemName[AHSearch.SearchResult.count] = lstrItemName
@@ -365,23 +283,48 @@ function AHSearchItem:RecordItem(aiPageCount)
     end
 end
 
-function AHSearchItem:Waiting()
-    AHSearch.SearchResult.Waiting = 0
-    --print("Waiting()")
-end
-
 function AHSearchItem:QueryEnd()
-    local liLoop, liTotal, liPageCount, lstrSellerName
+    if HWstatus.AHSearch ~= 1  then
+        return
+    end
 
-    if AHSearch.SearchResult.LastFire == 0 then
-        AHSearch.SearchResult.LastFire = GetTime()
+    if AHSearch.SearchResult.NowRecordingPage == -1 then
+        AHSearch.SearchResult.NowRecordingPage = AHSearch.SearchResult.NowPage
     else
-        if tonumber(GetTime()) - tonumber(AHSearch.SearchResult.LastFire) < AHSearch.SearchResult.BETWEEN_EVENT_GAP_TIME then
-            AHSearchItem:CancelTimer(AHSearch.QueryEndHandle,true)
+        return
+    end
+
+    local liPageCount, liTotal = GetNumAuctionItems("list")
+    print("liPageCount, liTotal = " .. liPageCount .. "," .. liTotal )
+    if not liPageCount or liPageCount == 0 then
+        -- 查询无结果
+        print("查询无结果 或者 查询完毕")
+        AHSearchItem:Stop()
+        return
+    end
+
+    -- 看看是不是名字都有了
+    for liLoop = 1, liPageCount do
+        lstrSellerName = (select(13,GetAuctionItemInfo("list", liLoop)))
+        if not lstrSellerName then
+            -- 没出来，记录重试次数
+            AHSearch.SearchResult.RetryCount = AHSearch.SearchResult.RetryCount + 1
+            if AHSearch.SearchResult.RetryCount <= AHSearch.SearchResult.MAX_RETRY_COUNT then
+                -- 发出同一页的再次搜索
+                print("没有名字，再来一次")
+                HWstatus.AHSearch = 3
+                return
+            end
+            -- 超过次数，按照无名者记录吧
         end
     end
 
-    AHSearch.QueryEndHandle = AHSearchItem:ScheduleTimer("Waiting", AHSearch.SearchResult.WAIT_TIME)
+    -- 写入内容
+    print("记录当页查询结果内容")
+    AHSearchItem:RecordItem(liPageCount)
+    print("本页"..AHSearch.SearchResult.NowPage.."查询完毕")
+
+    HWstatus.AHSearch = 2
 end
 
 --------------------------------------------------------------------------------------------------------------------------
@@ -1402,13 +1345,6 @@ function IsMailBoxOpen()
     else
         NormalPrint("邮箱没开")
         return 0
-    end
-end
-
-function print(astrMsg)
-    if HWstatus.debug == 1 then
-        print(astrMsg)
-        DEFAULT_CHAT_FRAME:AddMessage(astrMsg);
     end
 end
 
