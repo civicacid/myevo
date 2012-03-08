@@ -87,12 +87,15 @@ namespace LazyEvo.Plugins
 
         private void button7_Click(object sender, EventArgs e)
         {
-            while (true)
+            if (button7.Text.Equals("S研磨"))
             {
-                Thread.Sleep(100);
-                KeyLowHelper.PressKey(MicrosoftVirtualKeys.key4);
-                Thread.Sleep(12);
-                KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.key4);
+                SpyYM.start();
+                button7.Text = "E研磨";
+            }
+            else
+            {
+                SpyYM.stop();
+                button7.Text = "S研磨";
             }
         }
 
