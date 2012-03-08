@@ -1515,8 +1515,7 @@ function GetAllMailMachine:Run()
     if (select(1, GetInboxNumItems())) then
         frmMailDataText:SetText((select(1, GetInboxNumItems())))
     end
-    --GetAllMail.LeftMail = GetAllMail.LeftMail - 50
-    if MailCount <= 0 or IsMailBoxOpen() == 0 then
+    if MailCount <= 0 then
         GetAllMail:Stop()
     end
 end
