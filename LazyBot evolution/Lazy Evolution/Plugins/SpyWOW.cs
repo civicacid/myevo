@@ -1504,6 +1504,11 @@ namespace LazyEvo.Plugins
         private static void GoGo()
         {
             string CaoYao = "燃烬草";
+            if (!SpyFrame.initme())
+            {
+                Logging.Write("INIT ERROR");
+                return;
+            }
             Stopwatch swJump = new Stopwatch();
             while (Inventory.FreeBagSlots >= 3)
             {
@@ -3452,7 +3457,7 @@ namespace LazyEvo.Plugins
                     //Thread.Sleep(5000);
                     LazyHelpers.StopAll("工作结束，Kill Process");
                     OutJob.Reset();
-                    Thread.Sleep(1000);
+                    Thread.Sleep(10000);
                     SpyLogin.WOW_P.Kill();
                     JobRunning = false;
                     JobStatus = EnumJobStatus.Nothing;
