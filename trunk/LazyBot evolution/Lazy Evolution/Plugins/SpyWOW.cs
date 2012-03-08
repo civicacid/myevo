@@ -344,10 +344,10 @@ namespace LazyEvo.Plugins
                 }
                 catch (Exception e)
                 {
-                    Logging.Write("SpyFrame.initme() Error:"+e);
+                    Logging.Write("SpyFrame.initme() Error:" + e);
                 }
                 RetryCount++;
-                if (RetryCount > 10) 
+                if (RetryCount > 10)
                     return false;
                 Thread.Sleep(1000);
             }
@@ -957,7 +957,8 @@ namespace LazyEvo.Plugins
             FuMo,
             CaiFeng,
             DuanZao,
-            RongLian
+            RongLian,
+            MingWen
         }
         /// <summary>
         /// 打开技能窗口
@@ -1000,6 +1001,9 @@ namespace LazyEvo.Plugins
                             break;
                         case TradeSkills.ZhuBao:
                             SkillName = "珠宝加工";
+                            break;
+                        case TradeSkills.MingWen:
+                            SkillName = "铭文";
                             break;
                     }
                     BarSpell gg = BarMapper.GetSpellByName(SkillName);
@@ -1435,7 +1439,7 @@ namespace LazyEvo.Plugins
             // 发邮件
             logger.Add(string.Format("东西做完，发邮件"));
             if (!SpyTradeSkill.SendMain(logger, false)) return;
-            
+
         }
     }
 
@@ -1452,14 +1456,14 @@ namespace LazyEvo.Plugins
         // 写死，快点出，赚钱。
         // 分解清单从数据库
         // 按照AH计算铭文需求，然后反算需要多少墨水、多少各种羊皮纸
-        
+
         // 步骤：计算购物清单；研磨药草，当剩余空间到达指定数量时，停止研磨；
         //       根据制作雕文种类进行循环，针对每一种雕文去购买材料，
         //       循环，直到这种雕文全部完成
         //       如果需要购买材料所占用的空间大于“剩余空间-4”时，（保留4格，为了将来购物2格，制作雕文1格，剩余1格考虑）
         //       一组一组的购买墨水和羊皮纸，直到剩余空间=2，计算购买的物品数量，可以做几个雕文，留作后续循环用，
         //       做雕文，直到做完，中间如果背包剩余空间=0，则邮寄雕文
-        
+
         // 做完一种，就邮寄一批
         // 这里需要这些数据：铭文制作列表、墨水兑换列表
 
@@ -1468,7 +1472,7 @@ namespace LazyEvo.Plugins
         /// </summary>
         public static void CalcNeedItem()
         {
-            
+
         }
     }
 
@@ -1487,12 +1491,15 @@ namespace LazyEvo.Plugins
         public static bool RUNNING;
         public static bool WORKING;
         private static int AFK_Minutes;
+        private static string DoSkill;
 
         public static bool initme(string Skill)
         {
             RUNNING = true;
             WORKING = false;
             logger.clear();
+
+            DoSkill = Skill;
 
             if (!SpyFrame.initme())
             {
@@ -1583,10 +1590,29 @@ namespace LazyEvo.Plugins
             }
 
             // 打开技能窗口
-            if (!SpyTradeSkill.OpenTradeSkillWindow(SpyTradeSkill.TradeSkills.LianJin))
+            switch (DoSkill)
             {
-                logger.Add("没有打开技能窗口，失败啊。。。");
-                return;
+                case "LJ":
+                    if (!SpyTradeSkill.OpenTradeSkillWindow(SpyTradeSkill.TradeSkills.LianJin))
+                    {
+                        logger.Add("没有打开技能窗口，失败啊。。。");
+                        return;
+                    }
+                    break;
+                case "CF":
+                    if (!SpyTradeSkill.OpenTradeSkillWindow(SpyTradeSkill.TradeSkills.CaiFeng))
+                    {
+                        logger.Add("没有打开技能窗口，失败啊。。。");
+                        return;
+                    }
+                    break;
+                case "MW":
+                    if (!SpyTradeSkill.OpenTradeSkillWindow(SpyTradeSkill.TradeSkills.MingWen))
+                    {
+                        logger.Add("没有打开技能窗口，失败啊。。。");
+                        return;
+                    }
+                    break;
             }
 
             Stopwatch jump = new Stopwatch();
@@ -1718,7 +1744,6 @@ namespace LazyEvo.Plugins
                             KeyHelper.SendKey("space");
                             Thread.Sleep(3000);
                         }
-
 
                     }
 
@@ -1937,6 +1962,7 @@ namespace LazyEvo.Plugins
         public static DataTable Items = new DataTable();
         public static bool RUNNING;
         public static bool WORKING;
+        private static int AFK_Minutes;
 
         /********              需要设置的内容                 ******************/
         // 邮箱点
@@ -1955,6 +1981,12 @@ namespace LazyEvo.Plugins
         public static bool initme()
         {
             WORKING = false;
+            // 获取暂离时间
+            string rtv = SpyDB.GetParam("5");
+            if (string.IsNullOrWhiteSpace(rtv))
+                AFK_Minutes = 4;
+            else
+                AFK_Minutes = Convert.ToInt32(rtv);
 
             // 设置拍卖师的名称
             if (string.IsNullOrWhiteSpace(LazySettings.AHer))
@@ -2152,6 +2184,8 @@ namespace LazyEvo.Plugins
             Thread.Sleep(2000);
 
             // 上货。 遍历待拍卖物品，扫描物品最低价格，最低价格不低于起拍价格，就上架
+            Stopwatch swJump = new Stopwatch();
+            swJump.Restart();
             logger.Add(string.Format("开始上货"));
             foreach (DataRow dr in Items.Rows)
             {
@@ -2169,6 +2203,15 @@ namespace LazyEvo.Plugins
                 {
                     logger.Add("背包里面没有物品：" + ahitem);
                     continue;
+                }
+
+                // 跳，防止AFK
+                if (swJump.Elapsed.Minutes > AFK_Minutes)
+                {
+                    KeyLowHelper.PressKey(MicrosoftVirtualKeys.Space);
+                    KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.Space);
+                    Thread.Sleep(3000);
+                    swJump.Restart();
                 }
 
                 // 扫描最低价格
@@ -3191,12 +3234,12 @@ namespace LazyEvo.Plugins
                         Thread.Sleep(2000);
                         //ObjectManager.MakeReady();
                         Logging.Write(string.Format("Pid : [{0}]", SpyLogin.WOW_P.Id));
+                        ObjectManager.Initialize(SpyLogin.WOW_P.Id);
+                        if (!ObjectManager.Initialized)
+                        {
+                            Thread.Sleep(5000);
                             ObjectManager.Initialize(SpyLogin.WOW_P.Id);
-                            if (!ObjectManager.Initialized)
-                            {
-                                Thread.Sleep(5000);
-                                ObjectManager.Initialize(SpyLogin.WOW_P.Id);
-                            }
+                        }
                         //Hook.DoHook();
                         Thread.Sleep(2000);
                         OutJob.Reset();
