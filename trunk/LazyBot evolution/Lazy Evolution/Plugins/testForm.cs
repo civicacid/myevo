@@ -438,5 +438,10 @@ namespace LazyEvo.Plugins
                 SpyLJZH.start();
         }
 
+        private void button9_Click(object sender, EventArgs e)
+        {
+            Logging.Write("战斗点数为：" + ObjectManager.MyPlayer.ComboPoints);
+        }
+
     }
 }
