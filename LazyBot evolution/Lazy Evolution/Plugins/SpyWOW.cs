@@ -1467,12 +1467,113 @@ namespace LazyEvo.Plugins
         // 做完一种，就邮寄一批
         // 这里需要这些数据：铭文制作列表、墨水兑换列表
 
-        /// <summary>
-        /// 计算购物清单 BuyItems<string, int>
-        /// </summary>
-        public static void CalcNeedItem()
+        private static Thread _thread;
+        public static void start()
         {
+            if (_thread == null || !_thread.IsAlive)
+            {
+                _thread = new Thread(GoGo);
+                _thread.Name = "炼金转化/裁缝";
+                _thread.IsBackground = true;
+                // 设置线程状态为单线程
+                try
+                {
+                    _thread.TrySetApartmentState(ApartmentState.STA);
+                }
+                catch (Exception ex)
+                {
+                    Logging.Write("启动失败，线程设置出现错误，原因是：" + ex.ToString());
+                    return;
+                }
+                _thread.Start();
+                Logging.Write(_thread.Name + " 开始了。。。。。");
 
+            }
+        }
+
+        public static void stop()
+        {
+            if (_thread == null) return;
+            if (_thread.IsAlive)
+            {
+                _thread.Abort();
+                _thread = null;
+            }
+        }
+
+        private static void GoGo()
+        {
+            string CaoYao = "燃烬草";
+            Stopwatch swJump = new Stopwatch();
+            while (Inventory.FreeBagSlots >= 3)
+            {
+                // 看看 草药情况
+                if (!SpyFrame.lua_SetDispCountItemName(CaoYao))
+                {
+                    Logging.Write("在执行SetDispCountItemName时出错");
+                    return;
+                }
+
+                Thread.Sleep(1000);
+
+                // 记录物品数量
+                Dictionary<string, int> ItemsInBagAndMail = SpyFrame.GetDispCountItemCount();
+                while (ItemsInBagAndMail["BAG"] > 5)
+                {
+                    KeyLowHelper.PressKey(MicrosoftVirtualKeys.key4);
+                    KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.key4);
+                    Thread.Sleep(500);
+                    ItemsInBagAndMail = SpyFrame.GetDispCountItemCount();
+
+                    if (swJump.Elapsed.Minutes > 4)
+                    {
+                        KeyLowHelper.PressKey(MicrosoftVirtualKeys.Space);
+                        KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.Space);
+                        swJump.Restart();
+                    }
+                }
+
+                if (ItemsInBagAndMail["MAIL"] < 5)
+                {
+                    Logging.Write("弄完了");
+                    return;
+                }
+                // 拿草药
+                if (!SpyFrame.lua_GetMAILAsItem(CaoYao, Inventory.FreeBagSlots - 5))
+                {
+                    Logging.Write("从邮箱里面拿  " + CaoYao + " 失败");
+                    return;
+                }
+
+                if (Inventory.FreeBagSlots <= 5)
+                {
+                    // 做墨水
+                    if (!SpyFrame.lua_SetDispCountItemName("烬色染料"))
+                    {
+                        Logging.Write("在执行SetDispCountItemName时出错");
+                        return;
+                    }
+                    Thread.Sleep(1000);
+                    ItemsInBagAndMail = SpyFrame.GetDispCountItemCount();
+                    while (ItemsInBagAndMail["BAG"] > 1)
+                    {
+                        if (!SpyTradeSkill.DoItems("秋闲墨水"))
+                        {
+                            Logging.Write("做物品失败");
+                            return;
+                        }
+                        Thread.Sleep(500);
+                        ItemsInBagAndMail = SpyFrame.GetDispCountItemCount();
+
+                        if (swJump.Elapsed.Minutes > 4)
+                        {
+                            KeyLowHelper.PressKey(MicrosoftVirtualKeys.Space);
+                            KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.Space);
+                            swJump.Restart();
+                        }
+                    }
+                }
+            }
         }
     }
 
