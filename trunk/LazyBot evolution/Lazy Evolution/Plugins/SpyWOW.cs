@@ -286,6 +286,9 @@ namespace LazyEvo.Plugins
                 Logging.Write("不能访问WOW进程！！" + e);
                 return;
             }
+
+            Logging.Write("等待InGame标志");
+
             while (!ObjectManager.InGame)
             {
                 Thread.Sleep(100);
