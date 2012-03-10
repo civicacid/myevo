@@ -347,6 +347,11 @@ namespace LazyLib.SPY
             return result;
         }
 
+        /// <summary>
+        /// 获得制作列表，用于很多技能，除却 珠宝加工
+        /// </summary>
+        /// <param name="Skill">技能名称(CF、MW、LJ)</param>
+        /// <returns></returns>
         public static DataTable GetLianJin(string Skill)
         {
             if (string.IsNullOrWhiteSpace(Skill))
@@ -367,6 +372,27 @@ namespace LazyLib.SPY
                 return null;
             }
             return dt;
+        }
+
+        public static void SaveCharGold(string char_name, int gold)
+        {
+            if (string.IsNullOrWhiteSpace(char_name))
+            {
+                Logging.Write("角色名字为空");
+                return;
+            }
+
+            if (gold == null)
+            {
+                Logging.Write("金币数量为空");
+                return;
+            }
+
+            string sql = string.Format("begin gold('{0}',{1}); end;", char_name, gold);
+            if (!OraData.execSQLCmd(sql))
+            {
+                Logging.Write(string.Format("处理{0}时，出现错误", sql));
+            }
         }
 
     }

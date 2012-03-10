@@ -177,6 +177,11 @@ insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_
 insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','铭文学专家四','坚固的石头' ,400,10000,10,20,0);
 insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','铭文学专家四','劣质的石头' ,400,10000,10,20,0);
 insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','铭文学专家四','粗糙的石头' ,400,10000,10,20,0);
+insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','铭文学专家四','动燃空气' ,100000,1000000,10,20,0);
+insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','铭文学专家四','动燃生命' ,50000,100000,10,20,0);
+insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','铭文学专家四','动燃之水' ,70000,100000,10,20,0);
+insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','铭文学专家四','动燃火焰' ,70000,100000,10,20,0);
+insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','铭文学专家四','动燃之土' ,10000,100000,10,20,0);
 
 insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','蓝装售卖','基岩之碧玉指环' ,400000,1200000,2,1,0);
 

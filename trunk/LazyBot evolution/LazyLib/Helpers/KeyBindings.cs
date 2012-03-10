@@ -44,7 +44,8 @@ namespace LazyLib.Helpers
                 if (key.Length > 0 && command.Length > 0)
                 {
                     var newKey = new KeyBinding { Command = command, Key = key };
-                   // Logging.Write(string.Format("Command: {0} Key {1}", command, key));
+                    // 记得加上注释 
+                    Logging.Write(string.Format("Command: {0} Key {1}", command, key));
                     result.Add(newKey);
                 }
                 nextBind = Memory.Read<uint>(nextBind + Memory.Read<uint>(numOfBindings + (uint)Pointers.KeyBinding.Next) + 4);

@@ -1381,7 +1381,10 @@ namespace LazyEvo.Plugins
                             }
 
                             // 聚合物品
-                            SpyFrame.ExecSimpleLua("/use 次级天界精华");
+                            //SpyFrame.ExecSimpleLua("/use 次级天界精华");
+                            //SpyFrame.ExecSimpleLua("/use 小块天界碎片");
+                            KeyLowHelper.PressKey(MicrosoftVirtualKeys.key5);
+                            KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.key5);
 
                             HasDone++;
                             CountJump++;
@@ -3319,6 +3322,7 @@ namespace LazyEvo.Plugins
                 }
 
                 Thread.Sleep(500);
+                Logging.Write("运行中");
             }
         }
 
@@ -3461,6 +3465,8 @@ namespace LazyEvo.Plugins
                     LazyHelpers.StopAll("工作结束，Kill Process");
                     OutJob.Reset();
                     Thread.Sleep(10000);
+                    if (!string.IsNullOrWhiteSpace(ObjectManager.MyPlayer.Name))
+                        SpyDB.SaveCharGold(ObjectManager.MyPlayer.Name, ObjectManager.MyPlayer.CoinAge);
                     SpyLogin.WOW_P.Kill();
                     JobRunning = false;
                     JobStatus = EnumJobStatus.Nothing;
