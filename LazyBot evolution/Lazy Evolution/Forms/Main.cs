@@ -49,7 +49,7 @@ namespace LazyEvo.Forms
 {
     public partial class Main : Office2007Form
     {
-        private const string LazyVersion = "1.5.2";
+        private const string LazyVersion = "";
         internal static CombatEngine CombatEngine;
         internal static ILazyEngine EngineHandler;
         internal static bool OneInstance;
@@ -85,7 +85,7 @@ namespace LazyEvo.Forms
 
         private void MainLoad(object sender, EventArgs e)
         {
-            LBVersion.Text = string.Format("LazyBot Evolution V{0}", LazyVersion);
+            LBVersion.Text = string.Format("LazyBot", LazyVersion);
             expandableSplitter1.Expanded = false;
             DoLoad.Load();
             LoadCustomClasses();
