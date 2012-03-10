@@ -57,11 +57,7 @@ namespace LazyEvo
                 File.Move(ourDirectory + "\\Logs\\LogFile.txt", ourDirectory + "\\Logs\\OldLogFile.txt");
             }
             LazyForms.Load();
-            //Load license settings
-            //Start update check
-            // var check = new Thread(CheckUpdate.CheckForUpdate) {IsBackground = true};
-            //  check.Start();
-            //Start license check
+
             LazySettings.LoadSettings();
             ReloggerSettings.LoadSettings();
             //if (LazySettings.FirstRun)

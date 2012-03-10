@@ -255,6 +255,8 @@ namespace LazyEvo.Plugins
         {
             RunWow();
 
+            Logging.Write(string.Format("运行WOW成功，PID={0}",WOW_P.Id));
+
             if (!Memory.OpenProcess(WOW_P.Id))
             {
                 Logging.Write("不能访问WOW进程！！");
@@ -304,6 +306,7 @@ namespace LazyEvo.Plugins
             WOW_P = new Process();
             WOW_P.StartInfo.FileName = exeFilePath;
             WOW_P.Start();
+            
             while (!WOW_P.WaitForInputIdle()) { Thread.Sleep(100); };
         }
     }
