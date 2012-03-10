@@ -244,6 +244,17 @@ comment on column char_lianjin.do_order          is '制作顺序';
 comment on column char_lianjin.dischant          is '是否分解';
 comment on column char_lianjin.mail              is '是否邮寄';
 
+-- -----------------------------------------------------
+-- table char_gold  人物金币数量
+-- -----------------------------------------------------
+create table char_gold (
+   char_name         varchar(100)                       not null,           -- 角色名称
+   gold              number(16)                         not null,           -- 金币
+   constraint pk_char_gold primary key (char_name)
+);
+comment on table char_gold is '人物金币数量';
+comment on column char_gold.char_name is '角色名称';
+comment on column char_gold.gold is '金币';
 
 -- -----------------------------------------------------
 -- Sequence 公用序列
@@ -387,6 +398,24 @@ BEGIN
        p_item_prize,
        SYSDATE);
 
+   COMMIT;
+END;
+/
+
+CREATE OR REPLACE PROCEDURE gold
+(
+   p_char_name      STRING,
+   p_gold           INTEGER
+) IS
+   v_i_count        integer;
+BEGIN
+    
+    select count(*) into v_i_count from char_gold where char_name = p_char_name;
+    if v_i_count > 0 then
+        update char_gold set gold = p_gold where char_name = p_char_name;
+    else
+        insert into char_gold (char_name, gold) values (p_char_name, p_gold);
+    end if;
    COMMIT;
 END;
 /

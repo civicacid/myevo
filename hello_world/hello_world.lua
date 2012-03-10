@@ -1568,10 +1568,11 @@ function FindGreenEquip(astrGemName)
             if (item) then
                 itemname = (select(1,GetItemInfo(item)))
                 if (string.find(itemname, astrGemName)) then
-                    if ((select(3,GetItemInfo(item))) == 2) then
+                    -- 蓝色品质是2
+                    --if ((select(3,GetItemInfo(item))) == 2) then
                         SendData(bag .. "$" ..slot)
                         return 
-                    end
+                    --end
                 end
             end
         end
