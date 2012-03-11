@@ -101,6 +101,60 @@ namespace LazyEvo.Plugins
 
         private void button8_Click(object sender, EventArgs e)
         {
+            Thread _thread;
+            _thread = new Thread(AZRUN);
+            _thread.Name = "AZ_RUN";
+            _thread.IsBackground = true;
+            // 设置线程状态为单线程
+            try
+            {
+                _thread.TrySetApartmentState(ApartmentState.STA);
+            }
+            catch (Exception ex)
+            {
+                Logging.Write("启动失败，线程设置出现错误，原因是：" + ex.ToString());
+                return;
+            }
+            _thread.Start();
+
+            Thread _threadDead;
+            _threadDead = new Thread(CheckDead);
+            _threadDead.Name = "AZ_CheckDead";
+            _threadDead.IsBackground = true;
+            // 设置线程状态为单线程
+            try
+            {
+                _threadDead.TrySetApartmentState(ApartmentState.STA);
+            }
+            catch (Exception ex)
+            {
+                Logging.Write("启动失败，线程设置出现错误，原因是：" + ex.ToString());
+                return;
+            }
+            _threadDead.Start();
+
+            //Thread _DeadThread;
+        }
+
+        private void CheckDead()
+        {
+            //while (true)
+            //{
+            //    if (ObjectManager.MyPlayer.IsDead)
+            //    {
+            //        Process[] wcc1 = Process.GetProcessesByName("Wow");
+            //        foreach (Process proc in wcc1)
+            //        {
+            //            proc.Kill();
+            //            Thread.Sleep(1000);
+            //        }
+            //    }
+            //}
+            //return;
+        }
+
+        private void AZRUN()
+        {
 
             BarMapper.MapBars();
             KeyHelper.LoadKeys();
@@ -162,6 +216,7 @@ namespace LazyEvo.Plugins
                 Thread.Sleep(1000);
 
                 // 定位一个
+                int killcount = 0;
                 foreach (string ename in EmName)
                 {
                     PUnit emUnit = em[ename];
@@ -171,110 +226,176 @@ namespace LazyEvo.Plugins
                         BarMapper.CastSpell("精灵之火（野性）");
                         Thread.Sleep(100);
                     }
-                    Thread.Sleep(1000);
+                    //Thread.Sleep(500);
+
+                    // 猛虎之怒
+                    if (BarMapper.IsSpellReadyByName("猛虎之怒"))
+                    {
+                        BarMapper.CastSpell("猛虎之怒");
+                        Thread.Sleep(10);
+                    }
+
+                    // 树皮术
+                    if (BarMapper.IsSpellReadyByName("树皮术"))
+                    {
+                        BarMapper.CastSpell("树皮术");
+                        Thread.Sleep(10);
+                    }
+
 
                     // 等待怪过来
-                    while (emUnit.Location.DistanceToSelf2D > 5) { };
+                    while (emUnit.Location.DistanceToSelf2D > 5)
+                    {
+                        if (killcount > 0) BarMapper.CastSpell("横扫");
+                    };
                     emUnit.Location.Face();
 
                     // 杀，直到怪死
                     int count = 0;
-                    while (emUnit.IsAlive)
+                    Logging.Write("血量：" + emUnit.Health + " 怪物名称：" + emUnit.Name + " 是死是活：" + emUnit.IsAlive);
+                    int UHealth = 0;
+                    UHealth = emUnit.Health;
+                    while (UHealth == -1) UHealth = emUnit.Health;
+                    while (UHealth > 0)
                     {
-                        Thread.Sleep(100);
-                        if (ObjectManager.MyPlayer.IsCasting) { continue; }
-
-                        //调整朝向
-                        if (!emUnit.Location.IsFacing(0.3f)) emUnit.Location.Face();
-
-                        //Logging.Write("Count is " + count.ToString());
-
-                        // 检查自己的buff
-                        while (ObjectManager.MyPlayer.HasBuff(MyBadBuff)) { };
-
-                        // 猛虎之怒
-                        if (BarMapper.IsSpellReadyByName("猛虎之怒"))
+                        Thread.Sleep(10);
+                        if (!ObjectManager.MyPlayer.IsCasting)
                         {
-                            BarMapper.CastSpell("猛虎之怒");
-                            Thread.Sleep(100);
-                            continue;
-                        }
 
-                        // 树皮术
-                        if (BarMapper.IsSpellReadyByName("树皮术"))
+                            //调整朝向
+                            if (!emUnit.Location.IsFacing(0.3f)) emUnit.Location.Face();
+
+                            //Logging.Write("Count is " + count.ToString());
+
+                            // 检查自己的buff
+                            while (ObjectManager.MyPlayer.HasBuff(MyBadBuff)) { };
+
+                            // 猛虎之怒
+                            if (BarMapper.IsSpellReadyByName("猛虎之怒"))
+                            {
+                                BarMapper.CastSpell("猛虎之怒");
+                                Thread.Sleep(10);
+                            }
+
+                            // 树皮术
+                            if (BarMapper.IsSpellReadyByName("树皮术"))
+                            {
+                                BarMapper.CastSpell("树皮术");
+                                Thread.Sleep(10);
+                            }
+
+                            // 凶猛撕咬--终结技
+                            //if (count == 4 && BarMapper.IsSpellReadyByName("凶猛撕咬"))
+                            if (count > 4)
+                            {
+                                //BarMapper.CastSpell("凶猛撕咬");
+                                KeyLowHelper.PressKey(MicrosoftVirtualKeys.LeftShift);
+                                KeyLowHelper.PressKey(MicrosoftVirtualKeys.key1);
+                                KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.key1);
+                                KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.LeftShift);
+                                Thread.Sleep(10);
+                                KeyLowHelper.PressKey(MicrosoftVirtualKeys.key3);
+                                KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.key3);
+                                //Thread.Sleep(10);
+                                count = 0;
+                            }
+
+                            //// 裂伤
+                            //if (BarMapper.IsSpellReadyByName("裂伤") && !emUnit.HasBuff("裂伤"))
+                            //{
+                            //    BarMapper.CastSpell("裂伤");
+                            //    Thread.Sleep(10);
+                            //    count++;
+                            //}
+
+                            // 斜掠
+                            if (BarMapper.IsSpellReadyByName("裂伤"))
+                            {
+                                //BarMapper.CastSpell("裂伤");
+                                KeyLowHelper.PressKey(MicrosoftVirtualKeys.LeftShift);
+                                KeyLowHelper.PressKey(MicrosoftVirtualKeys.key1);
+                                KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.key1);
+                                KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.LeftShift);
+                                Thread.Sleep(10);
+                                KeyLowHelper.PressKey(MicrosoftVirtualKeys.key2);
+                                KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.key2);
+                                count++;
+                                //Thread.Sleep(10);
+                            }
+                            Logging.Write("血量：" + emUnit.Health);
+                        }
+                        UHealth = emUnit.Health;
+                        while (UHealth == -1)
                         {
-                            BarMapper.CastSpell("树皮术");
-                            Thread.Sleep(100);
-                            continue;
+                            UHealth = emUnit.Health;
+                            if (UHealth == 0)
+                            {
+                                int HealthTry1 = emUnit.Health;
+                                int HealthTry2 = emUnit.Health;
+                                UHealth = (HealthTry1 >= HealthTry2 ? HealthTry1 : HealthTry2);
+                            }
                         }
-
-                        // 凶猛撕咬--终结技
-                        if (count == 4 && BarMapper.IsSpellReadyByName("凶猛撕咬"))
-                        {
-                            BarMapper.CastSpell("凶猛撕咬");
-                            Thread.Sleep(100);
-                            count = 0;
-                            continue;
-                        }
-
-                        // 裂伤
-                        if (BarMapper.IsSpellReadyByName("裂伤") && !emUnit.HasBuff("裂伤"))
-                        {
-                            BarMapper.CastSpell("裂伤");
-                            Thread.Sleep(100);
-                            count++;
-                            continue;
-                        }
-
-                        // 斜掠
-                        if (BarMapper.IsSpellReadyByName("斜掠"))
-                        {
-                            BarMapper.CastSpell("斜掠");
-                            count++;
-                            Thread.Sleep(100);
-                            continue;
-                        }
-
                         if (ObjectManager.MyPlayer.IsDead) return;
                     }
+                    killcount++;
                 }
 
                 while (ObjectManager.MyPlayer.HasBuff(MyBadBuff)) { };
 
                 // 一直横扫，直到全死
-                while (true)
-                {
-                    if (ObjectManager.MyPlayer.HasBuff(MyBadBuff)) continue;
-                    if (BarMapper.IsSpellReadyByName("生存本能")) { BarMapper.CastSpell("生存本能"); }
-                    if (ObjectManager.MyPlayer.IsDead) return;
-                    break;
-                }
-                while (true)
-                {
-                    if (ObjectManager.MyPlayer.HasBuff(MyBadBuff)) continue;
-                    if (BarMapper.IsSpellReadyByName("狂暴")) { BarMapper.CastSpell("狂暴"); }
-                    if (ObjectManager.MyPlayer.IsDead) return;
-                    break;
-                }
+                //while (true)
+                //{
+                //    if (!ObjectManager.MyPlayer.HasBuff(MyBadBuff))
+                //    {
+                //        if (BarMapper.IsSpellReadyByName("生存本能")) { BarMapper.CastSpell("生存本能"); }
+                //        if (ObjectManager.MyPlayer.IsDead) return;
+                //        break;
+                //    }
+                //}
+                //while (true)
+                //{
+                //    if (!ObjectManager.MyPlayer.HasBuff(MyBadBuff))
+                //    {
+                //        if (BarMapper.IsSpellReadyByName("狂暴")) { BarMapper.CastSpell("狂暴"); }
+                //        if (ObjectManager.MyPlayer.IsDead) return;
+                //        break;
+                //    }
+                //}
+                KeyLowHelper.PressKey(MicrosoftVirtualKeys.LeftShift);
+                KeyLowHelper.PressKey(MicrosoftVirtualKeys.key1);
+                KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.key1);
+                KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.LeftShift);
+                Thread.Sleep(10);
+                KeyLowHelper.PressKey(MicrosoftVirtualKeys.key4);
+                KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.key4);
+                Thread.Sleep(10);
+                KeyLowHelper.PressKey(MicrosoftVirtualKeys.key5);
+                KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.key5);
                 //while (BarMapper.IsSpellReadyByName("狂暴")) { BarMapper.CastSpell("狂暴"); break; }
                 // 加点血
                 while (ObjectManager.MyPlayer.Health < 30)
                 {
-                    if (ObjectManager.MyPlayer.HasBuff(MyBadBuff)) continue;
-                    if (BarMapper.IsSpellReadyByName("回春术")) { BarMapper.CastSpell("回春术"); break; }
-                    if (ObjectManager.MyPlayer.IsDead) return;
+                    if (!ObjectManager.MyPlayer.HasBuff(MyBadBuff))
+                    {
+                        if (BarMapper.IsSpellReadyByName("回春术")) { BarMapper.CastSpell("回春术"); break; }
+                        if (ObjectManager.MyPlayer.IsDead) return;
+                    }
                 }
                 while (ObjectManager.MyPlayer.Health < 30)
                 {
-                    if (ObjectManager.MyPlayer.HasBuff(MyBadBuff)) continue;
-                    if (BarMapper.IsSpellReadyByName("愈合")) { BarMapper.CastSpell("愈合"); break; }
-                    if (ObjectManager.MyPlayer.IsDead) return;
+                    if (!ObjectManager.MyPlayer.HasBuff(MyBadBuff))
+                    {
+                        if (BarMapper.IsSpellReadyByName("愈合")) { BarMapper.CastSpell("愈合"); break; }
+                        if (ObjectManager.MyPlayer.IsDead) return;
+                    }
                 }
                 while (!ObjectManager.MyPlayer.HasBuff("猎豹形态"))
                 {
-                    if (ObjectManager.MyPlayer.HasBuff(MyBadBuff)) continue;
-                    if (BarMapper.IsSpellReadyByName("猎豹形态")) { BarMapper.CastSpell("猎豹形态"); break; }
-                    if (ObjectManager.MyPlayer.IsDead) return;
+                    if (!ObjectManager.MyPlayer.HasBuff(MyBadBuff))
+                    {
+                        if (BarMapper.IsSpellReadyByName("猎豹形态")) { BarMapper.CastSpell("猎豹形态"); break; }
+                        if (ObjectManager.MyPlayer.IsDead) return;
+                    }
                 }
 
                 boss.Face();
@@ -293,11 +414,30 @@ namespace LazyEvo.Plugins
                     }
                     if (!TargetME) break;
                     emO.Face();
-                    if (!ObjectManager.MyPlayer.HasBuff("原始疯狂") && BarMapper.IsSpellReadyByName("猛虎之怒")) BarMapper.CastSpell("猛虎之怒");
-                    if (BarMapper.IsSpellReadyByName("树皮术")) BarMapper.CastSpell("树皮术");
-                    if (!BarMapper.IsSpellReadyByName("横扫")) continue;
-                    BarMapper.CastSpell("横扫");
-                    Thread.Sleep(100);
+                    KeyLowHelper.PressKey(MicrosoftVirtualKeys.LeftShift);
+                    KeyLowHelper.PressKey(MicrosoftVirtualKeys.key5);
+                    KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.key5);
+                    KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.LeftShift);
+                    Thread.Sleep(10);
+                    KeyLowHelper.PressKey(MicrosoftVirtualKeys.key2);
+                    KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.key2);
+                    Thread.Sleep(10);
+                    KeyLowHelper.PressKey(MicrosoftVirtualKeys.key4);
+                    KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.key4);
+                    Thread.Sleep(10);
+
+                    KeyLowHelper.PressKey(MicrosoftVirtualKeys.LeftShift);
+                    KeyLowHelper.PressKey(MicrosoftVirtualKeys.key2);
+                    KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.key2);
+                    KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.LeftShift);
+                    Thread.Sleep(10);
+                    KeyLowHelper.PressKey(MicrosoftVirtualKeys.key5);
+                    KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.key5);
+                    Thread.Sleep(10);
+
+                    //BarMapper.CastSpell("猛虎之怒");
+                    //BarMapper.CastSpell("树皮术");
+                    //BarMapper.CastSpell("横扫");
                     if (ObjectManager.MyPlayer.IsDead) return;
                 }
 
@@ -349,7 +489,12 @@ namespace LazyEvo.Plugins
                     if (ObjectManager.MyPlayer.IsDead) return;
                 }
 
+                while (ObjectManager.MyPlayer.IsInCombat) { };
                 // 给自己加血
+                KeyHelper.SendLuaOverChat("/use 黄油面包卷");
+                Thread.Sleep(1000);
+                while (ObjectManager.MyPlayer.HasBuff("进食") || ObjectManager.MyPlayer.Health < 100) { };
+
                 while (ObjectManager.MyPlayer.Health < 100 && ObjectManager.MyPlayer.ManaPoints > 5590)
                 {
                     // 治疗之触
@@ -360,8 +505,6 @@ namespace LazyEvo.Plugins
                     }
                     if (ObjectManager.MyPlayer.IsDead) return;
                 }
-                Thread.Sleep(200);
-                KeyHelper.SendLuaOverChat("/use 魔法酪饼");
 
                 // 等待一段时间，直到boss重新出现
                 Thread.Sleep(1000);
@@ -409,12 +552,6 @@ namespace LazyEvo.Plugins
                 }
             }
 
-            Process[] wcc1 = Process.GetProcessesByName("Wow");
-            foreach (Process proc in wcc1)
-            {
-                proc.Kill();
-                Thread.Sleep(1000);
-            }
         }
 
         private void button11_Click(object sender, EventArgs e)
@@ -441,6 +578,44 @@ namespace LazyEvo.Plugins
         private void button9_Click(object sender, EventArgs e)
         {
             Logging.Write("战斗点数为：" + ObjectManager.MyPlayer.ComboPoints);
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            Thread _thread;
+            _thread = new Thread(MutiLogin);
+            _thread.Name = "MutiLogin";
+            _thread.IsBackground = true;
+            // 设置线程状态为单线程
+            try
+            {
+                _thread.TrySetApartmentState(ApartmentState.STA);
+            }
+            catch (Exception ex)
+            {
+                Logging.Write("启动失败，线程设置出现错误，原因是：" + ex.ToString());
+                return;
+            }
+            _thread.Start();
+        }
+
+        private void MutiLogin()
+        {
+            string[] charid;
+            charid = txtMutiLogin.Text.Split('#');
+
+            for (int iLoop = 0; iLoop < charid.Length; iLoop++)
+            {
+                if (SpyLogin.initme(charid[iLoop]))
+                {
+                    SpyLogin.start();
+                    while (true)
+                    {
+                        if (SpyLogin.IsOK) break;
+                        Thread.Sleep(1000);
+                    }
+                }
+            }
         }
 
     }

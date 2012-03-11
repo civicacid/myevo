@@ -177,6 +177,7 @@ insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_
 insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','铭文学专家四','坚固的石头' ,400,10000,10,20,0);
 insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','铭文学专家四','劣质的石头' ,400,10000,10,20,0);
 insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','铭文学专家四','粗糙的石头' ,400,10000,10,20,0);
+insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','铭文学专家四','厚重的石头' ,400,10000,10,20,0);
 insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','铭文学专家四','动燃空气' ,100000,1000000,10,20,0);
 insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','铭文学专家四','动燃生命' ,50000,100000,10,20,0);
 insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','铭文学专家四','动燃之水' ,70000,100000,10,20,0);
@@ -303,5 +304,21 @@ insert into char_lianjin (server,char_name,skill,lianjin_itemname,do_order,disch
 insert into char_lianjin (server,char_name,skill,lianjin_itemname,do_order,dischant,mail) values ('爱斯特纳','七枝梅','LJ','转化：生命元素',1,0,1);
 insert into char_lianjin (server,char_name,skill,lianjin_itemname,do_order,dischant,mail) values ('爱斯特纳','伤人无数','LJ','转化：生命元素',1,0,1);
 insert into char_lianjin (server,char_name,skill,lianjin_itemname,do_order,dischant,mail) values ('爱斯特纳','spyman','LJ','转化：生命元素',1,0,1);
+insert into char_lianjin (server,char_name,skill,lianjin_itemname,do_order,dischant,mail) values ('爱斯特纳','spyman','MW','诺森德铭文研究',1,0,1);
+insert into char_lianjin (server,char_name,skill,lianjin_itemname,do_order,dischant,mail) values ('爱斯特纳','spyman','MW','小型雕文研究',1,0,1);
+insert into char_lianjin (server,char_name,skill,lianjin_itemname,do_order,dischant,mail) values ('爱斯特纳','杀贝贝熊','MW','诺森德铭文研究',1,0,1);
+insert into char_lianjin (server,char_name,skill,lianjin_itemname,do_order,dischant,mail) values ('爱斯特纳','杀贝贝熊','MW','小型雕文研究',1,0,1);
 -----------------------------------------------------------------------------------------------------------------------------------
 
+
+
+
+
+-- 按照时间和机器排序计划
+select * from autologin t where t.everyday=1 order by machineid,to_char(starttime,'hh24:mi')
+
+-- 查询拍卖情况
+select * from ahitem t order by char_name,item_name
+
+-- 各个角色金币数量
+select * from char_gold t

@@ -255,7 +255,7 @@ namespace LazyEvo.Plugins
         {
             RunWow();
 
-            Logging.Write(string.Format("运行WOW成功，PID={0}",WOW_P.Id));
+            Logging.Write(string.Format("运行WOW成功，PID={0}", WOW_P.Id));
 
             if (!Memory.OpenProcess(WOW_P.Id))
             {
@@ -306,7 +306,7 @@ namespace LazyEvo.Plugins
             WOW_P = new Process();
             WOW_P.StartInfo.FileName = exeFilePath;
             WOW_P.Start();
-            
+
             while (!WOW_P.WaitForInputIdle()) { Thread.Sleep(100); };
         }
     }
@@ -3294,6 +3294,9 @@ namespace LazyEvo.Plugins
                                 case "LJ":
                                     JobDescribe = "炼金转化";
                                     break;
+                                case "MW":
+                                    JobDescribe = "铭文";
+                                    break;
                             }
                             RunMiniute = Convert.ToInt32(dr["runtime"]);
                             SpyDB.WriteLog("计划任务", string.Format("获得任务，角色：{0}，任务描述：{1}，持续时间：{2}", char_name, JobDescribe, RunMiniute));
@@ -3325,7 +3328,7 @@ namespace LazyEvo.Plugins
                 }
 
                 Thread.Sleep(500);
-                Logging.Write("运行中");
+                //Logging.Write("运行中");
             }
         }
 
@@ -3389,6 +3392,9 @@ namespace LazyEvo.Plugins
                         case "LJ":
                             if (SpyLJZH.initme("LJ")) SpyLJZH.start();
                             break;
+                        case "MW":
+                            if (SpyLJZH.initme("MW")) SpyLJZH.start();
+                            break;
                     }
                     SpyDB.WriteLog("计划任务", string.Format("任务开始工作，角色：{0}，任务描述：{1}，持续时间：{2}", char_name, JobDescribe, RunMiniute));
                     StatusStartTime = DateTime.Now;
@@ -3444,6 +3450,7 @@ namespace LazyEvo.Plugins
                             if (SpyCJ.RUNNING) return;
                             break;
                         case "LJ":          //炼金
+                        case "MW":
                             if (SpyLJZH.WORKING) OutJob.Restart();
                             if (!SpyLJZH.WORKING && OutJob.Elapsed.Minutes > RUN_OUT_MIN_WORK)
                             //if (string.Format("{0:yyyy-MM-dd HH:mm}", StatusStartTime.AddMinutes(RUN_OUT_MIN_WORK)).Equals(string.Format("{0:yyyy-MM-dd HH:mm}", DateTime.Now)))
