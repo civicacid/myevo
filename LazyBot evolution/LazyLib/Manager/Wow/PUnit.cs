@@ -72,7 +72,7 @@ namespace LazyLib.Wow
             {
                 float wowFacing =
                     MoveHelper.NegativeAngle(
-                        (float) Math.Atan2((Y - ObjectManager.MyPlayer.Y), (X - ObjectManager.MyPlayer.X)));
+                        (float)Math.Atan2((Y - ObjectManager.MyPlayer.Y), (X - ObjectManager.MyPlayer.X)));
                 return wowFacing;
             }
         }
@@ -116,15 +116,15 @@ namespace LazyLib.Wow
             {
                 switch (PowerTypeId)
                 {
-                    case (uint) Constants.UnitPower.UnitPower_Energy:
+                    case (uint)Constants.UnitPower.UnitPower_Energy:
                         return "Energy";
-                    case (uint) Constants.UnitPower.UnitPower_Focus:
+                    case (uint)Constants.UnitPower.UnitPower_Focus:
                         return "Focus";
-                    case (uint) Constants.UnitPower.UnitPower_Mana:
+                    case (uint)Constants.UnitPower.UnitPower_Mana:
                         return "Mana";
-                    case (uint) Constants.UnitPower.UnitPower_Rage:
+                    case (uint)Constants.UnitPower.UnitPower_Rage:
                         return "Rage";
-                    case (uint) Constants.UnitPower.UnitPower_RunicPower:
+                    case (uint)Constants.UnitPower.UnitPower_RunicPower:
                         return "Runic Power";
                     default:
                         return "";
@@ -143,49 +143,49 @@ namespace LazyLib.Wow
                 string race;
                 switch (RaceId)
                 {
-                    case (uint) Constants.UnitRace.UnitRace_Human:
+                    case (uint)Constants.UnitRace.UnitRace_Human:
                         race = @"Human";
                         break;
-                    case (uint) Constants.UnitRace.UnitRace_Orc:
+                    case (uint)Constants.UnitRace.UnitRace_Orc:
                         race = @"Orc";
                         break;
-                    case (uint) Constants.UnitRace.UnitRace_Dwarf:
+                    case (uint)Constants.UnitRace.UnitRace_Dwarf:
                         race = @"Dwarf";
                         break;
-                    case (uint) Constants.UnitRace.UnitRace_NightElf:
+                    case (uint)Constants.UnitRace.UnitRace_NightElf:
                         race = @"Night Elf";
                         break;
-                    case (uint) Constants.UnitRace.UnitRace_Undead:
+                    case (uint)Constants.UnitRace.UnitRace_Undead:
                         race = @"Undead";
                         break;
-                    case (uint) Constants.UnitRace.UnitRace_Tauren:
+                    case (uint)Constants.UnitRace.UnitRace_Tauren:
                         race = @"Tauren";
                         break;
-                    case (uint) Constants.UnitRace.UnitRace_Gnome:
+                    case (uint)Constants.UnitRace.UnitRace_Gnome:
                         race = @"Gnome";
                         break;
-                    case (uint) Constants.UnitRace.UnitRace_Troll:
+                    case (uint)Constants.UnitRace.UnitRace_Troll:
                         race = @"Troll";
                         break;
-                    case (uint) Constants.UnitRace.UnitRace_Goblin:
+                    case (uint)Constants.UnitRace.UnitRace_Goblin:
                         race = @"Goblin";
                         break;
-                    case (uint) Constants.UnitRace.UnitRace_BloodElf:
+                    case (uint)Constants.UnitRace.UnitRace_BloodElf:
                         race = @"Blood Elf";
                         break;
-                    case (uint) Constants.UnitRace.UnitRace_Draenei:
+                    case (uint)Constants.UnitRace.UnitRace_Draenei:
                         race = @"Draenei";
                         break;
-                    case (uint) Constants.UnitRace.UnitRace_FelOrc:
+                    case (uint)Constants.UnitRace.UnitRace_FelOrc:
                         race = @"Fel Orc";
                         break;
-                    case (uint) Constants.UnitRace.UnitRace_Naga:
+                    case (uint)Constants.UnitRace.UnitRace_Naga:
                         race = @"Naga";
                         break;
-                    case (uint) Constants.UnitRace.UnitRace_Broken:
+                    case (uint)Constants.UnitRace.UnitRace_Broken:
                         race = @"Broken";
                         break;
-                    case (uint) Constants.UnitRace.UnitRace_Skeleton:
+                    case (uint)Constants.UnitRace.UnitRace_Skeleton:
                         race = @"Skeleton";
                         break;
                     default:
@@ -203,8 +203,8 @@ namespace LazyLib.Wow
         {
             get
             {
-                var pointer = Memory.Read<uint>(BaseAddress + (uint) Pointers.UnitSpeed.Pointer1);
-                var speed = Memory.Read<float>(pointer + (uint) Pointers.UnitSpeed.Pointer2);
+                var pointer = Memory.Read<uint>(BaseAddress + (uint)Pointers.UnitSpeed.Pointer1);
+                var speed = Memory.Read<float>(pointer + (uint)Pointers.UnitSpeed.Pointer2);
                 return speed;
             }
         }
@@ -228,10 +228,10 @@ namespace LazyLib.Wow
                 string gender;
                 switch (GenderId)
                 {
-                    case (uint) Constants.UnitGender.UnitGender_Male:
+                    case (uint)Constants.UnitGender.UnitGender_Male:
                         gender = @"Male";
                         break;
-                    case (uint) Constants.UnitGender.UnitGender_Female:
+                    case (uint)Constants.UnitGender.UnitGender_Female:
                         gender = @"Female";
                         break;
                     default:
@@ -248,7 +248,7 @@ namespace LazyLib.Wow
             {
                 try
                 {
-                    return GetStorageField<UInt32>((uint) Descriptors.eUnitFields.UNIT_FIELD_BYTES_0);
+                    return GetStorageField<UInt32>((uint)Descriptors.eUnitFields.UNIT_FIELD_BYTES_0);
                 }
                 catch
                 {
@@ -288,34 +288,34 @@ namespace LazyLib.Wow
                 string stringClass;
                 switch (UnitClassId)
                 {
-                    case (uint) Constants.UnitClass.UnitClass_Warrior:
+                    case (uint)Constants.UnitClass.UnitClass_Warrior:
                         stringClass = @"Warrior";
                         break;
-                    case (uint) Constants.UnitClass.UnitClass_Paladin:
+                    case (uint)Constants.UnitClass.UnitClass_Paladin:
                         stringClass = @"Paladin";
                         break;
-                    case (uint) Constants.UnitClass.UnitClass_Hunter:
+                    case (uint)Constants.UnitClass.UnitClass_Hunter:
                         stringClass = @"Hunter";
                         break;
-                    case (uint) Constants.UnitClass.UnitClass_Rogue:
+                    case (uint)Constants.UnitClass.UnitClass_Rogue:
                         stringClass = @"Rogue";
                         break;
-                    case (uint) Constants.UnitClass.UnitClass_Priest:
+                    case (uint)Constants.UnitClass.UnitClass_Priest:
                         stringClass = @"Priest";
                         break;
-                    case (uint) Constants.UnitClass.UnitClass_Shaman:
+                    case (uint)Constants.UnitClass.UnitClass_Shaman:
                         stringClass = @"Shaman";
                         break;
-                    case (uint) Constants.UnitClass.UnitClass_Mage:
+                    case (uint)Constants.UnitClass.UnitClass_Mage:
                         stringClass = @"Mage";
                         break;
-                    case (uint) Constants.UnitClass.UnitClass_Warlock:
+                    case (uint)Constants.UnitClass.UnitClass_Warlock:
                         stringClass = @"Warlock";
                         break;
-                    case (uint) Constants.UnitClass.UnitClass_Druid:
+                    case (uint)Constants.UnitClass.UnitClass_Druid:
                         stringClass = @"Druid";
                         break;
-                    case (uint) Constants.UnitClass.UnitClass_DeathKnight:
+                    case (uint)Constants.UnitClass.UnitClass_DeathKnight:
                         stringClass = @"Death Knight";
                         break;
                     default:
@@ -366,9 +366,9 @@ namespace LazyLib.Wow
         {
             get
             {
-                var v1 = Memory.Read<uint>(BaseAddress + (uint) Pointers.CgUnitCGetCreatureRank.Offset1);
+                var v1 = Memory.Read<uint>(BaseAddress + (uint)Pointers.CgUnitCGetCreatureRank.Offset1);
                 return
-                    (Constants.Classification) Memory.Read<uint>(v1 + (uint) Pointers.CgUnitCGetCreatureRank.Offset2);
+                    (Constants.Classification)Memory.Read<uint>(v1 + (uint)Pointers.CgUnitCGetCreatureRank.Offset2);
             }
         }
 
@@ -389,9 +389,9 @@ namespace LazyLib.Wow
         {
             get
             {
-                var v4 = Memory.Read<uint>(BaseAddress + (uint) Pointers.CgUnitCGetCreatureType.Offset1);
+                var v4 = Memory.Read<uint>(BaseAddress + (uint)Pointers.CgUnitCGetCreatureType.Offset1);
                 return
-                    (Constants.CreatureType) Memory.Read<uint>(v4 + (uint) Pointers.CgUnitCGetCreatureType.Offset2);
+                    (Constants.CreatureType)Memory.Read<uint>(v4 + (uint)Pointers.CgUnitCGetCreatureType.Offset2);
             }
         }
 
@@ -423,8 +423,8 @@ namespace LazyLib.Wow
                 return
                     (Constants.ShapeshiftForm)
                     Memory.Read<byte>(
-                        Memory.Read<uint>(BaseAddress + (uint) Pointers.ShapeshiftForm.BaseAddressOffset1) +
-                        (uint) Pointers.ShapeshiftForm.BaseAddressOffset2);
+                        Memory.Read<uint>(BaseAddress + (uint)Pointers.ShapeshiftForm.BaseAddressOffset1) +
+                        (uint)Pointers.ShapeshiftForm.BaseAddressOffset2);
             }
         }
 
@@ -442,7 +442,8 @@ namespace LazyLib.Wow
                 try
                 {
                     return ObjectManager.GetPlayers.Where(cur => cur.HasLivePet).Any(cur => cur.PetGUID == GUID);
-                } catch
+                }
+                catch
                 {
                     return false;
                 }
@@ -451,7 +452,7 @@ namespace LazyLib.Wow
 
         public bool IsTotem
         {
-             get { return CreatureType == Constants.CreatureType.Totem; }
+            get { return CreatureType == Constants.CreatureType.Totem; }
         }
 
         /// <summary>
@@ -487,22 +488,22 @@ namespace LazyLib.Wow
 
         public bool HasTarget
         {
-             get
-             {
-                 try
-                 {
-                     if (TargetGUID.Equals(ObjectManager.MyPlayer.GUID))
-                         return true;
-                     if (ObjectManager.GetUnits.Any(u => u.GUID.Equals(TargetGUID)))
-                     {
-                         return true;
-                     }
-                 }
-                 catch (Exception)
-                 {
-                 }
-                 return false;
-             }
+            get
+            {
+                try
+                {
+                    if (TargetGUID.Equals(ObjectManager.MyPlayer.GUID))
+                        return true;
+                    if (ObjectManager.GetUnits.Any(u => u.GUID.Equals(TargetGUID)))
+                    {
+                        return true;
+                    }
+                }
+                catch (Exception)
+                {
+                }
+                return false;
+            }
         }
 
         /// <summary>
@@ -544,7 +545,7 @@ namespace LazyLib.Wow
                         return true;
                     if (AquaticForm)
                         return true;
-                    var mountid = GetStorageField<int>((uint) Descriptors.eUnitFields.UNIT_FIELD_MOUNTDISPLAYID);
+                    var mountid = GetStorageField<int>((uint)Descriptors.eUnitFields.UNIT_FIELD_MOUNTDISPLAYID);
                     return (mountid != 0);
                 }
                 catch (Exception)
@@ -632,7 +633,7 @@ namespace LazyLib.Wow
             {
                 try
                 {
-                    return GetStorageField<int>((uint) Descriptors.eUnitFields.UNIT_DYNAMIC_FLAGS);
+                    return GetStorageField<int>((uint)Descriptors.eUnitFields.UNIT_DYNAMIC_FLAGS);
                 }
                 catch
                 {
@@ -647,7 +648,7 @@ namespace LazyLib.Wow
         /// <value><c>true</c> if [in combat]; otherwise, <c>false</c>.</value>
         public bool IsInCombat
         {
-            get { return Convert.ToBoolean(Flags & (uint) Constants.UnitFlags.Combat); }
+            get { return Convert.ToBoolean(Flags & (uint)Constants.UnitFlags.Combat); }
         }
 
 
@@ -681,8 +682,8 @@ namespace LazyLib.Wow
         {
             get
             {
-                return ((Memory.Read<int>(BaseAddress + (uint) Pointers.AutoAttack.AutoAttackFlag)) |
-                        Memory.Read<int>(BaseAddress + (uint) Pointers.AutoAttack.AutoAttackMask)) != 0;
+                return ((Memory.Read<int>(BaseAddress + (uint)Pointers.AutoAttack.AutoAttackFlag)) |
+                        Memory.Read<int>(BaseAddress + (uint)Pointers.AutoAttack.AutoAttackMask)) != 0;
             }
         }
 
@@ -707,9 +708,9 @@ namespace LazyLib.Wow
         {
             get
             {
-                var p1 = Memory.Read<uint>(BaseAddress + (uint) Pointers.IsFlying.Pointer);
-                var p2 = Memory.Read<uint>(p1 + (uint) Pointers.IsFlying.Offset);
-                return (p2 & (uint) Pointers.IsFlying.Mask) != 0;
+                var p1 = Memory.Read<uint>(BaseAddress + (uint)Pointers.IsFlying.Pointer);
+                var p2 = Memory.Read<uint>(p1 + (uint)Pointers.IsFlying.Offset);
+                return (p2 & (uint)Pointers.IsFlying.Mask) != 0;
             }
         }
 
@@ -743,7 +744,7 @@ namespace LazyLib.Wow
             {
                 try
                 {
-                    return GetStorageField<int>((uint) Descriptors.eUnitFields.UNIT_FIELD_FLAGS);
+                    return GetStorageField<int>((uint)Descriptors.eUnitFields.UNIT_FIELD_FLAGS);
                 }
                 catch
                 {
@@ -762,7 +763,7 @@ namespace LazyLib.Wow
             {
                 try
                 {
-                    return GetStorageField<UInt32>((uint) Descriptors.eUnitFields.UNIT_FIELD_FACTIONTEMPLATE);
+                    return GetStorageField<UInt32>((uint)Descriptors.eUnitFields.UNIT_FIELD_FACTIONTEMPLATE);
                 }
                 catch
                 {
@@ -798,8 +799,8 @@ namespace LazyLib.Wow
                     return
                         Memory.ReadUtf8(
                             Memory.Read<uint>(
-                                Memory.Read<uint>(BaseAddress + (uint) Pointers.UnitName.UnitName1) +
-                                (uint) Pointers.UnitName.UnitName2), 256);
+                                Memory.Read<uint>(BaseAddress + (uint)Pointers.UnitName.UnitName1) +
+                                (uint)Pointers.UnitName.UnitName2), 256);
                 }
                 catch (Exception)
                 {
@@ -817,7 +818,7 @@ namespace LazyLib.Wow
             {
                 try
                 {
-                    uint pointer = BaseAddress + (uint) Pointers.CastingInfo.IsCasting;
+                    uint pointer = BaseAddress + (uint)Pointers.CastingInfo.IsCasting;
                     //Log.log(pointer.ToString());
                     return Memory.Read<int>(pointer);
                 }
@@ -852,7 +853,7 @@ namespace LazyLib.Wow
         {
             get
             {
-                uint pointer = BaseAddress + (uint) Pointers.CastingInfo.ChanneledCasting;
+                uint pointer = BaseAddress + (uint)Pointers.CastingInfo.ChanneledCasting;
                 //Log.log(pointer.ToString());
                 return Memory.Read<int>(pointer);
             }
@@ -863,7 +864,7 @@ namespace LazyLib.Wow
         /// </summary>
         public bool Critter
         {
-            get { return GetStorageField<int>((uint) Descriptors.eUnitFields.UNIT_FIELD_CRITTER) == 1 ? true : false; }
+            get { return GetStorageField<int>((uint)Descriptors.eUnitFields.UNIT_FIELD_CRITTER) == 1 ? true : false; }
         }
 
         /// <summary>
@@ -871,7 +872,7 @@ namespace LazyLib.Wow
         /// </summary>
         public ulong CharmedBy
         {
-            get { return GetStorageField<ulong>((uint) Descriptors.eUnitFields.UNIT_FIELD_CHARMEDBY); }
+            get { return GetStorageField<ulong>((uint)Descriptors.eUnitFields.UNIT_FIELD_CHARMEDBY); }
         }
 
         /// <summary>
@@ -879,7 +880,7 @@ namespace LazyLib.Wow
         /// </summary>
         public ulong SummonedBy
         {
-            get { return GetStorageField<ulong>((uint) Descriptors.eUnitFields.UNIT_FIELD_SUMMONEDBY); }
+            get { return GetStorageField<ulong>((uint)Descriptors.eUnitFields.UNIT_FIELD_SUMMONEDBY); }
         }
 
         /// <summary>
@@ -887,7 +888,7 @@ namespace LazyLib.Wow
         /// </summary>
         public ulong CreatedBy
         {
-            get { return GetStorageField<ulong>((uint) Descriptors.eUnitFields.UNIT_FIELD_CREATEDBY); }
+            get { return GetStorageField<ulong>((uint)Descriptors.eUnitFields.UNIT_FIELD_CREATEDBY); }
         }
 
         /// <summary>
@@ -895,7 +896,7 @@ namespace LazyLib.Wow
         /// </summary>
         public int HealthPoints
         {
-            get { return GetStorageField<int>((uint) Descriptors.eUnitFields.UNIT_FIELD_HEALTH); }
+            get { return GetStorageField<int>((uint)Descriptors.eUnitFields.UNIT_FIELD_HEALTH); }
         }
 
         /// <summary>
@@ -903,7 +904,7 @@ namespace LazyLib.Wow
         /// </summary>
         public int MaximumHealthPoints
         {
-            get { return GetStorageField<int>((uint) Descriptors.eUnitFields.UNIT_FIELD_MAXHEALTH); }
+            get { return GetStorageField<int>((uint)Descriptors.eUnitFields.UNIT_FIELD_MAXHEALTH); }
         }
 
         /// <summary>
@@ -937,11 +938,13 @@ namespace LazyLib.Wow
             {
                 try
                 {
-                    return (100*HealthPoints)/MaximumHealthPoints;
+                    return (100 * HealthPoints) / MaximumHealthPoints;
                 }
-                catch
+                catch (Exception e)
                 {
                     return 0;
+                    //Logging.Write("get Health" + e);
+                    //return -1;
                 }
             }
         }
@@ -955,7 +958,7 @@ namespace LazyLib.Wow
             {
                 try
                 {
-                    return (100*ManaPoints)/MaximumManaPoints;
+                    return (100 * ManaPoints) / MaximumManaPoints;
                 }
                 catch
                 {
@@ -969,7 +972,7 @@ namespace LazyLib.Wow
         /// </summary>
         public int BaseHealth
         {
-            get { return GetStorageField<int>((uint) Descriptors.eUnitFields.UNIT_FIELD_BASE_HEALTH); }
+            get { return GetStorageField<int>((uint)Descriptors.eUnitFields.UNIT_FIELD_BASE_HEALTH); }
         }
 
         /// <summary>
@@ -977,7 +980,7 @@ namespace LazyLib.Wow
         /// </summary>
         public int BaseMana
         {
-            get { return GetStorageField<int>((uint) Descriptors.eUnitFields.UNIT_FIELD_BASE_MANA); }
+            get { return GetStorageField<int>((uint)Descriptors.eUnitFields.UNIT_FIELD_BASE_MANA); }
         }
 
         /// <summary>
@@ -985,7 +988,7 @@ namespace LazyLib.Wow
         /// </summary>
         public int ManaPoints
         {
-            get { return GetStorageField<int>((uint) Descriptors.eUnitFields.UNIT_FIELD_POWER1); }
+            get { return GetStorageField<int>((uint)Descriptors.eUnitFields.UNIT_FIELD_POWER1); }
         }
 
         /// <summary>
@@ -1004,9 +1007,9 @@ namespace LazyLib.Wow
                 }
                 catch (Exception e)
                 {
-                    
+
                 }
-                return GetStorageField<int>((uint) Descriptors.eUnitFields.UNIT_FIELD_POWER1)/10;
+                return GetStorageField<int>((uint)Descriptors.eUnitFields.UNIT_FIELD_POWER1) / 10;
             }
         }
 
@@ -1075,16 +1078,16 @@ namespace LazyLib.Wow
             {
                 try
                 {
-                    if(UnitClass == Constants.UnitClass.UnitClass_Druid)
+                    if (UnitClass == Constants.UnitClass.UnitClass_Druid)
                     {
                         return DruidEnergy;
                     }
                 }
                 catch (Exception e)
                 {
-                    
+
                 }
-                return GetStorageField<int>((uint) Descriptors.eUnitFields.UNIT_FIELD_POWER1);
+                return GetStorageField<int>((uint)Descriptors.eUnitFields.UNIT_FIELD_POWER1);
             }
         }
 
@@ -1125,7 +1128,7 @@ namespace LazyLib.Wow
         /// </summary>
         public int Happinnes
         {
-            get { return GetStorageField<int>((uint) Descriptors.eUnitFields.UNIT_FIELD_POWER4); }
+            get { return GetStorageField<int>((uint)Descriptors.eUnitFields.UNIT_FIELD_POWER4); }
         }
 
         /// <summary>
@@ -1141,7 +1144,7 @@ namespace LazyLib.Wow
         /// </summary>
         public int MaximumManaPoints
         {
-            get { return GetStorageField<int>((uint) Descriptors.eUnitFields.UNIT_FIELD_MAXPOWER1); }
+            get { return GetStorageField<int>((uint)Descriptors.eUnitFields.UNIT_FIELD_MAXPOWER1); }
         }
 
         /// <summary>
@@ -1160,9 +1163,9 @@ namespace LazyLib.Wow
                 }
                 catch (Exception e)
                 {
-                    
+
                 }
-                return GetStorageField<int>((uint) Descriptors.eUnitFields.UNIT_FIELD_MAXPOWER1);
+                return GetStorageField<int>((uint)Descriptors.eUnitFields.UNIT_FIELD_MAXPOWER1);
             }
         }
 
@@ -1190,9 +1193,9 @@ namespace LazyLib.Wow
                 }
                 catch (Exception e)
                 {
-                    
+
                 }
-                return GetStorageField<int>((uint) Descriptors.eUnitFields.UNIT_FIELD_MAXPOWER1);
+                return GetStorageField<int>((uint)Descriptors.eUnitFields.UNIT_FIELD_MAXPOWER1);
             }
         }
 
@@ -1209,7 +1212,7 @@ namespace LazyLib.Wow
         /// </summary>
         public new int Level
         {
-            get { return GetStorageField<int>((uint) Descriptors.eUnitFields.UNIT_FIELD_LEVEL); }
+            get { return GetStorageField<int>((uint)Descriptors.eUnitFields.UNIT_FIELD_LEVEL); }
         }
 
         /// <summary>
@@ -1217,7 +1220,7 @@ namespace LazyLib.Wow
         /// </summary>
         public int DisplayId
         {
-            get { return GetStorageField<int>((uint) Descriptors.eUnitFields.UNIT_FIELD_DISPLAYID); }
+            get { return GetStorageField<int>((uint)Descriptors.eUnitFields.UNIT_FIELD_DISPLAYID); }
         }
 
         /// <summary>
@@ -1225,7 +1228,7 @@ namespace LazyLib.Wow
         /// </summary>
         public int MountDisplayId
         {
-            get { return GetStorageField<int>((uint) Descriptors.eUnitFields.UNIT_FIELD_MOUNTDISPLAYID); }
+            get { return GetStorageField<int>((uint)Descriptors.eUnitFields.UNIT_FIELD_MOUNTDISPLAYID); }
         }
 
         /// <summary>
@@ -1233,7 +1236,7 @@ namespace LazyLib.Wow
         /// </summary>
         public ulong TargetGUID
         {
-            get { return GetStorageField<ulong>((uint) Descriptors.eUnitFields.UNIT_FIELD_TARGET); }
+            get { return GetStorageField<ulong>((uint)Descriptors.eUnitFields.UNIT_FIELD_TARGET); }
         }
 
         /// <summary>
@@ -1285,7 +1288,8 @@ namespace LazyLib.Wow
                     {
                         return Pet.GUID;
                     }
-                } catch { }
+                }
+                catch { }
                 return 0;
             }
         }
@@ -1305,7 +1309,8 @@ namespace LazyLib.Wow
                     if (Pet != null)
                         return true;
                     return false;
-                } catch
+                }
+                catch
                 {
                     return false;
                 }
@@ -1346,7 +1351,7 @@ namespace LazyLib.Wow
         public double DistanceToSelf
         {
             get { return Location.DistanceToSelf; }
-        } 
+        }
         /// <summary>
         /// Determines whether [has well known buff] [the specified buff name].
         /// </summary>
@@ -1411,7 +1416,8 @@ namespace LazyLib.Wow
             {
                 var auras = GetAuras;
                 return auras.Any(woWAura => buff == woWAura.SpellId && (woWAura.OwnerGUID == ObjectManager.MyPlayer.GUID) || (woWAura.OwnerGUID == ObjectManager.MyPlayer.PetGUID));
-            } catch
+            }
+            catch
             {
                 return false;
             }
@@ -1421,14 +1427,14 @@ namespace LazyLib.Wow
         {
             List<int> auras = GetBuffs();
             List<int> buf = BarMapper.GetIdsFromName(buff);
-            if (auras.Any(buf.Contains)) 
+            if (auras.Any(buf.Contains))
                 return true;
             return false;
         }
 
         public bool HasBuff(string buff, bool playerShouldBeOwner)
         {
-            if(!playerShouldBeOwner)
+            if (!playerShouldBeOwner)
             {
                 return HasBuff(buff);
             }
@@ -1471,7 +1477,7 @@ namespace LazyLib.Wow
             {
                 return (from woWAura in GetAuras where woWAura.SpellId == spellId select woWAura.SecondsLeft).FirstOrDefault();
             }
-            catch 
+            catch
             {
                 return 0;
             }
@@ -1503,10 +1509,11 @@ namespace LazyLib.Wow
                     {
                         var auraTable = Memory.Read<uint>(BaseAddress + (uint)Pointers.UnitAuras.AuraTable2);
                         localSpellId = Memory.Read<int>(auraTable + (uint)Pointers.UnitAuras.AuraSize * i + (int)Pointers.UnitAuras.AuraSpellId);
-                        stackCount = Memory.Read<byte>((auraTable + ((uint) Pointers.UnitAuras.AuraSize*i)) + (uint) Pointers.UnitAuras.AuraStack);
-                        timeLeft = Memory.Read<uint>((auraTable + ((uint) Pointers.UnitAuras.AuraSize*i)) + (uint)Pointers.UnitAuras.TimeLeft);
+                        stackCount = Memory.Read<byte>((auraTable + ((uint)Pointers.UnitAuras.AuraSize * i)) + (uint)Pointers.UnitAuras.AuraStack);
+                        timeLeft = Memory.Read<uint>((auraTable + ((uint)Pointers.UnitAuras.AuraSize * i)) + (uint)Pointers.UnitAuras.TimeLeft);
                         ownerGuid = Memory.Read<ulong>(auraTable + (uint)Pointers.UnitAuras.AuraSize * i);
-                    } else
+                    }
+                    else
                     {
                         localSpellId = Memory.Read<int>(BaseAddress + (uint)Pointers.UnitAuras.AuraTable1 + (uint)Pointers.UnitAuras.AuraSize * i + (int)Pointers.UnitAuras.AuraSpellId);
                         stackCount = Memory.Read<byte>((BaseAddress + (uint)Pointers.UnitAuras.AuraTable1 + ((uint)Pointers.UnitAuras.AuraSize * i)) + (uint)Pointers.UnitAuras.AuraStack);
@@ -1516,7 +1523,7 @@ namespace LazyLib.Wow
                     if (localSpellId != 0)
                     {
                         timeLeft = (uint)(timeLeft - currentTime) / 1000;
-                        var aura = new WoWAura {SpellId = localSpellId, Stack = stackCount, SecondsLeft = timeLeft, OwnerGUID = ownerGuid};
+                        var aura = new WoWAura { SpellId = localSpellId, Stack = stackCount, SecondsLeft = timeLeft, OwnerGUID = ownerGuid };
                         result.Add(aura);
                     }
                 }

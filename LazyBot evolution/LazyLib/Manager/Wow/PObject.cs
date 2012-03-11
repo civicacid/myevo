@@ -196,7 +196,8 @@ namespace LazyLib.Wow
             }
             catch (Exception e)
             {
-                Console.WriteLine("DO NOT POST THIS WARNING ON THE FORUM! ONLY DEBUG!: " + e);
+                //Console.WriteLine("DO NOT POST THIS WARNING ON THE FORUM! ONLY DEBUG!: " + e);
+                //Logging.Write("GetStorageField DO NOT POST THIS WARNING ON THE FORUM! ONLY DEBUG!: " + e);
                 return new T();
             }
         }
@@ -209,7 +210,8 @@ namespace LazyLib.Wow
             }
             catch (Exception e)
             {
-                Console.WriteLine("DO NOT POST THIS WARNING ON THE FORUM! ONLY DEBUG!: " + e);
+                //Console.WriteLine("DO NOT POST THIS WARNING ON THE FORUM! ONLY DEBUG!: " + e);
+                //Logging.Write("DO NOT POST THIS WARNING ON THE FORUM! ONLY DEBUG!: " + e);
                 return new T();
             }
         }

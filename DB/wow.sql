@@ -250,11 +250,13 @@ comment on column char_lianjin.mail              is '是否邮寄';
 create table char_gold (
    char_name         varchar(100)                       not null,           -- 角色名称
    gold              number(16)                         not null,           -- 金币
+   refresh_time      date                               null,               -- 刷新时间
    constraint pk_char_gold primary key (char_name)
 );
 comment on table char_gold is '人物金币数量';
 comment on column char_gold.char_name is '角色名称';
 comment on column char_gold.gold is '金币';
+comment on column char_gold.refresh_time is '刷新时间';
 
 -- -----------------------------------------------------
 -- Sequence 公用序列
@@ -409,13 +411,12 @@ CREATE OR REPLACE PROCEDURE gold
 ) IS
    v_i_count        integer;
 BEGIN
-    
+
     select count(*) into v_i_count from char_gold where char_name = p_char_name;
     if v_i_count > 0 then
-        update char_gold set gold = p_gold where char_name = p_char_name;
+        update char_gold set gold = p_gold,refresh_time=sysdate where char_name = p_char_name;
     else
-        insert into char_gold (char_name, gold) values (p_char_name, p_gold);
+        insert into char_gold (char_name, gold, refresh_time) values (p_char_name, p_gold, sysdate);
     end if;
    COMMIT;
 END;
-/

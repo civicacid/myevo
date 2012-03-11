@@ -44,6 +44,8 @@
             this.button11 = new System.Windows.Forms.Button();
             this.button12 = new System.Windows.Forms.Button();
             this.button9 = new System.Windows.Forms.Button();
+            this.txtMutiLogin = new System.Windows.Forms.TextBox();
+            this.button10 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Step)).BeginInit();
             this.SuspendLayout();
@@ -199,11 +201,30 @@
             this.button9.UseVisualStyleBackColor = true;
             this.button9.Click += new System.EventHandler(this.button9_Click);
             // 
+            // txtMutiLogin
+            // 
+            this.txtMutiLogin.Location = new System.Drawing.Point(269, 57);
+            this.txtMutiLogin.Name = "txtMutiLogin";
+            this.txtMutiLogin.Size = new System.Drawing.Size(158, 21);
+            this.txtMutiLogin.TabIndex = 23;
+            // 
+            // button10
+            // 
+            this.button10.Location = new System.Drawing.Point(433, 55);
+            this.button10.Name = "button10";
+            this.button10.Size = new System.Drawing.Size(69, 23);
+            this.button10.TabIndex = 22;
+            this.button10.Text = "多号登录";
+            this.button10.UseVisualStyleBackColor = true;
+            this.button10.Click += new System.EventHandler(this.button10_Click);
+            // 
             // testForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(776, 421);
+            this.Controls.Add(this.txtMutiLogin);
+            this.Controls.Add(this.button10);
             this.Controls.Add(this.button9);
             this.Controls.Add(this.button11);
             this.Controls.Add(this.textBox2);
@@ -247,5 +268,7 @@
         private System.Windows.Forms.Button button11;
         private System.Windows.Forms.Button button12;
         private System.Windows.Forms.Button button9;
+        private System.Windows.Forms.TextBox txtMutiLogin;
+        private System.Windows.Forms.Button button10;
     }
 }
