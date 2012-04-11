@@ -29,11 +29,14 @@ namespace LazyLib.SPY
             SetIP(LazySettings.DBIP, LazySettings.DBSid);
             try
             {
-                conn.ConnectionString = connString;
-                Thread.Sleep(1000); // 莫名其妙 的错误
-                conn.Open();
-                isConnected = true;
-                KeepConntion();
+                if (conn.State != ConnectionState.Open)
+                {
+                    conn.ConnectionString = connString;
+                    Thread.Sleep(1000); // 莫名其妙 的错误
+                    conn.Open();
+                    isConnected = true;
+                    KeepConntion();
+                }
             }
             catch (Exception ex)
             {
@@ -102,7 +105,7 @@ namespace LazyLib.SPY
         {
             try
             {
-                if (!isConnected || conn.State == ConnectionState.Closed || conn.State == ConnectionState.Broken)
+                if (!isConnected || conn.State == ConnectionState.Closed || conn.State == ConnectionState.Broken || conn.State == ConnectionState.Closed)
                     OraConnect();
                 OracleCommand cmd = new OracleCommand();
                 cmd.Connection = conn;
