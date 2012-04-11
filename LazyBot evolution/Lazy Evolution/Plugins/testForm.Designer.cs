@@ -46,6 +46,7 @@
             this.button9 = new System.Windows.Forms.Button();
             this.txtMutiLogin = new System.Windows.Forms.TextBox();
             this.button10 = new System.Windows.Forms.Button();
+            this.button13 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Step)).BeginInit();
             this.SuspendLayout();
@@ -177,7 +178,7 @@
             this.button11.Name = "button11";
             this.button11.Size = new System.Drawing.Size(95, 35);
             this.button11.TabIndex = 20;
-            this.button11.Text = "button11";
+            this.button11.Text = "Check Values";
             this.button11.UseVisualStyleBackColor = true;
             this.button11.Click += new System.EventHandler(this.button11_Click);
             // 
@@ -197,7 +198,7 @@
             this.button9.Name = "button9";
             this.button9.Size = new System.Drawing.Size(75, 21);
             this.button9.TabIndex = 21;
-            this.button9.Text = "扫描背包";
+            this.button9.Text = "登录测试";
             this.button9.UseVisualStyleBackColor = true;
             this.button9.Click += new System.EventHandler(this.button9_Click);
             // 
@@ -218,11 +219,22 @@
             this.button10.UseVisualStyleBackColor = true;
             this.button10.Click += new System.EventHandler(this.button10_Click);
             // 
+            // button13
+            // 
+            this.button13.Location = new System.Drawing.Point(561, 11);
+            this.button13.Name = "button13";
+            this.button13.Size = new System.Drawing.Size(70, 26);
+            this.button13.TabIndex = 24;
+            this.button13.Text = "铭文";
+            this.button13.UseVisualStyleBackColor = true;
+            this.button13.Click += new System.EventHandler(this.button13_Click);
+            // 
             // testForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(776, 421);
+            this.Controls.Add(this.button13);
             this.Controls.Add(this.txtMutiLogin);
             this.Controls.Add(this.button10);
             this.Controls.Add(this.button9);
@@ -270,5 +282,6 @@
         private System.Windows.Forms.Button button9;
         private System.Windows.Forms.TextBox txtMutiLogin;
         private System.Windows.Forms.Button button10;
+        private System.Windows.Forms.Button button13;
     }
 }

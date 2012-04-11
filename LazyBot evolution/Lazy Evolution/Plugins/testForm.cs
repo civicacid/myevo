@@ -556,17 +556,7 @@ namespace LazyEvo.Plugins
 
         private void button11_Click(object sender, EventArgs e)
         {
-            BarMapper.MapBars();
-            KeyHelper.LoadKeys();
-            if (MailManager.TargetMailBox())
-            {
-                DBLogger logger = new DBLogger("挖矿时的邮寄");
-                if (!SpyFrame.initme())
-                {
-                    logger.Add("初始化矿体失败");
-                }
-                SpyTradeSkill.SendMain(logger, true);
-            }
+            Logging.Write("SpyLogin.IsOK values is : " + SpyLogin.IsOK);
         }
 
         private void button12_Click(object sender, EventArgs e)
@@ -577,7 +567,48 @@ namespace LazyEvo.Plugins
 
         private void button9_Click(object sender, EventArgs e)
         {
-            Logging.Write("战斗点数为：" + ObjectManager.MyPlayer.ComboPoints);
+            Thread _thread;
+            _thread = new Thread(test_login);
+            _thread.Name = "test_login";
+            _thread.IsBackground = true;
+            // 设置线程状态为单线程
+            try
+            {
+                _thread.TrySetApartmentState(ApartmentState.STA);
+            }
+            catch (Exception ex)
+            {
+                Logging.Write("启动失败，线程设置出现错误，原因是：" + ex.ToString());
+                return;
+            }
+            _thread.Start();
+        }
+        private void test_login()
+        {
+            while (true)
+            {
+                if (SpyLogin.initme("4"))
+                {
+                    SpyLogin.start();
+                    while (true)
+                    {
+                        if (SpyLogin.IsOK) break;
+                        Thread.Sleep(1000);
+                    }
+                    Thread.Sleep(5000);
+                    ObjectManager.Initialize(SpyLogin.WOW_P.Id);
+                    if (!ObjectManager.Initialized)
+                    {
+                        Thread.Sleep(5000);
+                        ObjectManager.Initialize(SpyLogin.WOW_P.Id);
+                    }
+                    Thread.Sleep(5000);
+                    Logging.Write(ObjectManager.MyPlayer.Name);
+                    Thread.Sleep(5000);
+                    SpyLogin.WOW_P.Kill();
+                }
+                Thread.Sleep(15000);
+            }
         }
 
         private void button10_Click(object sender, EventArgs e)
@@ -616,6 +647,12 @@ namespace LazyEvo.Plugins
                     }
                 }
             }
+        }
+
+        private void button13_Click(object sender, EventArgs e)
+        {
+            if (SpyLJZH.initme("MW"))
+                SpyLJZH.start();
         }
 
     }

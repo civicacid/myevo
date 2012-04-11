@@ -167,8 +167,6 @@ insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_
 insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','收矿啊','致密海洋青玉'  ,50000,1000000,8,1,20);
 insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','收矿啊','狂热暗烬黄玉'  ,100000,1000000,8,1,20);
 insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','收矿啊','精锐暗烬黄玉'  ,100000,1000000,8,1,20);
-insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','铭文学专家四','催眠之尘'  ,10000,100000,8,20,0);
-insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','铭文学专家四','强效天界精华'  ,400000,1000000,10,1,0);
 
 insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','铭文学专家一','力量祝福雕文'  ,40000,1000000,1,1,0);
 insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','铭文学专家一','吸血鬼之血雕文'  ,40000,1000000,1,1,0);
@@ -183,6 +181,8 @@ insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_
 insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','铭文学专家四','动燃之水' ,70000,100000,10,20,0);
 insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','铭文学专家四','动燃火焰' ,70000,100000,10,20,0);
 insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','铭文学专家四','动燃之土' ,10000,100000,10,20,0);
+insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','铭文学专家四','催眠之尘'  ,10000,100000,8,20,0);
+insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','铭文学专家四','强效天界精华'  ,400000,1000000,10,1,0);
 
 insert into ahitem (server,char_name,item_name,item_minprice,item_maxprice,item_count,item_stacksize,backup_count) values ('爱斯特纳','蓝装售卖','基岩之碧玉指环' ,400000,1200000,2,1,0);
 
@@ -304,10 +304,10 @@ insert into char_lianjin (server,char_name,skill,lianjin_itemname,do_order,disch
 insert into char_lianjin (server,char_name,skill,lianjin_itemname,do_order,dischant,mail) values ('爱斯特纳','七枝梅','LJ','转化：生命元素',1,0,1);
 insert into char_lianjin (server,char_name,skill,lianjin_itemname,do_order,dischant,mail) values ('爱斯特纳','伤人无数','LJ','转化：生命元素',1,0,1);
 insert into char_lianjin (server,char_name,skill,lianjin_itemname,do_order,dischant,mail) values ('爱斯特纳','spyman','LJ','转化：生命元素',1,0,1);
-insert into char_lianjin (server,char_name,skill,lianjin_itemname,do_order,dischant,mail) values ('爱斯特纳','spyman','MW','诺森德铭文研究',1,0,1);
-insert into char_lianjin (server,char_name,skill,lianjin_itemname,do_order,dischant,mail) values ('爱斯特纳','spyman','MW','小型雕文研究',1,0,1);
-insert into char_lianjin (server,char_name,skill,lianjin_itemname,do_order,dischant,mail) values ('爱斯特纳','杀贝贝熊','MW','诺森德铭文研究',1,0,1);
-insert into char_lianjin (server,char_name,skill,lianjin_itemname,do_order,dischant,mail) values ('爱斯特纳','杀贝贝熊','MW','小型雕文研究',1,0,1);
+insert into char_lianjin (server,char_name,skill,lianjin_itemname,do_order,dischant,mail) values ('爱斯特纳','spyman','MW','诺森德铭文研究',1,0,0);
+insert into char_lianjin (server,char_name,skill,lianjin_itemname,do_order,dischant,mail) values ('爱斯特纳','spyman','MW','小型雕文研究',1,0,0);
+insert into char_lianjin (server,char_name,skill,lianjin_itemname,do_order,dischant,mail) values ('爱斯特纳','杀贝贝熊','MW','诺森德铭文研究',1,0,0);
+insert into char_lianjin (server,char_name,skill,lianjin_itemname,do_order,dischant,mail) values ('爱斯特纳','杀贝贝熊','MW','小型雕文研究',1,0,0);
 -----------------------------------------------------------------------------------------------------------------------------------
 
 
