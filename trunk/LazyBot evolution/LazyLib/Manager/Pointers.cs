@@ -35,7 +35,8 @@ namespace LazyLib.Wow
         {
             // PlayerName = 0x9BE6B8,   // 4.3
             //PlayerName = 0x9Bd070,   // 4.3.2
-            PlayerName = 0x9Bca38,   // 4.3.3
+            //PlayerName = 0x9Bca38,   // 4.3.3
+            PlayerName = 0x9be820,   // 4.3.4
         }
 
         #endregion
@@ -49,7 +50,8 @@ namespace LazyLib.Wow
         {
             // InGame = 0xAD7296, //4.3
             //InGame = 0xAD5C76, //4.3.2
-            InGame = 0xAD5636, //4.3.3
+            //InGame = 0xAD5636, //4.3.3
+            InGame = 0xad7426, //4.3.4
         }
 
         #endregion
@@ -64,12 +66,8 @@ namespace LazyLib.Wow
         /// </summary>
         public enum ActionBar
         {
-            //ActionBarFirstSlot = 0xB440E0,  // 4.3
-            //ActionBarBonus = 0xB44324,      // 4.3
-            //ActionBarFirstSlot = 0xB42AC8,  // 4.3.2
-            //ActionBarBonus = 0xB42D0C,      // 4.3.2
-            ActionBarFirstSlot = 0xB42490,  // 4.3.3
-            ActionBarBonus = 0xB426D4,      // 4.3.3
+            ActionBarBonus = 0xb444cc,
+            ActionBarFirstSlot = 0xb44288
         }
 
         #endregion
@@ -81,11 +79,7 @@ namespace LazyLib.Wow
         /// </summary>
         public enum AutoLoot
         {
-            //Pointer = 0xAD74A0,  //4.3
-            //Offset = 0x30,       //4.3
-            //Pointer = 0xAD5E8C,  //4.3.2
-            //Offset = 0x30,       //4.3.2
-            Pointer = 0xAD5854,  //4.3.3
+            Pointer = 0xad7644,  //4.3.3
             Offset = 0x30,       //4.3.3
         }
 
@@ -128,19 +122,12 @@ namespace LazyLib.Wow
         /// </summary>
         public enum CgWorldFrameGetActiveCamera
         {
-            //CameraPointer = 0xAD7870,  //4.3
-            //CameraOffset = 0x80D0,      //4.3
-            //CameraX = 0x8,      //4.3
-            //CameraY = 0xC,      //4.3
-            //CameraZ = 0x10,     //4.3  
-            //CameraMatrix = 0x14,    //4.3
-            //CameraPointer = 0xAD6258,  //4.3.2
             CameraOffset = 0x80D0,      //4.3.2
             CameraX = 0x8,      //4.3.2
             CameraY = 0xC,      //4.3.2
             CameraZ = 0x10,     //4.3.2
             CameraMatrix = 0x14,    //4.3.2
-            CameraPointer = 0xAD6258 - 0x638,  //4.3.3
+            CameraPointer = 0xad7a10,  //4.3.3
         }
 
         #endregion
@@ -173,7 +160,7 @@ namespace LazyLib.Wow
             //Offset = 0x30,          //4.3
             //Pointer = 0xAD5E6C,     //4.3.2
             Offset = 0x30,          //4.3.2
-            Pointer = 0xAD5E6C - 0x638,     //4.3.3
+            Pointer = 0xad7624,     //4.3.3
         }
 
         #endregion
@@ -236,7 +223,7 @@ namespace LazyLib.Wow
             //ChatStart = 0xAD8FD0 + 0x3C,    //4.3
             //OffsetToNextMsg = 0x17C0,       //4.3
             //ChatStart = 0xAD79B8,    //4.3.2
-            ChatStart = 0xAD79B8 - 0x638 + 0x3C,    //4.3.3
+            ChatStart = 0xad91ac,    //4.3.3
             OffsetToNextMsg = 0x17C0,       //4.3.2
         }
 
@@ -250,7 +237,7 @@ namespace LazyLib.Wow
         {
             //EventMessage = 0xA98068 //4.3
             //EventMessage = 0xA98068 //4.3.2?
-            EventMessage = 0xA96A50 //4.3.3?
+            EventMessage = 0xad6828 //4.3.3?
         }
 
         #endregion
@@ -264,7 +251,7 @@ namespace LazyLib.Wow
         {
             //ComboPoints = 0xAD7361, //4.3
             //ComboPoints = 0xAD5D41, //4.3.2
-            ComboPoints = 0xAD5D41 - 0x638, //4.3.3
+            ComboPoints = 0xad74f1 //4.3.3
         }
 
         #endregion
@@ -278,7 +265,7 @@ namespace LazyLib.Wow
         {
             //EquippedBagGUID = 0xB4DC38,  //4.3
             //EquippedBagGUID = 0xB4C620,  //4.3.2
-            EquippedBagGUID = 0xB4C620 - 0x638,  //4.3.3
+            EquippedBagGUID = 0xb4dde0  //4.3.3
         }
 
         #endregion
@@ -290,27 +277,13 @@ namespace LazyLib.Wow
         /// </summary>
         internal enum Globals
         {
-            //            RedMessage = 0xAD6698,  //4.3
-            //            MouseOverGUID = 0xAD72A8,   //4.3
-            //            LootWindow = 0xB45088,      //4.3
-            //            IsBobbing = 0xD4,           //4.3
-            //            ArchFacing = 0x1c8,         //4.3
-            //            ChatboxIsOpen = 0xAC6C58,   //4.3
-            //            CursorType = 0x93D0E0,      //4.3
-            //            RedMessage = 0xAD5078,  //4.3.2
-            //            MouseOverGUID = 0xAD5C88,   //4.3.2
-            //            LootWindow = 0xB43A70,      //4.3.2
-            //            IsBobbing = 0xD4,           //4.3.2?
-            //            ArchFacing = 0x1c8,         //4.3.2?
-            //            ChatboxIsOpen = 0xAC5628,   //4.3.2
-            //            CursorType = 0x93BAA0,      //4.3.2
-            RedMessage = 0xAD5078 - 0x640,  //4.3.3
-            MouseOverGUID = 0xAD5C88 - 0x640,   //4.3.3
-            LootWindow = 0xB43A70 - 0x638,      //4.3.3
-            IsBobbing = 0xD4,           //4.3.3
-            ArchFacing = 0x1c8,         //4.3.3
-            ChatboxIsOpen = 0xAC5628 - 0x640,   //4.3.3
-            CursorType = 0x93BAA0 - 0x638,      //4.3.3
+            RedMessage = 0xad6828,      //4.3.4
+            MouseOverGUID = 0xad7438,   //4.3.4
+            LootWindow = 0xb45230,      //4.3.4
+            IsBobbing = 0xD4,           //4.3.4
+            ArchFacing = 0x1c8,         //4.3.4
+            ChatboxIsOpen = 0xac6dd4,   //4.3.4
+            CursorType = 0x93d250       //4.3.4
         }
 
         #endregion
@@ -324,7 +297,7 @@ namespace LazyLib.Wow
         {
             //Offset = 0x998580,  //4.3
             //Offset = 0x996F38,  //4.3.2
-            Offset = 0x996F38 - 0x638,  //4.3.3
+            Offset = 0x9986e8,  //4.3.3
         }
 
         #endregion
@@ -336,13 +309,7 @@ namespace LazyLib.Wow
         /// </summary>
         internal enum KeyBinding
         {
-            //NumKeyBindings = 0xB33D04,  //4.3
-            //First = 0xC8,               //4.3
-            //Next = 0xC0,       //4.3
-            //Key = 0x14,   //4.3
-            //Command = 0x28,    //4.3
-            //NumKeyBindings = 0xB326EC,   //4.3.2
-            NumKeyBindings = 0xB326EC - 0x638,   //4.3.3
+            NumKeyBindings = 0xb33eac,   //4.3.3
             First = 0xC8, //4.3.2
             Next = 0xC0,//4.3.2
             Key = 0x14,//4.3.2
@@ -358,17 +325,10 @@ namespace LazyLib.Wow
         /// </summary>
         internal enum ObjectManager
         {
-            //CurMgrPointer = 0x9BE678,   //4.3
-            //CurMgrOffset = 0x463C,      //4.3
-            //NextObject = 0x3C,          //4.3.0.15005
-            //FirstObject = 0xC0,         //4.3.0.15005
-            //LocalGUID = 0xC8             //4.3.0.15005
-            //CurMgrPointer = 0x9BD030,   //4.3.2
-            //CurMgrOffset = 0x463C,      //4.3.2
             NextObject = 0x3C,          //4.3.2
             FirstObject = 0xC0,         //4.3.2
             LocalGUID = 0xC8,           //4.3.2
-            CurMgrPointer = 0x9BD030 - 0x638,   //4.3.3
+            CurMgrPointer = 0x9be7e0,   //4.3.3
             CurMgrOffset = 0x463C,      //4.3.3
         }
 
@@ -381,21 +341,13 @@ namespace LazyLib.Wow
         /// </summary>
         internal enum Reaction : uint
         {
-            //FactionStartIndex = 0x998FB4,       //4.3
-            //FactionPointer = FactionStartIndex + 0xC,   //4.3
-            //FactionTotal = FactionStartIndex - 0x4,     //4.3
-            //HostileOffset1 = 0x14,          //4.3
-            //HostileOffset2 = 0x0C,          //4.3
-            //FriendlyOffset1 = 0x10,         //4.3
-            //FriendlyOffset2 = 0x0C,         //4.3
-            //FactionStartIndex = 0x99796c,       //4.3.2
-            FactionStartIndex = 0x99796c - 0x638,       //4.3.3
-            FactionPointer = FactionStartIndex + 0xC,   //4.3.2
-            FactionTotal = FactionStartIndex - 0x4,     //4.3.2
-            HostileOffset1 = 0x14,          //4.3.2
-            HostileOffset2 = 0x0C,          //4.3.2
-            FriendlyOffset1 = 0x10,         //4.3.2
-            FriendlyOffset2 = 0x0C,         //4.3.2
+            FactionPointer = 0x999128,
+            FactionStartIndex = 0x99911c,
+            FactionTotal = 0x999118,
+            FriendlyOffset1 = 0x10,
+            FriendlyOffset2 = 12,
+            HostileOffset1 = 20,
+            HostileOffset2 = 12
         }
 
         #endregion
@@ -407,9 +359,7 @@ namespace LazyLib.Wow
         /// </summary>
         internal enum Runes
         {
-            //RunesOffset = 0xB35EB8,     //4.3
-            //RunesOffset = 0xB3483C,     //4.3.2?  +0x64?
-            RunesOffset = (0xB3483C - 0x638) + 0x64,     //4.3.3?  +0x64?
+            RunesOffset = 0xb36060,     //4.3.3?  +0x64?
         }
 
         #endregion
@@ -421,8 +371,6 @@ namespace LazyLib.Wow
         /// </summary>
         internal enum ShapeshiftForm
         {
-            //BaseAddressOffset1 = 0xF8,      //4.3
-            //BaseAddressOffset2 = 0x1B7,     //4.3
             BaseAddressOffset1 = 0xF8,      //4.3.2?
             BaseAddressOffset2 = 0x1B7,     //4.3.2?
         }
@@ -436,9 +384,7 @@ namespace LazyLib.Wow
         /// </summary>
         internal enum SpellCooldown : uint
         {
-            //CooldPown = 0xACD584,   //4.3
-            //CooldPown = 0xACBF64,   //4.3.2?
-            CooldPown = 0xACBF64 - 0x640,   //4.3.3
+            CooldPown = 0xacd714,   //4.3.3
         }
 
         #endregion
@@ -450,9 +396,6 @@ namespace LazyLib.Wow
         /// </summary>
         internal enum Swimming
         {
-            //Pointer = 0x100,    //4.3
-            //Offset = 0x38,      //4.3
-            //Mask = 0x100000,    //4.3
             Pointer = 0x100,    //4.3.2
             Offset = 0x38,      //4.3.2
             Mask = 0x100000,    //4.3.2
@@ -467,22 +410,14 @@ namespace LazyLib.Wow
         /// </summary>
         internal enum UnitAuras : uint
         {
-            //AuraCount1 = 0xE90, //4.3
-            //AuraCount2 = 0xC14, //4.3
-            //AuraTable1 = 0xC10, //4.3
-            //AuraTable2 = 0xC18, //4.3
-            //AuraSize = 0x28, //4.3
-            //AuraSpellId = 0x8, //4.3
-            //AuraStack = 0xF, //4.3
-            //TimeLeft = 0x14, //4.3
-            AuraCount1 = 0xE90, //4.3.2
-            AuraCount2 = 0xC14, //4.3.2
-            AuraTable1 = 0xC10, //4.3.2
-            AuraTable2 = 0xC18, //4.3.2
-            AuraSize = 0x28, //4.3.2
-            AuraSpellId = 0x8, //4.3.2
-            AuraStack = 0xE, //4.3.2?
-            TimeLeft = 0x10, //4.3.2?
+            AuraCount1 = 0xe90,
+            AuraCount2 = 0xc14,
+            AuraSize = 40,
+            AuraSpellId = 8,
+            AuraStack = 15,
+            AuraTable1 = 0xc10,
+            AuraTable2 = 0xc18,
+            TimeLeft = 20
         } ;
 
         #endregion
@@ -494,26 +429,14 @@ namespace LazyLib.Wow
         /// </summary>
         internal enum UnitName : uint
         {
-            //ObjectName1 = 0x1CC, //4.3
-            //ObjectName2 = 0xB4, //4.3
-            //UnitName1 = 0x91C, //4.3
-            //UnitName2 = 0x64, //4.3
-            //PlayerNameCachePointer = 0x997F48, //4.3
-            //PlayerNameMaskOffset = 0x024, //4.3
-            //PlayerNameBaseOffset = 0x01c, //4.3
-            //PlayerNameStringOffset = 0x020 //4.3
-            ObjectName1 = 0x1CC, //4.3.2
-            ObjectName2 = 0xB4, //4.3.2
-            UnitName1 = 0x91C, //4.3.2
-            UnitName2 = 0x64, //4.3.2
-            //PlayerNameCachePointer = 0x996900, //4.3.2
-            //PlayerNameMaskOffset = 0x024, //4.3.2
-            //PlayerNameBaseOffset = 0x01c, //4.3.2
-            //PlayerNameStringOffset = 0x020 //4.3.2
-            PlayerNameCachePointer = 0x996900 - 0x638, //4.3.3
-            PlayerNameMaskOffset = 0x024, //4.3.3
-            PlayerNameBaseOffset = 0x01c, //4.3.3
-            PlayerNameStringOffset = 0x020 //4.3.3
+            ObjectName1 = 460,
+            ObjectName2 = 180,
+            PlayerNameBaseOffset = 0x1c,
+            PlayerNameCachePointer = 0x9980b0,
+            PlayerNameMaskOffset = 0x24,
+            PlayerNameStringOffset = 0x20,
+            UnitName1 = 0x91c,
+            UnitName2 = 100
         }
 
         #endregion
@@ -525,8 +448,6 @@ namespace LazyLib.Wow
         /// </summary>
         internal enum UnitSpeed
         {
-            //Pointer1 = 0x100, //4.3
-            //Pointer2 = 0x80, //4.3
             Pointer1 = 0x100, //4.3.2?
             Pointer2 = 0x80, //4.3.2?
         }
@@ -540,20 +461,13 @@ namespace LazyLib.Wow
         /// </summary>
         internal enum WowObject
         {
-            //X = 0x790, //4.3
-            //Y = X + 0x4, //4.3
-            //Z = X + 0x8, //4.3
-            //RotationOffset = X + 0x10, //4.3
-            //GameObjectX = 0x110, //4.3
-            //GameObjectY = GameObjectX + 0x4, //4.3
-            //GameObjectZ = GameObjectX + 0x8, //4.3
-            X = 0x790, //4.3.2?
-            Y = X + 0x4, //4.3.2?
-            Z = X + 0x8, //4.3.2?
-            RotationOffset = X + 0x10, //4.3.2?
-            GameObjectX = 0x110, //4.3.2?
-            GameObjectY = GameObjectX + 0x4, //4.3.2?
-            GameObjectZ = GameObjectX + 0x8, //4.3.2?
+            GameObjectX = 0x110,
+            GameObjectY = 0x114,
+            GameObjectZ = 280,
+            RotationOffset = 0x7a0,
+            X = 0x790,
+            Y = 0x794,
+            Z = 0x798
         }
 
         #endregion
@@ -565,12 +479,8 @@ namespace LazyLib.Wow
         /// </summary>
         internal enum Zone : uint
         {
-            //ZoneText = 0xAD7288, //4.3
-            //ZoneID = 0xAD7320, //4.3
-            //ZoneText = 0xAD5C6C, //4.3.2
-            //ZoneID = 0xAD5D00, //4.3.2
-            ZoneText = 0xAD5C6C - 0x644, //4.3.3 (Messed up for 4.3.2?)
-            ZoneID = 0xAD5D00 - 0x640, //4.3.3
+            ZoneID = 0xad74b0,
+            ZoneText = 0xad741c
         }
 
         #endregion
@@ -583,33 +493,28 @@ namespace LazyLib.Wow
         /// </summary>
         internal enum UiFrame
         {
-            ButtonEnabledPointer = 0x200, //4.3.2?
-            ButtonEnabledMask = 0xF, //4.3.2?
-            ButtonChecked = 0x238, //4.3.2?
-            EditBoxText = 0x218, //4.3.2?
-            FirstFrame = 0xce4, //4.3.2?
-            FrameBottom = 0x68, //4.3.2?
-            FrameLeft = 0x6c, //4.3.2?
-            FrameTop = 0x70, //4.3.2?
-            FrameRight = 0x74, //4.3.2?
-            LabelText = 0xEC, //4.3.2?
-            Name = 0x1C, //4.3.2?
-            NextFrame = 0xCDC, //4.3.2?
-            RegionsFirst = 0x170, //4.3.2?
-            RegionsNext = 0x168, //4.3.2?
-            //FrameBase = 0x9D2154, //4.3.2
-            //ScrHeight = 0x9083CC, //4.3.2
-            //ScrWidth = 0x9083C8, //4.3.2
-            Visible = 0x64, //4.3.2?
-            Visible1 = 0x1A, //4.3.2?
-            Visible2 = 1, //4.3.2?
-            //CurrentFrameOffset = 0x88, //4.3.2?
-            //CurrentFramePtr = 0x9D2154, //4.3.2
-            FrameBase = 0x9D2154 - 0x638, //4.3.3
-            ScrHeight = 0x9083CC - 0x610, //4.3.3
-            ScrWidth = 0x9083C8 - 0x610, //4.3.3
-            CurrentFrameOffset = 0x88, //4.3.3
-            CurrentFramePtr = 0x9D2154 - 0x638, //4.3.3
+            ButtonChecked = 0x238,
+            ButtonEnabledMask = 15,
+            ButtonEnabledPointer = 0x200,
+            CurrentFrameOffset = 0x88,
+            CurrentFramePtr = 0x9d3904,
+            EditBoxText = 0x218,
+            FirstFrame = 0xce4,
+            FrameBase = 0x9d3904,
+            FrameBottom = 0x68,
+            FrameLeft = 0x6c,
+            FrameRight = 0x74,
+            FrameTop = 0x70,
+            LabelText = 0xec,
+            Name = 0x1c,
+            NextFrame = 0xcdc,
+            RegionsFirst = 0x170,
+            RegionsNext = 360,
+            ScrHeight = 0x9096bc,
+            ScrWidth = 0x9096b8,
+            Visible = 100,
+            Visible1 = 0x1a,
+            Visible2 = 1
         }
 
         #endregion
