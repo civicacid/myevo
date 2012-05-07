@@ -50,10 +50,10 @@ namespace LazyEvo.LFlyingEngine.States
                 {
                     return false;
                 }
-                if (!LazySettings.ShouldMail || string.IsNullOrEmpty(LazySettings.MailTo))
-                {
-                    return false;
-                }
+                //if (!LazySettings.ShouldMail || string.IsNullOrEmpty(LazySettings.MailTo))
+                //{
+                //    return false;
+                //}
                 if (!ToTown.FollowingWaypoints)
                 {
                     return false;
