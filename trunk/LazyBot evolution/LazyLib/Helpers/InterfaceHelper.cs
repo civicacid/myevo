@@ -138,7 +138,7 @@ namespace LazyLib.Helpers
                         allFrames.Add(f.GetName, f);
 
                     currentFrame = Memory.Read<uint>(currentFrame + Memory.Read<uint>(@base + (uint)Pointers.UiFrame.NextFrame) + 4);
-                    //Thread.Sleep(1);
+                    Thread.Sleep(1);
                 }
                 //lock (Locker)
                 //{
