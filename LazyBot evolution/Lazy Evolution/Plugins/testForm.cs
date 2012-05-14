@@ -556,6 +556,22 @@ namespace LazyEvo.Plugins
 
         private void button11_Click(object sender, EventArgs e)
         {
+            InterfaceHelper.ReloadFrames();
+            foreach (Frame frame in InterfaceHelper.GetFrames)
+            {
+                if (frame.GetInfoText.LastIndexOf("hua")>0)
+                {
+                    Logging.Debug("Name: " + frame.GetName + " Visible: " + frame.GetInfoText);
+                    foreach (Frame child in frame.GetChilds)
+                    {
+                        if (child.GetInfoText.LastIndexOf("hua")>0)
+                        {
+                            Logging.Debug("     Child: Name: " + child.GetName + " Visible: " + child.GetInfoText);
+                        }
+                    }
+                }
+            }
+            
             Logging.Write("SpyLogin.IsOK values is : " + SpyLogin.IsOK);
         }
 

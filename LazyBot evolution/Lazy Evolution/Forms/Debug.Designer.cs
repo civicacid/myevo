@@ -54,7 +54,7 @@
             // 
             this.listView1.Location = new System.Drawing.Point(3, 3);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(307, 505);
+            this.listView1.Size = new System.Drawing.Size(307, 466);
             this.listView1.TabIndex = 2;
             this.listView1.UseCompatibleStateImageBehavior = false;
             // 
@@ -94,7 +94,7 @@
             this.superTabControl1.ReorderTabsEnabled = true;
             this.superTabControl1.SelectedTabFont = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold);
             this.superTabControl1.SelectedTabIndex = 1;
-            this.superTabControl1.Size = new System.Drawing.Size(633, 574);
+            this.superTabControl1.Size = new System.Drawing.Size(633, 530);
             this.superTabControl1.TabFont = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.superTabControl1.TabIndex = 4;
             this.superTabControl1.Tabs.AddRange(new DevComponents.DotNetBar.BaseItem[] {
@@ -113,15 +113,15 @@
             this.superTabControlPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.superTabControlPanel2.Location = new System.Drawing.Point(0, 26);
             this.superTabControlPanel2.Name = "superTabControlPanel2";
-            this.superTabControlPanel2.Size = new System.Drawing.Size(633, 548);
+            this.superTabControlPanel2.Size = new System.Drawing.Size(633, 504);
             this.superTabControlPanel2.TabIndex = 0;
             this.superTabControlPanel2.TabItem = this.superTabItem2;
             // 
             // DebugTBLog
             // 
-            this.DebugTBLog.Location = new System.Drawing.Point(12, 90);
+            this.DebugTBLog.Location = new System.Drawing.Point(12, 83);
             this.DebugTBLog.Name = "DebugTBLog";
-            this.DebugTBLog.Size = new System.Drawing.Size(249, 112);
+            this.DebugTBLog.Size = new System.Drawing.Size(249, 104);
             this.DebugTBLog.TabIndex = 11;
             this.DebugTBLog.Text = "";
             // 
@@ -129,9 +129,9 @@
             // 
             this.DebugBtnClick.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.DebugBtnClick.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.DebugBtnClick.Location = new System.Drawing.Point(93, 61);
+            this.DebugBtnClick.Location = new System.Drawing.Point(93, 56);
             this.DebugBtnClick.Name = "DebugBtnClick";
-            this.DebugBtnClick.Size = new System.Drawing.Size(75, 23);
+            this.DebugBtnClick.Size = new System.Drawing.Size(75, 21);
             this.DebugBtnClick.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.DebugBtnClick.TabIndex = 10;
             this.DebugBtnClick.Text = "Click";
@@ -141,9 +141,9 @@
             // 
             this.DebugBtnFindUI.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.DebugBtnFindUI.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.DebugBtnFindUI.Location = new System.Drawing.Point(12, 61);
+            this.DebugBtnFindUI.Location = new System.Drawing.Point(12, 56);
             this.DebugBtnFindUI.Name = "DebugBtnFindUI";
-            this.DebugBtnFindUI.Size = new System.Drawing.Size(75, 23);
+            this.DebugBtnFindUI.Size = new System.Drawing.Size(75, 21);
             this.DebugBtnFindUI.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.DebugBtnFindUI.TabIndex = 9;
             this.DebugBtnFindUI.Text = "Search";
@@ -156,7 +156,7 @@
             // 
             this.DebugTBUIName.Border.Class = "TextBoxBorder";
             this.DebugTBUIName.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.DebugTBUIName.Location = new System.Drawing.Point(12, 35);
+            this.DebugTBUIName.Location = new System.Drawing.Point(12, 32);
             this.DebugTBUIName.Name = "DebugTBUIName";
             this.DebugTBUIName.Size = new System.Drawing.Size(128, 21);
             this.DebugTBUIName.TabIndex = 8;
@@ -169,9 +169,9 @@
             // 
             this.labelX7.BackgroundStyle.Class = "";
             this.labelX7.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX7.Location = new System.Drawing.Point(12, 13);
+            this.labelX7.Location = new System.Drawing.Point(12, 12);
             this.labelX7.Name = "labelX7";
-            this.labelX7.Size = new System.Drawing.Size(146, 23);
+            this.labelX7.Size = new System.Drawing.Size(146, 21);
             this.labelX7.TabIndex = 7;
             this.labelX7.Text = "Find UI object by name:";
             // 
@@ -179,9 +179,9 @@
             // 
             this.UIBtnDump.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.UIBtnDump.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.UIBtnDump.Location = new System.Drawing.Point(15, 208);
+            this.UIBtnDump.Location = new System.Drawing.Point(15, 192);
             this.UIBtnDump.Name = "UIBtnDump";
-            this.UIBtnDump.Size = new System.Drawing.Size(196, 23);
+            this.UIBtnDump.Size = new System.Drawing.Size(196, 21);
             this.UIBtnDump.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.UIBtnDump.TabIndex = 6;
             this.UIBtnDump.Text = "Dump all UI object to the log file";
@@ -202,7 +202,7 @@
             this.superTabControlPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.superTabControlPanel1.Location = new System.Drawing.Point(0, 26);
             this.superTabControlPanel1.Name = "superTabControlPanel1";
-            this.superTabControlPanel1.Size = new System.Drawing.Size(633, 548);
+            this.superTabControlPanel1.Size = new System.Drawing.Size(633, 504);
             this.superTabControlPanel1.TabIndex = 1;
             this.superTabControlPanel1.TabItem = this.superTabItem1;
             // 
@@ -210,7 +210,7 @@
             // 
             this.listView2.Location = new System.Drawing.Point(316, 3);
             this.listView2.Name = "listView2";
-            this.listView2.Size = new System.Drawing.Size(307, 505);
+            this.listView2.Size = new System.Drawing.Size(307, 466);
             this.listView2.TabIndex = 3;
             this.listView2.UseCompatibleStateImageBehavior = false;
             // 
@@ -223,11 +223,12 @@
             // 
             // Debug
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(223)))), ((int)(((byte)(234)))), ((int)(((byte)(246)))));
-            this.ClientSize = new System.Drawing.Size(633, 574);
+            this.ClientSize = new System.Drawing.Size(633, 530);
             this.Controls.Add(this.superTabControl1);
+            this.DoubleBuffered = true;
             this.Name = "Debug";
             this.Load += new System.EventHandler(this.Debug_Load);
             ((System.ComponentModel.ISupportInitialize)(this.superTabControl1)).EndInit();
