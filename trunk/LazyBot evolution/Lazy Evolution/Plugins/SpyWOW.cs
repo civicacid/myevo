@@ -167,6 +167,18 @@ namespace LazyEvo.Plugins
 
         public static bool initme(string char_id)
         {
+            // 初始化那些静态参数，包括停止线程
+            WOWPath = "";
+            AccountName = "";
+            AccountPass = "";
+            RealmName = "";
+            CharIdx = "";
+            AccountList = "";
+            IsOK = false;
+            WOW_P = new Process();
+            SpyLogin.stop();
+
+
             Dictionary<string, string> result = SpyDB.GetCharLoginInfo(char_id);
             if (result.Count == 0)
             {
@@ -304,6 +316,15 @@ namespace LazyEvo.Plugins
 
         private static void RunWow()
         {
+            // 开始之前，先杀掉那些已经开启的WOW
+            Process[] _wowProc = Process.GetProcessesByName("Wow");
+            foreach (Process proc in _wowProc)
+            {
+                proc.Kill();
+                Thread.Sleep(1000);
+            }
+            Thread.Sleep(2000);
+
             String exeFilePath = WOWPath + "\\Wow.exe";
             WOW_P = new Process();
             WOW_P.StartInfo.FileName = exeFilePath;
@@ -1080,7 +1101,14 @@ namespace LazyEvo.Plugins
 
         public static bool initme()
         {
+            // 初始化那些静态参数，包括停止线程
             WORKING = false;
+            RUNNING = false;
+            CreationList = new Dictionary<string, int>();
+            CreationMap = new Dictionary<string, string>();
+            CreationMapDT = new DataTable();
+            MailList = new Dictionary<string, string>();
+            SpyZBJG.stop();
 
             if (!SpyFrame.initme())
             {
@@ -1546,7 +1574,7 @@ namespace LazyEvo.Plugins
                     Thread.Sleep(500);
                     ItemsInBagAndMail = SpyFrame.GetDispCountItemCount();
 
-                    if (swJump.Elapsed.Minutes > 4)
+                    if (swJump.Elapsed.TotalMinutes > 4)
                     {
                         KeyLowHelper.PressKey(MicrosoftVirtualKeys.Space);
                         KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.Space);
@@ -1586,7 +1614,7 @@ namespace LazyEvo.Plugins
                         Thread.Sleep(500);
                         ItemsInBagAndMail = SpyFrame.GetDispCountItemCount();
 
-                        if (swJump.Elapsed.Minutes > 4)
+                        if (swJump.Elapsed.TotalMinutes > 4)
                         {
                             KeyLowHelper.PressKey(MicrosoftVirtualKeys.Space);
                             KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.Space);
@@ -1617,8 +1645,10 @@ namespace LazyEvo.Plugins
 
         public static bool initme(string Skill)
         {
+            // 初始化那些静态参数，包括停止线程
             RUNNING = true;
             WORKING = false;
+            SpyLJZH.stop();
             logger.clear();
 
             DoSkill = Skill;
@@ -1862,7 +1892,7 @@ namespace LazyEvo.Plugins
                             NeedItemInBag[Item.Key] = NeedItemInBag[Item.Key] - Item.Value;
                         }
 
-                        if (jump.Elapsed.Minutes > AFK_Minutes)   // 通过系统参数获得反AFK的时间
+                        if (jump.Elapsed.TotalMinutes > AFK_Minutes)   // 通过系统参数获得反AFK的时间
                         {
                             // jump一下，防止AFK
                             jump.Restart();
@@ -1904,8 +1934,10 @@ namespace LazyEvo.Plugins
 
         public static bool initme()
         {
+            // 初始化那些静态参数，包括停止线程
             RUNNING = true;
             WORKING = false;
+            SpyMineAndMail.stop();
 
             if (!SpyFrame.initme())
             {
@@ -2105,7 +2137,11 @@ namespace LazyEvo.Plugins
 
         public static bool initme()
         {
+            // 初始化那些静态参数，包括停止线程
             WORKING = false;
+            RUNNING = false;
+            SpyAH.stop();
+
             // 获取暂离时间
             string rtv = SpyDB.GetParam("5");
             if (string.IsNullOrWhiteSpace(rtv))
@@ -2331,7 +2367,7 @@ namespace LazyEvo.Plugins
                 }
 
                 // 跳，防止AFK
-                if (swJump.Elapsed.Minutes > AFK_Minutes)
+                if (swJump.Elapsed.TotalMinutes > AFK_Minutes)
                 {
                     KeyLowHelper.PressKey(MicrosoftVirtualKeys.Space);
                     KeyLowHelper.ReleaseKey(MicrosoftVirtualKeys.Space);
@@ -3230,7 +3266,7 @@ namespace LazyEvo.Plugins
                 RUN_OUT_MIN_WORK = Convert.ToInt32(rtv);
 
             rtv = SpyDB.GetParam("4");
-            if (string.IsNullOrWhiteSpace(rtv)) 
+            if (string.IsNullOrWhiteSpace(rtv))
                 RUN_OUT_MIN_LOGIN = 5;
             else
                 RUN_OUT_MIN_LOGIN = Convert.ToInt32(rtv);
@@ -3336,7 +3372,7 @@ namespace LazyEvo.Plugins
                     {
                         //LazyHelpers.StopAll("时间到了，Kill Process");
                         //SpyLogin.WOW_P.Kill();
-                        SpyDB.WriteLog("计划任务", string.Format("结束任务，角色：{0}，任务描述：{1}，持续时间：{2}", char_name, JobDescribe, JobTime.Elapsed.Minutes));
+                        SpyDB.WriteLog("计划任务", string.Format("结束任务，角色：{0}，任务描述：{1}，持续时间：{2}", char_name, JobDescribe, JobTime.Elapsed.TotalMinutes));
                         //JobRunning = false;
                         RunMiniute = 0;
                         JobStatus = EnumJobStatus.Work_OK;
@@ -3346,9 +3382,9 @@ namespace LazyEvo.Plugins
                 // 针对非采矿类任务，不可能超过1小时
                 if (JobRunning && !DoWhat.Equals("CJ"))
                 {
-                    if (JobTime.Elapsed.Minutes > 60)
+                    if (JobTime.Elapsed.TotalMinutes > 60)
                     {
-                        SpyDB.WriteLog("计划任务", string.Format("任务工作时间超长，角色：{0}，任务描述：{1}，持续时间：{2}", char_name, JobDescribe, JobTime.Elapsed.Minutes));
+                        SpyDB.WriteLog("计划任务", string.Format("任务工作时间超长，角色：{0}，任务描述：{1}，持续时间：{2}", char_name, JobDescribe, JobTime.Elapsed.TotalMinutes));
                         RunMiniute = 0;
                         JobStatus = EnumJobStatus.Work_OK;
                     }
@@ -3376,7 +3412,7 @@ namespace LazyEvo.Plugins
                 case EnumJobStatus.Logging:
                     if (SpyLogin.IsOK)
                     {
-                        SpyDB.WriteLog("计划任务", string.Format("任务角色登录成功，角色：{0}，任务描述：{1}，持续时间：{2}", char_name, JobDescribe, JobTime.Elapsed.Minutes));
+                        SpyDB.WriteLog("计划任务", string.Format("任务角色登录成功，角色：{0}，任务描述：{1}，持续时间：{2}", char_name, JobDescribe, JobTime.Elapsed.TotalMinutes));
                         Thread.Sleep(2000);
                         //ObjectManager.MakeReady();
                         Logging.Write(string.Format("Pid : [{0}]", SpyLogin.WOW_P.Id));
@@ -3392,10 +3428,10 @@ namespace LazyEvo.Plugins
                         JobStatus = EnumJobStatus.login_OK;
                     }
                     //if (string.Format("{0:yyyy-MM-dd HH:mm}", StatusStartTime.AddMinutes(RUN_OUT_MIN_LOGIN)).Equals(string.Format("{0:yyyy-MM-dd HH:mm}", DateTime.Now)))
-                    if (OutJob.Elapsed.Minutes > RUN_OUT_MIN_LOGIN)
+                    if (OutJob.Elapsed.TotalMinutes > RUN_OUT_MIN_LOGIN)
                     {
                         OutJob.Reset();
-                        SpyDB.WriteLog("计划任务", string.Format("任务角色登录超时，角色：{0}，任务描述：{1}，持续时间：{2}", char_name, JobDescribe, JobTime.Elapsed.Minutes));
+                        SpyDB.WriteLog("计划任务", string.Format("任务角色登录超时，角色：{0}，任务描述：{1}，持续时间：{2}", char_name, JobDescribe, JobTime.Elapsed.TotalMinutes));
                         JobStatus = EnumJobStatus.Work_OK;
                     }
                     break;
@@ -3423,7 +3459,7 @@ namespace LazyEvo.Plugins
                             if (SpyLJZH.initme("MW")) SpyLJZH.start();
                             break;
                     }
-                    SpyDB.WriteLog("计划任务", string.Format("任务开始工作，角色：{0}，任务描述：{1}，持续时间：{2}", char_name, JobDescribe, JobTime.Elapsed.Minutes));
+                    SpyDB.WriteLog("计划任务", string.Format("任务开始工作，角色：{0}，任务描述：{1}，持续时间：{2}", char_name, JobDescribe, JobTime.Elapsed.TotalMinutes));
                     StatusStartTime = DateTime.Now;
                     OutJob.Restart();
                     JobStatus = EnumJobStatus.Working;
@@ -3437,9 +3473,9 @@ namespace LazyEvo.Plugins
                         case "ZBJG":        //珠宝加工
                             //if (string.Format("{0:yyyy-MM-dd HH:mm}", StatusStartTime.AddMinutes(RUN_OUT_MIN_WORK)).Equals(string.Format("{0:yyyy-MM-dd HH:mm}", DateTime.Now)))
                             if (SpyZBJG.WORKING) OutJob.Restart();
-                            if (!SpyZBJG.WORKING && OutJob.Elapsed.Minutes > RUN_OUT_MIN_WORK)
+                            if (!SpyZBJG.WORKING && OutJob.Elapsed.TotalMinutes > RUN_OUT_MIN_WORK)
                             {
-                                SpyDB.WriteLog("计划任务", string.Format("任务工作超时，角色：{0}，任务描述：{1}，持续时间：{2}", char_name, JobDescribe, JobTime.Elapsed.Minutes));
+                                SpyDB.WriteLog("计划任务", string.Format("任务工作超时，角色：{0}，任务描述：{1}，持续时间：{2}", char_name, JobDescribe, JobTime.Elapsed.TotalMinutes));
                                 JobStatus = EnumJobStatus.Work_OK;
                                 return;
                             }
@@ -3448,9 +3484,9 @@ namespace LazyEvo.Plugins
                         case "AH":          //AH拍卖
                             if (SpyAH.WORKING) OutJob.Restart();
                             //if (string.Format("{0:yyyy-MM-dd HH:mm}", StatusStartTime.AddMinutes(RUN_OUT_MIN_WORK)).Equals(string.Format("{0:yyyy-MM-dd HH:mm}", DateTime.Now)))
-                            if (!SpyAH.WORKING && OutJob.Elapsed.Minutes > RUN_OUT_MIN_WORK)
+                            if (!SpyAH.WORKING && OutJob.Elapsed.TotalMinutes > RUN_OUT_MIN_WORK)
                             {
-                                SpyDB.WriteLog("计划任务", string.Format("任务工作超时，角色：{0}，任务描述：{1}，持续时间：{2}", char_name, JobDescribe, JobTime.Elapsed.Minutes));
+                                SpyDB.WriteLog("计划任务", string.Format("任务工作超时，角色：{0}，任务描述：{1}，持续时间：{2}", char_name, JobDescribe, JobTime.Elapsed.TotalMinutes));
                                 JobStatus = EnumJobStatus.Work_OK;
                                 return;
                             }
@@ -3458,10 +3494,10 @@ namespace LazyEvo.Plugins
                             break;
                         case "FJKS":        //分解矿石
                             if (SpyMineAndMail.WORKING) OutJob.Restart();
-                            if (!SpyMineAndMail.WORKING && OutJob.Elapsed.Minutes > RUN_OUT_MIN_WORK)
+                            if (!SpyMineAndMail.WORKING && OutJob.Elapsed.TotalMinutes > RUN_OUT_MIN_WORK)
                             //if (string.Format("{0:yyyy-MM-dd HH:mm}", StatusStartTime.AddMinutes(RUN_OUT_MIN_WORK)).Equals(string.Format("{0:yyyy-MM-dd HH:mm}", DateTime.Now)))
                             {
-                                SpyDB.WriteLog("计划任务", string.Format("任务工作超时，角色：{0}，任务描述：{1}，持续时间：{2}", char_name, JobDescribe, JobTime.Elapsed.Minutes));
+                                SpyDB.WriteLog("计划任务", string.Format("任务工作超时，角色：{0}，任务描述：{1}，持续时间：{2}", char_name, JobDescribe, JobTime.Elapsed.TotalMinutes));
                                 JobStatus = EnumJobStatus.Work_OK;
                                 return;
                             }
@@ -3470,7 +3506,7 @@ namespace LazyEvo.Plugins
                         case "CJ":          //采集
                             if (!LazyLib.FSM.Engine.Running)
                             {
-                                SpyDB.WriteLog("计划任务", string.Format("出现状况，自动关闭外挂。角色：{0}，任务描述：{1}，持续时间：{2}", char_name, JobDescribe, JobTime.Elapsed.Minutes));
+                                SpyDB.WriteLog("计划任务", string.Format("出现状况，自动关闭外挂。角色：{0}，任务描述：{1}，持续时间：{2}", char_name, JobDescribe, JobTime.Elapsed.TotalMinutes));
                                 JobStatus = EnumJobStatus.Work_OK;
                                 return;
                             }
@@ -3479,10 +3515,10 @@ namespace LazyEvo.Plugins
                         case "LJ":          //炼金
                         case "MW":
                             if (SpyLJZH.WORKING) OutJob.Restart();
-                            if (!SpyLJZH.WORKING && OutJob.Elapsed.Minutes > RUN_OUT_MIN_WORK)
+                            if (!SpyLJZH.WORKING && OutJob.Elapsed.TotalMinutes > RUN_OUT_MIN_WORK)
                             //if (string.Format("{0:yyyy-MM-dd HH:mm}", StatusStartTime.AddMinutes(RUN_OUT_MIN_WORK)).Equals(string.Format("{0:yyyy-MM-dd HH:mm}", DateTime.Now)))
                             {
-                                SpyDB.WriteLog("计划任务", string.Format("任务工作超时，角色：{0}，任务描述：{1}，持续时间：{2}", char_name, JobDescribe, JobTime.Elapsed.Minutes));
+                                SpyDB.WriteLog("计划任务", string.Format("任务工作超时，角色：{0}，任务描述：{1}，持续时间：{2}", char_name, JobDescribe, JobTime.Elapsed.TotalMinutes));
                                 JobStatus = EnumJobStatus.Work_OK;
                                 return;
                             }
@@ -3490,7 +3526,7 @@ namespace LazyEvo.Plugins
                             break;
                     }
 
-                    SpyDB.WriteLog("计划任务", string.Format("任务结束工作，角色：{0}，任务描述：{1}，持续时间：{2}", char_name, JobDescribe, JobTime.Elapsed.Minutes));
+                    SpyDB.WriteLog("计划任务", string.Format("任务结束工作，角色：{0}，任务描述：{1}，持续时间：{2}", char_name, JobDescribe, JobTime.Elapsed.TotalMinutes));
                     JobStatus = EnumJobStatus.Work_OK;
                     break;
 
