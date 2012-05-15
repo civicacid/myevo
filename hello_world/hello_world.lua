@@ -52,7 +52,7 @@ function hello_world_initialize()
     frmTest:SetBackdropBorderColor(0, 0, 0, 1)  -- 边框材质颜色 (Red, Green, Black, Alpha) 各参数的范围都是 0-1
     frmTest:SetPoint("TOPLEFT", WorldFrame, "TOPLEFT", 0, 0)
     frmTest.Text = frmTest:CreateFontString("frmTestText", "OVERLAY") -- 为Frame创建一个新的文字层
-    frmTest.Text:SetFont("fonts\\zyhei.ttf", 10, "OUTLINE")
+    frmTest.Text:SetFont("fonts\\arhei.ttf", 10, "OUTLINE")
     frmTest.Text:SetPoint("CENTER", frmTest, "CENTER", 0, 0)
     --frmTest:Hide()
 
@@ -62,7 +62,7 @@ function hello_world_initialize()
     frmData:SetHeight(64) -- 设置高度
     frmData:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 0, 0)
     frmDataText = frmData:CreateFontString("frmDataText", "OVERLAY") -- 为Frame创建一个新的文字层
-    frmDataText:SetFont("fonts\\zyhei.ttf", 10, "OUTLINE")
+    frmDataText:SetFont("fonts\\arhei.ttf", 10, "OUTLINE")
     frmDataText:SetPoint("TOP", frmData, "BOTTOM", 0, 0)
     --frmDataText:SetText("Hell World")
     --frmData:Hide()
@@ -74,10 +74,30 @@ function hello_world_initialize()
     frmMailData:SetHeight(64) -- 设置高度
     frmMailData:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 0, 20)
     frmMailDataText = frmMailData:CreateFontString("frmMailDataText", "OVERLAY") -- 为Frame创建一个新的文字层
-    frmMailDataText:SetFont("fonts\\zyhei.ttf", 10, "OUTLINE")
+    frmMailDataText:SetFont("fonts\\arhei.ttf", 10, "OUTLINE")
     frmMailDataText:SetPoint("TOP", frmMailData, "BOTTOM", 0, 0)
     --frmDataText:SetText("Hell World")
     --frmData:Hide()
+
+    -- 显示数据框体（专用于显示采矿技能）
+    frmMineLevel = CreateFrame("Frame", "frmMineLevel", UIParent)
+    frmMineLevel:SetWidth(5) -- 设置宽度
+    frmMineLevel:SetHeight(5) -- 设置高度
+    frmMineLevel:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 0, 40)
+    frmMineLevelText = frmMineLevel:CreateFontString("frmMineLevelText", "OVERLAY") -- 为Frame创建一个新的文字层
+    frmMineLevelText:SetFont("fonts\\arhei.ttf", 10, "OUTLINE")
+    frmMineLevelText:SetPoint("TOP", frmMineLevel, "BOTTOM", 0, 0)
+    frmMineLevel:SetScript("OnUpdate", DispMineLevel)
+
+    -- 显示数据框体（专用于显示采药技能）
+    frmHerbLevel = CreateFrame("Frame", "frmHerbLevel", UIParent)
+    frmHerbLevel:SetWidth(5) -- 设置宽度
+    frmHerbLevel:SetHeight(5) -- 设置高度
+    frmHerbLevel:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 0, 50)
+    frmHerbLevelText = frmHerbLevel:CreateFontString("frmHerbLevelText", "OVERLAY") -- 为Frame创建一个新的文字层
+    frmHerbLevelText:SetFont("fonts\\arhei.ttf", 10, "OUTLINE")
+    frmHerbLevelText:SetPoint("TOP", frmHerbLevel, "BOTTOM", 0, 0)
+    frmHerbLevel:SetScript("OnUpdate", DispHerbLevel)
 
 end
 
@@ -1384,6 +1404,59 @@ function SearchItem(astrItemName, aiStackSize)
     return -1, -1
 end
 
+-- 显示采矿技能
+function DispMineLevel()
+    --frmMineLevelText:SetText("")
+
+    local ind
+    ind = (select(1, GetProfessions()))
+
+    local sname, slevel, smax
+    sname = (select (1, GetProfessionInfo(ind)))
+    slevel = (select (3, GetProfessionInfo(ind)))
+    smax = (select (4, GetProfessionInfo(ind)))
+
+    if sname == "采矿" then
+        frmMineLevelText:SetText(slevel .. "$" .. smax)
+    else
+        ind = (select(2, GetProfessions()))
+
+        local sname, slevel, smax
+        sname = (select (1, GetProfessionInfo(ind)))
+        slevel = (select (3, GetProfessionInfo(ind)))
+        smax = (select (4, GetProfessionInfo(ind)))
+        if sname == "采矿" then
+            frmMineLevelText:SetText(slevel .. "$" .. smax)
+        end
+    end
+end
+
+-- 显示采药技能
+function DispHerbLevel()
+    frmHerbLevelText:SetText("")
+
+    local ind
+    ind = (select(1, GetProfessions()))
+
+    local sname, slevel, smax
+    sname = (select (1, GetProfessionInfo(ind)))
+    slevel = (select (3, GetProfessionInfo(ind)))
+    smax = (select (4, GetProfessionInfo(ind)))
+
+    if sname == "草药学" then
+        frmHerbLevelText:SetText(slevel .. "$" .. smax)
+    else
+        ind = (select(2, GetProfessions()))
+
+        local sname, slevel, smax
+        sname = (select (1, GetProfessionInfo(ind)))
+        slevel = (select (3, GetProfessionInfo(ind)))
+        smax = (select (4, GetProfessionInfo(ind)))
+        if sname == "草药学" then
+            frmHerbLevelText:SetText(slevel .. "$" .. smax)
+        end
+    end
+end
 
 --------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------    拍卖场挂货功能(4.0)      ---------------------------------------------
