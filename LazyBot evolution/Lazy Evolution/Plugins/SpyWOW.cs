@@ -2113,6 +2113,15 @@ namespace LazyEvo.Plugins
         }
     }
 
+    /// <summary>
+    /// 自动采矿升级
+    /// </summary>
+    /// 
+    public static class SpyAutoUpgrade
+    {
+        // 仅用于 联盟，炉石设定在外域的荣耀堡，在这里进行训练师学习
+    }
+
     public static class SpyAH
     {
         public static DBLogger logger = new DBLogger("拿取邮件+找到拍卖师+AH上货");
